@@ -1,0 +1,63 @@
+<form>
+    <!-- Computed / read-only grid columns. type=ignore keeps them out of the
+         edit form (only descr is editable) while still rendering as columns. -->
+    <field>
+        <id>authority.cn</id>
+        <label>Name</label>
+        <type>ignore</type>
+        <grid_view>
+            <sequence>10</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>authority.descr</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Human-readable label for this certificate authority (stored in OPNsense only).</help>
+        <grid_view>
+            <sequence>20</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>authority.curve</id>
+        <label>Curve</label>
+        <type>ignore</type>
+        <grid_view>
+            <sequence>23</sequence>
+            <width>80</width>
+        </grid_view>
+    </field>
+    <field>
+        <id>authority.networks</id>
+        <label>Networks</label>
+        <type>ignore</type>
+        <grid_view>
+            <sequence>25</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>authority.unsafe_networks</id>
+        <label>Unsafe networks</label>
+        <type>ignore</type>
+        <grid_view>
+            <sequence>27</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>authority.valid_to</id>
+        <label>Valid until</label>
+        <type>ignore</type>
+        <grid_view>
+            <sequence>30</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>authority.can_sign</id>
+        <label>Can sign</label>
+        <type>ignore</type>
+        <grid_view>
+            <sequence>40</sequence>
+            <formatter>boolean</formatter>
+        </grid_view>
+    </field>
+</form>

@@ -1,0 +1,544 @@
+---
+# knobs.yaml — curated scalar Nebula config knobs (v1.10.3)
+# Source-of-truth for code-generation (model XML, form XML, ConfigMap.php).
+# SCALARS ONLY — list/map knobs (static_host_map, unsafe_routes, firewall rules,
+# lighthouse allow-lists, stats, sshd.authorized_users) are deferred; see
+# tools/nebula_config_reference.yaml for the full upstream coverage map and
+# tools/audit_knobs.py for the drift guard.
+# Field names under instances.instance; yaml = dotted nebula.yml path.
+#
+# `section` groups each knob for the instance dialog. Knobs are ordered, and
+# sections appear, in the documented order at https://nebula.defined.net/docs/config/.
+# tools/gen_knobs.py emits a section header before the first knob of each section
+# and requires each section to be contiguous (no interleaving).
+
+knobs:
+
+  # ---------------------------------------------------------------------------
+  # pki
+  # ---------------------------------------------------------------------------
+  - field: pki_disconnect_invalid
+    section: PKI
+    yaml: pki.disconnect_invalid
+    type: bool
+    default: "false"
+    label: Disconnect on invalid certificate
+    help: Disconnect any tunnel whose certificate becomes invalid (expired or revoked) while the tunnel is active.
+
+  - field: pki_initiating_version
+    section: PKI
+    yaml: pki.initiating_version
+    type: int
+    default: 1
+    min: 1
+    max: 2
+    label: Initiating cert version
+    advanced: true
+    help: Nebula handshake version to use when initiating a new tunnel (1 = legacy, 2 = post-quantum-resistant).
+
+  # ---------------------------------------------------------------------------
+  # static_map (DNS re-resolution for static lighthouses)
+  # ---------------------------------------------------------------------------
+  - field: static_map_cadence
+    section: Static map (DNS)
+    yaml: static_map.cadence
+    type: duration
+    default: 30s
+    label: Static map DNS cadence
+    advanced: true
+    help: How often to re-resolve hostnames listed in static_host_map via DNS.
+
+  - field: static_map_network
+    section: Static map (DNS)
+    yaml: static_map.network
+    type: enum
+    default: ip4
+    enum: [ip4, ip6, ip]
+    label: Static map address family
+    advanced: true
+    help: "Address family to use when re-resolving static_host_map hostnames: ip4, ip6, or ip (either)."
+
+  - field: static_map_lookup_timeout
+    section: Static map (DNS)
+    yaml: static_map.lookup_timeout
+    type: duration
+    default: 250ms
+    label: Static map lookup timeout
+    advanced: true
+    help: DNS lookup timeout for each static_host_map hostname resolution attempt.
+
+  # ---------------------------------------------------------------------------
+  # lighthouse (scalars; hosts/allow-lists deferred)
+  # ---------------------------------------------------------------------------
+  - field: am_lighthouse
+    section: Lighthouse
+    yaml: lighthouse.am_lighthouse
+    type: bool
+    default: "false"
+    required: Y
+    label: Lighthouse
+    grid: 4
+    grid_width: "6em"
+    help: Designate this node as a lighthouse (discovery server); lighthouse nodes should not list other lighthouses.
+
+  - field: lighthouse_serve_dns
+    section: Lighthouse
+    yaml: lighthouse.serve_dns
+    type: bool
+    default: "false"
+    label: Serve DNS
+    help: Enable the DNS server on this lighthouse so peers can resolve Nebula hostnames via DNS queries.
+
+  - field: lighthouse_interval
+    section: Lighthouse
+    yaml: lighthouse.interval
+    type: int
+    default: 60
+    label: Lighthouse update interval
+    help: How often (in seconds) non-lighthouse nodes send keepalive/update messages to their lighthouses.
+
+  - field: lighthouse_dns_host
+    section: Lighthouse
+    yaml: lighthouse.dns.host
+    type: host
+    default: "0.0.0.0"
+    label: DNS listen address
+    help: IP address the lighthouse DNS server binds to (only used when serve_dns is true).
+
+  - field: lighthouse_dns_port
+    section: Lighthouse
+    yaml: lighthouse.dns.port
+    type: int
+    default: 53
+    min: 1
+    max: 65535
+    label: DNS port
+    help: UDP port the lighthouse DNS server listens on (only used when serve_dns is true).
+
+  - field: lighthouse_hosts
+    section: Lighthouse
+    yaml: lighthouse.hosts
+    type: list
+    label: Lighthouse hosts
+    help: "Lighthouse nebula IPs this node reports to / queries. Add each as a tag. Leave empty on a lighthouse."
+
+  - field: lighthouse_advertise_addrs
+    section: Lighthouse
+    yaml: lighthouse.advertise_addrs
+    type: list
+    label: Advertise addresses
+    help: "Extra routable host:port (or host:0) to advertise to lighthouses. Add each as a tag."
+
+  # ---------------------------------------------------------------------------
+  # listen
+  # ---------------------------------------------------------------------------
+  - field: listen_host
+    section: Listen
+    yaml: listen.host
+    type: host
+    default: "::"
+    required: Y
+    label: Listen address
+    help: IP address (or hostname) Nebula binds its UDP listener to; "::" listens on all interfaces (IPv4+IPv6).
+
+  - field: listen_port
+    section: Listen
+    yaml: listen.port
+    type: int
+    default: 4242
+    min: 0
+    max: 65535
+    required: Y
+    label: Listen port
+    grid: 5
+    grid_width: "7em"
+    help: UDP port Nebula listens on; 0 lets the OS assign a random port (useful for roaming clients).
+
+  - field: listen_batch
+    section: Listen
+    yaml: listen.batch
+    type: int
+    default: 64
+    label: Listen batch size
+    advanced: true
+    help: Maximum number of packets to read from the UDP socket in a single syscall (Linux recvmmsg batch size).
+
+  - field: listen_read_buffer
+    section: Listen
+    yaml: listen.read_buffer
+    type: int
+    label: UDP receive buffer
+    advanced: true
+    help: SO_RCVBUF size in bytes for the UDP socket; leave unset to use the OS default.
+
+  - field: listen_write_buffer
+    section: Listen
+    yaml: listen.write_buffer
+    type: int
+    label: UDP send buffer
+    advanced: true
+    help: SO_SNDBUF size in bytes for the UDP socket; leave unset to use the OS default.
+
+  - field: listen_send_recv_error
+    section: Listen
+    yaml: listen.send_recv_error
+    type: enum
+    default: always
+    enum: [always, never, private]
+    label: Send error on write failure
+    advanced: true
+    help: "Controls when ICMP unreachable errors are sent back on write failures: always, never, or only to private IPs."
+
+  - field: listen_accept_recv_error
+    section: Listen
+    yaml: listen.accept_recv_error
+    type: enum
+    default: always
+    enum: [always, never, private]
+    label: Send error on read failure
+    advanced: true
+    help: "Controls when ICMP unreachable errors are sent back on read failures: always, never, or only to private IPs."
+
+  - field: listen_so_mark
+    section: Listen
+    yaml: listen.so_mark
+    type: int
+    default: 0
+    label: Socket mark (SO_MARK)
+    advanced: true
+    help: SO_MARK value to set on the UDP socket; useful for policy-based routing (0 = disabled).
+
+  # ---------------------------------------------------------------------------
+  # punchy
+  # ---------------------------------------------------------------------------
+  - field: punchy_punch
+    section: Punchy (NAT traversal)
+    yaml: punchy.punch
+    type: bool
+    default: "true"
+    label: Hole punching
+    help: Send UDP hole-punching packets to peers behind NAT to keep the path open.
+
+  - field: punchy_respond
+    section: Punchy (NAT traversal)
+    yaml: punchy.respond
+    type: bool
+    default: "false"
+    label: Respond to hole punch
+    advanced: true
+    help: Respond to hole-punch requests from peers (enables bidirectional hole-punching).
+
+  - field: punchy_delay
+    section: Punchy (NAT traversal)
+    yaml: punchy.delay
+    type: duration
+    default: 1s
+    label: Hole punch delay
+    advanced: true
+    help: How long to wait before sending the first hole-punch packet after a handshake.
+
+  - field: punchy_respond_delay
+    section: Punchy (NAT traversal)
+    yaml: punchy.respond_delay
+    type: duration
+    default: 5s
+    label: Hole punch respond delay
+    advanced: true
+    help: Delay before responding to a hole-punch request; adds jitter to avoid thundering-herd.
+
+  # ---------------------------------------------------------------------------
+  # cipher
+  # ---------------------------------------------------------------------------
+  - field: cipher
+    section: Cipher
+    yaml: cipher
+    type: enum
+    default: chachapoly
+    enum: [chachapoly, aes]
+    label: Cipher
+    help: "Encryption cipher for tunnel traffic: chachapoly (ChaCha20-Poly1305) or aes (AES-256-GCM)."
+
+  # ---------------------------------------------------------------------------
+  # preferred_ranges
+  # ---------------------------------------------------------------------------
+  - field: preferred_ranges
+    section: Preferred ranges
+    yaml: preferred_ranges
+    type: list
+    label: Preferred ranges
+    help: "Local network CIDRs preferred for handshakes. Add each as a tag."
+
+  # ---------------------------------------------------------------------------
+  # relay
+  # ---------------------------------------------------------------------------
+  - field: relay_am_relay
+    section: Relay
+    yaml: relay.am_relay
+    type: bool
+    default: "false"
+    label: Act as relay
+    help: Act as a relay node, forwarding encrypted traffic between peers that cannot reach each other directly.
+
+  - field: relay_use_relays
+    section: Relay
+    yaml: relay.use_relays
+    type: bool
+    default: "true"
+    label: Use relays
+    help: Allow this node to use relay nodes when a direct path to a peer is unavailable.
+
+  - field: relay_relays
+    section: Relay
+    yaml: relay.relays
+    type: list
+    label: Relays
+    help: "Nebula IPs to use as relays. Add each as a tag."
+
+  # ---------------------------------------------------------------------------
+  # tun
+  # ---------------------------------------------------------------------------
+  - field: tun_name
+    section: TUN interface
+    yaml: tun.dev
+    type: text
+    label: Interface
+    grid: 2
+    grid_width: "10em"
+    help: "Tunnel device name, e.g. nebula0. Leave empty to auto-assign."
+
+  - field: tun_disabled
+    section: TUN interface
+    yaml: tun.disabled
+    type: bool
+    default: "false"
+    label: Disable TUN interface
+    advanced: true
+    help: Disable the TUN interface entirely (node participates in the overlay as a relay/lighthouse only, no IP traffic).
+
+  - field: tun_drop_local_broadcast
+    section: TUN interface
+    yaml: tun.drop_local_broadcast
+    type: bool
+    default: "false"
+    label: Drop local broadcast
+    advanced: true
+    help: Drop packets destined for the local broadcast address of the Nebula subnet before they enter the TUN.
+
+  - field: tun_drop_multicast
+    section: TUN interface
+    yaml: tun.drop_multicast
+    type: bool
+    default: "false"
+    label: Drop multicast
+    advanced: true
+    help: Drop all multicast packets at the TUN interface.
+
+  - field: tun_tx_queue
+    section: TUN interface
+    yaml: tun.tx_queue
+    type: int
+    default: 500
+    label: TX queue length
+    advanced: true
+    help: Transmit queue length for the TUN device (Linux txqueuelen / number of packets buffered before dropping).
+
+  - field: tun_mtu
+    section: TUN interface
+    yaml: tun.mtu
+    type: int
+    default: 1300
+    label: MTU
+    help: MTU of the Nebula TUN interface; lower values leave headroom for the outer UDP/IP headers.
+
+  - field: tun_use_system_route_table
+    section: TUN interface
+    yaml: tun.use_system_route_table
+    type: bool
+    default: "false"
+    label: Use system route table
+    advanced: true
+    help: Install Nebula routes into the system routing table instead of handling them internally (useful on BSD/macOS).
+
+  - field: tun_use_system_route_table_buffer_size
+    section: TUN interface
+    yaml: tun.use_system_route_table_buffer_size
+    type: int
+    default: 0
+    label: System route table buffer size
+    advanced: true
+    help: Size of the route-change notification buffer when use_system_route_table is enabled; 0 = OS default.
+
+  # ---------------------------------------------------------------------------
+  # tunnels
+  # ---------------------------------------------------------------------------
+  - field: tunnels_drop_inactive
+    section: Tunnels
+    yaml: tunnels.drop_inactive
+    type: bool
+    default: "false"
+    label: Drop inactive tunnels
+    advanced: true
+    help: Tear down tunnels that have had no traffic for the inactivity_timeout period.
+
+  - field: tunnels_inactivity_timeout
+    section: Tunnels
+    yaml: tunnels.inactivity_timeout
+    type: duration
+    default: 10m
+    label: Inactivity timeout
+    advanced: true
+    help: How long a tunnel may be idle before it is considered inactive (only used when drop_inactive is true).
+
+  # ---------------------------------------------------------------------------
+  # sshd (embedded debug SSH server) — NOT user-configurable. The plugin always
+  # runs the debug server bound to 127.0.0.1 on a per-instance derived port, with
+  # only the plugin's diagnostics key authorized (see Nebula.php / setup.php). It
+  # is the internal management channel behind the Status page; there are no knobs.
+  # ---------------------------------------------------------------------------
+
+  # ---------------------------------------------------------------------------
+  # logging
+  # ---------------------------------------------------------------------------
+  - field: logging_level
+    section: Logging
+    yaml: logging.level
+    type: enum
+    default: info
+    enum: [debug, info, warning, error, fatal, panic]
+    label: Log level
+    help: "Log verbosity level: debug produces the most output; panic the least."
+
+  - field: logging_format
+    section: Logging
+    yaml: logging.format
+    type: enum
+    default: text
+    enum: [text, json]
+    label: Log format
+    advanced: true
+    help: "Log output format: text (human-readable) or json (structured, for log aggregators)."
+
+  - field: logging_disable_timestamp
+    section: Logging
+    yaml: logging.disable_timestamp
+    type: bool
+    default: "false"
+    label: Disable log timestamp
+    advanced: true
+    help: Omit the timestamp field from log entries (useful when the log collector adds its own timestamp).
+
+  - field: logging_timestamp_format
+    section: Logging
+    yaml: logging.timestamp_format
+    type: text
+    label: Log timestamp format
+    advanced: true
+    help: "Go time-format string for log timestamps (e.g. 2006-01-02T15:04:05Z07:00); leave empty for the default."
+
+  # ---------------------------------------------------------------------------
+  # firewall defaults + conntrack (rules handled by the Allow List page)
+  # ---------------------------------------------------------------------------
+  - field: firewall_outbound_action
+    section: Firewall defaults
+    yaml: firewall.outbound_action
+    type: enum
+    default: drop
+    enum: [drop, reject]
+    label: Default outbound action
+    help: "Default action for outbound packets that match no firewall rule: drop (silently) or reject (send ICMP unreachable)."
+
+  - field: firewall_inbound_action
+    section: Firewall defaults
+    yaml: firewall.inbound_action
+    type: enum
+    default: drop
+    enum: [drop, reject]
+    label: Default inbound action
+    help: "Default action for inbound packets that match no firewall rule: drop (silently) or reject (send ICMP unreachable)."
+
+  - field: firewall_default_local_cidr_any
+    section: Firewall defaults
+    yaml: firewall.default_local_cidr_any
+    type: bool
+    default: "false"
+    label: Default local CIDR = any
+    advanced: true
+    help: When true, firewall rules without an explicit local_cidr match any local address (pre-v1.9 behaviour).
+
+  - field: firewall_conntrack_tcp_timeout
+    section: Firewall defaults
+    yaml: firewall.conntrack.tcp_timeout
+    type: duration
+    default: 12m
+    label: Conntrack TCP timeout
+    advanced: true
+    help: Idle timeout for TCP conntrack entries; connections with no matching traffic are evicted after this period.
+
+  - field: firewall_conntrack_udp_timeout
+    section: Firewall defaults
+    yaml: firewall.conntrack.udp_timeout
+    type: duration
+    default: 3m
+    label: Conntrack UDP timeout
+    advanced: true
+    help: Idle timeout for UDP conntrack entries.
+
+  - field: firewall_conntrack_default_timeout
+    section: Firewall defaults
+    yaml: firewall.conntrack.default_timeout
+    type: duration
+    default: 10m
+    label: Conntrack default timeout
+    advanced: true
+    help: Idle timeout for conntrack entries that are neither TCP nor UDP.
+
+  # ---------------------------------------------------------------------------
+  # routines
+  # ---------------------------------------------------------------------------
+  - field: routines
+    section: Routines
+    yaml: routines
+    type: int
+    default: 1
+    label: Routines
+    advanced: true
+    help: Number of goroutine workers for packet I/O; increasing can improve throughput on multi-core hosts.
+
+  # ---------------------------------------------------------------------------
+  # handshakes
+  # ---------------------------------------------------------------------------
+  - field: handshakes_try_interval
+    section: Handshakes
+    yaml: handshakes.try_interval
+    type: duration
+    default: 100ms
+    label: Handshake retry interval
+    advanced: true
+    help: How long to wait between successive handshake attempts to the same peer.
+
+  - field: handshakes_retries
+    section: Handshakes
+    yaml: handshakes.retries
+    type: int
+    default: 20
+    label: Handshake retries
+    advanced: true
+    help: Maximum number of handshake attempts before giving up and waiting for the peer to initiate.
+
+  - field: handshakes_query_buffer
+    section: Handshakes
+    yaml: handshakes.query_buffer
+    type: int
+    default: 64
+    label: Handshake query buffer
+    advanced: true
+    help: Size of the channel buffer for outbound lighthouse queries triggered by pending handshakes.
+
+  - field: handshakes_trigger_buffer
+    section: Handshakes
+    yaml: handshakes.trigger_buffer
+    type: int
+    default: 64
+    label: Handshake trigger buffer
+    advanced: true
+    help: Size of the channel buffer that queues packets waiting to trigger a new handshake.

@@ -1,0 +1,7 @@
+Nebula is a scalable overlay networking tool from Slack with a focus on
+performance, simplicity, and security. This plugin manages one or more
+Nebula instances, a Nebula certificate authority and host certificates,
+the per-host Nebula firewall, and registers each Nebula tunnel as an
+assignable OPNsense interface.
+
+WWW: https://github.com/slackhq/nebula

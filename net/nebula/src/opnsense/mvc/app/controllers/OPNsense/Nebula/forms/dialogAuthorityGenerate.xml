@@ -1,0 +1,56 @@
+<form>
+    <field>
+        <id>authority.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Nebula CA name embedded in the certificate (required).</help>
+    </field>
+    <field>
+        <id>authority.descr</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optional human-readable label stored only in the OPNsense model. Defaults to Name if left blank.</help>
+    </field>
+    <field>
+        <id>authority.curve</id>
+        <label>Curve</label>
+        <type>dropdown</type>
+        <help>Elliptic-curve algorithm to use when generating the CA key pair.</help>
+    </field>
+    <field>
+        <id>authority.duration_days</id>
+        <label>Duration (days)</label>
+        <type>text</type>
+        <help>Validity period in days. Default is 365.</help>
+    </field>
+    <field>
+        <id>authority.networks</id>
+        <label>Networks</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Optional CIDRs this CA is restricted to sign for. Add each as a tag.</help>
+    </field>
+    <field>
+        <id>authority.unsafe_networks</id>
+        <label>Unsafe Networks</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Optional CIDRs excluded from this CA's signing scope. Add each as a tag.</help>
+    </field>
+    <field>
+        <id>authority.groups</id>
+        <label>Groups</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Optional groups this CA is restricted to sign for. Add each as a tag.</help>
+    </field>
+    <field>
+        <id>authority.passphrase</id>
+        <label>Passphrase</label>
+        <type>password</type>
+        <help>Optional: encrypt the CA private key with this passphrase. You'll be asked for it each time you sign. Leave empty for an unencrypted key.</help>
+    </field>
+</form>

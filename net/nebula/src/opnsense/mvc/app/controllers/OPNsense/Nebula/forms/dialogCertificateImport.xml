@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>certificate.descr</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Human-readable label for this host certificate.</help>
+    </field>
+    <field>
+        <id>certificate.crt</id>
+        <label>Certificate (PEM)</label>
+        <type>textbox</type>
+        <help>PEM-encoded Nebula host certificate.</help>
+    </field>
+    <field>
+        <id>certificate.key</id>
+        <label>Private Key (PEM)</label>
+        <type>textbox</type>
+        <help>PEM-encoded host private key. Required if this node will run Nebula.</help>
+    </field>
+</form>

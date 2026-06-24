@@ -1,0 +1,709 @@
+<model>
+    <mount>//OPNsense/Nebula</mount>
+    <description>Nebula mesh overlay</description>
+    <items>
+        <instances>
+            <instance type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <description type="DescriptionField"/>
+                <certref type="ModelRelationField">
+                    <Model>
+                        <nebcertref>
+                            <source>OPNsense.Nebula.Nebula</source>
+                            <items>pki.certificates.certificate</items>
+                            <display>descr</display>
+                            <!-- Only certs whose private key is held here (has_key)
+                                 can run an instance; exclude keyless CSR-signed /
+                                 external certs from the picker. -->
+                            <filters>
+                                <has_key>/^1$/</has_key>
+                            </filters>
+                        </nebcertref>
+                    </Model>
+                </certref>
+                <!-- trusted_cas: additional CAs whose peers this instance accepts,
+                     beyond the CA that signed its own host certificate (which is
+                     always trusted). Empty = trust only the signing CA. The ca.crt
+                     bundle written by setup.php is the union of the two. -->
+                <trusted_cas type="ModelRelationField">
+                    <Multiple>Y</Multiple>
+                    <Model>
+                        <nebtrustedcas>
+                            <source>OPNsense.Nebula.Nebula</source>
+                            <items>pki.authorities.authority</items>
+                            <display>descr</display>
+                        </nebtrustedcas>
+                    </Model>
+                </trusted_cas>
+                <advanced type="TextField"/>
+                <!-- stats_*: graphite/prometheus telemetry block. Hand-authored
+                     (not a generated knob) because the sub-schema is conditional
+                     on stats_type — graphite and prometheus require disjoint sets
+                     of keys — and the whole stats: block is omitted when
+                     stats_type is blank. Rendered by Nebula.php::generateConfig().
+                     graphite-only: prefix/protocol/host. prometheus-only:
+                     listen/path/namespace/subsystem. Shared: interval and the two
+                     metric toggles. -->
+                <stats_type type="OptionField">
+                    <BlankDesc>Disabled</BlankDesc>
+                    <OptionValues>
+                        <graphite>graphite</graphite>
+                        <prometheus>prometheus</prometheus>
+                    </OptionValues>
+                </stats_type>
+                <stats_interval type="TextField">
+                    <Mask>/^\d+(ns|us|µs|ms|s|m|h)$/</Mask>
+                    <Default>10s</Default>
+                </stats_interval>
+                <stats_message_metrics type="BooleanField">
+                    <Default>0</Default>
+                </stats_message_metrics>
+                <stats_lighthouse_metrics type="BooleanField">
+                    <Default>0</Default>
+                </stats_lighthouse_metrics>
+                <stats_prefix type="TextField">
+                    <Default>nebula</Default>
+                </stats_prefix>
+                <stats_protocol type="OptionField">
+                    <Default>tcp</Default>
+                    <OptionValues>
+                        <tcp>tcp</tcp>
+                        <udp>udp</udp>
+                    </OptionValues>
+                </stats_protocol>
+                <stats_host type="TextField"/>
+                <stats_listen type="TextField"/>
+                <stats_path type="TextField">
+                    <Default>/metrics</Default>
+                </stats_path>
+                <stats_namespace type="TextField"/>
+                <stats_subsystem type="TextField"/>
+                <!-- lighthouse allow-lists: CIDR-keyed maps that filter which
+                     remote/local addresses a node uses. Hand-authored textareas
+                     (one entry per line) parsed by Nebula.php into nested maps
+                     under lighthouse.*. remote_allow_ranges and calculated_remotes
+                     are flagged experimental by nebula. -->
+                <lighthouse_remote_allow_list type="TextField"/>
+                <lighthouse_local_allow_list type="TextField"/>
+                <lighthouse_remote_allow_ranges type="TextField"/>
+                <lighthouse_calculated_remotes type="TextField"/>
+                <!-- GENERATED:instance-fields START -->
+                <pki_disconnect_invalid type="BooleanField">
+                    <Default>0</Default>
+                </pki_disconnect_invalid>
+
+                <pki_initiating_version type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>2</MaximumValue>
+                    <Default>1</Default>
+                </pki_initiating_version>
+
+                <static_map_cadence type="TextField">
+                    <Mask>/^\d+(ns|us|µs|ms|s|m|h)$/</Mask>
+                    <Default>30s</Default>
+                </static_map_cadence>
+
+                <static_map_network type="OptionField">
+                    <Default>ip4</Default>
+                    <OptionValues>
+                        <ip4>ip4</ip4>
+                        <ip6>ip6</ip6>
+                        <ip>ip</ip>
+                    </OptionValues>
+                </static_map_network>
+
+                <static_map_lookup_timeout type="TextField">
+                    <Mask>/^\d+(ns|us|µs|ms|s|m|h)$/</Mask>
+                    <Default>250ms</Default>
+                </static_map_lookup_timeout>
+
+                <am_lighthouse type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </am_lighthouse>
+
+                <lighthouse_serve_dns type="BooleanField">
+                    <Default>0</Default>
+                </lighthouse_serve_dns>
+
+                <lighthouse_interval type="IntegerField">
+                    <Default>60</Default>
+                </lighthouse_interval>
+
+                <lighthouse_dns_host type="HostnameField">
+                    <IpAllowed>Y</IpAllowed>
+                    <Default>0.0.0.0</Default>
+                </lighthouse_dns_host>
+
+                <lighthouse_dns_port type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <Default>53</Default>
+                </lighthouse_dns_port>
+
+                <lighthouse_hosts type="CSVListField">
+                </lighthouse_hosts>
+
+                <lighthouse_advertise_addrs type="CSVListField">
+                </lighthouse_advertise_addrs>
+
+                <listen_host type="HostnameField">
+                    <IpAllowed>Y</IpAllowed>
+                    <Default>::</Default>
+                    <Required>Y</Required>
+                </listen_host>
+
+                <listen_port type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <Default>4242</Default>
+                    <Required>Y</Required>
+                </listen_port>
+
+                <!-- firewall_interfaces: interface(s) on which the plugin auto-adds
+                     an inbound "allow UDP to the listen port" rule (nebula_firewall
+                     hook). Empty = no rule is added for this instance. -->
+                <firewall_interfaces type="InterfaceField">
+                    <Multiple>Y</Multiple>
+                </firewall_interfaces>
+
+                <listen_batch type="IntegerField">
+                    <Default>64</Default>
+                </listen_batch>
+
+                <listen_read_buffer type="IntegerField">
+                </listen_read_buffer>
+
+                <listen_write_buffer type="IntegerField">
+                </listen_write_buffer>
+
+                <listen_send_recv_error type="OptionField">
+                    <Default>always</Default>
+                    <OptionValues>
+                        <always>always</always>
+                        <never>never</never>
+                        <private>private</private>
+                    </OptionValues>
+                </listen_send_recv_error>
+
+                <listen_accept_recv_error type="OptionField">
+                    <Default>always</Default>
+                    <OptionValues>
+                        <always>always</always>
+                        <never>never</never>
+                        <private>private</private>
+                    </OptionValues>
+                </listen_accept_recv_error>
+
+                <listen_so_mark type="IntegerField">
+                    <Default>0</Default>
+                </listen_so_mark>
+
+                <punchy_punch type="BooleanField">
+                    <Default>1</Default>
+                </punchy_punch>
+
+                <punchy_respond type="BooleanField">
+                    <Default>0</Default>
+                </punchy_respond>
+
+                <punchy_delay type="TextField">
+                    <Mask>/^\d+(ns|us|µs|ms|s|m|h)$/</Mask>
+                    <Default>1s</Default>
+                </punchy_delay>
+
+                <punchy_respond_delay type="TextField">
+                    <Mask>/^\d+(ns|us|µs|ms|s|m|h)$/</Mask>
+                    <Default>5s</Default>
+                </punchy_respond_delay>
+
+                <cipher type="OptionField">
+                    <Default>chachapoly</Default>
+                    <OptionValues>
+                        <chachapoly>chachapoly</chachapoly>
+                        <aes>aes</aes>
+                    </OptionValues>
+                </cipher>
+
+                <preferred_ranges type="CSVListField">
+                </preferred_ranges>
+
+                <relay_am_relay type="BooleanField">
+                    <Default>0</Default>
+                </relay_am_relay>
+
+                <relay_use_relays type="BooleanField">
+                    <Default>1</Default>
+                </relay_use_relays>
+
+                <relay_relays type="CSVListField">
+                </relay_relays>
+
+                <tun_name type="TextField">
+                    <Mask>/^[A-Za-z0-9._-]{1,15}$/</Mask>
+                    <ValidationMessage>Interface name must be 1-15 characters (letters, digits, dot, dash, underscore) to fit the system interface-name limit. Leave empty to auto-assign.</ValidationMessage>
+                </tun_name>
+
+                <tun_disabled type="BooleanField">
+                    <Default>0</Default>
+                </tun_disabled>
+
+                <tun_drop_local_broadcast type="BooleanField">
+                    <Default>0</Default>
+                </tun_drop_local_broadcast>
+
+                <tun_drop_multicast type="BooleanField">
+                    <Default>0</Default>
+                </tun_drop_multicast>
+
+                <tun_tx_queue type="IntegerField">
+                    <Default>500</Default>
+                </tun_tx_queue>
+
+                <tun_mtu type="IntegerField">
+                    <Default>1300</Default>
+                </tun_mtu>
+
+                <tun_use_system_route_table type="BooleanField">
+                    <Default>0</Default>
+                </tun_use_system_route_table>
+
+                <tun_use_system_route_table_buffer_size type="IntegerField">
+                    <Default>0</Default>
+                </tun_use_system_route_table_buffer_size>
+
+                <tunnels_drop_inactive type="BooleanField">
+                    <Default>0</Default>
+                </tunnels_drop_inactive>
+
+                <tunnels_inactivity_timeout type="TextField">
+                    <Mask>/^\d+(ns|us|µs|ms|s|m|h)$/</Mask>
+                    <Default>10m</Default>
+                </tunnels_inactivity_timeout>
+
+                <logging_level type="OptionField">
+                    <Default>info</Default>
+                    <OptionValues>
+                        <debug>debug</debug>
+                        <info>info</info>
+                        <warning>warning</warning>
+                        <error>error</error>
+                        <fatal>fatal</fatal>
+                        <panic>panic</panic>
+                    </OptionValues>
+                </logging_level>
+
+                <logging_format type="OptionField">
+                    <Default>text</Default>
+                    <OptionValues>
+                        <text>text</text>
+                        <json>json</json>
+                    </OptionValues>
+                </logging_format>
+
+                <logging_disable_timestamp type="BooleanField">
+                    <Default>0</Default>
+                </logging_disable_timestamp>
+
+                <logging_timestamp_format type="TextField">
+                </logging_timestamp_format>
+
+                <firewall_outbound_action type="OptionField">
+                    <Default>drop</Default>
+                    <OptionValues>
+                        <drop>drop</drop>
+                        <reject>reject</reject>
+                    </OptionValues>
+                </firewall_outbound_action>
+
+                <firewall_inbound_action type="OptionField">
+                    <Default>drop</Default>
+                    <OptionValues>
+                        <drop>drop</drop>
+                        <reject>reject</reject>
+                    </OptionValues>
+                </firewall_inbound_action>
+
+                <firewall_default_local_cidr_any type="BooleanField">
+                    <Default>0</Default>
+                </firewall_default_local_cidr_any>
+
+                <firewall_conntrack_tcp_timeout type="TextField">
+                    <Mask>/^\d+(ns|us|µs|ms|s|m|h)$/</Mask>
+                    <Default>12m</Default>
+                </firewall_conntrack_tcp_timeout>
+
+                <firewall_conntrack_udp_timeout type="TextField">
+                    <Mask>/^\d+(ns|us|µs|ms|s|m|h)$/</Mask>
+                    <Default>3m</Default>
+                </firewall_conntrack_udp_timeout>
+
+                <firewall_conntrack_default_timeout type="TextField">
+                    <Mask>/^\d+(ns|us|µs|ms|s|m|h)$/</Mask>
+                    <Default>10m</Default>
+                </firewall_conntrack_default_timeout>
+
+                <routines type="IntegerField">
+                    <Default>1</Default>
+                </routines>
+
+                <handshakes_try_interval type="TextField">
+                    <Mask>/^\d+(ns|us|µs|ms|s|m|h)$/</Mask>
+                    <Default>100ms</Default>
+                </handshakes_try_interval>
+
+                <handshakes_retries type="IntegerField">
+                    <Default>20</Default>
+                </handshakes_retries>
+
+                <handshakes_query_buffer type="IntegerField">
+                    <Default>64</Default>
+                </handshakes_query_buffer>
+
+                <handshakes_trigger_buffer type="IntegerField">
+                    <Default>64</Default>
+                </handshakes_trigger_buffer>
+<!-- GENERATED:instance-fields END -->
+            </instance>
+        </instances>
+        <fwrules>
+            <rule type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <instance type="ModelRelationField">
+                    <Model>
+                        <nebfwinst>
+                            <source>OPNsense.Nebula.Nebula</source>
+                            <items>instances.instance</items>
+                            <display>description</display>
+                        </nebfwinst>
+                    </Model>
+                    <Required>Y</Required>
+                </instance>
+                <direction type="OptionField">
+                    <Default>inbound</Default>
+                    <OptionValues>
+                        <inbound>inbound</inbound>
+                        <outbound>outbound</outbound>
+                    </OptionValues>
+                    <Required>Y</Required>
+                </direction>
+                <description type="DescriptionField"/>
+                <protocol type="OptionField">
+                    <Default>any</Default>
+                    <OptionValues>
+                        <any>any</any>
+                        <tcp>tcp</tcp>
+                        <udp>udp</udp>
+                        <icmp>icmp</icmp>
+                    </OptionValues>
+                </protocol>
+                <port type="TextField">
+                    <Default>any</Default>
+                </port>
+                <host type="TextField"/>
+                <!-- groups: match peers in ALL of these groups (AND). CSVListField
+                     so the dialog renders a tokenize chip input; rendered as a YAML
+                     list by Nebula.php. -->
+                <groups type="CSVListField"/>
+                <cidr type="TextField"/>
+                <local_cidr type="TextField"/>
+                <ca_name type="TextField"/>
+                <ca_sha type="TextField"/>
+            </rule>
+        </fwrules>
+        <unsafe_routes>
+            <route type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <instance type="ModelRelationField">
+                    <Model>
+                        <nebunsafeinst>
+                            <source>OPNsense.Nebula.Nebula</source>
+                            <items>instances.instance</items>
+                            <display>description</display>
+                        </nebunsafeinst>
+                    </Model>
+                    <Required>Y</Required>
+                </instance>
+                <description type="DescriptionField"/>
+                <!-- route: the non-Nebula destination CIDR to send over the overlay. -->
+                <route type="NetworkField">
+                    <NetMaskRequired>Y</NetMaskRequired>
+                    <Required>Y</Required>
+                </route>
+                <!-- via: the Nebula overlay IP of the peer that hosts/forwards this
+                     route. That peer's certificate must include the route as a subnet. -->
+                <via type="NetworkField">
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <Required>Y</Required>
+                </via>
+                <mtu type="IntegerField">
+                    <MinimumValue>576</MinimumValue>
+                    <MaximumValue>9000</MaximumValue>
+                </mtu>
+                <metric type="IntegerField">
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>4294967295</MaximumValue>
+                </metric>
+                <install type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </install>
+            </route>
+        </unsafe_routes>
+        <tun_routes>
+            <route type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <instance type="ModelRelationField">
+                    <Model>
+                        <nebtunrouteinst>
+                            <source>OPNsense.Nebula.Nebula</source>
+                            <items>instances.instance</items>
+                            <display>description</display>
+                        </nebtunrouteinst>
+                    </Model>
+                    <Required>Y</Required>
+                </instance>
+                <description type="DescriptionField"/>
+                <!-- route: a Nebula overlay CIDR (a subnet from the node's own cert)
+                     to give a non-default MTU. NOT an unsafe route — see unsafe_routes. -->
+                <route type="NetworkField">
+                    <NetMaskRequired>Y</NetMaskRequired>
+                    <Required>Y</Required>
+                </route>
+                <mtu type="IntegerField">
+                    <MinimumValue>576</MinimumValue>
+                    <MaximumValue>9000</MaximumValue>
+                    <Required>Y</Required>
+                </mtu>
+            </route>
+        </tun_routes>
+        <!-- static_host_map grid: how to reach a lighthouse/node (by its Nebula
+             overlay IP) before discovery, via one or more underlay host:port
+             addresses. Replaces the per-instance free-text static_host_map field
+             (which the renderer still honours for back-compat). Rendered into the
+             top-level static_host_map: map-of-lists by Nebula.php. -->
+        <static_hostmap>
+            <entry type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <instance type="ModelRelationField">
+                    <Model>
+                        <nebshminst>
+                            <source>OPNsense.Nebula.Nebula</source>
+                            <items>instances.instance</items>
+                            <display>description</display>
+                        </nebshminst>
+                    </Model>
+                    <Required>Y</Required>
+                </instance>
+                <!-- certref: optional pointer to the lighthouse's host certificate,
+                     used in the dialog to auto-fill nebula_ip from the cert's
+                     networks. A convenience picker only; nebula_ip is what is
+                     stored and rendered. -->
+                <certref type="ModelRelationField">
+                    <Model>
+                        <nebshmcert>
+                            <source>OPNsense.Nebula.Nebula</source>
+                            <items>pki.certificates.certificate</items>
+                            <display>descr</display>
+                        </nebshmcert>
+                    </Model>
+                </certref>
+                <description type="DescriptionField"/>
+                <!-- nebula_ip: the peer's Nebula overlay IP (a single host address,
+                     no mask) — the key of the static_host_map entry. -->
+                <nebula_ip type="NetworkField">
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <Required>Y</Required>
+                </nebula_ip>
+                <!-- addresses: one or more underlay host:port addresses to reach
+                     that peer. CSVListField (AsList) so the dialog's tokenize
+                     select_multiple round-trips each address as a tag; stored
+                     comma-joined. Kept permissive (no per-item mask) — host:port
+                     forms vary (IPv4/IPv6/hostname); nebula -test validates. -->
+                <addresses type="CSVListField">
+                    <Required>Y</Required>
+                </addresses>
+            </entry>
+        </static_hostmap>
+        <pki>
+            <blocklist>
+                <entry type="ArrayField">
+                    <enabled type="BooleanField">
+                        <Default>1</Default>
+                        <Required>Y</Required>
+                    </enabled>
+                    <!-- scope: Global (every instance) or a single instance. Made
+                         explicit (not an empty instance) because a global block is
+                         inherited by every node, so it must be a deliberate choice. -->
+                    <scope type="OptionField">
+                        <Default>global</Default>
+                        <Required>Y</Required>
+                        <OptionValues>
+                            <global>Global (all instances)</global>
+                            <instance>This instance</instance>
+                        </OptionValues>
+                    </scope>
+                    <!-- instance: the single instance a non-global block applies to.
+                         Used only when scope = instance (enforced in the controller). -->
+                    <instance type="ModelRelationField">
+                        <Model>
+                            <nebblockinst>
+                                <source>OPNsense.Nebula.Nebula</source>
+                                <items>instances.instance</items>
+                                <display>description</display>
+                            </nebblockinst>
+                        </Model>
+                    </instance>
+                    <!-- 64-char lowercase hex sha256 fingerprint of the blocked cert.
+                         Enforced at the controller layer (add/set) and here via Mask. -->
+                    <fingerprint type="TextField">
+                        <Mask>/^[0-9a-f]{64}$/</Mask>
+                        <Required>Y</Required>
+                    </fingerprint>
+                    <descr type="DescriptionField"/>
+                    <!-- expiry: optional date the entry stops applying (empty = never).
+                         The cert's notAfter, when blocking by certref; a blocked cert
+                         that has expired no longer needs an explicit block. -->
+                    <expiry type="TextField"/>
+                    <!-- certref: optional pointer to the certificate this entry blocks,
+                         used to auto-fill fingerprint + expiry in the dialog. -->
+                    <certref type="ModelRelationField">
+                        <Model>
+                            <nebblockcertref>
+                                <source>OPNsense.Nebula.Nebula</source>
+                                <items>pki.certificates.certificate</items>
+                                <display>descr</display>
+                            </nebblockcertref>
+                        </Model>
+                    </certref>
+                </entry>
+            </blocklist>
+            <authorities>
+                <authority type="ArrayField">
+                    <descr type="DescriptionField">
+                        <Required>Y</Required>
+                    </descr>
+                    <origin type="OptionField">
+                        <Default>generated</Default>
+                        <OptionValues>
+                            <generated>generated</generated>
+                            <imported>imported</imported>
+                        </OptionValues>
+                    </origin>
+                    <curve type="OptionField">
+                        <Default>25519</Default>
+                        <OptionValues>
+                            <X25519 value="25519">25519</X25519>
+                            <P256>P256</P256>
+                        </OptionValues>
+                    </curve>
+                    <crt type="TextField"/>
+                    <key type="TextField"/>
+                    <!-- Computed, store-once read-only fields (populated by the controller
+                         from nebula-cert print at create time; never edited by hand). -->
+                    <cn type="TextField"/>
+                    <valid_from type="TextField"/>
+                    <valid_to type="TextField"/>
+                    <fingerprint type="TextField"/>
+                    <is_ca type="BooleanField">
+                        <Default>0</Default>
+                    </is_ca>
+                    <has_key type="BooleanField">
+                        <Default>0</Default>
+                    </has_key>
+                    <!-- key_encrypted = the stored private key PEM is passphrase-
+                         protected (its header contains "ENCRYPTED").  Drives the Sign
+                         dialog's conditional passphrase prompt: an encrypted CA needs a
+                         passphrase supplied per signing operation (never stored).
+                         Computed and stored by AuthorityController at generate/import. -->
+                    <key_encrypted type="BooleanField">
+                        <Default>0</Default>
+                    </key_encrypted>
+                    <!-- can_sign = this CA can currently sign new certs: is_ca AND a
+                         private key is present.  An encrypted key IS signable (the
+                         passphrase is supplied per-operation via NEBULA_CA_PASSPHRASE,
+                         never stored), so encryption no longer excludes a CA from
+                         signing.  Distinct from has_key (which only reflects "a key is
+                         stored").  Computed and stored by AuthorityController at
+                         generate/import time. -->
+                    <can_sign type="BooleanField">
+                        <Default>0</Default>
+                    </can_sign>
+                    <!-- Network constraints embedded in the CA cert (populated from
+                         pki_print_cert at generate/import; empty = unrestricted). -->
+                    <networks type="TextField"/>
+                    <unsafe_networks type="TextField"/>
+                </authority>
+            </authorities>
+            <certificates>
+                <certificate type="ArrayField">
+                    <descr type="DescriptionField">
+                        <Required>Y</Required>
+                    </descr>
+                    <origin type="OptionField">
+                        <Default>signed</Default>
+                        <OptionValues>
+                            <signed>signed</signed>
+                            <imported>imported</imported>
+                        </OptionValues>
+                    </origin>
+                    <caref type="ModelRelationField">
+                        <Model>
+                            <nebcaref>
+                                <source>OPNsense.Nebula.Nebula</source>
+                                <items>pki.authorities.authority</items>
+                                <display>descr</display>
+                            </nebcaref>
+                        </Model>
+                    </caref>
+                    <crt type="TextField"/>
+                    <key type="TextField"/>
+                    <curve type="OptionField">
+                        <Default>25519</Default>
+                        <OptionValues>
+                            <X25519 value="25519">25519</X25519>
+                            <P256>P256</P256>
+                        </OptionValues>
+                    </curve>
+                    <networks type="TextField"/>
+                    <groups type="TextField"/>
+                    <unsafe_networks type="TextField"/>
+                    <!-- Computed, store-once read-only fields (populated by the controller
+                         from nebula-cert print at create/sign time; never edited by hand). -->
+                    <cn type="TextField"/>
+                    <valid_from type="TextField"/>
+                    <valid_to type="TextField"/>
+                    <fingerprint type="TextField"/>
+                    <is_ca type="BooleanField">
+                        <Default>0</Default>
+                    </is_ca>
+                    <has_key type="BooleanField">
+                        <Default>0</Default>
+                    </has_key>
+                    <!-- issuer = fingerprint of the signing CA (details.issuer from
+                         pki_print_cert).  The signing CA's display name is resolved
+                         dynamically at render time (searchItemAction) by matching this
+                         issuer against the authorities' fingerprints — we never rely on
+                         a stored ca_name. -->
+                    <issuer type="TextField"/>
+                    <ca_name type="TextField"/>
+                </certificate>
+            </certificates>
+        </pki>
+    </items>
+</model>

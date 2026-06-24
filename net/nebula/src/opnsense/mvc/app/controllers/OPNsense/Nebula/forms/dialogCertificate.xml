@@ -1,0 +1,75 @@
+<form>
+    <!-- Computed / read-only grid columns. type=ignore keeps them out of the
+         edit form (only descr is editable) while still rendering as columns. -->
+    <field>
+        <id>certificate.cn</id>
+        <label>Name</label>
+        <type>ignore</type>
+        <grid_view>
+            <sequence>10</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>certificate.descr</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Human-readable label for this host certificate (stored in OPNsense only).</help>
+        <grid_view>
+            <sequence>20</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>certificate.ca_name</id>
+        <label>CA</label>
+        <type>ignore</type>
+        <grid_view>
+            <sequence>30</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>certificate.curve</id>
+        <label>Curve</label>
+        <type>ignore</type>
+        <grid_view>
+            <sequence>35</sequence>
+            <width>80</width>
+        </grid_view>
+    </field>
+    <field>
+        <id>certificate.networks</id>
+        <label>Networks</label>
+        <type>ignore</type>
+        <grid_view>
+            <sequence>40</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>certificate.unsafe_networks</id>
+        <label>Unsafe networks</label>
+        <type>ignore</type>
+        <grid_view>
+            <sequence>45</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>certificate.valid_to</id>
+        <label>Valid until</label>
+        <type>ignore</type>
+        <grid_view>
+            <sequence>50</sequence>
+        </grid_view>
+    </field>
+    <!-- Assignable = a private key is held locally (has_key), so this cert can be
+         assigned to an instance. CSR-signed / external certs are keyless and show
+         "no" (record only; the requester holds the key). Mirrors the Authorities
+         "Can sign" column. -->
+    <field>
+        <id>certificate.has_key</id>
+        <label>Assignable</label>
+        <type>ignore</type>
+        <grid_view>
+            <sequence>55</sequence>
+            <formatter>boolean</formatter>
+        </grid_view>
+    </field>
+</form>

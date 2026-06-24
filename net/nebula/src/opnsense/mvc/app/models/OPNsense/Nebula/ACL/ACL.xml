@@ -1,0 +1,9 @@
+<acl>
+    <page-services-nebula>
+        <name>Services: Nebula</name>
+        <patterns>
+            <pattern>ui/nebula*</pattern>
+            <pattern>api/nebula/*</pattern>
+        </patterns>
+    </page-services-nebula>
+</acl>

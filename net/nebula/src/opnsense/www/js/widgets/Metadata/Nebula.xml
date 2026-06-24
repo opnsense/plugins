@@ -1,0 +1,21 @@
+<metadata>
+    <Nebula>
+        <filename>Nebula.js</filename>
+        <link>/ui/nebula/status</link>
+        <endpoints>
+            <endpoint>/api/nebula/instance/search_item</endpoint>
+        </endpoints>
+        <translations>
+            <title>Nebula</title>
+            <running>Running</running>
+            <stopped>Stopped</stopped>
+            <disabled>Disabled</disabled>
+            <lighthouse>Lighthouse</lighthouse>
+            <total>Instances</total>
+            <listen>Listen</listen>
+            <certificate>Certificate</certificate>
+            <noinstances>No Nebula instances configured. Click to add one.</noinstances>
+            <notavailable>N/A</notavailable>
+        </translations>
+    </Nebula>
+</metadata>

@@ -1,0 +1,835 @@
+<form>
+    <field>
+        <type>header</type>
+        <label>General</label>
+    </field>
+    <field>
+        <id>instance.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+            <sequence>1</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>instance.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <grid_view>
+            <sequence>3</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>instance.certref</id>
+        <label>Certificate</label>
+        <type>dropdown</type>
+        <help>The Nebula host certificate this instance uses. Required to run.</help>
+        <grid_view>
+            <sequence>6</sequence>
+        </grid_view>
+    </field>
+    <field>
+        <id>instance.trusted_cas</id>
+        <label>Trusted CAs</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help>Additional CAs whose peers this instance accepts. The CA that signed this instance&apos;s own certificate is always trusted; leave empty to trust only that one. Select more to accept peers issued by other CAs (cross-CA trust).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <!-- GENERATED:instance-fields START -->
+    <field>
+        <type>header</type>
+        <label>PKI</label>
+    </field>
+    <field>
+        <id>instance.pki_disconnect_invalid</id>
+        <label>Disconnect on invalid certificate</label>
+        <type>checkbox</type>
+        <help>Disconnect any tunnel whose certificate becomes invalid (expired or revoked) while the tunnel is active.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.pki_initiating_version</id>
+        <label>Initiating cert version</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Nebula handshake version to use when initiating a new tunnel (1 = legacy, 2 = post-quantum-resistant).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <type>header</type>
+        <label>Static map (DNS)</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>instance.static_map_cadence</id>
+        <label>Static map DNS cadence</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>How often to re-resolve hostnames listed in static_host_map via DNS.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.static_map_network</id>
+        <label>Static map address family</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Address family to use when re-resolving static_host_map hostnames: ip4, ip6, or ip (either).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.static_map_lookup_timeout</id>
+        <label>Static map lookup timeout</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>DNS lookup timeout for each static_host_map hostname resolution attempt.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <type>header</type>
+        <label>Lighthouse</label>
+    </field>
+    <field>
+        <id>instance.am_lighthouse</id>
+        <label>Lighthouse</label>
+        <type>checkbox</type>
+        <help>Designate this node as a lighthouse (discovery server); lighthouse nodes should not list other lighthouses.</help>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+            <sequence>4</sequence>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.lighthouse_serve_dns</id>
+        <label>Serve DNS</label>
+        <type>checkbox</type>
+        <help>Enable the DNS server on this lighthouse so peers can resolve Nebula hostnames via DNS queries.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.lighthouse_interval</id>
+        <label>Lighthouse update interval</label>
+        <type>text</type>
+        <help>How often (in seconds) non-lighthouse nodes send keepalive/update messages to their lighthouses.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.lighthouse_dns_host</id>
+        <label>DNS listen address</label>
+        <type>text</type>
+        <help>IP address the lighthouse DNS server binds to (only used when serve_dns is true).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.lighthouse_dns_port</id>
+        <label>DNS port</label>
+        <type>text</type>
+        <help>UDP port the lighthouse DNS server listens on (only used when serve_dns is true).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.lighthouse_hosts</id>
+        <label>Lighthouse hosts</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Lighthouse nebula IPs this node reports to / queries. Add each as a tag. Leave empty on a lighthouse.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.lighthouse_advertise_addrs</id>
+        <label>Advertise addresses</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Extra routable host:port (or host:0) to advertise to lighthouses. Add each as a tag.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <type>header</type>
+        <label>Listen</label>
+    </field>
+    <field>
+        <id>instance.listen_host</id>
+        <label>Listen address</label>
+        <type>text</type>
+        <help>IP address (or hostname) Nebula binds its UDP listener to; &quot;::&quot; listens on all interfaces (IPv4+IPv6).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.listen_port</id>
+        <label>Listen port</label>
+        <type>text</type>
+        <help>UDP port Nebula listens on; 0 lets the OS assign a random port (useful for roaming clients).</help>
+        <grid_view>
+            <width>7em</width>
+            <sequence>5</sequence>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.firewall_interfaces</id>
+        <label>Firewall interfaces</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <help>Interface(s) on which to automatically allow inbound traffic to this instance's UDP listen port. Defaults to WAN; clear to add no firewall rule (e.g. if you manage the rule yourself).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.listen_batch</id>
+        <label>Listen batch size</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Maximum number of packets to read from the UDP socket in a single syscall (Linux recvmmsg batch size).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.listen_read_buffer</id>
+        <label>UDP receive buffer</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>SO_RCVBUF size in bytes for the UDP socket; leave unset to use the OS default.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.listen_write_buffer</id>
+        <label>UDP send buffer</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>SO_SNDBUF size in bytes for the UDP socket; leave unset to use the OS default.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.listen_send_recv_error</id>
+        <label>Send error on write failure</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Controls when ICMP unreachable errors are sent back on write failures: always, never, or only to private IPs.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.listen_accept_recv_error</id>
+        <label>Send error on read failure</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Controls when ICMP unreachable errors are sent back on read failures: always, never, or only to private IPs.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.listen_so_mark</id>
+        <label>Socket mark (SO_MARK)</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>SO_MARK value to set on the UDP socket; useful for policy-based routing (0 = disabled).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <type>header</type>
+        <label>Punchy (NAT traversal)</label>
+    </field>
+    <field>
+        <id>instance.punchy_punch</id>
+        <label>Hole punching</label>
+        <type>checkbox</type>
+        <help>Send UDP hole-punching packets to peers behind NAT to keep the path open.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.punchy_respond</id>
+        <label>Respond to hole punch</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Respond to hole-punch requests from peers (enables bidirectional hole-punching).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.punchy_delay</id>
+        <label>Hole punch delay</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>How long to wait before sending the first hole-punch packet after a handshake.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.punchy_respond_delay</id>
+        <label>Hole punch respond delay</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Delay before responding to a hole-punch request; adds jitter to avoid thundering-herd.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <type>header</type>
+        <label>Cipher</label>
+    </field>
+    <field>
+        <id>instance.cipher</id>
+        <label>Cipher</label>
+        <type>dropdown</type>
+        <help>Encryption cipher for tunnel traffic: chachapoly (ChaCha20-Poly1305) or aes (AES-256-GCM).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <type>header</type>
+        <label>Preferred ranges</label>
+    </field>
+    <field>
+        <id>instance.preferred_ranges</id>
+        <label>Preferred ranges</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Local network CIDRs preferred for handshakes. Add each as a tag.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <type>header</type>
+        <label>Relay</label>
+    </field>
+    <field>
+        <id>instance.relay_am_relay</id>
+        <label>Act as relay</label>
+        <type>checkbox</type>
+        <help>Act as a relay node, forwarding encrypted traffic between peers that cannot reach each other directly.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.relay_use_relays</id>
+        <label>Use relays</label>
+        <type>checkbox</type>
+        <help>Allow this node to use relay nodes when a direct path to a peer is unavailable.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.relay_relays</id>
+        <label>Relays</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Nebula IPs to use as relays. Add each as a tag.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <type>header</type>
+        <label>TUN interface</label>
+    </field>
+    <!-- instance.tun_name (the system device name, e.g. nebula3f9a2c) is NOT
+         shown here: it is system-managed (auto-assigned, stable, not renameable,
+         like WireGuard's wgN) so there is nothing to edit. It appears only as the
+         "Interface" grid column (injected in InstancesController). -->
+    <field>
+        <id>instance.tun_disabled</id>
+        <label>Disable TUN interface</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Disable the TUN interface entirely (node participates in the overlay as a relay/lighthouse only, no IP traffic).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.tun_drop_local_broadcast</id>
+        <label>Drop local broadcast</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Drop packets destined for the local broadcast address of the Nebula subnet before they enter the TUN.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.tun_drop_multicast</id>
+        <label>Drop multicast</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Drop all multicast packets at the TUN interface.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.tun_tx_queue</id>
+        <label>TX queue length</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Transmit queue length for the TUN device (Linux txqueuelen / number of packets buffered before dropping).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.tun_mtu</id>
+        <label>MTU</label>
+        <type>text</type>
+        <help>MTU of the Nebula TUN interface; lower values leave headroom for the outer UDP/IP headers.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.tun_use_system_route_table</id>
+        <label>Use system route table</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Install Nebula routes into the system routing table instead of handling them internally (useful on BSD/macOS).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.tun_use_system_route_table_buffer_size</id>
+        <label>System route table buffer size</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Size of the route-change notification buffer when use_system_route_table is enabled; 0 = OS default.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <type>header</type>
+        <label>Tunnels</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>instance.tunnels_drop_inactive</id>
+        <label>Drop inactive tunnels</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Tear down tunnels that have had no traffic for the inactivity_timeout period.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.tunnels_inactivity_timeout</id>
+        <label>Inactivity timeout</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>How long a tunnel may be idle before it is considered inactive (only used when drop_inactive is true).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <type>header</type>
+        <label>Logging</label>
+    </field>
+    <field>
+        <id>instance.logging_level</id>
+        <label>Log level</label>
+        <type>dropdown</type>
+        <help>Log verbosity level: debug produces the most output; panic the least.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.logging_format</id>
+        <label>Log format</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Log output format: text (human-readable) or json (structured, for log aggregators).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.logging_disable_timestamp</id>
+        <label>Disable log timestamp</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Omit the timestamp field from log entries (useful when the log collector adds its own timestamp).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.logging_timestamp_format</id>
+        <label>Log timestamp format</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Go time-format string for log timestamps (e.g. 2006-01-02T15:04:05Z07:00); leave empty for the default.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <type>header</type>
+        <label>Firewall defaults</label>
+    </field>
+    <field>
+        <id>instance.firewall_outbound_action</id>
+        <label>Default outbound action</label>
+        <type>dropdown</type>
+        <help>Default action for outbound packets that match no firewall rule: drop (silently) or reject (send ICMP unreachable).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.firewall_inbound_action</id>
+        <label>Default inbound action</label>
+        <type>dropdown</type>
+        <help>Default action for inbound packets that match no firewall rule: drop (silently) or reject (send ICMP unreachable).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.firewall_default_local_cidr_any</id>
+        <label>Default local CIDR = any</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>When true, firewall rules without an explicit local_cidr match any local address (pre-v1.9 behaviour).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.firewall_conntrack_tcp_timeout</id>
+        <label>Conntrack TCP timeout</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Idle timeout for TCP conntrack entries; connections with no matching traffic are evicted after this period.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.firewall_conntrack_udp_timeout</id>
+        <label>Conntrack UDP timeout</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Idle timeout for UDP conntrack entries.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.firewall_conntrack_default_timeout</id>
+        <label>Conntrack default timeout</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Idle timeout for conntrack entries that are neither TCP nor UDP.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <type>header</type>
+        <label>Routines</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>instance.routines</id>
+        <label>Routines</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Number of goroutine workers for packet I/O; increasing can improve throughput on multi-core hosts.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <type>header</type>
+        <label>Handshakes</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>instance.handshakes_try_interval</id>
+        <label>Handshake retry interval</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>How long to wait between successive handshake attempts to the same peer.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.handshakes_retries</id>
+        <label>Handshake retries</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Maximum number of handshake attempts before giving up and waiting for the peer to initiate.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.handshakes_query_buffer</id>
+        <label>Handshake query buffer</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Size of the channel buffer for outbound lighthouse queries triggered by pending handshakes.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+
+    <field>
+        <id>instance.handshakes_trigger_buffer</id>
+        <label>Handshake trigger buffer</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Size of the channel buffer that queues packets waiting to trigger a new handshake.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+<!-- GENERATED:instance-fields END -->
+    <field>
+        <type>header</type>
+        <label>Lighthouse allow-lists</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>instance.lighthouse_remote_allow_list</id>
+        <label>Remote allow list</label>
+        <type>textbox</type>
+        <advanced>true</advanced>
+        <help>Filter which lighthouse-reported remote addresses this node will try. One &apos;CIDR = true|false&apos; per line; the most specific match wins. Example: 10.0.0.0/8 = false then 10.42.42.0/24 = true.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>instance.lighthouse_local_allow_list</id>
+        <label>Local allow list</label>
+        <type>textbox</type>
+        <advanced>true</advanced>
+        <help>Filter which local addresses are advertised to lighthouses. One &apos;CIDR = true|false&apos; per line. To match by interface name, write &apos;interface &lt;regex&gt; = true|false&apos; (rendered under the interfaces: key). Example: 10.0.0.0/8 = true / interface docker.* = false.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>instance.lighthouse_remote_allow_ranges</id>
+        <label>Remote allow ranges (experimental)</label>
+        <type>textbox</type>
+        <advanced>true</advanced>
+        <help>Experimental. Per-VPN-network remote allow lists. One &apos;&lt;vpn-cidr&gt; &lt;remote-cidr&gt; = true|false&apos; per line. Example: 10.42.42.0/24 192.168.0.0/16 = true.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>instance.lighthouse_calculated_remotes</id>
+        <label>Calculated remotes (experimental)</label>
+        <type>textbox</type>
+        <advanced>true</advanced>
+        <help>Experimental. Derive a remote address for hosts you have no lighthouse for. One &apos;&lt;vpn-cidr&gt; &lt;mask-cidr&gt; &lt;port&gt;&apos; per line; repeat the vpn-cidr for multiple entries. Example: 192.168.1.0/24 192.168.1.0/24 4242.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Telemetry (stats)</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>instance.stats_type</id>
+        <label>Stats type</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Export Nebula runtime metrics. &apos;graphite&apos; pushes metrics to a Graphite/Carbon server; &apos;prometheus&apos; exposes an HTTP endpoint to be scraped. Leave Disabled for no telemetry. The fields below apply only to the selected type.</help>
+    </field>
+    <field>
+        <id>instance.stats_interval</id>
+        <label>Interval</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>How often metrics are collected/emitted, e.g. 10s. Applies to both types.</help>
+    </field>
+    <field>
+        <id>instance.stats_message_metrics</id>
+        <label>Per-message metrics</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Emit detailed per-message-type counters (higher cardinality). Applies to both types; off by default.</help>
+    </field>
+    <field>
+        <id>instance.stats_lighthouse_metrics</id>
+        <label>Lighthouse metrics</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Emit per-lighthouse metrics. Applies to both types; off by default.</help>
+    </field>
+    <field>
+        <id>instance.stats_prefix</id>
+        <label>Graphite: prefix</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Graphite metric-name prefix, e.g. nebula. Used only when type is graphite.</help>
+    </field>
+    <field>
+        <id>instance.stats_protocol</id>
+        <label>Graphite: protocol</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Transport used to reach the Graphite server. Used only when type is graphite.</help>
+    </field>
+    <field>
+        <id>instance.stats_host</id>
+        <label>Graphite: host</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Graphite/Carbon server as host:port, e.g. 127.0.0.1:9999. Required when type is graphite.</help>
+    </field>
+    <field>
+        <id>instance.stats_listen</id>
+        <label>Prometheus: listen</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Address to expose the metrics endpoint on, as host:port, e.g. 127.0.0.1:8080. Required when type is prometheus.</help>
+    </field>
+    <field>
+        <id>instance.stats_path</id>
+        <label>Prometheus: path</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>HTTP path for the metrics endpoint, e.g. /metrics. Used only when type is prometheus.</help>
+    </field>
+    <field>
+        <id>instance.stats_namespace</id>
+        <label>Prometheus: namespace</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Prometheus metric namespace. Used only when type is prometheus.</help>
+    </field>
+    <field>
+        <id>instance.stats_subsystem</id>
+        <label>Prometheus: subsystem</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Prometheus metric subsystem. Used only when type is prometheus.</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Advanced</label>
+    </field>
+    <field>
+        <id>instance.advanced</id>
+        <label>Advanced (raw YAML)</label>
+        <type>textbox</type>
+        <help>Raw nebula.yml fragment appended to the generated config, for knobs not yet in the GUI (e.g. lighthouse allow-lists). Must be valid YAML and must NOT redefine a top-level key already emitted above (nebula rejects duplicate keys). Validated on Apply via &apos;nebula -test&apos;.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+</form>
