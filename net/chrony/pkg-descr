@@ -4,6 +4,18 @@ better in virtual environments.
 Plugin Changelog
 ----------------
 
+1.6
+
+* Update config UI to expose the following features:
+    - local/orphan mode
+    - pools
+    - prefer
+    - iburst
+    - min/max poll
+    - interleaving
+* Add per-source NTS option
+* Add NTP data diagnostics
+
 1.5
 
 * Allow adding a fallback NTP when using NTS
