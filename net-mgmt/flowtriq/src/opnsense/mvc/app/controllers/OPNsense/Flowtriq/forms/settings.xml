@@ -1,0 +1,46 @@
+<form>
+    <field>
+        <id>flowtriq.settings.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help><![CDATA[Enable NetFlow export to your Flowtriq agent. This starts softflowd on the selected interfaces and exports flow data to the configured ftagent host.]]></help>
+    </field>
+    <field>
+        <id>flowtriq.settings.agentHost</id>
+        <label>Agent Host</label>
+        <type>text</type>
+        <help><![CDATA[IP address or hostname of the server running ftagent. This is where NetFlow data will be sent for DDoS analysis.]]></help>
+    </field>
+    <field>
+        <id>flowtriq.settings.agentPort</id>
+        <label>Agent Port</label>
+        <type>text</type>
+        <help><![CDATA[UDP port that ftagent is listening on for NetFlow data. Default is 2055.]]></help>
+    </field>
+    <field>
+        <id>flowtriq.settings.netflowVersion</id>
+        <label>NetFlow Version</label>
+        <type>dropdown</type>
+        <help><![CDATA[NetFlow protocol version. Version 9 is recommended as it supports templates and IPv6. Version 5 is available for legacy compatibility.]]></help>
+    </field>
+    <field>
+        <id>flowtriq.settings.interface</id>
+        <label>Interfaces</label>
+        <type>select_multiple</type>
+        <help><![CDATA[Select the interfaces to monitor for DDoS detection. Typically this is your WAN interface, but you can select multiple interfaces.]]></help>
+    </field>
+    <field>
+        <id>flowtriq.settings.trackingLevel</id>
+        <label>Tracking Level</label>
+        <type>dropdown</type>
+        <help><![CDATA[Level of flow tracking detail. "Full" captures source/destination IP, port, and protocol for complete attack analysis. "Protocol only" and "IP only" reduce overhead but limit forensic detail.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>flowtriq.settings.maxFlows</id>
+        <label>Max Flows</label>
+        <type>text</type>
+        <help><![CDATA[Maximum number of concurrent flows to track. Higher values use more memory but reduce the chance of missing flows under heavy traffic. Default 8192 is suitable for most deployments.]]></help>
+        <advanced>true</advanced>
+    </field>
+</form>

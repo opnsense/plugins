@@ -1,0 +1,5 @@
+<menu>
+    <Services>
+        <Flowtriq VisibleName="Flowtriq" cssClass="fa fa-shield fa-fw" url="/ui/flowtriq" />
+    </Services>
+</menu>

@@ -1,0 +1,9 @@
+<acl>
+    <page-services-flowtriq>
+        <name>Services: Flowtriq</name>
+        <patterns>
+            <pattern>ui/flowtriq/*</pattern>
+            <pattern>api/flowtriq/*</pattern>
+        </patterns>
+    </page-services-flowtriq>
+</acl>

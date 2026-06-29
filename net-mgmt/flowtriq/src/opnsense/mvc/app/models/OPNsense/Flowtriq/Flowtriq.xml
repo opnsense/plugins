@@ -1,0 +1,54 @@
+<model>
+    <mount>//OPNsense/Flowtriq</mount>
+    <version>1.0.0</version>
+    <description>Flowtriq DDoS detection configuration</description>
+    <items>
+        <settings>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <agentHost type="TextField">
+                <Required>Y</Required>
+                <Mask>/^[a-zA-Z0-9\.\-\:]+$/</Mask>
+                <ValidationMessage>Please provide a valid IP address or hostname for the ftagent host.</ValidationMessage>
+            </agentHost>
+            <agentPort type="IntegerField">
+                <Default>2055</Default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>65535</MaximumValue>
+                <Required>Y</Required>
+                <ValidationMessage>Port must be between 1 and 65535.</ValidationMessage>
+            </agentPort>
+            <netflowVersion type="OptionField">
+                <Default>9</Default>
+                <OptionValues>
+                    <9>NetFlow v9 (recommended)</9>
+                    <5>NetFlow v5 (legacy)</5>
+                </OptionValues>
+                <Required>Y</Required>
+            </netflowVersion>
+            <interface type="InterfaceField">
+                <Required>Y</Required>
+                <Multiple>Y</Multiple>
+                <AllowDynamic>Y</AllowDynamic>
+            </interface>
+            <trackingLevel type="OptionField">
+                <Default>full</Default>
+                <OptionValues>
+                    <full>Full (recommended)</full>
+                    <proto>Protocol only</proto>
+                    <ip>IP only</ip>
+                </OptionValues>
+                <Required>Y</Required>
+            </trackingLevel>
+            <maxFlows type="IntegerField">
+                <Default>8192</Default>
+                <MinimumValue>256</MinimumValue>
+                <MaximumValue>1048576</MaximumValue>
+                <Required>Y</Required>
+                <ValidationMessage>Value must be between 256 and 1048576.</ValidationMessage>
+            </maxFlows>
+        </settings>
+    </items>
+</model>

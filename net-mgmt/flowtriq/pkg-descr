@@ -1,0 +1,24 @@
+Flowtriq is a real-time DDoS detection and mitigation platform.
+This plugin configures softflowd to export NetFlow data from OPNsense
+to a Flowtriq agent (ftagent), which analyzes traffic patterns and
+detects volumetric attacks, SYN floods, UDP amplification, and other
+DDoS attack types. Detected attacks are reported to the Flowtriq
+dashboard with automated alerting and optional BGP-based mitigation.
+
+The plugin provides a GUI to configure the NetFlow export destination,
+select monitored interfaces, choose the flow protocol version, and
+test connectivity to the ftagent host.
+
+WWW: https://flowtriq.com/
+
+
+Changelog
+---------
+
+1.0
+
+* Initial release
+* Configure softflowd NetFlow export to Flowtriq agent
+* Interface selection for monitored traffic
+* NetFlow v5 and v9 protocol support
+* Connectivity test to ftagent host
