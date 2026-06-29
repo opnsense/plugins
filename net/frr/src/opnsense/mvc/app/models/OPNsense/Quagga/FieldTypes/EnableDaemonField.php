@@ -1,8 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2015-2025 Deciso B.V.
- * Copyright (C) 2017 Fabian Franz
+ * Copyright (C) 2026 Deciso B.V.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -20,32 +19,34 @@
  * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
  * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
  * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * SUBSTITUTE GOODS OR SERVICES, LOSS OF USE, DATA, OR PROFITS, OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * CONTRACT, STRICT LIABILITY, OR TORT INCLUDING NEGLIGENCE OR OTHERWISE
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Quagga\Api;
+namespace OPNsense\Quagga\FieldTypes;
 
-use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Base\FieldTypes\OptionField;
+use OPNsense\Core\Config;
 
-/**
- * Class ServiceController
- * @package OPNsense\Quagga
- */
-class ServiceController extends ApiMutableServiceControllerBase
+class EnableDaemonField extends OptionField
 {
-    protected static $internalServiceClass = '\OPNsense\Quagga\General';
-    // We intentionally only reload this template to allow manual_config for the templates
-    protected static $internalServiceTemplate = 'OPNsense/Quagga/rc_conf_d';
-    protected static $internalServiceEnabled = 'enabled';
-    protected static $internalServiceName = 'quagga';
-
-    protected function reconfigureForceRestart()
+    public const CONFIG_SECTIONS = ['bfd', 'bgp', 'ospf', 'ospf6', 'rip', 'static'];
+    protected function actionPostLoadingEvent()
     {
-        // frr can reload using frr-reload and frr8-pythontools
-        return 0;
+        $quagga = Config::getInstance()->object()->OPNsense->quagga ?? null;
+        $enabled = [];
+
+        foreach (self::CONFIG_SECTIONS as $section) {
+            if (!empty($quagga?->{$section}?->enabled)) {
+                $enabled[] = $section;
+            }
+        }
+
+        $this->setValue(implode(',', $enabled));
+
+        return parent::actionPostLoadingEvent();
     }
 }
