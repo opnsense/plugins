@@ -2,6 +2,7 @@
 
 namespace OPNsense\Quagga;
 
+use OPNsense\Base\Messages\Message;
 use OPNsense\Base\BaseModel;
 
 /*
@@ -28,4 +29,23 @@ use OPNsense\Base\BaseModel;
 */
 class BGP extends BaseModel
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function performValidation($validateFullModel = false)
+    {
+        $messages = parent::performValidation($validateFullModel);
+        foreach ($this->neighbors->neighbor->iterateItems() as $neighbor) {
+            if (!$validateFullModel && !$neighbor->isFieldChanged()) {
+                continue;
+            }
+            if (!$neighbor->updatesource->isEmpty() && !$neighbor->localip->isEmpty()) {
+                $messages->appendMessage(new Message(
+                    gettext("Update-Source Interface and Local Initiator IP are mutually exclusive."),
+                    $neighbor->updatesource->__reference
+                ));
+            }
+        }
+        return $messages;
+    }
 }
