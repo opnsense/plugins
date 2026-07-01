@@ -18,6 +18,7 @@ Plugin Changelog
 * Diagnostics: do not mismatch on vtysh command escape
 * OSPF: improve many to one relationship between prefix lists and route maps, allow multiple selection
 * OSPF/OSPF6: more visibility and safety for ModelRelationField references
+* BFD: use physical interface helper in bfdd.conf
 
 1.52
 
