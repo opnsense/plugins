@@ -82,9 +82,6 @@ if (isset($configObj->OPNsense->HAProxy->mapfiles)) {
                 file_put_contents($mf_filename, $mf_content);
                 echo "map file exported to " . $mf_filename . "\n";
             } finally {
-                if (isset($ch)) {
-                    curl_close($ch);
-                }
                 if (isset($fp) && is_resource($fp)) {
                     fclose($fp);
                 }
