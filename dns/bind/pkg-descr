@@ -14,6 +14,7 @@ Plugin Changelog
 * Add custom configuration include directory /usr/local/etc/namedb/named.conf.d (contributed by Nicholas Card)
 * Add forward zones
 * Fix primary zones grid and command column (contributed by benyamin-codez)
+* Add HTTPS and SVCB record types (contributed by Michael Bedworth)
 
 1.33
 
