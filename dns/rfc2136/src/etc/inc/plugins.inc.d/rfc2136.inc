@@ -242,7 +242,6 @@ function get_rfc2136_ip_address($int, $ipver = 4)
             log_error('Aborted IPv4 detection: ' . curl_error($ip_ch));
             $ip_address = '';
         }
-        curl_close($ip_ch);
     } elseif ($ipver == 6 && is_linklocal($ip_address)) {
         log_error('Aborted IPv6 detection: cannot bind to link-local address');
         $ip_address = '';

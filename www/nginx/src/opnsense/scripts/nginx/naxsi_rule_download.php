@@ -51,7 +51,6 @@ function download_rules()
     $response = curl_exec($curl);
     $err = curl_error($curl);
     $info = curl_getinfo($curl);
-    curl_close($curl);
     if ($info['http_code'] != 200 || $err) {
         syslog(LOG_ERR, 'Cannot download NAXSI core rules');
         syslog(LOG_ERR, json_encode($info));
