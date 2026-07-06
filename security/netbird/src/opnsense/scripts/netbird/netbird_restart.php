@@ -29,54 +29,31 @@
 
 /*
  * Wrapper script for "netbird restart" that automatically reloads the
- * packet filter after the wt0 interface is recreated.
+ * packet filter after the tunnel interface is recreated.
  *
- * When NetBird restarts, it destroys the existing wt0 interface, creates
- * a fresh tun device, and renames it to wt0.  The packet filter does not
- * recognise the new interface until a filter reload is performed, causing
- * all traffic on wt0 to be dropped.  This is particularly important after
- * a WAN failover with a default gateway switch, where NetBird is restarted
- * to bind to the new path.
+ * When NetBird restarts, it destroys the existing tunnel interface,
+ * creates a fresh tun device, and renames it.  This is particularly
+ * important after a WAN failover with a default gateway switch, where
+ * NetBird is restarted to bind to the new path.
  *
  * This script:
  *   1. Runs `/usr/local/etc/rc.d/netbird restart` (the real rc.d restart).
- *   2. Polls for the wt0 interface to appear.
- *   3. Triggers `configctl filter reload` once it appears.
+ *   2. Waits for the tunnel interface and reloads the packet filter via
+ *      netbird_sync_filter().
  */
 
 require_once("config.inc");
 require_once("util.inc");
-
-$wt_iface = 'wt0';
-$poll_interval = 1;   // seconds between interface checks
-$poll_timeout  = 15;  // maximum seconds to wait for interface
+require_once("plugins.inc.d/netbird.inc");
 
 // --- Restart the NetBird service -------------------------------------------
 log_msg("NetBird: Restarting service");
-mwexecfb ('/usr/local/etc/rc.d/netbird restart');
+mwexecfb('/usr/local/etc/rc.d/netbird restart');
 
-// Short delay to allow the restart command to take effect before polling
+// Short delay to allow the restart to destroy the old interface before we
+// start looking for the new one.
 sleep(2);
 
-// --- Poll for the wt0 interface to reappear --------------------------------
-// The restart destroys the old wt0 and creates a new one.  We need to wait
-// for the new interface before reloading the filter.
-$found = false;
-for ($i = 0; $i < $poll_timeout; $i += $poll_interval) {
-    $iface_out = [];
-    exec("/sbin/ifconfig " . escapeshellarg($wt_iface) . " 2>/dev/null", $iface_out, $iface_rc);
-    if ($iface_rc === 0) {
-        $found = true;
-        break;
-    }
-    sleep($poll_interval);
-}
-
-if ($found) {
-    log_msg("NetBird: {$wt_iface} interface detected after restart, reloading packet filter");
-    mwexecfm('/usr/local/sbin/configctl filter reload');
-} else {
-    log_msg("NetBird: Timeout ({$poll_timeout}s) waiting for {$wt_iface} interface after restart. Packet filter reload skipped.");
-}
+netbird_sync_filter(netbird_wg_iface());
 
 exit(0);

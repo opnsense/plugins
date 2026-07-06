@@ -63,6 +63,82 @@ function netbird_carp_check_master()
     return false;
 }
 
+/**
+ * Name of the WireGuard tunnel device used by NetBird.  Single point of
+ * truth for all plugin scripts; NetBird names its tun device wt0.
+ * @return string
+ */
+function netbird_wg_iface()
+{
+    return 'wt0';
+}
+
+/**
+ * Check whether a network interface currently exists.
+ * @param string $iface interface name
+ * @return bool
+ */
+function netbird_iface_exists($iface)
+{
+    exec('/sbin/ifconfig ' . escapeshellarg($iface) . ' > /dev/null 2>&1', $output, $ret);
+    return $ret === 0;
+}
+
+/**
+ * Check whether NetBird is connected to its management service.
+ * @return bool
+ */
+function netbird_connected()
+{
+    $status_json = shell_exec('/usr/local/bin/netbird status --json 2>/dev/null');
+    if (!empty($status_json)) {
+        $status = json_decode($status_json, true);
+        if (json_last_error() === JSON_ERROR_NONE) {
+            return ($status['management']['connected'] ?? false) === true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Destroy a leftover tunnel interface from a previous NetBird run so a
+ * fresh one can be created in its place.
+ * @param string $iface interface name
+ */
+function netbird_destroy_orphan_iface($iface)
+{
+    if (netbird_iface_exists($iface)) {
+        log_msg("NetBird: Found orphaned {$iface} interface, destroying");
+        mwexecf('/sbin/ifconfig %s destroy', [$iface]);
+    }
+}
+
+/**
+ * Wait for the tunnel interface to appear and reload the packet filter so
+ * its rules attach to the freshly created device.  NetBird creates a tun
+ * device and renames it, which takes a few seconds; without the reload all
+ * traffic on the new interface hits the default block rule.  This is the
+ * only place interface polling and the filter reload live — it must never
+ * be called from a syshook foreground, only from backgrounded wrappers.
+ * @param string $iface interface name
+ * @param int $timeout maximum seconds to wait for the interface
+ * @return bool true when the interface appeared and the filter was reloaded
+ */
+function netbird_sync_filter($iface, $timeout = 15)
+{
+    for ($i = 0; $i < $timeout; $i++) {
+        if (netbird_iface_exists($iface)) {
+            log_msg("NetBird: {$iface} interface detected, reloading packet filter");
+            mwexecfm('/usr/local/sbin/configctl filter reload');
+            return true;
+        }
+        sleep(1);
+    }
+
+    log_msg("NetBird: Timeout ({$timeout}s) waiting for {$iface} interface. Packet filter reload skipped.");
+    return false;
+}
+
 function netbird_devices()
 {
     return [[

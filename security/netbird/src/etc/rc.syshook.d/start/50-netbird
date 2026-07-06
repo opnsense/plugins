@@ -42,7 +42,6 @@ require_once("util.inc");
 require_once("plugins.inc.d/netbird.inc");
 
 if (netbird_enabled()) {
-
     log_msg("NetBird monitor: Starting NetBird's monitor event handler");
-    mwexecfb('/usr/local/opnsense/scripts/netbird/gw_monitor.php %s > /dev/null', [$affected_gateways]); 
+    mwexecfb('/usr/local/opnsense/scripts/netbird/gw_monitor.php > /dev/null');
 }
