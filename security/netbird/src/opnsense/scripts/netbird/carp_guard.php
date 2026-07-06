@@ -27,26 +27,30 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * CARP state probe for NetBird HA handling.
+/*
+ * CARP start guard for the NetBird rc.d service.
  *
- * Returns exit code 0 if NetBird may connect:
- *   - CARP mode not enabled for NetBird, OR
- *   - Current host is CARP MASTER
+ * Runs as start_postcmd (injected through /etc/rc.conf.d/netbird by the
+ * plugin template when CARP failover support is enabled).  After the
+ * daemon starts — at boot, after an HA config-sync service restart, or a
+ * manual service start — this makes sure a CARP BACKUP node does not keep
+ * an active NetBird connection, replacing the rc script patch previously
+ * proposed in opnsense/ports#259.
  *
- * Returns exit code 1 otherwise:
- *   - CARP mode enabled and current host is BACKUP
- *
- * The service start path itself is guarded by carp_guard.php, which the
- * plugin injects as start_postcmd via /etc/rc.conf.d/netbird; this script
- * remains a standalone probe for scripts and manual troubleshooting.
+ * The MASTER check is a quick ifconfig scan; if the tunnel must be torn
+ * down, "netbird down" is spawned in the background so the rc start path
+ * (and the boot sequence) is never delayed.  Always exits 0: a failing
+ * start_postcmd would make run_rc_command report a start failure even
+ * though the daemon is running.
  */
 
 require_once('config.inc');
+require_once('util.inc');
 require_once('plugins.inc.d/netbird.inc');
 
-if (netbird_carp_check_master()) {
-    exit(0);
+if (!netbird_carp_check_master()) {
+    log_msg('NetBird: CARP BACKUP node detected after service start, disconnecting NetBird');
+    mwexecfb('/usr/local/bin/netbird down');
 }
 
-exit(1);
+exit(0);
