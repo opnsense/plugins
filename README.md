@@ -50,6 +50,7 @@ misc/theme-tukan -- The tukan theme - blue/white
 misc/theme-vicuna -- The vicuna theme - blue sapphire
 net/chrony -- Chrony time synchronisation
 net/cloudflared -- Cloudflare Tunnel integration
+net/firewall-legacy -- Firewall rules legacy support
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
