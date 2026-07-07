@@ -141,11 +141,30 @@ function netbird_sync_filter($iface, $timeout = 15)
 
 function netbird_devices()
 {
+    $iface = netbird_wg_iface();
+    $names = [];
+    if (netbird_enabled()) {
+        /*
+         * Interfaces > Assignments only allows saving an assignment to a
+         * device that appears in this "names" list (see core's
+         * list_assign_options.php); it does not consult "volatile" at all.
+         * Without this, the tunnel device is only listed while NetBird is
+         * actually connected, so the assignment page can't be saved on a
+         * CARP BACKUP node where it's intentionally kept down. Populate it
+         * from our own enabled state instead of live interface presence,
+         * mirroring how core's own WireGuard plugin (wireguard_devices())
+         * handles the same volatile-interface gap.
+         */
+        $names[$iface] = ['descr' => sprintf('%s (%s)', $iface, gettext('NetBird'))];
+    }
+
     return [[
-        'pattern' => '^wt0$',
+        'pattern' => '^' . preg_quote($iface, '/') . '$',
         'configurable' => false,
         'spoofmac' => false,
         'volatile' => true,
+        'type' => 'netbird',
+        'names' => $names,
     ]];
 }
 
