@@ -75,12 +75,12 @@
             <Default>0</Default>
             <Required>Y</Required>
         </outbound_blocklist_enabled>
-        <outbound_blocklist_ipv4 type="CSVListField">
+        <outbound_blocklist_ipv4 type="TextField">
             <Required>N</Required>
             <Mask>/^([0-9\.\/ ]*?,)*([0-9\.\/ ]*)$/</Mask>
             <ValidationMessage>Please provide a comma separated list of IPv4 addresses or CIDR networks.</ValidationMessage>
         </outbound_blocklist_ipv4>
-        <outbound_blocklist_ipv6 type="CSVListField">
+        <outbound_blocklist_ipv6 type="TextField">
             <Required>N</Required>
             <Mask>/^([a-fA-F0-9\.:\[\]\/ ]*?,)*([a-fA-F0-9\.:\[\]\/ ]*)$/</Mask>
             <ValidationMessage>Please provide a comma separated list of IPv6 addresses or CIDR networks.</ValidationMessage>
