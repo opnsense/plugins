@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/shadowsocks/general</mount>
     <description>Shadowsocks configuration</description>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -71,5 +71,19 @@
             <Default>0</Default>
             <Required>Y</Required>
         </fragmentation>
+        <outbound_blocklist_enabled type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </outbound_blocklist_enabled>
+        <outbound_blocklist_ipv4 type="CSVListField">
+            <Required>N</Required>
+            <Mask>/^([0-9\.\/ ]*?,)*([0-9\.\/ ]*)$/</Mask>
+            <ValidationMessage>Please provide a comma separated list of IPv4 addresses or CIDR networks.</ValidationMessage>
+        </outbound_blocklist_ipv4>
+        <outbound_blocklist_ipv6 type="CSVListField">
+            <Required>N</Required>
+            <Mask>/^([a-fA-F0-9\.:\[\]\/ ]*?,)*([a-fA-F0-9\.:\[\]\/ ]*)$/</Mask>
+            <ValidationMessage>Please provide a comma separated list of IPv6 addresses or CIDR networks.</ValidationMessage>
+        </outbound_blocklist_ipv6>
     </items>
 </model>
