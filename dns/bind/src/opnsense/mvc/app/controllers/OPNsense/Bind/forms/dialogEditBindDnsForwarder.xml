@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>dns.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable this forwarder.</help>
+    </field>
+    <field>
+        <id>dns.ip</id>
+        <label>IP Address</label>
+        <type>text</type>
+        <help>Set the IPv4 or IPv6 address of the upstream DNS server. For a local encryption proxy such as contrld, use 127.0.0.1.</help>
+    </field>
+    <field>
+        <id>dns.port</id>
+        <label>Port</label>
+        <type>text</type>
+        <help>Set the destination port. Defaults to 53; use a custom port for a local proxy (e.g. 5300).</help>
+    </field>
+</form>

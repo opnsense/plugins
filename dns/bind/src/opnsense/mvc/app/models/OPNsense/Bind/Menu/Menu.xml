@@ -1,8 +1,9 @@
 <menu>
   <Services>
     <BIND cssClass="fa fa-tags">
-      <Configuration url="/ui/bind/general/index"/>
-      <LogFiles VisibleName="Log Files" url="/ui/bind/logs"/>
+      <General VisibleName="General Settings" order="10" url="/ui/bind/general/index"/>
+      <Forwarding VisibleName="Query Forwarding" order="30" url="/ui/bind/forwarding/index"/>
+      <LogFiles VisibleName="Log Files" order="50" url="/ui/bind/logs"/>
     </BIND>
   </Services>
 </menu>
