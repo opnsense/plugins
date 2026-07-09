@@ -1,0 +1,52 @@
+<model>
+    <mount>//OPNsense/bind/forwarder</mount>
+    <description>BIND DNS and DNS-over-TLS forwarders</description>
+    <version>1.0.0</version>
+    <items>
+        <forwarders>
+            <dns type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <ip type="NetworkField">
+                    <Required>Y</Required>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>A plain forwarder with this IP already exists.</ValidationMessage>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
+                </ip>
+                <port type="PortField">
+                    <Default>53</Default>
+                    <Required>Y</Required>
+                </port>
+            </dns>
+            <dot type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <ip type="NetworkField">
+                    <Required>Y</Required>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>A DoT forwarder with this IP already exists.</ValidationMessage>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
+                </ip>
+                <port type="PortField">
+                    <Default>853</Default>
+                    <Required>Y</Required>
+                </port>
+                <tlshostname type="HostnameField">
+                    <Required>N</Required>
+                </tlshostname>
+            </dot>
+        </forwarders>
+    </items>
+</model>

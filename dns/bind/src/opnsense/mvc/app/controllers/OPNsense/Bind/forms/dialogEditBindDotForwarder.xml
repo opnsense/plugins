@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>dot.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable this DNS-over-TLS forwarder.</help>
+    </field>
+    <field>
+        <id>dot.ip</id>
+        <label>IP Address</label>
+        <type>text</type>
+        <help>Set the IPv4 or IPv6 address of the upstream DoT server (e.g. 1.1.1.1 for Cloudflare).</help>
+    </field>
+    <field>
+        <id>dot.port</id>
+        <label>Port</label>
+        <type>text</type>
+        <help>Set the destination port. Defaults to 853 (the standard DNS-over-TLS port).</help>
+    </field>
+    <field>
+        <id>dot.tlshostname</id>
+        <label>TLS Hostname</label>
+        <type>text</type>
+        <help>Set the TLS hostname for certificate verification (e.g. cloudflare-dns.com). If set, Strict TLS (RFC 9103) is used: the upstream certificate must match this hostname, verified against the system CA bundle. If left empty, Opportunistic TLS is used: the connection is encrypted but the server's identity is NOT verified.</help>
+    </field>
+</form>

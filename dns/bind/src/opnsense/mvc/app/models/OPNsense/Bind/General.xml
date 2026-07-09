@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/general</mount>
     <description>BIND configuration</description>
-    <version>1.0.12</version>
+    <version>1.0.13</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -45,9 +45,14 @@
             <Default>53530</Default>
             <Required>Y</Required>
         </port>
-        <forwarders type="NetworkField">
-            <AsList>Y</AsList>
-        </forwarders>
+        <forwarding type="OptionField">
+            <Default>first</Default>
+            <Required>Y</Required>
+            <OptionValues>
+                <first>Forward First</first>
+                <only>Forward Only</only>
+            </OptionValues>
+        </forwarding>
         <filteraaaav4 type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
