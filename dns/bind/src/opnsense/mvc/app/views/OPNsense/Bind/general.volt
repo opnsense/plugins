@@ -32,6 +32,7 @@
     <li><a data-toggle="tab" href="#dnsbl">{{ lang._('DNSBL') }}</a></li>
     <li><a data-toggle="tab" href="#acls">{{ lang._('ACLs') }}</a></li>
     <li><a data-toggle="tab" href="#primary-domains">{{ lang._('Primary Zones') }}</a></li>
+    <li><a data-toggle="tab" href="#primary-records">{{ lang._('Primary Zone Records') }}</a></li>
     <li><a data-toggle="tab" href="#secondary-domains">{{ lang._('Secondary Zones') }}</a></li>
     <li><a data-toggle="tab" href="#forward-domains">{{ lang._('Forward Zones') }}</a></li>
 </ul>
@@ -85,9 +86,6 @@
         </div>
     </div>
     <div id="primary-domains" class="tab-pane fade in">
-        <div class="col-md-12">
-            <h2>{{ lang._('Zones') }}</h2>
-        </div>
         <div id="primary-domains-area" class="table-responsive">
             <table id="grid-primary-domains" class="table table-condensed table-hover table-striped" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindPrimaryDomain">
                 <thead>
@@ -115,21 +113,19 @@
                 </tfoot>
             </table>
         </div>
-        <hr/>
-        <div class="col-md-12">
-            <h2>{{ lang._('Records') }}</h2>
-        </div>
+    </div>
+    <div id="primary-records" class="tab-pane fade in">
         <div id="primary-record-area" class="table-responsive">
             <table id="grid-primary-records" class="table table-condensed table-hover table-striped" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindRecord">
                 <thead>
                 <tr>
-                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                    <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-width="4.5em">{{ lang._('Enabled') }}</th>
                     <th data-column-id="domain" data-type="string" data-visible="true">{{ lang._('Zone') }}</th>
                     <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
                     <th data-column-id="type" data-type="string" data-visible="true">{{ lang._('Type') }}</th>
                     <th data-column-id="value" data-type="string" data-visible="true" data-css-class="long-str">{{ lang._('Value') }}</th>
                     <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
-                    <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    <th data-column-id="commands" data-formatter="commands" data-sortable="false" data-width="7em">{{ lang._('Commands') }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -138,8 +134,8 @@
                 <tr>
                     <td colspan="5"></td>
                     <td>
-                        <button id="recordAddBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
-                        <button id="recordDelBtn" data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                        <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                        <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
                     </td>
                 </tr>
                 </tfoot>
@@ -420,10 +416,6 @@ $(document).ready(function() {
             rowSelect: true,
             rowCount: [3, 7, 14, 20, 50, 100, -1]
         }
-    }).on("selected.rs.jquery.bootgrid", function(e, rows) {
-        $("#grid-primary-records").bootgrid('reload');
-    }).on("deselected.rs.jquery.bootgrid", function(e, rows) {
-        $("#grid-primary-records").bootgrid('reload');
     }).on("loaded.rs.jquery.bootgrid", function(e) {
         // Checkzone button
         $("#grid-primary-domains").find(".command-bind-checkzone").off("click").on("click", function(ev) {
@@ -499,22 +491,10 @@ $(document).ready(function() {
         'del': '/api/bind/record/del_record/',
         'toggle': '/api/bind/record/toggle_record/',
         options: {
-            useRequestHandlerOnGet: true,
-            requestHandler: function(request) {
-                let ids = $("#grid-primary-domains").bootgrid("getSelectedRows");
-                if (ids.length > 0) {
-                    request['domain'] = ids[0];
-                    $("#recordAddBtn").show();
-                    $("#recordDelBtn").show();
-                    $("#primary-record-area").show();
-                } else {
-                    request['domain'] = 'not_found';
-                    $("#recordAddBtn").hide();
-                    $("#recordDelBtn").hide();
-                    $("#primary-record-area").hide();
-                }
-                return request;
-            }
+            selection: true,
+            multiSelect: true,
+            rowSelect: true,
+            rowCount: [7, 14, 20, 50, 100, -1]
         }
     });
 
