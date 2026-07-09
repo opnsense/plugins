@@ -90,8 +90,8 @@
             <table id="grid-primary-domains" class="table table-condensed table-hover table-striped" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindPrimaryDomain">
                 <thead>
                     <tr>
-                        <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
-                        <th data-column-id="domainname" data-type="string" data-visible="true" data-css-class="zonename">{{ lang._('Zone') }}</th>
+                        <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle" data-width="4.5em">{{ lang._('Enabled') }}</th>
+                        <th data-column-id="domainname" data-type="string" data-visible="true">{{ lang._('Zone') }}</th>
                         <th data-column-id="ttl" data-type="string" data-visible="true">{{ lang._('TTL') }}</th>
                         <th data-column-id="refresh" data-type="string" data-visible="true">{{ lang._('Refresh') }}</th>
                         <th data-column-id="retry" data-type="string" data-visible="true">{{ lang._('Retry') }}</th>
