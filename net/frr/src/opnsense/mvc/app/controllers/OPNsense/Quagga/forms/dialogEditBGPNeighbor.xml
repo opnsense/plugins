@@ -70,7 +70,7 @@
     <label>Local Initiater IP</label>
     <type>text</type>
     <advanced>true</advanced>
-    <help>Specify the local IP address used to establish connections with the neighbor. Only relevant for MD5 authentication.</help>
+    <help>Specify the local IP address (IPv4 or IPv6) used as the source to initiate BGP/BFD sessions, including MD5 authentication. Mutually exclusive with Update-Source Interface.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>
@@ -79,7 +79,7 @@
     <id>neighbor.updatesource</id>
     <label>Update-Source Interface</label>
     <type>dropdown</type>
-    <help>Interface (IPv4) where BGP sessions are sourced from, typically required when using loopback addresses.</help>
+    <help>Interface (IPv4) where BGP sessions are sourced from, typically required when using loopback addresses. Mutually exclusive with Local Initiator IP.</help>
     <grid_view>
       <visible>false</visible>
     </grid_view>

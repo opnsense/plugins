@@ -38,6 +38,16 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         });
 
+        function checkNeighborSourceConflict() {
+            const $block = $('#help_block_neighbor\\.updatesource');
+            if ($('#neighbor\\.updatesource').val() && $('#neighbor\\.localip').val()) {
+                $block.text('{{ lang._("Update-Source Interface and Local Initiator IP are mutually exclusive.") }}');
+            } else {
+                $block.text('');
+            }
+        }
+        $(document).on('change', '#neighbor\\.updatesource, #neighbor\\.localip', checkNeighborSourceConflict);
+
         mapDataToFormUI({'frm_bgp_settings':"/api/quagga/bgp/get"}).done(function(data){
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
