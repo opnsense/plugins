@@ -1,0 +1,42 @@
+<form>
+    <field>
+        <id>ups.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable or disable this UPS.</help>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>ups.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set a name for your UPS.</help>
+    </field>
+    <field>
+        <id>ups.driver</id>
+        <label>Driver</label>
+        <type>dropdown</type>
+        <help>Set the NUT driver used for this UPS. See the NUT hardware compatibility list for the driver matching your device.</help>
+    </field>
+    <field>
+        <id>ups.powervalue</id>
+        <label>Power Value</label>
+        <type>text</type>
+        <help>Set the number of power supplies this UPS feeds on this system. Use 0 to monitor the UPS without shutting down this system.</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>ups.args</id>
+        <label>Arguments</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Set arguments for this UPS, e.g. "port=auto". With multiple USB devices of the same driver, pin each UPS with "serial=...", or "vendorid=..." and "productid=...".</help>
+    </field>
+</form>
