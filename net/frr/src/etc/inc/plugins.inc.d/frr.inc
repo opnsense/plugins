@@ -53,7 +53,17 @@ function frr_configure_do($verbose = false)
     if (!$model->manual_config->isEmpty()) {
         return;
     }
-    (new \OPNsense\Core\Backend())->configdpRun('template reload', ['OPNsense/Quagga']);
+    $backend = new \OPNsense\Core\Backend();
+    foreach ([
+        'OPNsense/Quagga/frr.conf',
+        'OPNsense/Quagga/vtysh.conf',
+        'OPNsense/Quagga/ospf6d_carp.conf',
+        'OPNsense/Quagga/ospfd_carp.conf',
+        'OPNsense/Quagga/sa_policies.conf',
+        'OPNsense/Quagga/syslog-ng-frr-events.conf',
+    ] as $template) {
+        $backend->configdpRun('template reload', [$template]);
+    }
 }
 
 function frr_firewall($fw)
