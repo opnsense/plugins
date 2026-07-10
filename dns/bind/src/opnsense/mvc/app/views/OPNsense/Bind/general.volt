@@ -52,6 +52,7 @@
             <div class="col-md-12 __mt">
                 <button class="btn btn-primary" id="saveAct_dnsbl" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_dnsbl_progress"></i></button>
             </div>
+            <div class="col-md-12 __mt" id="dnsbl-operation" style="display:none"></div>
         </div>
     </div>
     <div id="acls" class="tab-pane fade in">
@@ -369,6 +370,9 @@ function zone_copy(dlg) {
 }
 
 $(document).ready(function() {
+    let dnsblRequestStartedAt = null;
+    updateDnsblOperation();
+
     let data_get_map = {
         'frm_general_settings': "/api/bind/general/get"
     };
@@ -377,15 +381,61 @@ $(document).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
-    let data_get_map2 = {
-        'frm_dnsbl_settings': "/api/bind/dnsbl/get"
-    };
-    mapDataToFormUI(data_get_map2).done(function(data) {
+    mapDataToFormUI({'frm_dnsbl_settings': "/api/bind/dnsbl/get"}).done(function(data) {
         formatTokenizersUI();
         $('.selectpicker').selectpicker('refresh');
     });
 
     updateServiceControlUI('bind');
+
+    function isDnsblOperationActive(stage) {
+        return ["fetching", "fetched", "starting"].includes(stage);
+    }
+
+    function showDnsblFetching() {
+        const dots = ".".repeat((Math.floor(Date.now() / 1000) % 3) + 1);
+        $("#dnsbl-operation").html("<strong>DNSBL fetching" + dots + "</strong>").show();
+    }
+
+    function updateDnsblOperation() {
+        ajaxCall("/api/bind/dnsbl/status", {}, function(data) {
+            const statusIsCurrentRequest = data.updated_at !== undefined &&
+                data.updated_at >= dnsblRequestStartedAt;
+            if (dnsblRequestStartedAt !== null && !statusIsCurrentRequest) {
+                showDnsblFetching();
+                setTimeout(updateDnsblOperation, 1000);
+                return;
+            }
+            dnsblRequestStartedAt = null;
+            $("#saveAct_dnsbl").prop("disabled", isDnsblOperationActive(data.stage));
+            if (data.stage !== "idle") {
+                if (data.stage === "fetching") {
+                    showDnsblFetching();
+                    setTimeout(updateDnsblOperation, 1000);
+                    return;
+                }
+                const mib = (data.inc_bytes / 1048576).toFixed(1);
+                const estimatedMib = (data.estimated_peak_kb / 1024).toFixed(0);
+                const remainingSeconds = Math.max(0, 90 - Math.floor(
+                    (Date.now() / 1000) - data.guard_started_at
+                ));
+                const heading = data.stage === "guard_recovered" ? "DNSBL guard_recovered: insufficient ram" :
+                    data.stage === "starting" && data.guard_started_at ?
+                        "DNSBL starting; " + remainingSeconds + " seconds remaining..." :
+                        "DNSBL " + data.stage;
+                $("#dnsbl-operation").html("<strong>" + heading + "</strong><br>" + data.message +
+                    "<br>Unique domains: " + data.domains + "<br>RPZ records: " + data.rpz_records +
+                    "<br>dnsbl.inc: " + mib + " MiB<br>Estimated startup peak: " + estimatedMib + " MiB").show();
+                if (isDnsblOperationActive(data.stage)) { setTimeout(updateDnsblOperation, 1000); }
+                if (data.stage === "guard_recovered") {
+                    mapDataToFormUI({'frm_dnsbl_settings': "/api/bind/dnsbl/get"}).done(function() {
+                        formatTokenizersUI();
+                        $('.selectpicker').selectpicker('refresh');
+                    });
+                }
+            }
+        });
+    }
 
     $("#grid-acls").UIBootgrid({
         'search': '/api/bind/acl/search_acl',
@@ -510,12 +560,14 @@ $(document).ready(function() {
 
     $("#saveAct_dnsbl").click(function() {
         saveFormToEndpoint(url = "/api/bind/dnsbl/set", formid = 'frm_dnsbl_settings', callback_ok = function() {
+            dnsblRequestStartedAt = Date.now() / 1000;
+            $("#saveAct_dnsbl").prop("disabled", true);
             $("#saveAct_dnsbl_progress").addClass("fa fa-spinner fa-pulse");
-            ajaxCall(url = "/api/bind/service/dnsbl", sendData = {}, callback = function(data, status) {
-                ajaxCall(url = "/api/bind/service/reconfigure", sendData = {}, callback = function(data, status) {
-                    updateServiceControlUI('bind');
-                    $("#saveAct_dnsbl_progress").removeClass("fa fa-spinner fa-pulse");
-                });
+            showDnsblFetching();
+            ajaxCall(url = "/api/bind/service/dnsblApply", sendData = {}, callback = function(data, status) {
+                updateServiceControlUI('bind');
+                $("#saveAct_dnsbl_progress").removeClass("fa fa-spinner fa-pulse");
+                updateDnsblOperation();
             });
         });
     });

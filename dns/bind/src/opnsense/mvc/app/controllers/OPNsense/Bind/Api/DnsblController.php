@@ -36,4 +36,19 @@ class DnsblController extends ApiMutableModelControllerBase
 {
     protected static $internalModelClass = '\OPNsense\Bind\Dnsbl';
     protected static $internalModelName = 'dnsbl';
+
+    public function statusAction()
+    {
+        $status = ['stage' => 'idle', 'domains' => 0, 'rpz_records' => 0, 'estimated_peak_kb' => 0,
+            'inc_bytes' => 0, 'message' => 'No DNSBL operation has run yet.',
+            'named_running' => is_file('/var/run/named/pid')];
+        $contents = @file_get_contents('/var/run/bind/dnsbl-status.json');
+        if ($contents !== false && is_array($saved = json_decode($contents, true))) {
+            $status = array_merge($status, $saved);
+        }
+        if (isset($status['domains'])) {
+            $status['estimated_peak_kb'] = (int)$status['domains'];
+        }
+        return $status;
+    }
 }
