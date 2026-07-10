@@ -32,4 +32,25 @@ use OPNsense\Base\BaseModel;
 
 class Dnsbl extends BaseModel
 {
+    protected function init()
+    {
+        $unboundXml = '/usr/local/opnsense/mvc/app/models/OPNsense/Unbound/Unbound.xml';
+        if (file_exists($unboundXml) && $this->type) {
+
+            $xml = simplexml_load_file($unboundXml);
+            $options = [];
+            foreach ($xml->xpath('//dnsbl/blocklist/type/OptionValues/*') as $opt) {
+                $group = [];
+                foreach ($opt->children() as $child) {
+                    $group[$child->getName()] = trim((string)$child);
+                }
+                if (!empty($group)) {
+                    $options[(string)$opt['value']] = $group;
+                }
+            }
+            if (!empty($options)) {
+                $this->type->setOptionValues($options);
+            }
+        }
+    }
 }

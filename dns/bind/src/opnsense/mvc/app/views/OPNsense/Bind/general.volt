@@ -377,10 +377,7 @@ $(document).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
-    let data_get_map2 = {
-        'frm_dnsbl_settings': "/api/bind/dnsbl/get"
-    };
-    mapDataToFormUI(data_get_map2).done(function(data) {
+    mapDataToFormUI({'frm_dnsbl_settings': "/api/bind/dnsbl/get"}).done(function(data) {
         formatTokenizersUI();
         $('.selectpicker').selectpicker('refresh');
     });
