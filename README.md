@@ -87,6 +87,7 @@ security/acme-client -- ACME Client
 security/clamav -- Antivirus engine for detecting malicious threats
 security/crowdsec -- Lightweight and collaborative security engine
 security/etpro-telemetry -- ET Pro Telemetry Edition
+security/intrusion-detection-content-at-antiphishing -- Anti-phishing rulesets
 security/intrusion-detection-content-et-open -- IDS Proofpoint full ET open ruleset complementary subset for ET Pro Telemetry edition
 security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
 security/intrusion-detection-content-pt-open -- IDS Positive Technologies ESC ruleset
