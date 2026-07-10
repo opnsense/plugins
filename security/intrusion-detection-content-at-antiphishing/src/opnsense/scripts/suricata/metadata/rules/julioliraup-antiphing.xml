@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ruleset documentation_url="https://github.com/julioliraup/Antiphishing">       
-  <location url="https://julioliraup.github.io/AT/" prefix="julioliraup/Antiphishing"/>                
+  <location url="https://raw.githubusercontent.com/julioliraup/Antiphishing/main/antiphishing.tar.gz" prefix="julioliraup/Antiphishing"/>                
   <files>                                                                       
-    <file documentation_url="https://github.com/julioliraup/Antiphishing/README.md"
-        url="https://raw.githubusercontent.com/julioliraup/Antiphishing/refs/heads/main/antiphishing.rules" 
-          description="julioliraup/Antiphishing">antiphishing.rules</file>                                                                     
+    <file url="inline::antiphishing.rules" description="julioliraup/Antiphishing">antiphishing.rules</file>                                                                     
   </files>             
-</ruleset>                                                                      
+</ruleset>
