@@ -477,6 +477,7 @@
                         <dns_hetznercloud>Hetzner Cloud</dns_hetznercloud>
                         <dns_hexonet>hexonet.com</dns_hexonet>
                         <dns_hostingde>hosting.de</dns_hostingde>
+                        <dns_hostup>HostUp</dns_hostup>
                         <dns_he>Hurricane Electric</dns_he>
                         <dns_he_ddns>Hurricane Electric DDNS</dns_he_ddns>
                         <dns_infoblox>Infoblox</dns_infoblox>
@@ -752,6 +753,18 @@
                 <dns_hostingde_apiKey type="TextField">
                     <Required>N</Required>
                 </dns_hostingde_apiKey>
+                <dns_hostup_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_hostup_api_key>
+                <dns_hostup_api_base type="TextField">
+                    <Required>N</Required>
+                </dns_hostup_api_base>
+                <dns_hostup_ttl type="TextField">
+                    <Required>N</Required>
+                </dns_hostup_ttl>
+                <dns_hostup_zone_id type="TextField">
+                    <Required>N</Required>
+                </dns_hostup_zone_id>
                 <dns_he_user type="TextField">
                     <Required>N</Required>
                 </dns_he_user>
