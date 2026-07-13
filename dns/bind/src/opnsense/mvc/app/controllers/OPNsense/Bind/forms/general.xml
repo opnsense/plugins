@@ -154,27 +154,123 @@
         <help>This will disable prefetching of domains before they time out.</help>
     </field>
     <field>
+        <type>header</type>
+        <label>Rate Limiting</label>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>general.enableratelimiting</id>
         <label>Enable Rate Limiting</label>
         <type>checkbox</type>
         <advanced>true</advanced>
-        <help>This will enable rate-limiting for DNS replies.</help>
+        <help>This will enable rate-limiting for DNS responses.</help>
     </field>
     <field>
         <id>general.ratelimitcount</id>
-        <label>Rate Limit Replies</label>
+        <label>Responses Per Second</label>
         <type>text</type>
         <advanced>true</advanced>
-        <help>Set how many replies per second are allowed.</help>
+        <help>Set how many non-empty responses are allowed per second for valid domain names and record types. The default is 0 or no limit.</help>
+    </field>
+    <field>
+        <id>general.ratelimitwindow</id>
+        <label>Window</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set the number of second during which responses are tracked. The default is 15 seconds.</help>
     </field>
     <field>
         <id>general.ratelimitexcept</id>
-        <label>Rate Limit Exceptions</label>
+        <label>Exempt Clients</label>
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
         <advanced>true</advanced>
-        <help>Except a list of IPs from rate-limiting like ::1</help>
+        <help>Exempt a list of IPs from rate-limiting, e.g. ::1</help>
+    </field>
+    <field>
+        <id>general.ratelimitipv4prefixlength</id>
+        <label>IPv4 Prefix Length</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set the number of bits of the address block. Used to distinquish clients into a rate-limited group. The default is 24.</help>
+    </field>
+    <field>
+        <id>general.ratelimitipv6prefixlength</id>
+        <label>IPv6 Prefix Length</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set the number of bits of the address block. Used to distinquish clients into a rate-limited group. The default is 56.</help>
+    </field>
+    <field>
+        <id>general.ratelimitnodataps</id>
+        <label>NODATA Responses Per Second</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set how many empty (NODATA) responses are allowed per second for valid domain names. The default is equal to the Responses Per Second value.</help>
+    </field>
+    <field>
+        <id>general.ratelimitnxdomsps</id>
+        <label>NXDOMAIN Responses Per Second</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set how many NXDOMAIN errors are allowed per second for undefined subdomains for valid domain names. The default is equal to the Responses Per Second value.</help>
+    </field>
+    <field>
+        <id>general.ratelimitrefsps</id>
+        <label>Referrals Per Second</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set how many referrals or delegations are allowed per second to a server for a given domain. The default is equal to the Responses Per Second value.</help>
+    </field>
+    <field>
+        <id>general.ratelimiterrsps</id>
+        <label>Errors Per Second</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set how many errors are allowed per second for valid domain names and record types. The default is equal to the Responses Per Second value.</help>
+    </field>
+    <field>
+        <id>general.ratelimitallps</id>
+        <label>All Per Second</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set how many UDP responses of all types are allowed per second. If used, this should be set to 4 times the size of other per second limits.</help>
+    </field>
+    <field>
+        <id>general.ratelimitslip</id>
+        <label>Slip</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set how often to "slip" responses, reducing the use of forged source addresses in attacks. The default is 2, i.e. every second response. Use a value of 0 to disable slipped responses. Use a value of 1 with caution.</help>
+    </field>
+    <field>
+        <id>general.ratelimitscale</id>
+        <label>QPS Scale</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set the ratio by which to scale back the Responses Per Second value during attacks. The formula used to produce the new value is ("QPS Scale"/Total Query Rate)*"Responses Per Second".</help>
+    </field>
+    <field>
+        <id>general.ratelimitmaxtbl</id>
+        <label>Maximum Table Size</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set the maximum number of table entries used to track requests and rate-limit responses. The default is 20,000.</help>
+    </field>
+    <field>
+        <id>general.ratelimitmintbl</id>
+        <label>Minimum Table Size</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Set the minimum number of table entries used to track requests and rate-limit responses. The default is 500.</help>
+    </field>
+    <field>
+        <id>general.ratelimittry</id>
+        <label>Trial Rate Limiting</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Enable to test rate-limiting parameters without actually dropping any requests.</help>
     </field>
     <field>
         <type>header</type>
