@@ -48,6 +48,16 @@
           search:'/api/diagnostics/log/named/rpz'
       });
 
+      // get entries from bind/dhcplease log
+      let grid_watcherlog = $("#grid-watcherlog").UIBootgrid({
+          options:{
+              sorting:false,
+              rowSelect: false,
+              selection: false,
+          },
+          search:'/api/diagnostics/log/bind/dhcplease'
+      });
+
       grid_querylog.on("loaded.rs.jquery.bootgrid", function(){
           $(".action-page").click(function(event){
               event.preventDefault();
@@ -74,6 +84,19 @@
           });
       });
 
+    grid_watcherlog.on("loaded.rs.jquery.bootgrid", function(){
+          $(".action-page").click(function(event){
+              event.preventDefault();
+              $("#grid-watcherlog").bootgrid("search",  "");
+              let new_page = parseInt((parseInt($(this).data('row-id')) / $("#grid-log").bootgrid("getRowCount")))+1;
+              $("input.search-field").val("");
+              // XXX: a bit ugly, but clearing the filter triggers a load event.
+              setTimeout(function(){
+                  $("ul.pagination > li:last > a").data('page', new_page).click();
+              }, 100);
+          });
+      });
+
     });
 </script>
 
@@ -82,6 +105,7 @@
     <li class="active"><a data-toggle="tab" href="#generallog"><b>{{ lang._('General Log') }}</b></a></li>
     <li><a data-toggle="tab" href="#querylog">{{ lang._('Query Log') }}</a></li>
     <li><a data-toggle="tab" href="#blockedlog">{{ lang._('Blocked Log') }}</a></li>
+    <li><a data-toggle="tab" href="#watcherlog">{{ lang._('DHCP Watcher Log') }}</a></li>
 </ul>
 
 <div class="content-box tab-content">
@@ -114,6 +138,26 @@
         <div class="content-box" style="padding-bottom: 1.5em;">
             <div  class="col-sm-12">
                 <table id="grid-blockedlog" class="table table-condensed table-hover table-striped table-responsive" data-store-selection="true">
+                    <thead>
+                    <tr>
+                        <th data-column-id="timestamp" data-width="15em" data-type="string">{{ lang._('Date') }}</th>
+                        <th data-column-id="process_name" data-width="11em" data-type="string">{{ lang._('Client') }}</th>
+                        <th data-column-id="pid" data-width="11em" data-type="string">{{ lang._('IP Address') }}</th>
+                        <th data-column-id="facility" data-width="20em" data-type="string">{{ lang._('Record') }}</th>
+                        <th data-column-id="line" data-type="string">{{ lang._('Query') }}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="watcherlog" class="tab-pane fade">
+        <div class="content-box" style="padding-bottom: 1.5em;">
+            <div class="col-sm-12">
+                <table id="grid-watcherlog" class="table table-condensed table-hover table-striped table-responsive" data-store-selection="true">
                     <thead>
                     <tr>
                         <th data-column-id="timestamp" data-width="15em" data-type="string">{{ lang._('Date') }}</th>

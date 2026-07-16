@@ -1,0 +1,47 @@
+<model>
+    <mount>//OPNsense/bind/watcher</mount>
+    <description>BIND DHCP lease watcher configuration</description>
+    <version>1.1.7</version>
+    <items>
+        <mappings>
+            <mapping type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <dhcp_source type="OptionField">
+                    <Required>Y</Required>
+                    <Default>isc-dhcp</Default>
+                    <OptionValues>
+                        <isc-dhcp>ISC DHCP</isc-dhcp>
+                        <kea-dhcp4>Kea DHCPv4</kea-dhcp4>
+                        <kea-dhcp6>Kea DHCPv6</kea-dhcp6>
+                    </OptionValues>
+                </dhcp_source>
+                <hostname_suffix type="ModelRelationField">
+                    <Required>Y</Required>
+                    <Model>
+                        <domain>
+                            <source>OPNsense.Bind.Domain</source>
+                            <items>domains.domain</items>
+                            <display>domainname</display>
+                            <filters>
+                                <type>/^primary$/</type>
+                            </filters>
+                        </domain>
+                    </Model>
+                </hostname_suffix>
+                <tsigkey type="ModelRelationField">
+                    <Required>Y</Required>
+                    <Model>
+                        <template>
+                            <source>OPNsense.Bind.Tsig</source>
+                            <items>keys.key</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                </tsigkey>
+            </mapping>
+        </mappings>
+    </items>
+</model>

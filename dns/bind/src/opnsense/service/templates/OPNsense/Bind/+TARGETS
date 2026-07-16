@@ -9,3 +9,4 @@ rndc.conf:/usr/local/etc/namedb/rndc.conf
 whitelist.db:/usr/local/etc/namedb/primary/whitelist.db
 whitelist.inc:/usr/local/etc/namedb/whitelist.inc
 youtube.db:/usr/local/etc/namedb/primary/youtube.db
+dhcpwatcher.conf:/usr/local/etc/bind/dhcpwatcher.conf

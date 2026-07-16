@@ -1,0 +1,41 @@
+<model>
+    <mount>//OPNsense/bind/tsig</mount>
+    <description>BIND TSIG key configuration</description>
+    <version>1.0.0</version>
+    <items>
+        <keys>
+            <key type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^(?!rndc-key$)[0-9a-zA-Z_\-]{1,32}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9, a-z, A-Z, _ and -. Must not be "rndc-key".</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>A key with this name already exists.</ValidationMessage>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
+                </name>
+                <algorithm type="OptionField">
+                    <Required>Y</Required>
+                    <Default>hmac-sha256</Default>
+                    <OptionValues>
+                        <hmac-sha512>HMAC-SHA512</hmac-sha512>
+                        <hmac-sha384>HMAC-SHA384</hmac-sha384>
+                        <hmac-sha256>HMAC-SHA256</hmac-sha256>
+                        <hmac-sha224>HMAC-SHA224</hmac-sha224>
+                        <hmac-sha1>HMAC-SHA1</hmac-sha1>
+                        <hmac-md5>HMAC-MD5</hmac-md5>
+                    </OptionValues>
+                </algorithm>
+                <secret type="Base64Field">
+                    <Required>Y</Required>
+                </secret>
+            </key>
+        </keys>
+    </items>
+</model>

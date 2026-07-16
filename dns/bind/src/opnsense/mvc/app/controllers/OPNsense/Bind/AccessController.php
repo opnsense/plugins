@@ -28,12 +28,12 @@
 
 namespace OPNsense\Bind;
 
-class GeneralController extends \OPNsense\Base\IndexController
+class AccessController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->generalForm = $this->getForm("general");
-        $this->view->dnsblForm = $this->getForm("dnsbl");
-        $this->view->pick('OPNsense/Bind/general');
+        $this->view->formDialogEditBindAcl = $this->getForm("dialogEditBindAcl");
+        $this->view->formDialogEditBindTsig = $this->getForm("dialogEditBindTsig");
+        $this->view->pick('OPNsense/Bind/access');
     }
 }
