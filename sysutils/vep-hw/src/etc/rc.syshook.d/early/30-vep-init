@@ -17,8 +17,16 @@ if [ ! -z $board_id]; then
     sleep 1
     smbmsg -f /dev/smb1 -s 0x48 -c 0x1 -o 1 0x0
 
+    if [ x"$board_id" != "0" ] && [ x"$board_id" != "1" ]; then
+        # set fan speed. At address 36 is a TC654
+        # set control register to allow SMBus control of duty cycle
+        smbmsg -f /dev/smb1 -s 0x36 -c 0x04 -o 1 0x34
+        # set duty cycle, range is 0x00 to 0x0f
+        # 0x0d is 90.67% duty cycle per datasheet
+        smbmsg -f /dev/smb1 -s 0x36 -c 0x06 -o 1 0xd
+    fi
 
-    if [ x"$board_id" = x"8" ] || [ x"$board_id" = x"a" ] || [ x"$board_id" = x"b" ]; do
+    if [ x"$board_id" = x"8" ] || [ x"$board_id" = x"a" ] || [ x"$board_id" = x"b" ]; then
         logger -t "vep-hw" "VEP1400-X detected, doing init"
         # VEP1400-X stuff
         # fetch board type
@@ -37,7 +45,7 @@ if [ ! -z $board_id]; then
         smbmsg -f /dev/smb1 -s 0x62 -c 0x11 -o 1 0x07
     fi
 
-    if [ x"$board_id" = x"0" ]; do
+    if [ x"$board_id" = x"0" ]; then
         logger -t "vep-hw" "VEP1400 detected, doing init"
         #Communicate with CPLD/FPGA to turn off SFP TX disable (DAC cables aren't affected by this)
         # for ix3
