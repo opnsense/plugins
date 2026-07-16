@@ -1,0 +1,11 @@
+#!/bin/sh
+
+needed_klds="ismt smb"
+
+kldload $needed_klds
+sleep 1
+
+
+# set front LED to green
+# format is -c (red) -o 2 (green) (blue)
+smbmsg -f /dev/smb1 -s 0x40 -c 0x00 -o 2 0xff 0x00
