@@ -31,7 +31,7 @@
         <id>general.port</id>
         <label>Listen Port</label>
         <type>text</type>
-        <help>Set the port the service should listen to.</help>
+        <help>Set the port the service should listen to. Ports reserved by another configured DNS service, such as Unbound, cannot be used until that service is disabled in its configuration.</help>
     </field>
     <field>
         <id>general.querysource</id>

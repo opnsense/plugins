@@ -2,7 +2,10 @@
   <Services>
     <BIND cssClass="fa fa-tags">
       <General VisibleName="General Settings" order="10" url="/ui/bind/general/index"/>
+      <Zones order="20" url="/ui/bind/zones/index"/>
+      <Records VisibleName="Records" order="25" url="/ui/bind/records/index"/>
       <Forwarding VisibleName="Query Forwarding" order="30" url="/ui/bind/forwarding/index"/>
+      <Access VisibleName="Access Control" order="40" url="/ui/bind/access/index"/>
       <LogFiles VisibleName="Log Files" order="50" url="/ui/bind/logs"/>
     </BIND>
   </Services>

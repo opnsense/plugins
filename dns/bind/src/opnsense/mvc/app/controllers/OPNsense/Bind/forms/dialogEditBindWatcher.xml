@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>mapping.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable or disable this watcher mapping.</help>
+    </field>
+    <field>
+        <id>mapping.dhcp_source</id>
+        <label>DHCP Source</label>
+        <type>dropdown</type>
+        <help>Select the DHCP server to watch for leases.</help>
+    </field>
+    <field>
+        <id>mapping.hostname_suffix</id>
+        <label>Hostname Suffix</label>
+        <type>dropdown</type>
+        <help>Primary zone used as the domain suffix for building FQDNs from DHCP hostnames (e.g., laptop becomes laptop.home.arpa). Leases are selected automatically from DHCP scopes advertising this domain.</help>
+    </field>
+    <field>
+        <id>mapping.tsigkey</id>
+        <label>TSIG Key</label>
+        <type>dropdown</type>
+        <help>TSIG key used to authenticate nsupdate operations against BIND.</help>
+    </field>
+</form>

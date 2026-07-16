@@ -28,12 +28,13 @@
 
 namespace OPNsense\Bind;
 
-class GeneralController extends \OPNsense\Base\IndexController
+class ZonesController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
-        $this->view->generalForm = $this->getForm("general");
-        $this->view->dnsblForm = $this->getForm("dnsbl");
-        $this->view->pick('OPNsense/Bind/general');
+        $this->view->formDialogEditBindPrimaryDomain = $this->getForm("dialogEditBindPrimaryDomain");
+        $this->view->formDialogEditBindSecondaryDomain = $this->getForm("dialogEditBindSecondaryDomain");
+        $this->view->formDialogEditBindForwardDomain = $this->getForm("dialogEditBindForwardDomain");
+        $this->view->pick('OPNsense/Bind/zones');
     }
 }

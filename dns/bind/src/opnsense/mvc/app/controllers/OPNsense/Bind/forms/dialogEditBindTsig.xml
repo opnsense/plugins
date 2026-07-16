@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>key.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable this key.</help>
+    </field>
+    <field>
+        <id>key.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Set the name for this TSIG key. This name must match the key name configured on the DHCP server.</help>
+    </field>
+    <field>
+        <id>key.algorithm</id>
+        <label>Algorithm</label>
+        <type>dropdown</type>
+        <help>Set the authentication algorithm for this key.</help>
+    </field>
+    <field>
+        <id>key.secret</id>
+        <label>Secret</label>
+        <type>text</type>
+        <help>The base64-encoded key secret. Generate a random key with ddns-confgen or a similar tool.</help>
+    </field>
+</form>

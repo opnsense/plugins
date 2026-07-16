@@ -53,7 +53,10 @@ class General extends BaseModel
                 }
                 if ($service['name'] != 'named' && in_array((string)$this->port, $service['dns_ports'])) {
                     $messages->appendMessage(new Message(
-                        sprintf(gettext('%s is currently using this port.'), $service['description']),
+                        sprintf(
+                            gettext('%s reserves this port in its configuration. Disable that service or choose a different BIND listen port.'),
+                            $service['description']
+                        ),
                         $this->port->getInternalXMLTagName()
                     ));
                     break;
