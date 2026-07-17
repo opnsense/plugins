@@ -61,23 +61,27 @@ if (!$was_connected) {
 
 // --- Build and execute the real "netbird up" command ------------------------
 // $argv[0] is this script; everything after is passed through by configd
-// (e.g. "-m https://mgmt.example.com -k SETUP-KEY").
+// (e.g. "-m https://mgmt.example.com -k SETUP-KEY").  Argument escaping is
+// left to mwexecfb's %s handling — pre-escaped values would be mangled by
+// its format processing.
 $extra_args = array_slice($argv, 1);
-$cmd = '/usr/local/bin/netbird up';
-if (!empty($extra_args)) {
-    $cmd .= ' ' . implode(' ', array_map('escapeshellarg', $extra_args));
-}
 
 // Run netbird up in the background.  It can block indefinitely (e.g.
 // waiting for authentication or an unreachable management server), so
 // we fork it and proceed to wait for the tunnel interface.
-mwexecfm($cmd);
+mwexecfb('/usr/local/bin/netbird up' . str_repeat(' %s', count($extra_args)), $extra_args);
 
 // Only reload when transitioning from disconnected -> connected.  If NetBird
 // was already up, the interface already exists and the filter already knows
 // about it.
 if (!$was_connected) {
-    netbird_sync_filter($wt_iface);
+    if (netbird_sync_filter($wt_iface)) {
+        echo "NetBird connection initiated, tunnel interface {$wt_iface} up\n";
+    } else {
+        echo "NetBird connection initiated, still waiting on tunnel interface {$wt_iface}\n";
+    }
+} else {
+    echo "NetBird already connected\n";
 }
 
 exit(0);
