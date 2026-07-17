@@ -9,6 +9,13 @@ WWW: https://www.isc.org
 Plugin Changelog
 ================
 
+1.36
+
+* Add DHCP lease watcher and scoped dynamic DNS mappings
+* Add reverse DNS zone management
+* Source DNSBL lists from the Unbound definitions
+* Add Forward First / Forward Only mode
+
 1.35
 
 * Add per-forwarder destination port for plain DNS forwarders
