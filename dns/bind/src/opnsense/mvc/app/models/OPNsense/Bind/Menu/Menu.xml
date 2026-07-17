@@ -3,6 +3,7 @@
     <BIND cssClass="fa fa-tags">
       <General VisibleName="General Settings" order="10" url="/ui/bind/general/index"/>
       <Zones order="20" url="/ui/bind/zones/index"/>
+      <ReverseDNS VisibleName="Reverse DNS" order="22" cssClass="fa fa-exchange" url="/ui/bind/reverse_zones/index"/>
       <Records VisibleName="Records" order="25" url="/ui/bind/records/index"/>
       <Forwarding VisibleName="Query Forwarding" order="30" url="/ui/bind/forwarding/index"/>
       <Access VisibleName="Access Control" order="40" url="/ui/bind/access/index"/>

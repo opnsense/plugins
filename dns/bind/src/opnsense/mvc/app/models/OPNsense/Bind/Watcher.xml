@@ -31,6 +31,19 @@
                         </domain>
                     </Model>
                 </hostname_suffix>
+                <reverse_zone type="ModelRelationField">
+                    <Required>N</Required>
+                    <Model>
+                        <domain>
+                            <source>OPNsense.Bind.Domain</source>
+                            <items>domains.domain</items>
+                            <display>domainname</display>
+                            <filters>
+                                <type>/^reverse$/</type>
+                            </filters>
+                        </domain>
+                    </Model>
+                </reverse_zone>
                 <tsigkey type="ModelRelationField">
                     <Required>Y</Required>
                     <Model>

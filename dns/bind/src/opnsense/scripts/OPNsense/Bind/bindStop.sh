@@ -38,6 +38,9 @@ if (!isset($config->OPNsense->bind)) {
 $domains = [];
 foreach ($config->OPNsense->bind->domain->domains->domain as $domain) {
     $domains[(string)$domain["uuid"]] = (string)$domain->domainname;
+    if ((string)$domain->type === "reverse") {
+        echo (string)$domain->domainname, PHP_EOL;
+    }
 }
 foreach ($config->OPNsense->bind->watcher->mappings->mapping as $mapping) {
     $uuid = (string)$mapping->hostname_suffix;

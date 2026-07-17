@@ -31,6 +31,7 @@ namespace OPNsense\Bind\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Bind\Domain;
 
 class DomainController extends ApiMutableModelControllerBase
 {
@@ -85,6 +86,27 @@ class DomainController extends ApiMutableModelControllerBase
         );
     }
 
+    /**
+     * search reverse domains
+     * @return array search results
+     */
+    public function searchReverseDomainAction()
+    {
+        $result = $this->searchBase(
+            'domains.domain',
+            ['enabled', 'type', 'domainname', 'source_subnet'],
+            "domainname",
+            function ($record) {
+                return $record->type->getNodeData()['reverse']['selected'] === 1;
+            }
+        );
+        // Add interface description to each result
+        foreach ($result['rows'] as &$row) {
+            $row['interface'] = $this->getInterfaceFromSubnet($row['source_subnet'] ?? '');
+        }
+        return $result;
+    }
+
     public function getDomainAction($uuid = null)
     {
         return $this->getBase('domain', 'domains.domain', $uuid);
@@ -105,6 +127,21 @@ class DomainController extends ApiMutableModelControllerBase
         return $this->addBase('domain', 'domains.domain', ['type' => 'forward']);
     }
 
+    /**
+     * add reverse domain
+     * @param string $uuid unique identifier
+     * @return array status message
+     */
+    public function addReverseDomainAction($uuid = null)
+    {
+        $result = $this->addBase(
+            'domain',
+            'domains.domain',
+            ['type' => 'reverse']
+        );
+        return $result;
+    }
+
     public function delDomainAction($uuid)
     {
         return $this->delBase('domains.domain', $uuid);
@@ -118,5 +155,62 @@ class DomainController extends ApiMutableModelControllerBase
     public function toggleDomainAction($uuid)
     {
         return $this->toggleBase('domains.domain', $uuid);
+    }
+
+    /**
+     * Generate reverse-zone names from their selected source subnet.
+     *
+     * @param object $node domain model item
+     * @return void
+     */
+    protected function setBaseHook($node)
+    {
+        if ((string)$node->type === 'reverse') {
+            $zoneName = Domain::reverseZoneName((string)$node->source_subnet);
+            if ($zoneName !== null) {
+                $node->domainname = $zoneName;
+            }
+        }
+    }
+
+    /**
+     * Get interface description from subnet
+     * @param string $subnet CIDR notation (e.g., "192.168.1.0/24")
+     * @return string interface description or empty string
+     */
+    private function getInterfaceFromSubnet($subnet)
+    {
+        if (empty($subnet)) {
+            return '';
+        }
+
+        $backend = new \OPNsense\Core\Backend();
+        $ifconfig_json = $backend->configdRun('interface list ifconfig');
+        $ifconfig = json_decode($ifconfig_json, true) ?? [];
+
+        foreach ($ifconfig as $if => $details) {
+            foreach (['ipv4', 'ipv6'] as $family) {
+                if (!empty($details[$family])) {
+                    foreach ($details[$family] as $addr) {
+                        if (!empty($addr['ipaddr']) && !empty($addr['subnetbits'])) {
+                            $network = $addr['ipaddr'] . '/' . $addr['subnetbits'];
+                            if ($network === $subnet) {
+                                // Get interface description from config
+                                $cfg = \OPNsense\Core\Config::getInstance()->object();
+                                if (isset($cfg->interfaces)) {
+                                    foreach ($cfg->interfaces->children() as $key => $node) {
+                                        if ((string)$node->if === $if) {
+                                            return !empty((string)$node->descr) ? (string)$node->descr : strtoupper($key);
+                                        }
+                                    }
+                                }
+                                return $if;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return '';
     }
 }

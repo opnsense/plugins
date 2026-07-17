@@ -16,6 +16,7 @@
                         <primary>primary</primary>
                         <secondary>secondary</secondary>
                         <forward>forward</forward>
+                        <reverse>reverse</reverse>
                     </OptionValues>
                 </type>
                 <primaryip type="NetworkField">
@@ -40,8 +41,12 @@
                     <AsList>Y</AsList>
                 </allownotifysecondary>
                 <domainname type="TextField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </domainname>
+                <source_subnet type="NetworkField">
+                    <Required>N</Required>
+                    <NetMaskRequired>Y</NetMaskRequired>
+                </source_subnet>
                 <allowtransfer type="ModelRelationField">
                     <Model>
                         <template>

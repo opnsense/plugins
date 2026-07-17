@@ -40,7 +40,7 @@ class WatcherController extends ApiMutableModelControllerBase
 
     public function searchMappingAction()
     {
-        return $this->searchBase('mappings.mapping', ['enabled', 'dhcp_source', 'hostname_suffix', 'tsigkey']);
+        return $this->searchBase('mappings.mapping', ['enabled', 'dhcp_source', 'hostname_suffix', 'reverse_zone', 'tsigkey']);
     }
 
     public function getMappingAction($uuid = null)
