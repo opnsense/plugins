@@ -28,33 +28,28 @@
  */
 
 /*
- * CARP start guard for the NetBird rc.d service.
+ * Wrapper script for "netbird down" that verifies the disconnect actually
+ * happened.  A one-shot "netbird down" fired right after a service start
+ * (boot, HA config sync, GUI restart) races the daemon socket coming up
+ * and is silently lost, leaving a CARP BACKUP node connected.
  *
- * Runs as start_postcmd (injected through /etc/rc.conf.d/netbird by the
- * plugin template when CARP failover support is enabled).  After the
- * daemon starts — at boot, after an HA config-sync service restart, or a
- * manual service start — this makes sure a CARP BACKUP node does not keep
- * an active NetBird connection, replacing the rc script patch previously
- * proposed in opnsense/ports#259.
- *
- * The MASTER check is a quick ifconfig scan; if the tunnel must be torn
- * down, the verified netbird_down.php worker is spawned in the background
- * so the rc start path (and the boot sequence) is never delayed.  A raw
- * one-shot "netbird down" would race the daemon socket still coming up
- * after the start and be silently lost.  Always exits 0: a failing
- * start_postcmd would make run_rc_command report a start failure even
- * though the daemon is running.
+ * All callers that must guarantee a disconnect (configd [down] action,
+ * carp_guard.php) point here; the retry/verify loop lives in
+ * netbird_down_converge().  An optional numeric argument keeps watching
+ * that many seconds after the disconnect and downs the daemon again if it
+ * restores its previous "up" state on its own (service start scenario).
  */
 
-require_once('config.inc');
-require_once('util.inc');
-require_once('plugins.inc.d/netbird.inc');
+require_once("config.inc");
+require_once("util.inc");
+require_once("plugins.inc.d/netbird.inc");
 
-if (!netbird_carp_check_master()) {
-    log_msg('NetBird: CARP BACKUP node detected after service start, disconnecting NetBird');
-    /* 30s watch window: the freshly started daemon may restore its previous
-       "up" state after the first disconnect succeeds */
-    mwexecfb('/usr/local/opnsense/scripts/netbird/netbird_down.php 30 > /dev/null');
+$watch = !empty($argv[1]) ? (int)$argv[1] : 0;
+
+if (netbird_down_converge(10, 2, $watch)) {
+    echo "NetBird disconnected\n";
+    exit(0);
 }
 
-exit(0);
+echo "NetBird still connected, disconnect failed\n";
+exit(1);

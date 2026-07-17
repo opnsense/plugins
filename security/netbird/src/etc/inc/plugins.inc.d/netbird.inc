@@ -85,19 +85,85 @@ function netbird_iface_exists($iface)
 }
 
 /**
+ * Query the NetBird daemon's management connection state.  The distinction
+ * between "disconnected" and "not responding" matters: right after a
+ * service (re)start the client socket is not listening yet, and a
+ * "netbird down" fired into that window is silently lost.
+ * @return bool|null true = connected, false = disconnected, null = daemon not responding
+ */
+function netbird_management_state()
+{
+    $status_json = shell_exec('/usr/local/bin/netbird status --json 2>/dev/null');
+    if (!empty($status_json)) {
+        $status = json_decode($status_json, true);
+        if (json_last_error() === JSON_ERROR_NONE && isset($status['management'])) {
+            return ($status['management']['connected'] ?? false) === true;
+        }
+    }
+    return null;
+}
+
+/**
  * Check whether NetBird is connected to its management service.
  * @return bool
  */
 function netbird_connected()
 {
-    $status_json = shell_exec('/usr/local/bin/netbird status --json 2>/dev/null');
-    if (!empty($status_json)) {
-        $status = json_decode($status_json, true);
-        if (json_last_error() === JSON_ERROR_NONE) {
-            return ($status['management']['connected'] ?? false) === true;
+    return netbird_management_state() === true;
+}
+
+/**
+ * Disconnect NetBird and verify it actually happened, retrying while the
+ * daemon socket is still coming up.  Must only run from backgrounded
+ * workers, never from a syshook or rc start foreground.
+ * @param int $attempts maximum number of probe/disconnect cycles
+ * @param int $delay seconds between attempts
+ * @param int $watch after disconnecting, keep watching this many seconds
+ *                   and disconnect again if the daemon reconnects itself —
+ *                   needed right after a service start, where the daemon
+ *                   restores its previous "up" state asynchronously
+ * @return bool true when NetBird ended up disconnected
+ */
+function netbird_down_converge($attempts = 10, $delay = 2, $watch = 0)
+{
+    $ok = false;
+    for ($i = 1; $i <= $attempts; $i++) {
+        $state = netbird_management_state();
+        if ($state === false) {
+            $ok = true;
+            break;
+        } elseif ($state === null) {
+            log_msg("NetBird: daemon not responding, waiting to disconnect (attempt {$i}/{$attempts})");
+        } else {
+            mwexecfm('/usr/local/bin/netbird down');
+        }
+        sleep($delay);
+    }
+
+    if (!$ok) {
+        if (netbird_management_state() !== true) {
+            $ok = true;
+        } else {
+            log_msg("NetBird: still connected after {$attempts} disconnect attempts, giving up");
+            return false;
         }
     }
-    return false;
+
+    $end = time() + $watch;
+    while (time() < $end) {
+        sleep($delay);
+        if (netbird_management_state() === true) {
+            if (netbird_carp_check_master()) {
+                /* node was promoted while we watched — the connection is
+                   legitimate now, stop guarding */
+                break;
+            }
+            log_msg('NetBird: reconnected while being guarded down, disconnecting again');
+            mwexecfm('/usr/local/bin/netbird down');
+        }
+    }
+
+    return true;
 }
 
 /**
@@ -114,6 +180,29 @@ function netbird_destroy_orphan_iface($iface)
 }
 
 /**
+ * Wait for the tunnel interface to disappear.  Used after triggering a
+ * service restart: reloading the filter while the old interface is still
+ * being torn down would attach the rules to a device the restart is about
+ * to destroy.  Polls twice a second to keep the gone->recreated window
+ * small.  Must only run from backgrounded workers.
+ * @param string $iface interface name
+ * @param int $timeout maximum seconds to wait
+ * @return bool true when the interface disappeared within the timeout
+ */
+function netbird_wait_iface_gone($iface, $timeout = 30)
+{
+    for ($i = 0; $i < $timeout * 2; $i++) {
+        if (!netbird_iface_exists($iface)) {
+            return true;
+        }
+        usleep(500000);
+    }
+
+    log_msg("NetBird: Timeout ({$timeout}s) waiting for {$iface} interface teardown");
+    return false;
+}
+
+/**
  * Wait for the tunnel interface to appear and reload the packet filter so
  * its rules attach to the freshly created device.  NetBird creates a tun
  * device and renames it, which takes a few seconds; without the reload all
@@ -124,7 +213,7 @@ function netbird_destroy_orphan_iface($iface)
  * @param int $timeout maximum seconds to wait for the interface
  * @return bool true when the interface appeared and the filter was reloaded
  */
-function netbird_sync_filter($iface, $timeout = 15)
+function netbird_sync_filter($iface, $timeout = 30)
 {
     for ($i = 0; $i < $timeout; $i++) {
         if (netbird_iface_exists($iface)) {
