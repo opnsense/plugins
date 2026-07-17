@@ -18,6 +18,12 @@
         <help>Primary zone used as the domain suffix for building FQDNs from DHCP hostnames (e.g., laptop becomes laptop.home.arpa). Leases are selected automatically from DHCP scopes advertising this domain.</help>
     </field>
     <field>
+        <id>mapping.reverse_zone</id>
+        <label>Reverse Zone</label>
+        <type>dropdown</type>
+        <help>Optional reverse zone for PTR updates. Select one to limit this mapping's TSIG key to that zone; otherwise the watcher selects the matching configured reverse zone automatically.</help>
+    </field>
+    <field>
         <id>mapping.tsigkey</id>
         <label>TSIG Key</label>
         <type>dropdown</type>

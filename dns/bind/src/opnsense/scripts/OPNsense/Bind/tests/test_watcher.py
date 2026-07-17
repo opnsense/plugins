@@ -117,6 +117,19 @@ class TestExtractedWatcherOrchestration(unittest.TestCase):
             instance._handle_kea_poll({}, 'kea-dhcp4'), expected_changed,
         )
 
+
+class TestWatcherTemplateContracts(unittest.TestCase):
+    def test_automatic_reverse_zone_selection_is_authorized(self):
+        template = os.path.join(
+            os.path.dirname(__file__),
+            '../../../../service/templates/OPNsense/Bind/named.conf',
+        )
+        with open(template) as source:
+            rendered_source = source.read()
+
+        self.assertIn("or (domain.type == 'reverse' and not w_reverse)", rendered_source)
+
+
 class TestBuildFqdn(unittest.TestCase):
     def test_simple(self):
         self.assertEqual(lease.build_fqdn('laptop', 'home.arpa'), 'laptop.home.arpa.')

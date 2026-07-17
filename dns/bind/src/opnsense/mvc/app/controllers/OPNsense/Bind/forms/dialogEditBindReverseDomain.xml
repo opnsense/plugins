@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>domain.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this reverse DNS zone.</help>
+    </field>
+    <field>
+        <id>domain.source_subnet</id>
+        <label>Subnet</label>
+        <type>dropdown</type>
+        <help>Select a directly-connected subnet for this reverse zone.</help>
+    </field>
+</form>

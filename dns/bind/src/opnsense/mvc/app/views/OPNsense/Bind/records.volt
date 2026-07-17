@@ -78,6 +78,7 @@
                         <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                         <th data-column-id="dhcp_source" data-type="string" data-visible="true">{{ lang._('DHCP Source') }}</th>
                         <th data-column-id="hostname_suffix" data-type="string" data-visible="true">{{ lang._('Hostname Suffix') }}</th>
+                        <th data-column-id="reverse_zone" data-type="string" data-visible="true">{{ lang._('Reverse Zone') }}</th>
                         <th data-column-id="tsigkey" data-type="string" data-visible="true">{{ lang._('TSIG Key') }}</th>
                         <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                         <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
