@@ -32,15 +32,23 @@
  * execute only the last one.  This moves events until we have at least
  * 2 seconds of "silence" to process them, preventing duplicate actions
  * when multiple CARP interfaces transition simultaneously during failover.
+ *
+ * The winner does not act on the event type it was invoked with: by the
+ * time the burst has settled that type may be stale, and in mixed bursts
+ * "last event" is arbitrary.  Instead the current CARP state is probed and
+ * NetBird is converged to it, then the result is verified.  The token file
+ * is deliberately never deleted — removing it would let an older event
+ * erase a newer event's claim, dropping the final state transition.
  */
 
 require_once("config.inc");
 require_once("util.inc");
+require_once("plugins.inc.d/netbird.inc");
 
 $subsystem = !empty($argv[1]) ? $argv[1] : 'unknown';
 $type = !empty($argv[2]) ? $argv[2] : 'unknown';
 
-$debounce_ref = '/tmp/tmp_netbird_carp_event.tmp';
+$debounce_ref = '/var/run/netbird_carp_event.token';
 
 // Write our PID into the reference file to claim this event slot.
 // Using file contents (PID) instead of filemtime avoids the 1-second
@@ -58,17 +66,33 @@ if (@file_get_contents($debounce_ref) !== $my_token) {
     exit(0);
 }
 
-// We are the last event in the burst — proceed
-log_msg("NetBird CARP: '{$type}' event from '{$subsystem}', appears to be the last event in burst, processing");
-switch ($type) {
-    case 'MASTER':
-        log_msg("NetBird CARP: '{$type}' event from '{$subsystem}', starting NetBird's WireGuard interface");
-        mwexecfm('/usr/local/sbin/configctl netbird up');
-        break;
-    case 'BACKUP':
-        log_msg("NetBird CARP: '{$type}' event from '{$subsystem}', stopping NetBird's WireGuard interface");
-        mwexecfm('/usr/local/sbin/configctl netbird down');
-        break;
+// We are the last event in the burst — converge on the live CARP state
+$master = netbird_carp_check_master();
+$desired = $master ? 'MASTER' : 'BACKUP';
+if ($desired !== $type) {
+    log_msg("NetBird CARP: '{$type}' event from '{$subsystem}' superseded by current CARP state '{$desired}'");
 }
 
-@unlink($debounce_ref);
+if ($master) {
+    log_msg("NetBird CARP: node is MASTER, starting NetBird's WireGuard interface");
+    mwexecfm('/usr/local/sbin/configctl netbird up');
+
+    // Verify the connection comes up; bail out if a newer event claims the
+    // token while we wait, its handler owns the outcome from then on.
+    for ($i = 0; $i < 15; $i++) {
+        sleep(2);
+        if (@file_get_contents($debounce_ref) !== $my_token) {
+            exit(0);
+        }
+        if (netbird_connected()) {
+            exit(0);
+        }
+    }
+    if (!netbird_iface_exists(netbird_wg_iface())) {
+        log_msg('NetBird CARP: not connected after 30s, retrying NetBird up');
+        mwexecfm('/usr/local/sbin/configctl netbird up');
+    }
+} else {
+    log_msg("NetBird CARP: node is BACKUP, stopping NetBird's WireGuard interface");
+    netbird_down_converge();
+}
