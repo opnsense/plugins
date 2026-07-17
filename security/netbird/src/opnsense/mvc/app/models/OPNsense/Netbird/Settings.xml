@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/netbird/settings</mount>
     <description>NetBird settings</description>
-    <version>1.2.0</version>
+    <version>1.3.0</version>
     <items>
         <general>
             <enable type="BooleanField">
@@ -12,6 +12,13 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </enablecarp>
+            <carpVipTrack type="JsonKeyValueStoreField">
+                <Default>any</Default>
+                <ConfigdPopulateAct>netbird list-vips</ConfigdPopulateAct>
+                <SourceFile>/tmp/netbird_carp_vips.json</SourceFile>
+                <ConfigdPopulateTTL>20</ConfigdPopulateTTL>
+                <ValidationMessage>Please select a valid CARP VIP tracking mode.</ValidationMessage>
+            </carpVipTrack>
             <wireguardPort type="IntegerField">
                 <Default>51820</Default>
                 <Required>Y</Required>

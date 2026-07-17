@@ -42,9 +42,22 @@ function netbird_carp_enabled()
 }
 
 /**
- * Check if the current host is CARP master for any monitored VIP.
- * Used to guard the service so it cannot start on a BACKUP node.
- * Returns true if CARP is not enabled OR if we are currently MASTER.
+ * Which CARP VIP governs NetBird failover: 'any' (default), 'all', or a
+ * specific VIP as '<vhid>@<device>' matching the rc.syshook.d/carp
+ * subsystem format.
+ * @return string
+ */
+function netbird_carp_vip_track()
+{
+    $track = (string)(new \OPNsense\Netbird\Settings())->general->carpVipTrack;
+    return $track === '' ? 'any' : $track;
+}
+
+/**
+ * Check if the current host is CARP master according to the configured
+ * tracking mode.  Used to guard the service so it cannot stay connected
+ * on a BACKUP node.  Returns true if CARP is not enabled OR if we are
+ * currently considered MASTER.
  * @return bool
  */
 function netbird_carp_check_master()
@@ -54,13 +67,41 @@ function netbird_carp_check_master()
         return true;
     }
 
-    // Check ifconfig output for CARP MASTER state
-    $ifconfig = shell_exec('/sbin/ifconfig');
-    if (preg_match('/carp:.*MASTER/', $ifconfig)) {
-        return true;
+    $track = netbird_carp_vip_track();
+
+    if (strpos($track, '@') !== false) {
+        // Track one specific VIP; exactly one cluster node can be MASTER
+        // for a given vhid, which makes this mode deterministic.
+        list($vhid, $device) = explode('@', $track, 2);
+        $ifconfig = shell_exec('/sbin/ifconfig ' . escapeshellarg($device) . ' 2>/dev/null');
+        if (!empty($ifconfig) && preg_match_all('/carp:\s+(\S+)\s+vhid\s+(\d+)/', $ifconfig, $matches, PREG_SET_ORDER)) {
+            foreach ($matches as $carp) {
+                if ($carp[2] === $vhid) {
+                    return $carp[1] === 'MASTER';
+                }
+            }
+        }
+        log_msg("NetBird: tracked CARP VIP '{$track}' not found, treating this node as BACKUP");
+        return false;
     }
 
-    return false;
+    $states = [];
+    $ifconfig = shell_exec('/sbin/ifconfig');
+    if (!empty($ifconfig) && preg_match_all('/carp:\s+(\S+)\s+vhid/', $ifconfig, $matches)) {
+        $states = $matches[1];
+    }
+
+    if (empty($states)) {
+        log_msg('NetBird: CARP failover enabled but no CARP VIPs found, treating this node as BACKUP');
+        return false;
+    }
+
+    if ($track === 'all') {
+        return count(array_unique($states)) === 1 && $states[0] === 'MASTER';
+    }
+
+    /* 'any' (default): MASTER on at least one VIP */
+    return in_array('MASTER', $states);
 }
 
 /**
