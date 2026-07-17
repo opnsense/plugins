@@ -45,5 +45,5 @@ if (netbird_enabled()) {
     $affected_gateways = !empty($argv[1]) ? $argv[1] : '';
 
     log_msg("NetBird monitor: Gateway event from '{$affected_gateways}', starting NetBird's monitor event handler");
-    mwexecfb('/usr/local/opnsense/scripts/netbird/gw_monitor.php %s > /dev/null', [$affected_gateways]); 
+    mwexecfb('/usr/local/opnsense/scripts/netbird/gw_monitor.php > /dev/null');
 }
