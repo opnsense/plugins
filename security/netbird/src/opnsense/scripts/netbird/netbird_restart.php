@@ -38,22 +38,33 @@
  *
  * This script:
  *   1. Runs `/usr/local/etc/rc.d/netbird restart` (the real rc.d restart).
- *   2. Waits for the tunnel interface and reloads the packet filter via
- *      netbird_sync_filter().
+ *   2. Waits for the old tunnel interface to be torn down.  Reloading
+ *      before that would attach the rules to the interface the restart is
+ *      about to destroy, silently recreating the detached-rules bug.
+ *   3. Waits for the new tunnel interface and reloads the packet filter
+ *      via netbird_sync_filter().
  */
 
 require_once("config.inc");
 require_once("util.inc");
 require_once("plugins.inc.d/netbird.inc");
 
+$wt_iface = netbird_wg_iface();
+
 // --- Restart the NetBird service -------------------------------------------
 log_msg("NetBird: Restarting service");
 mwexecfb('/usr/local/etc/rc.d/netbird restart');
 
-// Short delay to allow the restart to destroy the old interface before we
-// start looking for the new one.
-sleep(2);
+netbird_wait_iface_gone($wt_iface);
 
-netbird_sync_filter(netbird_wg_iface());
+// On a CARP BACKUP node the tunnel intentionally stays down after the
+// restart (carp_guard start_postcmd); don't wait for an interface that
+// will not appear.
+if (netbird_carp_enabled() && !netbird_carp_check_master()) {
+    log_msg("NetBird: CARP BACKUP node, tunnel stays down after restart, skipping packet filter sync");
+    exit(0);
+}
+
+netbird_sync_filter($wt_iface);
 
 exit(0);
