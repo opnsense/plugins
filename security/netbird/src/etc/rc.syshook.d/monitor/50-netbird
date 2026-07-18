@@ -1,0 +1,49 @@
+#!/usr/local/bin/php
+<?php
+
+/*
+ * Copyright (C) 2026 Myah Mitchell, Innovative Networks, Inc. d.b.a INDIGEX
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ * rc.syshook.d/monitor hook — called by rc.gateway_alarm when dpinger
+ * detects a gateway state change (any monitored gateway going up or down).
+ *
+ * This calls NetBird's gateway monitor script in the background (non-blocking), 
+ * which checks whether the default gateway has actually changed since the last
+ * invocation. If so, it restarts NetBird so it can re-establish connections 
+ * through the new default route.
+ */
+
+require_once("config.inc");
+require_once("util.inc");
+require_once("plugins.inc.d/netbird.inc");
+
+if (netbird_enabled()) {
+    $affected_gateways = !empty($argv[1]) ? $argv[1] : '';
+
+    log_msg("NetBird monitor: Gateway event from '{$affected_gateways}', starting NetBird's monitor event handler");
+    mwexecfb('/usr/local/opnsense/scripts/netbird/gw_monitor.php %s > /dev/null', [$affected_gateways]); 
+}
