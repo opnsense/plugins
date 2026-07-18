@@ -11,6 +11,10 @@
             <Default>0</Default>
             <Required>Y</Required>
         </disablev6>
+        <disablenotify type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </disablenotify>
         <enablerpz type="BooleanField">
             <Default>1</Default>
             <Required>Y</Required>
