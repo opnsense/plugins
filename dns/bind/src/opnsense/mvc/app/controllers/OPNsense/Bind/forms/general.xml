@@ -12,6 +12,12 @@
         <help>This will run BIND in IPv4-only mode.</help>
     </field>
     <field>
+        <id>general.disablenotify</id>
+        <label>Disable Zone Notifications</label>
+        <type>checkbox</type>
+        <help>Do not send DNS NOTIFY messages when primary zones are loaded or changed.</help>
+    </field>
+    <field>
         <id>general.listenv4</id>
         <label>Listen IPs</label>
         <style>tokenize</style>

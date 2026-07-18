@@ -193,7 +193,7 @@ class DomainController extends ApiMutableModelControllerBase
                 if (!empty($details[$family])) {
                     foreach ($details[$family] as $addr) {
                         if (!empty($addr['ipaddr']) && !empty($addr['subnetbits'])) {
-                            $network = $addr['ipaddr'] . '/' . $addr['subnetbits'];
+                            $network = $this->networkAddress($addr['ipaddr'], $addr['subnetbits']);
                             if ($network === $subnet) {
                                 // Get interface description from config
                                 $cfg = \OPNsense\Core\Config::getInstance()->object();
@@ -212,5 +212,41 @@ class DomainController extends ApiMutableModelControllerBase
             }
         }
         return '';
+    }
+
+    /**
+     * Return an address/prefix as its canonical CIDR network.
+     *
+     * @param string $address interface address
+     * @param int|string $prefix prefix length
+     * @return string|null CIDR network or null for invalid input
+     */
+    private function networkAddress($address, $prefix)
+    {
+        if (!is_numeric($prefix)) {
+            return null;
+        }
+
+        $packed = inet_pton($address);
+        if ($packed === false) {
+            return null;
+        }
+
+        $prefix = (int)$prefix;
+        $maxBits = strlen($packed) * 8;
+        if ($prefix < 0 || $prefix > $maxBits) {
+            return null;
+        }
+
+        $remainingBits = $prefix;
+        $network = '';
+        for ($index = 0; $index < strlen($packed); ++$index) {
+            $bits = min(max($remainingBits, 0), 8);
+            $mask = $bits === 0 ? 0 : (0xff << (8 - $bits)) & 0xff;
+            $network .= chr(ord($packed[$index]) & $mask);
+            $remainingBits -= 8;
+        }
+
+        return inet_ntop($network) . '/' . $prefix;
     }
 }
