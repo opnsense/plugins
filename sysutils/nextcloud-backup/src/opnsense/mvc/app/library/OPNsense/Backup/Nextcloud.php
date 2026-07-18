@@ -80,6 +80,14 @@ class Nextcloud extends Base implements IBackupProvider
                 "value" => null
             ),
             array(
+                "name" => "verify_ssl",
+                "type" => "checkbox",
+                "label" => gettext("Verify SSL certificate"),
+                "help" => gettext("Uncheck to allow self-signed or otherwise untrusted certificates. " .
+                    "Only disable this if you trust the network path to the Nextcloud server."),
+                "value" => null
+            ),
+            array(
                 "name" => "backupdir",
                 "type" => "text",
                 "label" => gettext("Directory Name without leading slash, starting from user's root"),
@@ -691,6 +699,9 @@ class Nextcloud extends Base implements IBackupProvider
         $postdata = null,
         $headers = array("User-Agent: OPNsense Firewall")
     ) {
+        // verify_ssl defaults to '1' via the model definition (NextcloudSettings.xml),
+        // so unset/upgraded configs verify by default; only an explicit '0' disables it
+        $verify_ssl = (string)(new NextcloudSettings())->verify_ssl !== '0';
         $curl = curl_init();
         curl_setopt_array($curl, array(
             CURLOPT_URL => $url,
@@ -701,6 +712,8 @@ class Nextcloud extends Base implements IBackupProvider
             CURLOPT_TIMEOUT => 60,          // maximum time: 1 min
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_USERPWD => $username . ":" . $password,
+            CURLOPT_SSL_VERIFYPEER => $verify_ssl,
+            CURLOPT_SSL_VERIFYHOST => $verify_ssl ? 2 : 0,
             CURLOPT_HTTPHEADER => $headers
         ));
         if ($postdata != null) {
