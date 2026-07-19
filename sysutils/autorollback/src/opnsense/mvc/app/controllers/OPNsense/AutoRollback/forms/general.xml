@@ -1,0 +1,80 @@
+<form>
+    <field>
+        <id>autorollback.general.Enabled</id>
+        <label>Enable Auto Rollback</label>
+        <type>checkbox</type>
+        <help>Enable the auto-rollback safe mode and connectivity watchdog features.</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Safe Mode Settings</label>
+    </field>
+    <field>
+        <id>autorollback.general.SafeModeTimeout</id>
+        <label>Default Timeout (seconds)</label>
+        <type>text</type>
+        <help>How many seconds to wait for confirmation before automatically rolling back. Default: 120 seconds. Range: 30-3600.</help>
+    </field>
+    <field>
+        <id>autorollback.general.RollbackMethod</id>
+        <label>Rollback Method</label>
+        <type>dropdown</type>
+        <help>How to apply the restored configuration. Full reboot is most reliable (recommended). Service reload is faster but may not apply kernel tunables or interface changes.</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Connectivity Watchdog</label>
+    </field>
+    <field>
+        <id>autorollback.general.WatchdogEnabled</id>
+        <label>Enable Watchdog</label>
+        <type>checkbox</type>
+        <help>Enable the always-on connectivity watchdog. Monitors system health after config changes and auto-reverts if connectivity is lost.</help>
+    </field>
+    <field>
+        <id>autorollback.general.WatchdogGracePeriod</id>
+        <label>Grace Period (seconds)</label>
+        <type>text</type>
+        <help>Seconds to wait after a config change before running health checks. Allows services time to restart. Default: 60 seconds.</help>
+    </field>
+    <field>
+        <id>autorollback.general.WatchdogFailThreshold</id>
+        <label>Failure Threshold</label>
+        <type>text</type>
+        <help>Number of consecutive failed health checks before triggering a rollback. Default: 3.</help>
+    </field>
+    <field>
+        <id>autorollback.general.WatchdogCheckCommand</id>
+        <label>Primary Check Command</label>
+        <type>text</type>
+        <help>Shell command to run for connectivity verification. Use %gateway% as placeholder for the default gateway IP. Default: ping -c 1 -W 3 -t 5 %gateway%</help>
+    </field>
+    <field>
+        <id>autorollback.general.WatchdogCheckPattern</id>
+        <label>Primary Check Pattern</label>
+        <type>text</type>
+        <help>Regex pattern to match in the check command output for a successful result. Default: "1 packets received"</help>
+    </field>
+    <field>
+        <id>autorollback.general.WatchdogCheckCommand2</id>
+        <label>Secondary Check Command (optional)</label>
+        <type>text</type>
+        <help>Optional second health check command. Example: host google.com (DNS resolution test). Leave empty to disable.</help>
+    </field>
+    <field>
+        <id>autorollback.general.WatchdogCheckPattern2</id>
+        <label>Secondary Check Pattern</label>
+        <type>text</type>
+        <help>Regex pattern for the secondary check command.</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Logging</label>
+    </field>
+    <field>
+        <id>autorollback.general.LogRollbacks</id>
+        <label>Log Events</label>
+        <type>checkbox</type>
+        <help>Log all safe mode and rollback events to syslog.</help>
+    </field>
+</form>
