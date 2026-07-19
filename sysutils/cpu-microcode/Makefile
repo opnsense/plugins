@@ -1,4 +1,4 @@
-PLUGIN_NAME=		cpu-microcode-amd
+PLUGIN_NAME=		cpu-microcode
 PLUGIN_VERSION=		1.1
 PLUGIN_REVISION=	1
 PLUGIN_COMMENT=		CPU microcode updates
