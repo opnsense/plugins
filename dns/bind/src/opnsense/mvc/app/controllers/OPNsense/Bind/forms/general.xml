@@ -12,26 +12,23 @@
         <help>This will run BIND in IPv4-only mode.</help>
     </field>
     <field>
-        <id>general.listenv4</id>
-        <label>Listen IPs</label>
-        <style>tokenize</style>
-        <type>select_multiple</type>
-        <allownew>true</allownew>
-        <help>Set the IPv4 addresses the service should listen to.</help>
+        <id>general.disablenotify</id>
+        <label>Disable Zone Notifications</label>
+        <type>checkbox</type>
+        <help>Do not send DNS NOTIFY messages when primary zones are loaded or changed.</help>
     </field>
     <field>
-        <id>general.listenv6</id>
-        <label>Listen IPv6</label>
-        <style>tokenize</style>
+        <id>general.active_interface</id>
+        <label>Network Interfaces</label>
         <type>select_multiple</type>
-        <allownew>true</allownew>
-        <help>Set the IPv6 addresses the service should listen to.</help>
+        <help>Interface IP addresses used for responding to queries from clients. If an interface has both IPv4 and IPv6 IPs, both are used. Queries to other interface IPs are not answered. The default is to respond on every available IPv4 and IPv6 address.</help>
+        <hint>All (recommended)</hint>
     </field>
     <field>
         <id>general.port</id>
         <label>Listen Port</label>
         <type>text</type>
-        <help>Set the port the service should listen to.</help>
+        <help>Set the port the service should listen to. Ports reserved by another configured DNS service, such as Unbound, cannot be used until that service is disabled in its configuration.</help>
     </field>
     <field>
         <id>general.querysource</id>
@@ -60,14 +57,6 @@
         <type>text</type>
         <advanced>true</advanced>
         <help>Specify the IPv6 address used as a source for zone transfers.</help>
-    </field>
-    <field>
-        <id>general.forwarders</id>
-        <label>DNS Forwarders</label>
-        <style>tokenize</style>
-        <type>select_multiple</type>
-        <allownew>true</allownew>
-        <help>Set one or more hosts to send your DNS queries if the request is unknown.</help>
     </field>
     <field>
         <id>general.filteraaaav4</id>
@@ -125,6 +114,12 @@
         <label>Allow Query</label>
         <type>select_multiple</type>
         <help>Define the ACLs where you allow which client are allowed to query this server.</help>
+    </field>
+    <field>
+        <id>general.forwarding</id>
+        <label>Forwarding Mode</label>
+        <type>dropdown</type>
+        <help>Set to "Forward Only" to prevent BIND from falling back to its own recursive resolution when forwarders are unreachable. If set to "Forward Only", configure forwarders on the DNS Forwarders tab.</help>
     </field>
     <field>
         <id>general.dnssecvalidation</id>

@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/general</mount>
     <description>BIND configuration</description>
-    <version>1.0.12</version>
+    <version>1.0.14</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -11,20 +11,17 @@
             <Default>0</Default>
             <Required>Y</Required>
         </disablev6>
+        <disablenotify type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </disablenotify>
         <enablerpz type="BooleanField">
             <Default>1</Default>
             <Required>Y</Required>
         </enablerpz>
-        <listenv4 type="NetworkField">
-            <Default>0.0.0.0</Default>
-            <Required>Y</Required>
-            <AsList>Y</AsList>
-        </listenv4>
-        <listenv6 type="NetworkField">
-            <Default>::</Default>
-            <Required>Y</Required>
-            <AsList>Y</AsList>
-        </listenv6>
+        <active_interface type=".\BindInterfaceField">
+            <Multiple>Y</Multiple>
+        </active_interface>
         <querysource type="NetworkField">
             <AddressFamily>ipv4</AddressFamily>
             <NetMaskAllowed>N</NetMaskAllowed>
@@ -45,9 +42,14 @@
             <Default>53530</Default>
             <Required>Y</Required>
         </port>
-        <forwarders type="NetworkField">
-            <AsList>Y</AsList>
-        </forwarders>
+        <forwarding type="OptionField">
+            <Default>first</Default>
+            <Required>Y</Required>
+            <OptionValues>
+                <first>Forward First</first>
+                <only>Forward Only</only>
+            </OptionValues>
+        </forwarding>
         <filteraaaav4 type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>

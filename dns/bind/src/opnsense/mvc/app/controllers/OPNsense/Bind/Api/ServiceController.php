@@ -32,6 +32,7 @@ namespace OPNsense\Bind\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
 use OPNsense\Bind\General;
 use OPNsense\Bind\Dnsbl;
 
@@ -45,6 +46,37 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceTemplate = 'OPNsense/Bind';
     protected static $internalServiceEnabled = 'enabled';
     protected static $internalServiceName = 'bind';
+
+    private function hasForwarderWhenForwardOnly()
+    {
+        $general = new General();
+        if ((string)$general->forwarding !== 'only') {
+            return true;
+        }
+        $config = Config::getInstance()->object();
+        if (!isset($config->OPNsense->bind->forwarder->forwarders)) {
+            return false;
+        }
+        foreach (['dns', 'dot'] as $type) {
+            foreach ($config->OPNsense->bind->forwarder->forwarders->{$type} as $forwarder) {
+                if ((string)$forwarder->enabled === '1') {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public function reconfigureAction()
+    {
+        if ($this->request->isPost() && !$this->hasForwarderWhenForwardOnly()) {
+            return [
+                'status' => 'failed',
+                'message' => gettext('Forward Only requires at least one enabled DNS or DNS-over-TLS forwarder.'),
+            ];
+        }
+        return parent::reconfigureAction();
+    }
 
     public function dnsblAction()
     {

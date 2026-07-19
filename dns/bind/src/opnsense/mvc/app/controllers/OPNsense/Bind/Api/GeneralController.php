@@ -32,6 +32,7 @@ namespace OPNsense\Bind\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
 
 class GeneralController extends ApiMutableModelControllerBase
 {
@@ -58,5 +59,100 @@ class GeneralController extends ApiMutableModelControllerBase
             $response = json_decode($backend->configdpRun("bind zone show", [$zonename]), true);
         }
         return $response;
+    }
+
+    /**
+     * list interface subnets for reverse zone creation
+     * @return array list of subnets with labels
+     */
+    public function listSubnetsAction()
+    {
+        $result = ['subnets' => []];
+        $seenNetworks = [];
+
+        // Get live interface data
+        $backend = new \OPNsense\Core\Backend();
+        $ifconfig_json = $backend->configdRun('interface list ifconfig');
+        $ifconfig = json_decode($ifconfig_json, true) ?? [];
+
+        // Get interface descriptions from config
+        $cfg = \OPNsense\Core\Config::getInstance()->object();
+        $intfmap = [];
+        if (isset($cfg->interfaces)) {
+            foreach ($cfg->interfaces->children() as $key => $node) {
+                $descr = !empty((string)$node->descr) ? (string)$node->descr : strtoupper($key);
+                $intfmap[(string)$node->if] = $descr;
+            }
+        }
+
+        // Build subnet list
+        foreach ($ifconfig as $if => $details) {
+            $descr = $intfmap[$if] ?? $if;
+            foreach (['ipv4', 'ipv6'] as $family) {
+                if (!empty($details[$family])) {
+                    foreach ($details[$family] as $addr) {
+                        if (!empty($addr['ipaddr']) && !empty($addr['subnetbits'])) {
+                            // Skip loopback
+                            if ($family == 'ipv4' && strpos($addr['ipaddr'], '127.') === 0) {
+                                continue;
+                            }
+                            if ($family == 'ipv6' && $addr['ipaddr'] == '::1') {
+                                continue;
+                            }
+
+                            $network = $this->networkAddress($addr['ipaddr'], $addr['subnetbits']);
+                            if ($network === null || isset($seenNetworks[$network])) {
+                                continue;
+                            }
+                            $seenNetworks[$network] = true;
+                            $result['subnets'][] = [
+                                'label' => $descr . ' - ' . $network,
+                                'value' => $network,
+                                'family' => $family,
+                                'interface' => $if,
+                            ];
+                        }
+                    }
+                }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Return an address/prefix as its canonical CIDR network.
+     *
+     * @param string $address interface address
+     * @param int|string $prefix prefix length
+     * @return string|null CIDR network or null for invalid input
+     */
+    private function networkAddress($address, $prefix)
+    {
+        if (!is_numeric($prefix)) {
+            return null;
+        }
+
+        $packed = inet_pton($address);
+        if ($packed === false) {
+            return null;
+        }
+
+        $prefix = (int)$prefix;
+        $maxBits = strlen($packed) * 8;
+        if ($prefix < 0 || $prefix > $maxBits) {
+            return null;
+        }
+
+        $remainingBits = $prefix;
+        $network = '';
+        for ($index = 0; $index < strlen($packed); ++$index) {
+            $bits = min(max($remainingBits, 0), 8);
+            $mask = $bits === 0 ? 0 : (0xff << (8 - $bits)) & 0xff;
+            $network .= chr(ord($packed[$index]) & $mask);
+            $remainingBits -= 8;
+        }
+
+        return inet_ntop($network) . '/' . $prefix;
     }
 }
