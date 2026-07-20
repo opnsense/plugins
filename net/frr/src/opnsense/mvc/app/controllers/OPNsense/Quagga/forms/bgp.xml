@@ -11,7 +11,7 @@
         <type>text</type>
         <help>Your AS Number here.</help>
     </field>
-<field>
+	<field>
 		<id>bgp.confed_asn</id>
 		<label>BGP Confederation ASN</label>
 		<type>text</type>
