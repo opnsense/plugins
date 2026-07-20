@@ -61,7 +61,7 @@ class PFLogCrawler:
         # quick scan for datetime, interface, direction, source, dest, source_port, dest_port
         parts = line.split()
         fw_line = parts[-1].split(',') # strip syslog
-        if fw_line[6] == 'pass':
+        if len(fw_line) < 7 or fw_line[6] == 'pass':
             return []
         ip_addresses = [x for x in fw_line if is_ip_address(x)]
         # Find destination IP position to get ports from next fields (only if numeric)
