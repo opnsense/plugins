@@ -1,2 +1,8 @@
-cpu_microcode_load="YES"
-cpu_microcode_name="/boot/firmware/%%PLUGIN_VARIANT%%-ucode.bin"
+# If you want to use early loading make sure your bootloader code is updated
+# using a 26.7/15.1 build.  Earlier kernels may cause boot stalls while it
+# tries to load microcode updates.
+#
+# Add the following lines to /boot/loader.conf.local if you prefer early load:
+#
+# cpu_microcode_load="YES"
+# cpu_microcode_name="/boot/firmware/%%PLUGIN_VARIANT%%-ucode.bin"
