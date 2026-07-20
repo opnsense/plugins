@@ -45,4 +45,26 @@
         <allownew>true</allownew>
         <help>Set the networks allowed to synchronize time with this server. If this value is not set it will also not listen to the port and just synchronize the time for itself.</help>
     </field>
+    <field>
+        <type>header</type>
+        <label>NTS Server</label>
+    </field>
+    <field>
+        <id>general.ntsservercert</id>
+        <label>NTS Server Certificate</label>
+        <type>text</type>
+        <help>Absolute path to the TLS certificate chain in PEM format for NTS server mode. The file should include any intermediate certificates needed by clients. Leave empty to disable NTS server.</help>
+    </field>
+    <field>
+        <id>general.ntsserverkey</id>
+        <label>NTS Server Key</label>
+        <type>text</type>
+        <help>Absolute path to the TLS private key in PEM format for NTS server mode.</help>
+    </field>
+    <field>
+        <id>general.ntsport</id>
+        <label>NTS-KE Port</label>
+        <type>text</type>
+        <help>TCP port for the NTS Key Establishment service (default: 4460). Leave empty to use the default.</help>
+    </field>
 </form>
