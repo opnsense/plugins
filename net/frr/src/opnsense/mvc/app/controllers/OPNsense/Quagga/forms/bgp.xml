@@ -11,6 +11,22 @@
         <type>text</type>
         <help>Your AS Number here.</help>
     </field>
+<field>
+		<id>bgp.confed_asn</id>
+		<label>BGP Confederation ASN</label>
+		<type>text</type>
+		<advanced>true</advanced>
+		<help>Specify the autonomous system number of the local confederation group. (Required if Confederation Peers are set)</help>
+	</field>
+	<field>
+		<id>bgp.confed_peers</id>
+		<label>BGP Confederation Peers</label>
+		<type>select_multiple</type>
+		<style>tokenize</style>
+		<allownew>true</allownew>
+		<advanced>true</advanced>
+		<help>Specify the Peers of the confederation group. (Required if Confederation ASN is set)</help>
+	</field>
     <field>
         <id>bgp.distance</id>
         <label>BGP AD Distance</label>
