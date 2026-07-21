@@ -137,9 +137,14 @@
         <style>table_dns table_dns_active24</style>
     </field>
     <field>
-        <id>validation.dns_active24_token</id>
-        <label>Token</label>
+        <id>validation.dns_active24_api_key</id>
+        <label>API Key</label>
         <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_active24_api_secret</id>
+        <label>API Secret</label>
+        <type>password</type>
     </field>
     <field>
         <label>Alwaysdata</label>
@@ -662,6 +667,7 @@
         <id>validation.dns_hostingde_server</id>
         <label>Server URL</label>
         <type>text</type>
+        <help>Enter the API endpoint, e.g. https://secure.hosting.de or https://partner.http.net.</help>
     </field>
     <field>
         <id>validation.dns_hostingde_apiKey</id>

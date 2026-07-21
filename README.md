@@ -49,6 +49,8 @@ misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
 misc/theme-vicuna -- The vicuna theme - blue sapphire
 net/chrony -- Chrony time synchronisation
+net/cloudflared -- Cloudflare Tunnel integration
+net/firewall-legacy -- Firewall rules legacy support
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
@@ -58,7 +60,6 @@ net/igmp-proxy -- IGMP-Proxy Service (not maintained)
 net/isc-dhcp -- ISC DHCPv4/v6 server
 net/mdns-repeater -- Proxy multicast DNS between networks
 net/ndp-proxy-go -- IPv6 Neighbor Discovery Protocol (NDP) Proxy
-net/ndproxy -- Neighbor Discovery Proxy
 net/ntopng -- Traffic Analysis and Flow Collection
 net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport
 net/realtek-re -- Realtek re(4) vendor driver
@@ -85,6 +86,7 @@ security/acme-client -- ACME Client
 security/clamav -- Antivirus engine for detecting malicious threats
 security/crowdsec -- Lightweight and collaborative security engine
 security/etpro-telemetry -- ET Pro Telemetry Edition
+security/intrusion-detection-content-at-antiphishing -- Anti-phishing rules
 security/intrusion-detection-content-et-open -- IDS Proofpoint full ET open ruleset complementary subset for ET Pro Telemetry edition
 security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
 security/intrusion-detection-content-pt-open -- IDS Positive Technologies ESC ruleset

@@ -1,6 +1,6 @@
 {#
 
-Copyright (C) 2025 Frank Wall
+Copyright (C) 2025-2026 Frank Wall
 OPNsense® is Copyright © 2014 – 2015 by Deciso B.V.
 All rights reserved.
 
@@ -28,30 +28,36 @@ POSSIBILITY OF SUCH DAMAGE.
 #}
 
 <script>
-    $( document ).ready(function() {
-        mapDataToFormUI({'frm_Settings':"/api/turnserver/settings/get"}).done(function(data){
+    $(document).ready(function() {
+        mapDataToFormUI({'frm_Settings': "/api/turnserver/settings/get"}).done(function() {
             formatTokenizersUI();
+            $('.selectpicker').selectpicker('refresh');
         });
-
-        // link save button to API set action
-        $("#saveAct").click(function(){
-            saveFormToEndpoint("/api/turnserver/settings/set",'frm_Settings',function(){
-                // reconfigure service
-                ajaxCall(url="/api/turnserver/service/reconfigure", sendData={},callback=function(data,status) {
-                });
-            });
+        updateServiceControlUI('turnserver');
+        $("#reconfigureAct").SimpleActionButton({
+            onPreAction: function() {
+                const dfObj = new $.Deferred();
+                saveFormToEndpoint(
+                    "/api/turnserver/settings/set",
+                    'frm_Settings',
+                    function() {
+                        dfObj.resolve();
+                    },
+                    true,
+                    function() {
+                        dfObj.reject();
+                    }
+                );
+                return dfObj.promise();
+            },
+            onAction: function() {
+                updateServiceControlUI('turnserver');
+            }
         });
     });
 </script>
 
-<div class="alert alert-info hidden" role="alert" id="responseMsg">
-
-</div>
-
-<div  class="col-md-12">
+<div class="content-box">
     {{ partial("layout_partials/base_form",['fields':settingsForm,'id':'frm_Settings'])}}
 </div>
-
-<div class="col-md-12">
-    <button class="btn btn-primary" id="saveAct" type="button"><b>{{ lang._('Apply') }}</b></button>
-</div>
+{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/turnserver/service/reconfigure', 'data_service_widget': 'turnserver'}) }}

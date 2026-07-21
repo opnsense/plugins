@@ -65,7 +65,20 @@ export default class QFeeds extends BaseTableWidget {
         });
 
         const data = await this.ajaxCall(`/api/q_feeds/settings/${'stats'}`);
-        if (!data.feeds.length) {
+        let expiryMs = NaN;
+        if (data.license && data.license.expiry_date) {
+            expiryMs = Date.parse(data.license.expiry_date);
+        }
+
+        if (isNaN(expiryMs) || expiryMs < Date.now()) {
+            const msg = isNaN(expiryMs) ? this.translations.license_invalid : this.translations.license_expired;
+            $('#qfeeds-table').html(
+                $('<div/>').addClass('text-danger').append(
+                    $("<i/>").addClass('fa fa-exclamation-triangle fa-fw'), '&nbsp;', $('<strong/>').text(msg)
+                )
+            );
+            return;
+        } else if (!data.feeds.length) {
             $('#qfeeds-table').html(`${this.translations.no_feed}`);
             return;
         }

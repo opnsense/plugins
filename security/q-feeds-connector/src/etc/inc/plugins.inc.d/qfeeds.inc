@@ -28,8 +28,8 @@
 
 function qfeeds_cron()
 {
-    $jobs = [];
-    $jobs[]['autocron'] = ['/usr/local/sbin/configctl -d qfeeds update', '*/5'];
-    $jobs[]['autocron'] = ['/usr/local/sbin/configctl -d ! qfeeds stats', '*/15'];
-    return $jobs;
+    return [
+        ['autocron' => ['/usr/local/sbin/configctl -d qfeeds update', '*/5']],
+        ['autocron' => ['/usr/local/sbin/configctl -df qfeeds stats', '*/15']],
+    ];
 }

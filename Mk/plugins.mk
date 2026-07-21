@@ -240,7 +240,7 @@ scripts-manual:
 
 install: check
 	@mkdir -p ${DESTDIR}${LOCALBASE}/opnsense/version
-	@if [ -d ${.CURDIR}/contrib ]; then ${MAKE} DESTDIR=$$(readlink -f ${DESTDIR}) -C ${.CURDIR}/contrib install; fi
+	@if [ -d ${.CURDIR}/contrib ]; then ${MAKE} DESTDIR=$$(readlink -f ${DESTDIR:U/}) -C ${.CURDIR}/contrib install; fi
 	@(cd ${.CURDIR}/src 2> /dev/null && find * -type f) | while read FILE; do \
 		tar -C ${.CURDIR}/src -cpf - "$${FILE}" | \
 		    tar -C ${DESTDIR}${LOCALBASE} -xpf -; \

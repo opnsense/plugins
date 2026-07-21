@@ -19,7 +19,7 @@
         <id>redistribution.linkedRoutemap</id>
         <label>Route-Map</label>
         <type>dropdown</type>
-        <help>Optional Route-map to apply to this redistribution.</help>
+        <help>Optional Route-map to apply to this redistribution. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
     </field>
     <field>
         <id>redistribution.description</id>

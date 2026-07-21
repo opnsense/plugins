@@ -3646,6 +3646,7 @@
                         <do-log>do-log</do-log>
                         <do-resolve>do-resolve</do-resolve>
                         <early-hint>early-hint</early-hint>
+                        <lua>lua</lua>
                         <normalize-uri>normalize-uri</normalize-uri>
                         <redirect>redirect</redirect>
                         <reject>reject</reject>
@@ -3689,7 +3690,7 @@
                         <track-sc1>track-sc1</track-sc1>
                         <track-sc2>track-sc2</track-sc2>
                         <unset-var>unset-var</unset-var>
-                        <use-service>use-service</use-service>
+                        <use-service>use-service - use a lua service</use-service>
                         <wait-for-body>wait-for-body</wait-for-body>
                         <wait-for-handshake>wait-for-handshake</wait-for-handshake>
                     </OptionValues>
@@ -3711,6 +3712,7 @@
                         <del-map>del-map</del-map>
                         <deny>deny</deny>
                         <do-log>do-log</do-log>
+                        <lua>lua</lua>
                         <redirect>redirect</redirect>
                         <replace-header>replace-header</replace-header>
                         <replace-value>replace-value</replace-value>
@@ -3804,7 +3806,7 @@
                         <content_track-sc1>content track-sc1</content_track-sc1>
                         <content_track-sc2>content track-sc2</content_track-sc2>
                         <content_unset-var>content unset-var</content_unset-var>
-                        <content_use-service>content use-service</content_use-service>
+                        <content_use-service>content use-service - use a lua service</content_use-service>
                         <inspect-delay>inspect-delay</inspect-delay>
                         <session_accept>session accept</session_accept>
                         <session_attach-srv>session attach-srv</session_attach-srv>
@@ -4363,8 +4365,12 @@
                     </OptionValues>
                 </type>
                 <content type="TextField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </content>
+                <url type="UrlField">
+                    <Mask>/^.{1,4096}$/u</Mask>
+                    <Required>N</Required>
+                </url>
             </mapfile>
         </mapfiles>
         <groups>

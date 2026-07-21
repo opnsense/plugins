@@ -7,10 +7,31 @@ makes it applicable to a wide variety of use cases including connecting
 hosts/VMs/containers to the network, advertising network services, LAN
 switching and routing, Internet access routers, and Internet peering.
 
-WWW: https://frrouting.org/
 
 Plugin Changelog
 ================
+
+1.53
+
+* BGP: improve visibility in ModelRelationFields and enable internalModelUseSafeDelete
+* BGP: add BFD strict mode for BGP neighbors (contributed by r3m8)
+* Diagnostics: do not mismatch on vtysh command escape
+* OSPF: improve many to one relationship between prefix lists and route maps, allow multiple selection
+* OSPF/OSPF6: more visibility and safety for ModelRelationField references
+* BFD: use physical interface helper in bfdd.conf
+
+1.52
+
+* Add BGP maximum-paths support for ECMP multipath (contributed by maxfield-allison) (opnsense/plugins/pull/4878)
+* Add description of BGP neighbor to frr.conf (contributed by n3wtype and Marcin Matlag) (opnsense/plugins/pull/5364)
+* Add local-address and interface options to BFD neighbors (contributed by r3m8) (opnsense/plugins/pull/5317)
+* Add BFD dependency support for static routes and add diagnostics (contributed by Sven Scholle) (opnsense/plugins/commit/12f8828)
+* Fix setup.sh script not being triggered after switch to watchfrr (opnsense/plugins/commit/9486488)
+* Fix OSPFv3 routes missing in diagnostics output (opnsense/plugins/commit/1e7cf83)
+
+1.51
+
+* Add per-neighbor local-as option for BGP (contributed by danohn) (opnsense/plugins/pull/5308)
 
 1.50
 

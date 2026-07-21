@@ -6,9 +6,17 @@ accounts on many dynamic DNS services.
 Plugin Changelog
 ================
 
+1.31
+
+* Add multiple hostname support for cloudflare (contributed by Maksim Tokarev)
+* Add all-inkl.com KAS API DynDNS provider (contributed by Carsten Kallies)
+* Fix missing logging URLs from ACL (contributed by Konstantinos Spartalis)
+
 1.30
 
 * Add native backend support for Hostinger (contributed by Leandro Scardua)
+* Fix Hetzner existing record update (contributed by Julian Nikodemus)
+* Fix PowerDNS URL validation
 
 1.29
 

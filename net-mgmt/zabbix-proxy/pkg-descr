@@ -12,6 +12,10 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
+1.17
+
+*Removed plugin variant for Zabbox Proxy 7.2 which is EoL
+
 1.16
 
 * Add StartAgentPollers and MaxConcurrentChecksPerPoller options (#5037)

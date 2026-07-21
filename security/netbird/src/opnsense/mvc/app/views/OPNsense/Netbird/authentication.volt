@@ -1,4 +1,5 @@
 {#
+ # Copyright (C) 2026 Konstantinos Spartalis <cspartalis@potatonetworks.com>
  # Copyright (C) 2025 Ralph Moser, PJ Monitoring GmbH
  # Copyright (C) 2025 squared GmbH
  # Copyright (C) 2025 Christopher Linn, BackendMedia IT-Services GmbH
@@ -29,20 +30,39 @@
 
 <script>
     function updateNetBirdStatusUI() {
-        ajaxGet('/api/netbird/status/status', {}, (data) => {
-            const $connectBtn = $("#connectBtn");
-            const $disconnectBtn = $("#disconnectBtn");
+        ajaxGet('/api/netbird/settings/get', {}, (settings) => {
+            const isEnabled = settings.settings?.general?.enable === '1';
 
-            $("#netbird-actions").removeClass("hidden");
+            const updateUI = (isConnected) => {
+                const $connectBtn = $("#connectBtn");
+                const $disconnectBtn = $("#disconnectBtn");
 
-            const isConnected = data.management?.connected === true;
-            const message = isConnected ? "NetBird is connected" : "NetBird is not connected";
-            const type = isConnected ? "info" : "warning";
+                $("#netbird-actions").removeClass("hidden");
 
-            $connectBtn.toggleClass("hidden", isConnected);
-            $disconnectBtn.toggleClass("hidden", !isConnected);
+                let message;
+                let type;
+                if (!isEnabled) {
+                    message = "Enable NetBird first";
+                    type = "warning";
+                } else {
+                    message = isConnected ? "NetBird is connected" : "NetBird is not connected";
+                    type = isConnected ? "info" : "warning";
+                }
 
-            $("#status").removeClass().addClass("alert alert-" + type).text(message).show();
+                $connectBtn.toggleClass("hidden", isConnected);
+                $disconnectBtn.toggleClass("hidden", !isConnected);
+
+                $("#status").removeClass().addClass("alert alert-" + type).text(message).show();
+            };
+
+            if (!isEnabled) {
+                updateUI(false);
+            } else {
+                ajaxGet('/api/netbird/status/status', {}, (data) => {
+                    const isConnected = data.management?.connected === true;
+                    updateUI(isConnected);
+                });
+            }
         });
     }
 
@@ -57,17 +77,11 @@
         $("#connectBtn").SimpleActionButton({
             onPreAction: () => {
                 const dfObj = new $.Deferred();
-                const setupKey = $("#authentication\\.setupKey").val();
-
-                if (setupKey.includes("*")) {
+                saveFormToEndpoint("/api/netbird/authentication/set", 'frmAuthentication', () => {
                     dfObj.resolve();
-                } else {
-                    saveFormToEndpoint("/api/netbird/authentication/set", 'frmAuthentication', () => {
-                        dfObj.resolve();
-                    }, true, () => {
-                        dfObj.reject();
-                    });
-                }
+                }, true, () => {
+                    dfObj.reject();
+                });
                 return dfObj;
             },
             onAction: () => {

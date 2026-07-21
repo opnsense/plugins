@@ -11,6 +11,7 @@ Plugin Changelog
 1.36
 
 * Add optional HTTP/3 support with dynamic Alt-Svc (contributed by Jan Chlouba)
+* Fix HTTP/3 reuseport duplicates (contributed by Jan Chlouba)
 
 1.35
 

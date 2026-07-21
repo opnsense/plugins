@@ -54,23 +54,23 @@
                 <arearange type="TextField"/>
                 <linkedPrefixlistIn type="ModelRelationField">
                     <Model>
-                        <template>
+                        <prefixlists>
                             <source>OPNsense.quagga.ospf6</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name</display>
-                            <group>name</group>
-                        </template>
+                            <display>name,seqnumber</display>
+                            <display_format>%s:%s</display_format>
+                        </prefixlists>
                     </Model>
                     <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
                 </linkedPrefixlistIn>
                 <linkedPrefixlistOut type="ModelRelationField">
                     <Model>
-                        <template>
+                        <prefixlists>
                             <source>OPNsense.quagga.ospf6</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name</display>
-                            <group>name</group>
-                        </template>
+                            <display>name,seqnumber</display>
+                            <display_format>%s:%s</display_format>
+                        </prefixlists>
                     </Model>
                     <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
                 </linkedPrefixlistOut>
@@ -194,12 +194,14 @@
                 </id>
                 <match2 type="ModelRelationField">
                     <Model>
-                        <template>
+                        <prefixlists>
                             <source>OPNsense.quagga.ospf6</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name</display>
-                        </template>
+                            <display>name,seqnumber</display>
+                            <display_format>%s:%s</display_format>
+                        </prefixlists>
                     </Model>
+                    <Multiple>Y</Multiple>
                     <ValidationMessage>Related item not found.</ValidationMessage>
                 </match2>
                 <set type="TextField"/>
@@ -225,12 +227,12 @@
                 </redistribute>
                 <linkedRoutemap type="ModelRelationField">
                     <Model>
-                        <template>
+                        <routemaps>
                             <source>OPNsense.quagga.ospf6</source>
                             <items>routemaps.routemap</items>
-                            <display>name</display>
-                            <group>name</group>
-                        </template>
+                            <display>name,id</display>
+                            <display_format>%s:%s</display_format>
+                        </routemaps>
                     </Model>
                     <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
                 </linkedRoutemap>

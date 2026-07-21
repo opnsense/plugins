@@ -7,6 +7,10 @@ networks where dedicated NAT64 hardware would be overkill.
 Plugin Changelog
 ================
 
+1.5
+
+* Allow non-global IPv4 addresses when using 64:ff9b::/96 (contributed by Maurice Walker)
+
 1.4
 
 * Enable forwarding of UDP packets with zero checksum (contributed by Maurice Walker)

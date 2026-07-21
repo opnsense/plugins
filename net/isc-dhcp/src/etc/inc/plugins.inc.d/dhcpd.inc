@@ -99,7 +99,7 @@ function dhcpd_services()
     if (dhcpd_dhcpv4_enabled()) {
         $pconfig = [];
         $pconfig['name'] = 'dhcpd';
-        $pconfig['description'] = gettext('ISC DHCPv4 Server');
+        $pconfig['description'] = gettext('ISC DHCPv4');
         $pconfig['php']['restart'] = ['dhcpd_dhcp4_configure'];
         $pconfig['php']['start'] = ['dhcpd_dhcp4_configure'];
         $pconfig['pidfile'] = '/var/dhcpd/var/run/dhcpd.pid';
@@ -109,7 +109,7 @@ function dhcpd_services()
     if (dhcpd_dhcpv6_enabled()) {
         $pconfig = [];
         $pconfig['name'] = 'dhcpd6';
-        $pconfig['description'] = gettext('ISC DHCPv6 Server');
+        $pconfig['description'] = gettext('ISC DHCPv6');
         $pconfig['php']['restart'] = ['dhcpd_dhcp6_configure'];
         $pconfig['php']['start'] = ['dhcpd_dhcp6_configure'];
         $pconfig['pidfile'] = '/var/dhcpd/var/run/dhcpdv6.pid';
@@ -1324,4 +1324,22 @@ function dhcpd_staticarp($interface, $ifconfig_details)
         /* call this only when the ARP cache was flushed */
         interfaces_neighbors_configure($interface, $ifconfig_details);
     }
+}
+
+function dhcpd_ip_in_interface_alias_subnet($interface, $ipalias)
+{
+    if (empty($interface) || !is_ipaddr($ipalias)) {
+        return false;
+    }
+
+    foreach (config_read_array('virtualip', 'vip', false) as $vip) {
+        if ($vip['mode'] == 'ipalias' && $vip['interface'] == $interface) {
+            $subnet = is_ipaddrv6($ipalias) ? gen_subnetv6($vip['subnet'], $vip['subnet_bits']) : gen_subnet($vip['subnet'], $vip['subnet_bits']);
+            if (ip_in_subnet($ipalias, "{$subnet}/{$vip['subnet_bits']}")) {
+                return true;
+            }
+        }
+    }
+
+    return false;
 }

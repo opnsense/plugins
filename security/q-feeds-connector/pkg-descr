@@ -3,6 +3,25 @@ Connector for Q-Feeds threat intel
 Plugin Changelog
 ================
 
+1.6
+
+* Feature: Add alert when license expired or invalid
+* Bugfix: Output filename locked or missing after last update
+* Bugfix: Use local file timestamp for feed updated_at
+* Bugfix: Skip mangled log lines
+
+1.5
+
+* Feature: Add passlist option for unbound
+* Feature: Add effective networks for unbound
+* Feature: Add NXDOMAIN option for unbound
+* Feature: Add dest address for unbound
+* Bugfix: Invalidate alias cache on reconfigure
+* Bugfix: Ignore "pass" log lines for `qfeedsctl.py logs`
+* Bugfix: Use proper configctl command option for flushing
+* Bugfix: Add optional locked mode in qfeedsctl.py for cron runners and wait for configfile changes when HTTP 401 is thrown
+* Bugfix: Ignore invalid json index file leading to instant exit of qfeedsctl.py
+
 1.4
 
 * Feature: Added DNSCrypt-Proxy integration

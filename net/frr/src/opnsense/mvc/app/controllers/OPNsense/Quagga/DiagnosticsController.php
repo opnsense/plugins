@@ -1,6 +1,7 @@
 <?php
 
 /*
+    Copyright (C) 2023-2026 Deciso B.V.
     Copyright (C) 2017 Fabian Franz
     Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
     All rights reserved.
@@ -122,6 +123,12 @@ class DiagnosticsController extends \OPNsense\Base\IndexController
                 'endpoint' => '/api/quagga/diagnostics/bfdsummary',
                 'tabhead' => gettext('Summary'),
                 'type' => 'bfdsummary'
+            ],
+            [
+                'name' => 'staticroute',
+                'endpoint' => '/api/quagga/diagnostics/bfdstaticroute',
+                'tabhead' => gettext('Static Route'),
+                'type' => 'bfdstaticroute'
             ],
             [
                 'name' => 'neighbors',
