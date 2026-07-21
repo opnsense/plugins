@@ -62,57 +62,63 @@ export default class NutNetclient extends BaseTableWidget {
         // Fetch the NUT settings from the server.
         const nut_settings = await this.ajaxCall(`/api/nut/${'settings/get'}`);
 
-        // // If netclient is not enabled, display a message and stop further processing.
-        // if (nut_settings.nut?.netclient?.enable !== "1") {
-        //     $('#nut-table').html(`<a href="/ui/nut/index#subtab_nut-ups-netclient">${this.translations.netclient_unconfigured}</a>`);
-        //     return;
-        // }
-
         // Fetch the UPS status data from the server.
-        const { response: nut_ups_status_response } = await this.ajaxCall(`/api/nut/${'diagnostics/upsstatus'}`);
+        const { items: nut_ups_status_items } = await this.ajaxCall(`/api/nut/${'diagnostics/upsstatus'}`);
 
-        if (!nut_ups_status_response) {
+        if (!nut_ups_status_items || !nut_ups_status_items.length) {
             $('#nut-table').html(`<a href="/ui/nut/index">${this.translations.misconfigured}</a>`);
             return;
         }
 
-        // Parse the UPS status data into a key-value object.
-        const nut_ups_status = nut_ups_status_response.split('\n').reduce((acc, line) => {
-            const [key, value] = line.split(': ');
-            if (key) acc[key] = value; // Only add non-empty keys.
-            return acc;
-        }, {});
-
         // Use the dataChanged method to check if the data has changed since the last tick
-        if (!this.dataChanged('ups_status', nut_ups_status)) {
+        if (!this.dataChanged('ups_status', nut_ups_status_items)) {
             return;
         }
 
-        // Prepare the rows for the table based on the fetched data.
-        const rows = [
-            // Display the remote server address if available.
-            nut_settings.nut?.netclient?.address && nut_settings.nut?.netclient?.address && nut_settings.nut?.netclient?.user && this.makeTextRow("netclient_remote_server", `${nut_settings.nut?.netclient?.user}@${nut_settings.nut?.netclient?.address}:${nut_settings.nut?.netclient?.port}`),
-            // Display the manufacturer and model if available.
-            nut_ups_status['device.mfr'] && nut_ups_status['device.model'] && this.makeTextRow("status_model", `${nut_ups_status['device.mfr']} - ${nut_ups_status['device.model']}`),
-            // Display the UPS Status if available.
-            nut_ups_status['ups.status'] && this.makeColoredTextRow('status_status', this.nutMapStatus(nut_ups_status['ups.status']), /OL/, /OB|LB|RB|DISCHRG/, nut_ups_status['ups.status']),
-            // Display the UPS load with percentage and optional nominal power.
-            nut_ups_status['ups.load'] && nut_ups_status['ups.realpower'] && this.makeUpsLoadRow('status_load', parseFloat(nut_ups_status['ups.load']), parseFloat(nut_ups_status['ups.realpower'])),
-            // Display the battery charge as a progress bar if available.
-            nut_ups_status['battery.charge'] && this.makeProgressBarRow("status_bcharge", parseFloat(nut_ups_status['battery.charge'])),
-            // Display the battery status if available.
-            nut_ups_status['battery.charger.status'] && this.makeTextRow('status_battery', nut_ups_status['battery.charger.status']),
-            // Display the formatted battery runtime if available.
-            nut_ups_status['battery.runtime'] && this.makeTextRow('status_timeleft', this.formatRuntime(parseInt(nut_ups_status['battery.runtime'], 10))),
-            // Display the input voltage and frequency if available.
-            nut_ups_status['input.voltage'] && nut_ups_status['input.frequency'] && this.makeTextRow('status_input_power', `${nut_ups_status['input.voltage']} V | ${nut_ups_status['input.frequency']} Hz`),
-            // Display the output voltage and frequency if available.
-            nut_ups_status['output.voltage'] && nut_ups_status['output.frequency'] && this.makeTextRow('status_output_power', `${nut_ups_status['output.voltage']} V | ${nut_ups_status['output.frequency']} Hz`),
-            // Display the result of the UPS efficiency if available.
-            nut_ups_status['ups.efficiency'] && this.makeTextRow('status_efficiency', `${nut_ups_status['ups.efficiency']}%`),
-            // Display the result of the UPS self-test if available.
-            nut_ups_status['ups.test.result'] && this.makeTextRow('status_selftest', nut_ups_status['ups.test.result']),
-        ].filter(Boolean); // Remove any undefined or null rows.
+        const rows = [];
+
+        // Display the remote server address if available.
+        if (nut_settings.nut?.netclient?.address && nut_settings.nut?.netclient?.user) {
+            rows.push(this.makeTextRow("netclient_remote_server", `${nut_settings.nut?.netclient?.user}@${nut_settings.nut?.netclient?.address}:${nut_settings.nut?.netclient?.port}`));
+        }
+
+        for (const item of nut_ups_status_items) {
+            // Parse the UPS status data into a key-value object.
+            const nut_ups_status = item.status.split('\n').reduce((acc, line) => {
+                const [key, value] = line.split(': ');
+                if (key) acc[key] = value; // Only add non-empty keys.
+                return acc;
+            }, {});
+
+            // Separate multiple UPS devices by their name.
+            if (nut_ups_status_items.length > 1) {
+                rows.push([$('<b></b>').text(item.name).prop('outerHTML')]);
+            }
+
+            // Prepare the rows for the table based on the fetched data.
+            rows.push(...[
+                // Display the manufacturer and model if available.
+                nut_ups_status['device.mfr'] && nut_ups_status['device.model'] && this.makeTextRow("status_model", `${nut_ups_status['device.mfr']} - ${nut_ups_status['device.model']}`),
+                // Display the UPS Status if available.
+                nut_ups_status['ups.status'] && this.makeColoredTextRow('status_status', this.nutMapStatus(nut_ups_status['ups.status']), /OL/, /OB|LB|RB|DISCHRG/, nut_ups_status['ups.status']),
+                // Display the UPS load with percentage and optional nominal power.
+                nut_ups_status['ups.load'] && nut_ups_status['ups.realpower'] && this.makeUpsLoadRow('status_load', parseFloat(nut_ups_status['ups.load']), parseFloat(nut_ups_status['ups.realpower'])),
+                // Display the battery charge as a progress bar if available.
+                nut_ups_status['battery.charge'] && this.makeProgressBarRow("status_bcharge", parseFloat(nut_ups_status['battery.charge'])),
+                // Display the battery status if available.
+                nut_ups_status['battery.charger.status'] && this.makeTextRow('status_battery', nut_ups_status['battery.charger.status']),
+                // Display the formatted battery runtime if available.
+                nut_ups_status['battery.runtime'] && this.makeTextRow('status_timeleft', this.formatRuntime(parseInt(nut_ups_status['battery.runtime'], 10))),
+                // Display the input voltage and frequency if available.
+                nut_ups_status['input.voltage'] && nut_ups_status['input.frequency'] && this.makeTextRow('status_input_power', `${nut_ups_status['input.voltage']} V | ${nut_ups_status['input.frequency']} Hz`),
+                // Display the output voltage and frequency if available.
+                nut_ups_status['output.voltage'] && nut_ups_status['output.frequency'] && this.makeTextRow('status_output_power', `${nut_ups_status['output.voltage']} V | ${nut_ups_status['output.frequency']} Hz`),
+                // Display the result of the UPS efficiency if available.
+                nut_ups_status['ups.efficiency'] && this.makeTextRow('status_efficiency', `${nut_ups_status['ups.efficiency']}%`),
+                // Display the result of the UPS self-test if available.
+                nut_ups_status['ups.test.result'] && this.makeTextRow('status_selftest', nut_ups_status['ups.test.result']),
+            ].filter(Boolean)); // Remove any undefined or null rows.
+        }
 
         // Update the table with the prepared rows.
         this.updateTable('nut-table', rows);

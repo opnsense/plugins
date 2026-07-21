@@ -36,4 +36,34 @@ class SettingsController extends ApiMutableModelControllerBase
 {
     protected static $internalModelClass = '\OPNsense\Nut\Nut';
     protected static $internalModelName = 'nut';
+
+    public function searchUpsAction()
+    {
+        return $this->searchBase('upses.ups', ['enabled', 'name', 'driver', 'args']);
+    }
+
+    public function getUpsAction($uuid = null)
+    {
+        return $this->getBase('ups', 'upses.ups', $uuid);
+    }
+
+    public function addUpsAction()
+    {
+        return $this->addBase('ups', 'upses.ups');
+    }
+
+    public function setUpsAction($uuid)
+    {
+        return $this->setBase('ups', 'upses.ups', $uuid);
+    }
+
+    public function delUpsAction($uuid)
+    {
+        return $this->delBase('upses.ups', $uuid);
+    }
+
+    public function toggleUpsAction($uuid)
+    {
+        return $this->toggleBase('upses.ups', $uuid);
+    }
 }
