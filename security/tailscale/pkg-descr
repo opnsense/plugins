@@ -6,6 +6,12 @@ https://tailscale.com/
 Plugin Changelog
 ================
 
+1.5
+
+* add tailscale set command support
+* add relay server port setting (--relay-server-port)
+* add web client option (--webclient)
+
 1.4
 
 * set pre-auth key field in UI to optional, enables registration via pre-auth key or AuthURL from status page
