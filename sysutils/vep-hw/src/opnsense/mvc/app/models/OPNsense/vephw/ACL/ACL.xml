@@ -1,0 +1,9 @@
+<acl>
+    <page-user-helloworld>
+        <name>Lobby: Hello World!</name>
+        <patterns>
+            <pattern>ui/helloworld/*</pattern>
+            <pattern>api/helloworld/*</pattern>
+        </patterns>
+    </page-user-helloworld>
+</acl>

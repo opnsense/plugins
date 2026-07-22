@@ -1,0 +1,5 @@
+<menu>
+    <System>
+        <VepHW VisibleName="VEP Hardware Control" cssClass="fa fa-server fa-fw" url="/ui/vephw"/>
+    </System>
+</menu>

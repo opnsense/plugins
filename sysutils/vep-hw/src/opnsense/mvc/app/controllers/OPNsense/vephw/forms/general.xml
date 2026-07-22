@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>vephw.general.FanDutyCycle</id>
+        <label>Fan Duty Cycle</label>
+        <type>dropdown</type>
+        <help>Set fan duty cycle, if available</help>
+    </field>
+</form>

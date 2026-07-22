@@ -1,0 +1,14 @@
+<metadata>
+    <dechw>
+        <filename>VepHW.js</filename>
+        <endpoints>
+            <endpoint>/api/vephw/info/fanstatus</endpoint>
+        </endpoints>
+        <translations>
+            <title>DellEMC VEP1400 Hardware Information</title>
+            <nofan>Fan speed not available. This widget is only applicable to DellEMC VEP1400 boards with a fan controller.</nofan>
+            <fanspeed>RPM</fanspeed>
+            <fan>Fan</fan>
+        </translations>
+    </dechw>
+</metadata>

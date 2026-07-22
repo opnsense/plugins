@@ -1,0 +1,32 @@
+<model>
+    <mount>//OPNsense/vephw</mount>
+    <description>VEP1400 Hardware Control</description>
+    <items>
+        <!-- container -->
+        <general>
+            <!-- fields -->
+            <FanDutyCycle type="OptionField">
+                <Default>0x0b</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <opt1 value="0x00">30%</opt1>
+                    <opt2 value="0x01">34.67%</opt2>
+                    <opt2 value="0x02">39.33%</opt2>
+                    <opt2 value="0x03">44%</opt2>
+                    <opt2 value="0x04">48.67%</opt2>
+                    <opt2 value="0x05">53.33%</opt2>
+                    <opt2 value="0x06">58%</opt2>
+                    <opt2 value="0x07">62.67%</opt2>
+                    <opt2 value="0x08">67.33%</opt2>
+                    <opt2 value="0x09">72%</opt2>
+                    <opt2 value="0x0a">76.67%</opt2>
+                    <opt2 value="0x0b">81.33%</opt2>
+                    <opt2 value="0x0c">86%</opt2>
+                    <opt2 value="0x0d">90.67%</opt2>
+                    <opt2 value="0x0e">95.33%</opt2>
+                    <opt2 value="0x0f">100%</opt2>
+                </OptionValues>
+            </FanDutyCycle>
+        </general>
+    </items>
+</model>
