@@ -28,11 +28,13 @@
 
 namespace OPNsense\Chrony;
 
-class GeneralController extends \OPNsense\Base\IndexController
+class IndexController extends \OPNsense\Base\IndexController
 {
     public function indexAction()
     {
+        $this->view->pick('OPNsense/Chrony/index');
         $this->view->generalForm = $this->getForm('general');
-        $this->view->pick('OPNsense/Chrony/general');
+        $this->view->formDialogPeer = $this->getForm("dialogPeer");
+        $this->view->formGridPeer = $this->getFormGrid("dialogPeer");
     }
 }
