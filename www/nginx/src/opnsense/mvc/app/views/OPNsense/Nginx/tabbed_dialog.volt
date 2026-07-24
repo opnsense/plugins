@@ -1,6 +1,6 @@
 {#
  # Copyright (c) 2021 Manuel Faux
- # OPNsense® is Copyright © 2014-2021 by Deciso B.V.
+ # OPNsense® is Copyright © 2014-2026 by Deciso B.V.
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -42,12 +42,22 @@
 {# Find if there are help supported or advanced field on this page #}
 {% set base_dialog_help=false %}
 {% set base_dialog_advanced=false %}
-{% for name,field in base_dialog_fields|default({})%}
-    {% if name=='help' and field %}
-        {% set base_dialog_help=true %}
-    {% elseif name=='advanced' and field %}
-        {% set base_dialog_advanced=true %}
-    {% endif %}
+{% for tab in base_dialog_fields['tabs']|default({}) %}
+    {% for section in tab['sections']|default({}) %}
+        {% for field in section['children']|default({}) %}
+            {% for name,element in field %}
+                {% if name=='help' %}
+                    {% set base_dialog_help=true %}
+                {% endif %}
+                {% if name=='advanced' %}
+                    {% set base_dialog_advanced=true %}
+                {% endif %}
+            {% endfor %}
+            {% if base_dialog_help|default(false) and base_dialog_advanced|default(false) %}
+                {% break %}
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
 {% endfor %}
 
 <script>
@@ -83,9 +93,9 @@
             </div>
             <div class="modal-body">
                 <ul class="nav nav-tabs" role="tablist" id="dialogtabs">
-                    {% for field in base_dialog_fields['tabs']|default({})%}
+                    {% for tab in base_dialog_fields['tabs']|default({})%}
                     <li>
-                        <a data-toggle="tab" href="#frm_{{base_dialog_id}}-tab_{{field['tab_id']}}"><b>{{field['tab_descr']}}</b></a>
+                        <a data-toggle="tab" href="#frm_{{base_dialog_id}}-tab_{{tab['tab_id']}}"><b>{{tab['tab_descr']}}</b></a>
                     </li>
                     {% endfor %}
                 </ul>
@@ -112,15 +122,28 @@
                         </div>
                         {% for tab in base_dialog_fields['tabs']|default({})%}
                         <div id="frm_{{base_dialog_id}}-tab_{{tab['tab_id']}}" class="tab-pane fade">
-                            <div class="table-responsive">
+                            {% for section in tab['sections']|default({}) %}
+                            <div class="table-responsive {{section['style']|default('')}}">
                                 <table class="table table-striped table-condensed">
                                     <colgroup>
                                         <col class="col-md-3"/>
                                         <col class="col-md-{{ 12-3-msgzone_width|default(5) }}"/>
                                         <col class="col-md-{{ msgzone_width|default(5) }}"/>
                                     </colgroup>
+                                    {% if section['type']|default(false) == 'header' %}
+                                    <thead>
+                                        <tr{% if section['advanced']|default(false)=='true' %} data-advanced="true"{% endif %}>
+                                            <th colspan="3">
+                                                <h2>{{section['label']}}</h2>
+                                                {%- if section['hint']|default(false) %}
+                                                <small>{{section['hint']}}</small>
+                                                {%- endif %}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    {% endif %}
                                     <tbody>
-                            {% for field in tab[2]|default({})%}
+                            {% for field in section['children']|default({}) %}
                                 {# looks a bit buggy in the volt templates, field parameters won't reset properly here #}
                                 {% set advanced=false %}
                                 {% set help=false %}
@@ -130,35 +153,12 @@
                                 {% set width=false %}
                                 {% set allownew=false %}
                                 {% set readonly=false %}
-                                {% if field['type'] == 'header' %}
-                                    </tbody>
-                                </table>
-                            </div>
-                            <div class="table-responsive {{field['style']|default('')}}">
-                                <table class="table table-striped table-condensed">
-                                    <colgroup>
-                                        <col class="col-md-3"/>
-                                        <col class="col-md-{{ 12-3-msgzone_width|default(5) }}"/>
-                                        <col class="col-md-{{ msgzone_width|default(5) }}"/>
-                                    </colgroup>
-                                    <thead>
-                                        <tr{% if field['advanced']|default(false)=='true' %} data-advanced="true"{% endif %}>
-                                            <th colspan="3">
-                                                <h2>{{field['label']}}</h2>
-                                                {%- if field['hint']|default(false) %}
-                                                <small>{{field['hint']}}</small>
-                                                {%- endif %}
-                                            </th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                {% else %}
                                   {{ partial("layout_partials/form_input_tr",field)}}
-                                {% endif %}
                             {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
+                            {% endfor %}
                         </div>
                         {% endfor %}
                     </div>
