@@ -42,17 +42,11 @@
 {# Find if there are help supported or advanced field on this page #}
 {% set base_dialog_help=false %}
 {% set base_dialog_advanced=false %}
-{% for field in base_dialog_fields|default({})%}
-    {% for name,element in field %}
-        {% if name=='help' %}
-            {% set base_dialog_help=true %}
-        {% endif %}
-        {% if name=='advanced' %}
-            {% set base_dialog_advanced=true %}
-        {% endif %}
-    {% endfor %}
-    {% if base_dialog_help|default(false) and base_dialog_advanced|default(false) %}
-        {% break %}
+{% for name,field in base_dialog_fields|default({})%}
+    {% if name=='help' and field %}
+        {% set base_dialog_help=true %}
+    {% elseif name=='advanced' and field %}
+        {% set base_dialog_advanced=true %}
     {% endif %}
 {% endfor %}
 
@@ -91,7 +85,7 @@
                 <ul class="nav nav-tabs" role="tablist" id="dialogtabs">
                     {% for field in base_dialog_fields['tabs']|default({})%}
                     <li>
-                        <a data-toggle="tab" href="#frm_{{base_dialog_id}}-tab_{{field[0]}}"><b>{{field[1]}}</b></a>
+                        <a data-toggle="tab" href="#frm_{{base_dialog_id}}-tab_{{field['tab_id']}}"><b>{{field['tab_descr']}}</b></a>
                     </li>
                     {% endfor %}
                 </ul>
@@ -117,7 +111,7 @@
                             </table>
                         </div>
                         {% for tab in base_dialog_fields['tabs']|default({})%}
-                        <div id="frm_{{base_dialog_id}}-tab_{{tab[0]}}" class="tab-pane fade">
+                        <div id="frm_{{base_dialog_id}}-tab_{{tab['tab_id']}}" class="tab-pane fade">
                             <div class="table-responsive">
                                 <table class="table table-striped table-condensed">
                                     <colgroup>
