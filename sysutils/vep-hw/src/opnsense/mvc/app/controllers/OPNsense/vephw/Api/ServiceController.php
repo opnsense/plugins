@@ -42,7 +42,7 @@ class ServiceController extends ApiControllerBase
     /**
      * reconfigure vephw
      */
-    public function reloadAction()
+    /**public function reloadAction()
     {
         $status = "failed";
         if ($this->request->isPost()) {
@@ -50,15 +50,17 @@ class ServiceController extends ApiControllerBase
         }
         $status = "success";
         return ["status" => $status];
-    }
+    }//*/
 
     /**
      * setfan
      */
-    public function applyAction()
+    public function setFanAction()
     {
         if ($this->request->isPost()) {
-            $bckresult = trim((new Backend())->configdRun("vephw setfan"));
+            $mdl = $this->getModel();
+            $fan_dc = $mdl->general->FanDutyCycle;
+            $bckresult = trim((new Backend())->configdRun(sprintf("vephw setfan %d", $fan_dc)));
             if ($bckresult !== null) {
                 // only return valid json type responses
                 return $bckresult;

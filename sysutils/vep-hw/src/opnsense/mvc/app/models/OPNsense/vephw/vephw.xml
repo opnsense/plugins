@@ -5,6 +5,10 @@
         <!-- container -->
         <general>
             <!-- fields -->
+            <FanControl type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </FanControl>
             <FanDutyCycle type="OptionField">
                 <Default>0x0b</Default>
                 <Required>Y</Required>

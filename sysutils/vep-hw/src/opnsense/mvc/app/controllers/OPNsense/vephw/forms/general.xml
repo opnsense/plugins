@@ -1,5 +1,13 @@
 <form>
     <field>
+        <id>vephw.general.FanControl</id>
+        <label>Fan Control Enabled</label>
+        <type>checkbox</type>
+        <help>Enable manual fan control, if disabled the fan will be 
+        automatically controled by the TC654
+        </help>
+    </field>
+    <field>
         <id>vephw.general.FanDutyCycle</id>
         <label>Fan Duty Cycle</label>
         <type>dropdown</type>
