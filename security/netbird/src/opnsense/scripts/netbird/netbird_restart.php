@@ -29,9 +29,15 @@
 
 /*
  * Wrapper script for "netbird restart" that automatically reloads the
- * packet filter after the tunnel interface is recreated.
+ * packet filter after the tunnel interface is recreated.  Also used as the
+ * "start" configd action (actions_netbird.conf) — rc.d's restart_cmd is a
+ * tolerant superset of start (stop is a no-op when nothing is running), so
+ * this is safe to run from a stopped state too, and it means every caller
+ * that brings the service up (GUI, HA config-sync apply, CLI configctl)
+ * goes through the same interface-wait-and-filter-reload path instead of
+ * only the ones that happen to call "restart" explicitly.
  *
- * When NetBird restarts, it destroys the existing tunnel interface,
+ * When NetBird (re)starts, it destroys any existing tunnel interface,
  * creates a fresh tun device, and renames it.  This is particularly
  * important after a WAN failover with a default gateway switch, where
  * NetBird is restarted to bind to the new path.
