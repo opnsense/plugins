@@ -30,15 +30,19 @@
 
 namespace OPNsense\vephw\Api;
 
-use OPNsense\Base\ApiControllerBase;
+use OPNsense\Base\ApiMutableServiceControllerBase;
 use OPNsense\Core\Backend;
 
-/**
- * Class ServiceController
- * @package OPNsense\Cron
- */
-class ServiceController extends ApiControllerBase
+
+class ServiceController extends ApiMutableServiceControllerBase
 {
+
+    protected static $internalServiceClass = '\OPNsense\vephw\vephw';
+    protected static $internalServiceTemplate = 'OPNsense/vephw';
+    protected static $internalServiceEnabled = 'general.enabled';
+    protected static $internalServiceName = 'vephw';
+
+
     /**
      * reconfigure vephw
      */

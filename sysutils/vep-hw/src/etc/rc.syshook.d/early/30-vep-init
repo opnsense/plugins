@@ -3,7 +3,7 @@
 #ichsmb has to load first, so that ismt is at /dev/smb1 (or adjust the script)
 needed_klds="ichsmb ismt smb"
 
-kldload $needed_klds
+kldload $needed_klds &> /dev/null
 sleep 1
 
 ismt_dev=/dev/smb1
@@ -19,7 +19,7 @@ if [ ! -z $board_id ]; then
     sleep 1
     smbmsg -f $ismt_dev -s 0x48 -c 0x1 -o 1 0x0
 
-    if [ x"$board_id" != "0" ] && [ x"$board_id" != "1" ]; then
+    if [ x"$board_id" != x"0" ] && [ x"$board_id" != x"1" ]; then
         # set fan speed. At address 36 is a TC654
         # set control register to allow SMBus control of duty cycle
         smbmsg -f $ismt_dev -s 0x36 -c 0x04 -o 1 0x34
