@@ -2975,8 +2975,8 @@ select[multiple].input-lg,
   border: 1px solid #191919;
   outline:0;   }
   .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
-    color: #fff;
-    background-color: #a84c0b;
+    color: #bac3ca;
+    background-color: #0f4e16;
     border-color: 1px solid #1d1d1d;
     outline:0; }
 
@@ -2992,12 +2992,12 @@ select[multiple].input-lg,
     background-color: #fff; }
 
 .btn-success {
-  color: #fff;
-  background-color: #46A50C;
+  color: #bac3ca;
+  background-color: #105b19;
   border-color: #323232; }
   .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle {
-    color: #fff;
-    background-color: #3D910A;
+    color: #bac3ca;
+    background-color: #0a4311;
     border-color: #323232;
 	outline:0; }
   .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle {
@@ -3031,12 +3031,12 @@ select[multiple].input-lg,
     background-color: #fff; }
 
 .btn-warning {
-  color: #fff;
+  color: #bac3ca;
   background-color: #DE7313;
   border: 1px solid #191919; }
   .btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .open > .btn-warning.dropdown-toggle {
-    color: #fff;
-    background-color: #292929;
+    color: #bac3ca;
+    background-color: #ab2c17;
     border: 1px solid #191919; }
 
   .btn-warning:active, .btn-warning.active, .open > .btn-warning.dropdown-toggle {
@@ -3050,12 +3050,12 @@ select[multiple].input-lg,
     background-color: #fff; }
 
 .btn-danger {
-  color: #fff;
-  background-color: #DB4829;
-  border: 1px solid #191919; }
+  color: #bac3ca;
+  background-color: #822e20;
+  border-color: #191919; }
   .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
-    color: #fff;
-    background-color: none;
+    color: #bac3ca;
+    background-color: #5d2117;
     border-color: #DB4829; }
   .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
     background-image: none; }
