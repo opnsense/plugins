@@ -39,6 +39,17 @@
  * NetBird is converged to it, then the result is verified.  The token file
  * is deliberately never deleted — removing it would let an older event
  * erase a newer event's claim, dropping the final state transition.
+ *
+ * The debounce token only guarantees one winner per 2-second burst; it does
+ * not stop the winners of two separate bursts from driving the netbird
+ * daemon at the same time.  A "start" can block for 30+ seconds waiting on
+ * the tunnel and filter reload, so during sustained flapping a later
+ * burst's "stop" can land on the daemon mid-flight and tear the interface
+ * down before the filter is ever synced to it.  The action lock below
+ * serializes convergence attempts across bursts so that can't happen: a
+ * queued winner waits for the in-flight action to fully finish, then
+ * re-checks both the token and the live CARP state before acting, so it
+ * never acts on stale information.
  */
 
 require_once("config.inc");
@@ -66,7 +77,29 @@ if (@file_get_contents($debounce_ref) !== $my_token) {
     exit(0);
 }
 
-// We are the last event in the burst — converge on the live CARP state
+// We won the burst — serialize against any other burst's winner before
+// touching the netbird daemon.  flock is released automatically if this
+// process exits or is killed, so a crashed handler can't wedge the lock.
+$lock_fh = fopen('/var/run/netbird_carp_action.lock', 'c');
+if ($lock_fh === false) {
+    log_msg('NetBird CARP: failed to open action lock, aborting');
+    exit(1);
+}
+if (!flock($lock_fh, LOCK_EX | LOCK_NB)) {
+    log_msg('NetBird CARP: waiting for a previous convergence to finish');
+    flock($lock_fh, LOCK_EX);
+}
+
+// Time passed while winning the burst and waiting for the lock; a newer
+// event may have claimed the token in the meantime, and its handler owns
+// the outcome now.
+if (@file_get_contents($debounce_ref) !== $my_token) {
+    log_msg("NetBird CARP: '{$type}' event from '{$subsystem}' ignored, newer event triggered making this obsolete");
+    exit(0);
+}
+
+// We are the last event in the burst and hold the action lock — converge
+// on the live CARP state
 $master = netbird_carp_check_master();
 $desired = $master ? 'MASTER' : 'BACKUP';
 if ($desired !== $type) {
