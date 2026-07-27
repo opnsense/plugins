@@ -49,11 +49,12 @@ class InfoController extends ApiControllerBase
     public function tempStatusAction()
     {
         $result = ["status" => "failed"];
-        $status = (new Backend())->configdRun('vephw gettemp');
+        $status = trim((new Backend())->configdRun('vephw gettemp'));
 
         if (!empty($status)) {
             $result["status"] = "OK";
-            $result = array_merge($result, $status);
+            $temp["temp"] = $status;
+            $result = array_merge($result, $temp);
         }
 
         return $result;

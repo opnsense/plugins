@@ -42,18 +42,14 @@ class ServiceController extends ApiControllerBase
     /**
      * reconfigure vephw
      */
-    /**public function reloadAction()
+    public function reloadAction()
     {
-        $status = "failed";
-        if ($this->request->isPost()) {
-            $status = strtolower(trim((new Backend())->configdRun('template reload OPNsense/VepHW')));
-        }
         $status = "success";
         return ["status" => $status];
     }//*/
 
     /**
-     * setfan
+     * apply
      */
     public function setFanAction()
     {
