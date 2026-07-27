@@ -3,12 +3,14 @@
         <filename>VepHW.js</filename>
         <endpoints>
             <endpoint>/api/vephw/info/fanstatus</endpoint>
+            <endpoint>/api/vephw/info/tempstatus</endpoint>
         </endpoints>
         <translations>
             <title>VEP1400 Hardware Information</title>
             <nofan>Fan speed not available. This widget is only applicable to VEP1400 boards with a fan controller.</nofan>
             <fanspeed>RPM</fanspeed>
             <fan>Fan</fan>
+            <temp>Temperature</temp>
         </translations>
     </dechw>
 </metadata>
