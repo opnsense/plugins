@@ -51,7 +51,7 @@ class ServiceController extends ApiControllerBase
     /**
      * apply
      */
-    public function setFanAction()
+    public function applyAction()
     {
         if ($this->request->isPost()) {
             $mdl = $this->getModel();
