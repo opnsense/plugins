@@ -93,9 +93,9 @@ export default class VepHW extends BaseWidget {
             //$fan.css('color', 'green');
             $(`#${key}`).append($fan);
         });
-        let tempdata = await this.ajaxCall('/api/vephw/info/tempstatus');
-        let $temp = $(`<span class="fan" data-toggle="" title="">${tempdata['temp']}</span>`);
-        $(`#temp`).append($temp);
+        //let tempdata = await this.ajaxCall('/api/vephw/info/tempstatus');
+        //let $temp = $(`<span class="fan" data-toggle="" title="">${tempdata['temp']}</span>`);
+        //$(`#temp`).append($temp);
         $('.fan').tooltip({container: 'body'});
     }
 }
