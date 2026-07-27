@@ -62,13 +62,13 @@ export default class VepHW extends BaseWidget {
         return $(`
             <div id="status"></div>
             <div class="fan-container">
-                <div id="fan1" class="">
+                <div id="fan1" class="data-item">
                     <strong>${this.translations.fan} 1: </strong>
                 </div>
-                <div id="fan2" class="">
+                <div id="fan2" class="data-item">
                     <strong>${this.translations.fan} 2: </strong>
                 </div>
-                <div id="temp" class="">
+                <div id="temp" class="data-item">
                     <strong>${this.translation.temp} </strong>
                 </div>
             </div>
