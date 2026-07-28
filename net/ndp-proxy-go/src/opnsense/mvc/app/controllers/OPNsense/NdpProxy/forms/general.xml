@@ -45,6 +45,24 @@
         <help>Automatically create host routes for discovered clients. Disabling this means you must manually handle all routing decisions.</help>
     </field>
     <field>
+        <id>ndpproxy.general.static_prefix</id>
+        <label>Static prefixes</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Manually trust an IPv6 prefix for downstream learning. This is only needed in static IPv6 provider networks without usable RA information on the upstream interface.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>ndpproxy.general.static_router</id>
+        <label>Static routers</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Manually trust an upstream router link-local address. This is only needed in static IPv6 provider networks without usable RA information on the upstream interface.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <type>header</type>
         <label>Neighbor Settings</label>
         <collapse>true</collapse>
