@@ -13,4 +13,22 @@
         <type>dropdown</type>
         <help>Set fan duty cycle, if available</help>
     </field>
+    <field>
+        <id>vephw.led.red</id>
+        <label>LED Color Red</label>
+        <type>text</type>
+        <help>Set LED color - red channel intensity</help>
+    </field>
+    <field>
+        <id>vephw.led.green</id>
+        <label>LED Color Green</label>
+        <type>text</type>
+        <help>Set LED color - green channel intensity</help>
+    </field>
+    <field>
+        <id>vephw.led.blue</id>
+        <label>LED Color Blue</label>
+        <type>text</type>
+        <help>Set LED color - blue channel intensity</help>
+    </field>
 </form>

@@ -32,5 +32,29 @@
                 </OptionValues>
             </FanDutyCycle>
         </general>
+        <led>
+            <red type="IntegerField">
+                <Default>0</Default>
+                <Required>Y</Required>
+                <ValidationMessage>Must be between 0-255.</ValidationMessage>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>255</MaximumValue>
+            </red>
+            <green type="IntegerField">
+                <Default>0</Default>
+                <Required>Y</Required>
+                <ValidationMessage>Must be between 0-255.</ValidationMessage>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>255</MaximumValue>
+            </green>
+            <blue type="IntegerField">
+                <Default>0</Default>
+                <Required>Y</Required>
+                <ValidationMessage>Must be between 0-255.</ValidationMessage>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>255</MaximumValue>
+            </blue>
+
+        </led>
     </items>
 </model>

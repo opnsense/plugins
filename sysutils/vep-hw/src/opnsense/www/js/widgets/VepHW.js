@@ -78,7 +78,8 @@ export default class VepHW extends BaseWidget {
     async onWidgetTick() {
         $('.fan').tooltip('hide');
         let data = await this.ajaxCall('/api/vephw/info/fanstatus');
-
+        let tempdata = await this.ajaxCall('/api/vephw/info/tempstatus');
+        
         if (!data || data.status === 'failed') {
             $('#status').html(`<div class="error-message" style="margin: 10px;">${this.translations.nofan}</div>`);
             $('.fan-container').hide();
@@ -93,7 +94,6 @@ export default class VepHW extends BaseWidget {
             //$fan.css('color', 'green');
             $(`#${key}`).append($fan);
         });
-        let tempdata = await this.ajaxCall('/api/vephw/info/tempstatus');
         let $temp = $(`<span class="fan" data-toggle="" title="">${tempdata['temp']}</span>`);
         $(`#temp`).append($temp);
         $('.fan').tooltip({container: 'body'});
