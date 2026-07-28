@@ -6,6 +6,9 @@ DOC: https://docs.opnsense.org/manual/ndp-proxy-go.html
 Plugin Changelog
 ================
 
+1.4
+* Add static-prefix and static-router flags
+
 1.3
 
 * Add ratelimit for pfctl operations
