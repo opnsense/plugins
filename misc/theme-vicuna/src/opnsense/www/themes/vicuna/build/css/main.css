@@ -2962,7 +2962,7 @@ select[multiple].input-lg,
   outline:0;   }
   .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
     color: #bac3ca;
-    background-color: #0f4e16;
+    background-color: #bf690e;
     border-color: 1px solid #191919;
     outline:0; }
 
@@ -2979,11 +2979,11 @@ select[multiple].input-lg,
 
 .btn-success {
   color: #bac3ca;
-  background-color: #105b19;
+  background-color: none;
   border-color: #191919; }
   .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle {
     color: #bac3ca;
-    background-color: #0a4311;
+    background-color: #7fc54f;
     border-color: #191919;
 	outline:0; }
   .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle {
@@ -3022,7 +3022,7 @@ select[multiple].input-lg,
   border-color: #191919; }
   .btn-warning:hover, .btn-warning:focus, .btn-warning:active, .btn-warning.active, .open > .btn-warning.dropdown-toggle {
     color: #bac3ca;
-    background-color: #ab2c17;
+    background-color: #EC7726;
     border-color: #191919; }
 
   .btn-warning:active, .btn-warning.active, .open > .btn-warning.dropdown-toggle {
@@ -3037,11 +3037,11 @@ select[multiple].input-lg,
 
 .btn-danger {
   color: #bac3ca;
-  background-color: #822e20;
+  background-color: #CB4326;
   border-color: #1B4257; }
   .btn-danger:hover, .btn-danger:focus, .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
     color: #bac3ca;
-    background-color: #5d2117;
+    background-color: #B63B21;
     border-color: #1B4257; }
   .btn-danger:active, .btn-danger.active, .open > .btn-danger.dropdown-toggle {
     background-image: none; }
