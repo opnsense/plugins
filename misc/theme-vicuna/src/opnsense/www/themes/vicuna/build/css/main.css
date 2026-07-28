@@ -2980,7 +2980,7 @@ select[multiple].input-lg,
 .btn-success {
   color: #bac3ca;
   background-color: none;
-  border-color: #191919; }
+  border-top: solid 1px rgba(255, 255, 255, 0.06); }
   .btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open > .btn-success.dropdown-toggle {
     color: #bac3ca;
     background-color: #0a4311;
