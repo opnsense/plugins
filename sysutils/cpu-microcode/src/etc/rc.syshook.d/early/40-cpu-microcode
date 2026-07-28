@@ -1,0 +1,5 @@
+#!/bin/sh
+
+export microcode_update_enable="YES"
+
+/usr/local/etc/rc.d/microcode_update start

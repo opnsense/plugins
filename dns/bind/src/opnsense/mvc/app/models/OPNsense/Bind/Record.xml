@@ -33,6 +33,7 @@
                         <DS>DS</DS>
                         <HTTPS>HTTPS</HTTPS>
                         <MX>MX</MX>
+                        <NAPTR>NAPTR</NAPTR>
                         <NS>NS</NS>
                         <PTR>PTR</PTR>
                         <RP>RP</RP>

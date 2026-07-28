@@ -19,6 +19,9 @@ chown -R $user:$group /var/run/frr
 touch /var/log/frr.log
 chown $user:$group /var/log/frr.log
 
+# Reload templates here since we allow manual_config
+/usr/local/sbin/pluginctl -c frr_sync
+
 # register Security Associations
 /usr/local/opnsense/scripts/frr/register_sas
 

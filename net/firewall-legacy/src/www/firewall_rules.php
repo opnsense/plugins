@@ -275,8 +275,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $id = $pconfig['id'];
     }
     if (isset($pconfig['act']) && $pconfig['act'] == "apply") {
-        system_cron_configure();
-        filter_configure();
+        configd_run('cron restart');
+        configd_run('filter reload');
         clear_subsystem_dirty('filter');
         $savemsg = get_std_save_message();
     } elseif (isset($pconfig['act']) && $pconfig['act'] == 'del' && isset($id)) {

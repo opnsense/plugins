@@ -8,6 +8,7 @@ Plugin Changelog
 * Feature: Add alert when license expired or invalid
 * Bugfix: Output filename locked or missing after last update
 * Bugfix: Use local file timestamp for feed updated_at
+* Bugfix: Skip mangled log lines
 
 1.5
 

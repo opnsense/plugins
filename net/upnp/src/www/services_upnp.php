@@ -200,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
         write_config('Modified UPnP IGD & PCP settings');
         miniupnpd_configure_do();
-        filter_configure();
+        configd_run('filter reload');
         header(url_safe('Location: /services_upnp.php'));
         exit;
     }

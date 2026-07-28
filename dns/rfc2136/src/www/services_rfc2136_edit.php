@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
 
         write_config('New/Edited RFC2136 dnsupdate entry was posted');
-        system_cron_configure();
+        configd_run('cron restart');
 
         if (!empty($pconfig['force'])) {
             rfc2136_configure_do(false, null, $rfc2136['host'], true);

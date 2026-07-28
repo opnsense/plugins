@@ -4,8 +4,6 @@ one computer can find another computer on the basis of its name.
 The BIND software distribution contains all of the software
 necessary for asking and answering name service questions.
 
-WWW: https://www.isc.org
-
 Plugin Changelog
 ================
 
@@ -15,6 +13,7 @@ Plugin Changelog
 * Add forward zones
 * Fix primary zones grid and command column (contributed by benyamin-codez)
 * Add HTTPS and SVCB record types (contributed by Michael Bedworth)
+* Add NAPTR record type (contributed by Mike Shuey)
 
 1.33
 

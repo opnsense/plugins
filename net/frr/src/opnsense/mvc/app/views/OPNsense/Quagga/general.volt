@@ -45,6 +45,12 @@ POSSIBILITY OF SUCH DAMAGE.
                 updateServiceControlUI('quagga');
             }
         });
+
+        /* Manual configuration, hide all config elements except manual_config fields */
+        $("#general\\.manual_config").on("change", function () {
+            $(".manual_config_hide").closest("tr").toggle(!$(this).is(":checked"));
+            $(".selectpicker").selectpicker("refresh");
+        });
     });
 </script>
 

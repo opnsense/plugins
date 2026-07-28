@@ -89,6 +89,7 @@ if not telemetry_state.is_running():
                 # the eventcollector loop sets exit_code when issues ocure, no data processed doesn't mean
                 # anything is wrong (it's just not of interest to Proofpoint).
                 exit_code = 0
+                s = requests.Session()
                 for push_data in event_collector:
                     params = {
                         'timeout': 5,
@@ -98,7 +99,7 @@ if not telemetry_state.is_running():
                     if args.insecure:
                         params['verify'] = False
 
-                    r = requests.post(args.endpoint, **params)
+                    r = s.post(args.endpoint, **params)
                     if r.status_code != 201:
                         syslog.syslog(
                             syslog.LOG_ERR,

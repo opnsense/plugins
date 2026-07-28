@@ -8,6 +8,7 @@ Plugin Changelog
 1.4
 
 * Make email_err_data static due to SQUID-2025:2 CVE 10.0 (contributed by m.a.x. it)
+* Add nobind check for virtual IPs (contributed by IAMJDA)
 
 1.3
 

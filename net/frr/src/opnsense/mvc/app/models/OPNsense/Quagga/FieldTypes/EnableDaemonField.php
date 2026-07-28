@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2024 Cedrik Pischem
+ * Copyright (C) 2026 Deciso B.V.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -19,48 +19,34 @@
  * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
  * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
  * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * SUBSTITUTE GOODS OR SERVICES, LOSS OF USE, DATA, OR PROFITS, OR BUSINESS
  * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * CONTRACT, STRICT LIABILITY, OR TORT INCLUDING NEGLIGENCE OR OTHERWISE
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-function ndproxy_services()
+namespace OPNsense\Quagga\FieldTypes;
+
+use OPNsense\Base\FieldTypes\OptionField;
+use OPNsense\Core\Config;
+
+class EnableDaemonField extends OptionField
 {
-    global $config;
+    public const CONFIG_SECTIONS = ['bfd', 'bgp', 'ospf', 'ospf6', 'rip', 'static'];
+    protected function actionPostLoadingEvent()
+    {
+        $quagga = Config::getInstance()->object()->OPNsense->quagga ?? null;
+        $enabled = [];
 
-    $services = [];
+        foreach (self::CONFIG_SECTIONS as $section) {
+            if (!empty($quagga?->{$section}?->enabled)) {
+                $enabled[] = $section;
+            }
+        }
 
-    if (
-        isset($config['OPNsense']['ndproxy']['general']['enabled']) &&
-        $config['OPNsense']['ndproxy']['general']['enabled'] == 1
-    ) {
-        $services[] = [
-            'description' => gettext('Ndproxy'),
-            'configd' => [
-                'start' => ['ndproxy start'],
-                'restart' => ['ndproxy restart'],
-                'stop' => ['ndproxy stop'],
-            ],
-            'name' => 'ndproxy',
-            'nocheck' => true,
-        ];
+        $this->setValue(implode(',', $enabled));
+
+        return parent::actionPostLoadingEvent();
     }
-
-    return $services;
-}
-
-function ndproxy_xmlrpc_sync()
-{
-    $result = [];
-
-    $result[] = array(
-        'description' => gettext('Ndproxy'),
-        'section' => 'OPNsense.ndproxy',
-        'id' => 'ndproxy',
-        'services' => ["ndproxy"],
-    );
-
-    return $result;
 }
