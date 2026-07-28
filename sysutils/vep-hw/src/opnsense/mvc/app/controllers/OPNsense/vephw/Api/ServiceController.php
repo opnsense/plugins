@@ -61,8 +61,12 @@ class ServiceController extends ApiMutableServiceControllerBase
             $mdl = $this->getModel();
             $fanc_enabled = $mdl->general->FanControl;
             $fan_dc = $mdl->general->FanDutyCycle;
-            $bckresult = trim((new Backend())->configdRun(sprintf("vephw setfan %s %s", $fanc_enabled, $fan_dc)));
-            if ($bckresult == "OK") {
+            $fanresult = trim((new Backend())->configdRun(sprintf("vephw setfan %s %s", $fanc_enabled, $fan_dc)));
+            $ledr = $mdl->led->red;
+            $ledg = $mdl->led->green;
+            $ledb = $mdl->led->blue;
+            $ledresult = trim((new Backend())->configdRun(sprintf("vephw setled %s %s %s", $ledr, $ledg, $ledb)));
+            if ($fanresult == "OK" && $ledresult == "OK") {
                 // only return valid json type responses
                 return ["message" => "Hardware settings applied successfully"];
             }

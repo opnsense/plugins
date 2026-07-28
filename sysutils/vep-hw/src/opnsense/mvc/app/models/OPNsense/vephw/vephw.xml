@@ -41,7 +41,7 @@
                 <MaximumValue>255</MaximumValue>
             </red>
             <green type="IntegerField">
-                <Default>0</Default>
+                <Default>255</Default>
                 <Required>Y</Required>
                 <ValidationMessage>Must be between 0-255.</ValidationMessage>
                 <MinimumValue>0</MinimumValue>

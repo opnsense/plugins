@@ -59,4 +59,18 @@ class InfoController extends ApiControllerBase
 
         return $result;
     }
+    
+    public function boardIdAction()
+    {
+        $result = ["status" => "failed"];
+        $status = trim((new Backend())->configdRun('vephw getid'));
+
+        if (!empty($status)) {
+            $result["status"] = "OK";
+            $id["id"] = $status;
+            $result = array_merge($result, $id);
+        }
+
+        return $result;
+    }
 }
