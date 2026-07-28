@@ -12,6 +12,7 @@ Plugin Changelog:
 -----------------
 
 1.2
+
 * Allow hostnames in allowed_hosts
 
 1.1
