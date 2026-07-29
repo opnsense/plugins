@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env python3
 # Copyright (C) 2026 Bryan Wiegand <inbox@kw-ventures.com>
 # All rights reserved.
 #
@@ -23,31 +23,31 @@
 # (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+import json
+import os
+import sys
+import time
 
-DNSBL_SCRIPT=${DNSBL_SCRIPT:-/usr/local/opnsense/scripts/OPNsense/Bind/dnsbl.py}
-DNSBL_NAMED_RC=${DNSBL_NAMED_RC:-/usr/local/etc/rc.d/named}
-DNSBL_RNDC=${DNSBL_RNDC:-/usr/local/sbin/rndc}
-DNSBL_RC_CONF=${DNSBL_RC_CONF:-/etc/rc.conf.d/named}
-DNSBL_PGREP=${DNSBL_PGREP:-pgrep}
-DNSBL_STATUS=${DNSBL_STATUS:-/usr/local/opnsense/scripts/OPNsense/Bind/dnsblStatus.py}
-DNSBL_GUARD=${DNSBL_GUARD:-/usr/local/opnsense/scripts/OPNsense/Bind/namedMemoryGuard.py}
+PATH = os.environ.get('DNSBL_STATUS_PATH', '/var/run/bind/dnsbl-status.json')
 
-dnsbl_codes()
-{
-    sed -n 's/^named_dnsbl="\([^"]*\)"$/\1/p' "${DNSBL_RC_CONF}" | head -n 1
-}
-
-"$DNSBL_SCRIPT" "$@" || exit $?
-
-if "${DNSBL_NAMED_RC}" status >/dev/null 2>&1; then
-    if "${DNSBL_RNDC}" zonestatus blacklist.localdomain >/dev/null 2>&1; then
-        selected_codes=$(dnsbl_codes)
-        if [ -n "${selected_codes}" ]; then
-            named_pid=$("${DNSBL_PGREP}" -o named) || exit 1
-            "${DNSBL_STATUS}" starting "BIND is reloading DNSBL/RPZ; monitoring Memory Guard."
-            "${DNSBL_GUARD}" "${named_pid}" "${selected_codes}" </dev/null >/dev/null 2>&1 &
-        fi
-        "${DNSBL_RNDC}" reload blacklist.localdomain || exit $?
-        "${DNSBL_RNDC}" flush
-    fi
-fi
+status = {}
+try:
+    with open(PATH) as handle:
+        status = json.load(handle)
+except (OSError, ValueError):
+    pass
+if len(sys.argv) == 2 and sys.argv[1] == '--stage':
+    print(status.get('stage', 'idle'))
+    sys.exit(0)
+status['stage'] = sys.argv[1]
+status['message'] = ' '.join(sys.argv[2:])
+status['updated_at'] = time.time()
+if status['stage'] == 'starting':
+    status['guard_started_at'] = int(time.time())
+directory = os.path.dirname(PATH)
+if directory:
+    os.makedirs(directory, exist_ok=True)
+tmp = PATH + '.tmp'
+with open(tmp, 'w') as handle:
+    json.dump(status, handle)
+os.replace(tmp, PATH)

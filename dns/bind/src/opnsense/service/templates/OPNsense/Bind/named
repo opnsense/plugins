@@ -3,6 +3,7 @@
 named_flags="-4"
 {% endif %}
 {% if helpers.exists('OPNsense.bind.dnsbl.enabled') and OPNsense.bind.dnsbl.enabled == '1' %}
+named_memory_guard_mb="{% if helpers.exists('OPNsense.bind.dnsbl.memoryguard') and OPNsense.bind.dnsbl.memoryguard != '' %}{{ OPNsense.bind.dnsbl.memoryguard }}{% else %}300{% endif %}"
 {% if helpers.exists('OPNsense.bind.dnsbl.type') and OPNsense.bind.dnsbl.type != '' %}
 named_dnsbl="{{ OPNsense.bind.dnsbl.type }}"
 {% endif %}

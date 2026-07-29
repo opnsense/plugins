@@ -3,7 +3,13 @@
         <id>dnsbl.enabled</id>
         <label>Enable DNSBL and RPZ</label>
         <type>checkbox</type>
-        <help>This will enable the use of DNS Blocklists for ADs, Malware, or both.</help>
+        <help>This will enable the use of DNS Blocklists for ADs, Malware, or both. Large DNSBL selections may require gigabytes of RAM while BIND loads the response-policy zone.</help>
+    </field>
+    <field>
+        <id>dnsbl.memoryguard</id>
+        <label>Memory Guard (MB)</label>
+        <type>text</type>
+        <help>Reserved free RAM while BIND loads DNSBL/RPZ. Reaching the floor disables DNSBL and restarts BIND. Set to 0 to disable memory guard.</help>
     </field>
     <field>
         <id>dnsbl.type</id>

@@ -1,12 +1,19 @@
 <model>
     <mount>//OPNsense/bind/dnsbl</mount>
     <description>DNSBL configuration</description>
-    <version>1.0.6</version>
+    <version>1.0.7</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
         </enabled>
+        <memoryguard type="IntegerField">
+            <Default>300</Default>
+            <Required>Y</Required>
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>32768</MaximumValue>
+            <ValidationMessage>Choose a value between 0 and 32768.</ValidationMessage>
+        </memoryguard>
         <type type="OptionField">
             <Required>N</Required>
             <Multiple>Y</Multiple>

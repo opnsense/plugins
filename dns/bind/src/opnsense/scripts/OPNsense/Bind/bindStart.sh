@@ -24,30 +24,37 @@
 # SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-DNSBL_SCRIPT=${DNSBL_SCRIPT:-/usr/local/opnsense/scripts/OPNsense/Bind/dnsbl.py}
-DNSBL_NAMED_RC=${DNSBL_NAMED_RC:-/usr/local/etc/rc.d/named}
-DNSBL_RNDC=${DNSBL_RNDC:-/usr/local/sbin/rndc}
-DNSBL_RC_CONF=${DNSBL_RC_CONF:-/etc/rc.conf.d/named}
-DNSBL_PGREP=${DNSBL_PGREP:-pgrep}
-DNSBL_STATUS=${DNSBL_STATUS:-/usr/local/opnsense/scripts/OPNsense/Bind/dnsblStatus.py}
-DNSBL_GUARD=${DNSBL_GUARD:-/usr/local/opnsense/scripts/OPNsense/Bind/namedMemoryGuard.py}
+BIND_START_NAMED_RC=${BIND_START_NAMED_RC:-/usr/local/etc/rc.d/named}
+BIND_START_RC_CONF=${BIND_START_RC_CONF:-/etc/rc.conf.d/named}
+BIND_START_PGREP=${BIND_START_PGREP:-pgrep}
+BIND_START_STATUS=${BIND_START_STATUS:-/usr/local/opnsense/scripts/OPNsense/Bind/dnsblStatus.py}
+BIND_START_GUARD=${BIND_START_GUARD:-/usr/local/opnsense/scripts/OPNsense/Bind/namedMemoryGuard.py}
 
 dnsbl_codes()
 {
-    sed -n 's/^named_dnsbl="\([^"]*\)"$/\1/p' "${DNSBL_RC_CONF}" | head -n 1
+    sed -n 's/^named_dnsbl="\([^"]*\)"$/\1/p' "${BIND_START_RC_CONF}" | head -n 1
 }
 
-"$DNSBL_SCRIPT" "$@" || exit $?
+case "${1:-start}" in
+    start|restart)
+        action="$1"
+        ;;
+    *)
+        echo "usage: $0 {start|restart}" >&2
+        exit 64
+        ;;
+esac
 
-if "${DNSBL_NAMED_RC}" status >/dev/null 2>&1; then
-    if "${DNSBL_RNDC}" zonestatus blacklist.localdomain >/dev/null 2>&1; then
-        selected_codes=$(dnsbl_codes)
-        if [ -n "${selected_codes}" ]; then
-            named_pid=$("${DNSBL_PGREP}" -o named) || exit 1
-            "${DNSBL_STATUS}" starting "BIND is reloading DNSBL/RPZ; monitoring Memory Guard."
-            "${DNSBL_GUARD}" "${named_pid}" "${selected_codes}" </dev/null >/dev/null 2>&1 &
-        fi
-        "${DNSBL_RNDC}" reload blacklist.localdomain || exit $?
-        "${DNSBL_RNDC}" flush
+"${BIND_START_NAMED_RC}" "${action}" || exit $?
+
+selected_codes=$(dnsbl_codes)
+if [ -n "${selected_codes}" ]; then
+    named_pid=$("${BIND_START_PGREP}" -o named) || exit 1
+    "${BIND_START_STATUS}" starting "BIND is loading DNSBL/RPZ; monitoring Memory Guard."
+    "${BIND_START_GUARD}" "${named_pid}" "${selected_codes}" </dev/null >/dev/null 2>&1 &
+else
+    previous_stage=$("${BIND_START_STATUS}" --stage)
+    if [ "${previous_stage}" != "guard_recovered" ]; then
+        "${BIND_START_STATUS}" disabled "DNSBL/RPZ is disabled."
     fi
 fi
