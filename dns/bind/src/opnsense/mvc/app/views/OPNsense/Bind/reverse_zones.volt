@@ -30,8 +30,7 @@
                 rowSelect: true,
                 formatters: {
                     commands: function(column, row) {
-                        return '<button type="button" class="btn btn-xs btn-default command-edit" data-row-id="' + row.uuid + '"><span class="fa fa-fw fa-pencil"></span></button> ' +
-                            '<button type="button" class="btn btn-xs btn-default command-delete" data-row-id="' + row.uuid + '"><span class="fa fa-fw fa-trash-o"></span></button> ' +
+                        return '<button type="button" class="btn btn-xs btn-default command-delete" data-row-id="' + row.uuid + '"><span class="fa fa-fw fa-trash-o"></span></button> ' +
                             '<button type="button" class="btn btn-xs btn-default command-toggle" data-row-id="' + row.uuid + '"><span class="fa fa-fw fa-' + (row.enabled == '1' ? 'check-square-o' : 'square-o') + '"></span></button> ' +
                             '<button type="button" class="btn btn-xs btn-default bind-checkzone" data-row-id="' + row.uuid + '"><span class="fa fa-fw fa-stethoscope"></span></button>';
                     }
