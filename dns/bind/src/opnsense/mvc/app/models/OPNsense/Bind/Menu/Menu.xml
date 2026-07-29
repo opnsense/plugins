@@ -1,8 +1,9 @@
 <menu>
   <Services>
     <BIND cssClass="fa fa-tags">
-      <Configuration url="/ui/bind/general/index"/>
-      <LogFiles VisibleName="Log Files" url="/ui/bind/logs"/>
+      <General VisibleName="General Settings" order="10" url="/ui/bind/general/index"/>
+      <ReverseDNS VisibleName="Reverse DNS" order="22" cssClass="fa fa-exchange" url="/ui/bind/reverse_zones/index"/>
+      <LogFiles VisibleName="Log Files" order="30" url="/ui/bind/logs"/>
     </BIND>
   </Services>
 </menu>

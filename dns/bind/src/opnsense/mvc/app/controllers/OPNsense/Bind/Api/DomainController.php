@@ -31,6 +31,7 @@ namespace OPNsense\Bind\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Bind\Domain;
 
 class DomainController extends ApiMutableModelControllerBase
 {
@@ -85,6 +86,22 @@ class DomainController extends ApiMutableModelControllerBase
         );
     }
 
+    public function searchReverseDomainAction()
+    {
+        $result = $this->searchBase(
+            'domains.domain',
+            ['enabled', 'type', 'domainname', 'source_subnet'],
+            'domainname',
+            function ($record) {
+                return $record->type->getNodeData()['reverse']['selected'] === 1;
+            }
+        );
+        foreach ($result['rows'] as &$row) {
+            $row['interface'] = $this->getInterfaceFromSubnet($row['source_subnet'] ?? '');
+        }
+        return $result;
+    }
+
     public function getDomainAction($uuid = null)
     {
         return $this->getBase('domain', 'domains.domain', $uuid);
@@ -105,6 +122,11 @@ class DomainController extends ApiMutableModelControllerBase
         return $this->addBase('domain', 'domains.domain', ['type' => 'forward']);
     }
 
+    public function addReverseDomainAction($uuid = null)
+    {
+        return $this->addBase('domain', 'domains.domain', ['type' => 'reverse']);
+    }
+
     public function delDomainAction($uuid)
     {
         return $this->delBase('domains.domain', $uuid);
@@ -118,5 +140,67 @@ class DomainController extends ApiMutableModelControllerBase
     public function toggleDomainAction($uuid)
     {
         return $this->toggleBase('domains.domain', $uuid);
+    }
+
+    protected function setBaseHook($node)
+    {
+        if ((string)$node->type === 'reverse') {
+            $zoneName = Domain::reverseZoneName((string)$node->source_subnet);
+            if ($zoneName !== null) {
+                $node->domainname = $zoneName;
+            }
+        }
+    }
+
+    private function getInterfaceFromSubnet($subnet)
+    {
+        if (empty($subnet)) {
+            return '';
+        }
+
+        $backend = new Backend();
+        $ifconfig = json_decode($backend->configdRun('interface list ifconfig'), true) ?? [];
+        foreach ($ifconfig as $if => $details) {
+            foreach (['ipv4', 'ipv6'] as $family) {
+                foreach ($details[$family] ?? [] as $addr) {
+                    if (empty($addr['ipaddr']) || !isset($addr['subnetbits'])) {
+                        continue;
+                    }
+                    if ($this->networkAddress($addr['ipaddr'], $addr['subnetbits']) !== $subnet) {
+                        continue;
+                    }
+                    $cfg = \OPNsense\Core\Config::getInstance()->object();
+                    if (isset($cfg->interfaces)) {
+                        foreach ($cfg->interfaces->children() as $key => $node) {
+                            if ((string)$node->if === $if) {
+                                return !empty((string)$node->descr) ? (string)$node->descr : strtoupper($key);
+                            }
+                        }
+                    }
+                    return $if;
+                }
+            }
+        }
+        return '';
+    }
+
+    private function networkAddress($address, $prefix)
+    {
+        if (!is_numeric($prefix) || ($packed = inet_pton($address)) === false) {
+            return null;
+        }
+        $prefix = (int)$prefix;
+        if ($prefix < 0 || $prefix > strlen($packed) * 8) {
+            return null;
+        }
+        $remainingBits = $prefix;
+        $network = '';
+        for ($index = 0; $index < strlen($packed); ++$index) {
+            $bits = min(max($remainingBits, 0), 8);
+            $mask = $bits === 0 ? 0 : (0xff << (8 - $bits)) & 0xff;
+            $network .= chr(ord($packed[$index]) & $mask);
+            $remainingBits -= 8;
+        }
+        return inet_ntop($network) . '/' . $prefix;
     }
 }

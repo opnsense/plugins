@@ -59,4 +59,65 @@ class GeneralController extends ApiMutableModelControllerBase
         }
         return $response;
     }
+
+    public function listSubnetsAction()
+    {
+        $result = ['subnets' => []];
+        $seenNetworks = [];
+        $backend = new Backend();
+        $ifconfig = json_decode($backend->configdRun('interface list ifconfig'), true) ?? [];
+        $cfg = \OPNsense\Core\Config::getInstance()->object();
+        $intfmap = [];
+        if (isset($cfg->interfaces)) {
+            foreach ($cfg->interfaces->children() as $key => $node) {
+                $intfmap[(string)$node->if] = !empty((string)$node->descr) ? (string)$node->descr : strtoupper($key);
+            }
+        }
+
+        foreach ($ifconfig as $if => $details) {
+            foreach (['ipv4', 'ipv6'] as $family) {
+                foreach ($details[$family] ?? [] as $addr) {
+                    if (empty($addr['ipaddr']) || !isset($addr['subnetbits'])) {
+                        continue;
+                    }
+                    if (($family === 'ipv4' && strpos($addr['ipaddr'], '127.') === 0) ||
+                        ($family === 'ipv6' && $addr['ipaddr'] === '::1')) {
+                        continue;
+                    }
+                    $network = $this->networkAddress($addr['ipaddr'], $addr['subnetbits']);
+                    if ($network === null || isset($seenNetworks[$network])) {
+                        continue;
+                    }
+                    $seenNetworks[$network] = true;
+                    $result['subnets'][] = [
+                        'label' => ($intfmap[$if] ?? $if) . ' - ' . $network,
+                        'value' => $network,
+                        'family' => $family,
+                        'interface' => $if,
+                    ];
+                }
+            }
+        }
+        return $result;
+    }
+
+    private function networkAddress($address, $prefix)
+    {
+        if (!is_numeric($prefix) || ($packed = inet_pton($address)) === false) {
+            return null;
+        }
+        $prefix = (int)$prefix;
+        if ($prefix < 0 || $prefix > strlen($packed) * 8) {
+            return null;
+        }
+        $remainingBits = $prefix;
+        $network = '';
+        for ($index = 0; $index < strlen($packed); ++$index) {
+            $bits = min(max($remainingBits, 0), 8);
+            $mask = $bits === 0 ? 0 : (0xff << (8 - $bits)) & 0xff;
+            $network .= chr(ord($packed[$index]) & $mask);
+            $remainingBits -= 8;
+        }
+        return inet_ntop($network) . '/' . $prefix;
+    }
 }
