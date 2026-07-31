@@ -76,6 +76,6 @@ export default class VepHw extends BaseTableWidget {
         else {
             rows.push([[this.translations['boarderror']]]);
         }
-        super.updateTable('sysinfo-table', rows);
+        super.updateTable('vepinfo-table', rows);
     }
 }
