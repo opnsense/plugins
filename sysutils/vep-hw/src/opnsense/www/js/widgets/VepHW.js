@@ -27,13 +27,6 @@
 export default class VepHw extends BaseTableWidget {
     constructor() {
         super();
-        let data = await this.ajaxCall('/api/vephw/info/boardid');
-        if (data['status'] != 'failed') {
-            this.boardid = data['boardid'];
-        }
-        else {
-            this.boardid = null;
-        }
     }
 
     getMarkup() {
@@ -46,8 +39,10 @@ export default class VepHw extends BaseTableWidget {
     }
 
     async onWidgetTick() {
-        if ( this.boardid != null) {
-            let lower_nibble = this.boardid.substring(3);
+        let data = await this.ajaxCall('/api/vephw/info/boardid');
+        let boardid = data['boardid'];
+        if ( boardid != null) {
+            let lower_nibble = boardid.substring(3);
             if (lower_nibble != '0' && lower_nibble != '1' ) {
         
                 let fandata = await this.ajaxCall('/api/vephw/info/fanstatus');
@@ -60,14 +55,17 @@ export default class VepHw extends BaseTableWidget {
         }
         let tempdata = await this.ajaxCall('/api/vephw/info/tempstatus');
         
-        $('#temp').text(tempdata['temp'] + '℃');
+        $('#temp').text(tempdata['temp']);
     }
 
     async onMarkupRendered() {
         let rows = [];
-        if ( this.boardid != null) {
-            rows.push([[this.translations['boardid']], this.boardid]);
-            let lower_nibble = this.boardid.substring(3);
+        let data = await this.ajaxCall('/api/vephw/info/boardid');
+        let boardid = data['boardid'];
+
+        if (!boardid || boardid != null) {
+            rows.push([[this.translations['boardid']], boardid]);
+            let lower_nibble = boardid.substring(3);
             if (lower_nibble != '0' && lower_nibble != '1' ) {
                 rows.push([[this.translations['fan']] + '1: ', $('<span id="fan1">').prop('outerHTML')]);
                 rows.push([[this.translations['fan']] + '2: ', $('<span id="fan2">').prop('outerHTML')]);

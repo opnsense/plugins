@@ -32,7 +32,7 @@ use OPNsense\Base\ApiMutableModelControllerBase;
 
 /**
  * Class SettingsController Handles settings related API actions for the VepHW module
- * @package OPNsense\Helloworld
+ * @package OPNsense\vephw
  */
 class SettingsController extends ApiMutableModelControllerBase
 {

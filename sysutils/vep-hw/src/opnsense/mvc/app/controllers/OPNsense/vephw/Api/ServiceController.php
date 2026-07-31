@@ -59,9 +59,16 @@ class ServiceController extends ApiMutableServiceControllerBase
     {
         if ($this->request->isPost()) {
             $mdl = $this->getModel();
-            $fanc_enabled = $mdl->general->FanControl;
-            $fan_dc = $mdl->general->FanDutyCycle;
-            $fanresult = trim((new Backend())->configdRun(sprintf("vephw setfan %s %s", $fanc_enabled, $fan_dc)));
+            $boardtype = trim((new Backend())->configdRun('vephw getid'));
+            $boardnibble = substr($boardtype, -1);
+            if ($boardnibble != "0" && $boardnibble != "1"){
+                $fanc_enabled = $mdl->general->FanControl;
+                $fan_dc = $mdl->general->FanDutyCycle;
+                $fanresult = trim((new Backend())->configdRun(sprintf("vephw setfan %s %s", $fanc_enabled, $fan_dc)));
+            }
+            else {
+                $fanresult = "OK"; //we can't set fan settings on boards without them so fake an OK
+            }
             $ledr = $mdl->led->red;
             $ledg = $mdl->led->green;
             $ledb = $mdl->led->blue;

@@ -7,11 +7,11 @@
             <!-- fields -->
             <FanControl type="BooleanField">
                 <Default>0</Default>
-                <Required>Y</Required>
+                <Required>N</Required>
             </FanControl>
             <FanDutyCycle type="OptionField">
                 <Default>0x0b</Default>
-                <Required>Y</Required>
+                <Required>N</Required>
                 <OptionValues>
                     <opt1 value="0x00">30%</opt1>
                     <opt2 value="0x01">34.67%</opt2>

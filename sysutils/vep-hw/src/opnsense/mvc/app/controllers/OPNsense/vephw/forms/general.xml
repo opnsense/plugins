@@ -13,7 +13,6 @@
         <type>dropdown</type>
         <help>Set fan duty cycle, if available</help>
     </field>
-    <h2>Front Panel LED Control</h2>
     <field>
         <id>vephw.led.red</id>
         <label>LED Red intensity</label>
