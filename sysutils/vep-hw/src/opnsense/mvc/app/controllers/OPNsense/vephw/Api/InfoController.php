@@ -67,7 +67,7 @@ class InfoController extends ApiControllerBase
 
         if (!empty($status)) {
             $result["status"] = "OK";
-            $id["id"] = $status;
+            $id["boardid"] = $status;
             $result = array_merge($result, $id);
         }
 

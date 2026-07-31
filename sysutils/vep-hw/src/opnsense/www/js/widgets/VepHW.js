@@ -24,78 +24,60 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-export default class VepHW extends BaseWidget {
+export default class VepHw extends BaseTableWidget {
     constructor() {
         super();
+        let data = await this.ajaxCall('/api/vephw/info/boardid');
+        if (data['status'] != 'failed') {
+            this.boardid = data['boardid'];
+        }
+        else {
+            this.boardid = null;
+        }
     }
 
     getMarkup() {
-        const styles = `
-            #status {
-            margin: 10px;
-            }
-            .fan {
-            padding: 10px;
-            margin: 5px;
-            width: 50%;
-            display: inline-block
-            }
-            .fan-container {
-            margin: 5px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            }
-            .data-item {
-            padding: 10px;
-            border: 1px solid #ddd;
-            margin: 5px;
-            width: 50%;
-            display: inline-block;
-            }
-        `;
-
-        const styleSheet = document.createElement("style");
-        styleSheet.innerText = styles;
-        document.head.appendChild(styleSheet);
-
-        return $(`
-            <div id="status"></div>
-            <div class="fan-container">
-                <div id="fan1" class="data-item">
-                    <strong>${this.translations.fan} 1: </strong>
-                </div>
-                <div id="fan2" class="data-item">
-                    <strong>${this.translations.fan} 2: </strong>
-                </div>
-                <div id="temp" class="data-item">
-                    <strong>${this.translations.temp}: </strong>
-                </div>
-            </div>
-        `);
+        let $container = $('<div></div>');
+        let $sysinfotable = this.createTable('vepinfo-table', {
+            headerPosition: 'left',
+        });
+        $container.append($sysinfotable);
+        return $container;
     }
 
     async onWidgetTick() {
-        $('.fan').tooltip('hide');
-        let data = await this.ajaxCall('/api/vephw/info/fanstatus');
+        if ( this.boardid != null) {
+            let lower_nibble = this.boardid.substring(3);
+            if (lower_nibble != '0' && lower_nibble != '1' ) {
+        
+                let fandata = await this.ajaxCall('/api/vephw/info/fanstatus');
+        
+                if (fandata['status'] != 'failed') {
+                    $('#fan1').text(fandata['fan1']);
+                    $('#fan2').text(fandata['fan2']);
+                }
+            }
+        }
         let tempdata = await this.ajaxCall('/api/vephw/info/tempstatus');
         
-        if (!data || data.status === 'failed') {
-            $('#status').html(`<div class="error-message" style="margin: 10px;">${this.translations.nofan}</div>`);
-            $('.fan-container').hide();
-            return;
+        $('#temp').text(tempdata['temp'] + '℃');
+    }
+
+    async onMarkupRendered() {
+        let rows = [];
+        if ( this.boardid != null) {
+            rows.push([[this.translations['boardid']], this.boardid]);
+            let lower_nibble = this.boardid.substring(3);
+            if (lower_nibble != '0' && lower_nibble != '1' ) {
+                rows.push([[this.translations['fan']] + '1: ', $('<span id="fan1">').prop('outerHTML')]);
+                rows.push([[this.translations['fan']] + '2: ', $('<span id="fan2">').prop('outerHTML')]);
+            }
+            rows.push([[this.translations['temp']], $('<span id="temp">').prop('outerHTML')]);
+    
         }
-
-        $('.fan').remove();
-        ['fan1', 'fan2'].forEach((key) => {
-            let status = data[key];
-
-            let $fan = $(`<span class="fan" data-toggle="" title="">${status}</span>`);
-            //$fan.css('color', 'green');
-            $(`#${key}`).append($fan);
-        });
-        let $temp = $(`<span class="fan" data-toggle="" title="">${tempdata['temp']}</span>`);
-        $(`#temp`).append($temp);
-        $('.fan').tooltip({container: 'body'});
+        else {
+            rows.push([[this.translations['boarderror']]]);
+        }
+        super.updateTable('sysinfo-table', rows);
     }
 }

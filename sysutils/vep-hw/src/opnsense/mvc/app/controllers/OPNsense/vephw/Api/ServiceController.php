@@ -71,6 +71,6 @@ class ServiceController extends ApiMutableServiceControllerBase
                 return ["message" => "Hardware settings applied successfully"];
             }
         }
-        return ["message" => "unable to run config action"];
+        return ["message" => "Hardware settings weren't applied."];
     }
 }

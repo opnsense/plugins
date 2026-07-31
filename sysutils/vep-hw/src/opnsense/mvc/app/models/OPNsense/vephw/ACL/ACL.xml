@@ -1,9 +1,9 @@
 <acl>
-    <page-user-helloworld>
-        <name>Lobby: Hello World!</name>
+    <page-user-vephw>
+        <name>System: VEP1400 Hardware Settings</name>
         <patterns>
-            <pattern>ui/helloworld/*</pattern>
-            <pattern>api/helloworld/*</pattern>
+            <pattern>ui/vephw/*</pattern>
+            <pattern>api/vephw/*</pattern>
         </patterns>
-    </page-user-helloworld>
+    </page-user-vephw>
 </acl>

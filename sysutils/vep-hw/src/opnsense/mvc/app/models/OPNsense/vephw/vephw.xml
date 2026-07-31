@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/vephw</mount>
-    <description>VEP1400 Hardware Control</description>
+    <description>VEP1400 Hardware Settings</description>
     <items>
         <!-- container -->
         <general>

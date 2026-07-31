@@ -6,10 +6,12 @@
         </endpoints>
         <translations>
             <title>VEP1400 Hardware Information</title>
-            <nofan>Fan speed not available. This widget is only applicable to VEP1400 boards with a fan controller.</nofan>
+            <nofan>Fan speed not available.</nofan>
             <fanspeed>RPM</fanspeed>
             <fan>Fan</fan>
-            <temp>Temperature</temp>
+            <temp>Temperature: </temp>
+            <boardid>Board ID: </boardid>
+            <boarderror>Not a VEP1400 board or unable to read CPLD.</boarderror>
         </translations>
     </dechw>
 </metadata>

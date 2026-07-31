@@ -4,7 +4,7 @@
         <label>Fan Control Enabled</label>
         <type>checkbox</type>
         <help>Enable manual fan control, if disabled the fan will be 
-        automatically controled by the TC654
+        automatically controlled by the TC654
         </help>
     </field>
     <field>
@@ -13,22 +13,23 @@
         <type>dropdown</type>
         <help>Set fan duty cycle, if available</help>
     </field>
+    <h2>Front Panel LED Control</h2>
     <field>
         <id>vephw.led.red</id>
-        <label>LED Color Red</label>
+        <label>LED Red intensity</label>
         <type>text</type>
         <help>Set LED color - red channel intensity</help>
     </field>
     <field>
         <id>vephw.led.green</id>
-        <label>LED Color Green</label>
+        <label>LED Green intensity</label>
         <type>text</type>
         <help>Set LED color - green channel intensity</help>
     </field>
     <field>
         <id>vephw.led.blue</id>
-        <label>LED Color Blue</label>
+        <label>LED Blue intensity</label>
         <type>text</type>
-        <help>Set LED color - blue channel intensity</help>
+        <help>Set LED color - blue channel intensity. NOTE: Some systems don't have a blue LED.</help>
     </field>
 </form>

@@ -28,7 +28,7 @@
  *
  */
 
-namespace OPNsense\VepHW;
+namespace OPNsense\vephw;
 
 use OPNsense\Base\BaseModel;
 
