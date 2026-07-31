@@ -48,14 +48,14 @@ export default class VepHw extends BaseTableWidget {
                 let fandata = await this.ajaxCall('/api/vephw/info/fanstatus');
         
                 if (fandata['status'] != 'failed') {
-                    $('#fan1').text(fandata['fan1']);
-                    $('#fan2').text(fandata['fan2']);
+                    $('#fan1').text(fandata['fan1'] + 'RPM');
+                    $('#fan2').text(fandata['fan2'] + 'RPM');
                 }
             }
         }
         let tempdata = await this.ajaxCall('/api/vephw/info/tempstatus');
         
-        $('#temp').text(tempdata['temp']);
+        $('#temp').text(tempdata['temp'] + '℃');
     }
 
     async onMarkupRendered() {

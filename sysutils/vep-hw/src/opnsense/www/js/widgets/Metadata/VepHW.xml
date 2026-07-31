@@ -7,10 +7,9 @@
         <translations>
             <title>VEP1400 Hardware Information</title>
             <nofan>Fan speed not available.</nofan>
-            <fanspeed>RPM</fanspeed>
             <fan>Fan</fan>
-            <temp>Temperature: </temp>
-            <boardid>Board ID: </boardid>
+            <temp>Temperature</temp>
+            <boardid>Board ID</boardid>
             <boarderror>Not a VEP1400 board or unable to read CPLD.</boarderror>
         </translations>
     </dechw>
