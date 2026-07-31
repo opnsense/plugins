@@ -28,20 +28,45 @@
  */
 
 /*
- * rc.syshook.d/start hook — called during system boot after services
- * are available.
- *
- * This calls NetBird's gateway monitor script in the background (non-blocking), 
- * which seeds the default gateway cache used later by the monitor hook 
- * (50-netbird) so that the first dpinger alarm after boot can correctly detect
- * whether the default gateway has changed.
+ * Feeds the "CARP VIP to Track" dropdown (carpVipTrack, a
+ * JsonKeyValueStoreField).  Emits the static "any"/"all" modes plus one
+ * entry per configured CARP VIP, keyed as "<vhid>@<device>" — the same
+ * format the rc.syshook.d/carp subsystem argument uses, so the stored
+ * value can be compared to CARP events directly.
  */
 
-require_once("config.inc");
-require_once("util.inc");
-require_once("plugins.inc.d/netbird.inc");
+require_once('config.inc');
 
-if (netbird_enabled()) {
-    log_msg("NetBird monitor: Starting NetBird's monitor event handler");
-    mwexecfb('/usr/local/opnsense/scripts/netbird/gw_monitor.php > /dev/null');
+$result = [
+    'any' => gettext('Any CARP VIP'),
+    'all' => gettext('All CARP VIPs'),
+];
+
+$config = OPNsense\Core\Config::getInstance()->object();
+
+if (isset($config->virtualip->vip)) {
+    foreach ($config->virtualip->vip as $vip) {
+        if ((string)$vip->mode !== 'carp') {
+            continue;
+        }
+        $ifname = (string)$vip->interface;
+        if (!isset($config->interfaces->$ifname->if)) {
+            continue;
+        }
+        $device = (string)$config->interfaces->$ifname->if;
+        $ifdescr = (string)$config->interfaces->$ifname->descr;
+        if ($ifdescr === '') {
+            $ifdescr = strtoupper($ifname);
+        }
+        $key = (string)$vip->vhid . '@' . $device;
+        $result[$key] = sprintf(
+            '%s: %s vhid %s (%s)',
+            $ifdescr,
+            (string)$vip->subnet,
+            (string)$vip->vhid,
+            $device
+        );
+    }
 }
+
+echo json_encode($result) . PHP_EOL;

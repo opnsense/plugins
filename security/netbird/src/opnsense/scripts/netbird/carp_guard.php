@@ -28,20 +28,33 @@
  */
 
 /*
- * rc.syshook.d/start hook — called during system boot after services
- * are available.
+ * CARP start guard for the NetBird rc.d service.
  *
- * This calls NetBird's gateway monitor script in the background (non-blocking), 
- * which seeds the default gateway cache used later by the monitor hook 
- * (50-netbird) so that the first dpinger alarm after boot can correctly detect
- * whether the default gateway has changed.
+ * Runs as start_postcmd (injected through /etc/rc.conf.d/netbird by the
+ * plugin template when CARP failover support is enabled).  After the
+ * daemon starts — at boot, after an HA config-sync service restart, or a
+ * manual service start — this makes sure a CARP BACKUP node does not keep
+ * an active NetBird connection, replacing the rc script patch previously
+ * proposed in opnsense/ports#259.
+ *
+ * The MASTER check is a quick ifconfig scan; if the tunnel must be torn
+ * down, the verified netbird_down.php worker is spawned in the background
+ * so the rc start path (and the boot sequence) is never delayed.  A raw
+ * one-shot "netbird down" would race the daemon socket still coming up
+ * after the start and be silently lost.  Always exits 0: a failing
+ * start_postcmd would make run_rc_command report a start failure even
+ * though the daemon is running.
  */
 
-require_once("config.inc");
-require_once("util.inc");
-require_once("plugins.inc.d/netbird.inc");
+require_once('config.inc');
+require_once('util.inc');
+require_once('plugins.inc.d/netbird.inc');
 
-if (netbird_enabled()) {
-    log_msg("NetBird monitor: Starting NetBird's monitor event handler");
-    mwexecfb('/usr/local/opnsense/scripts/netbird/gw_monitor.php > /dev/null');
+if (!netbird_carp_check_master()) {
+    log_msg('NetBird: CARP BACKUP node detected after service start, disconnecting NetBird');
+    /* 30s watch window: the freshly started daemon may restore its previous
+       "up" state after the first disconnect succeeds */
+    mwexecfb('/usr/local/opnsense/scripts/netbird/netbird_down.php 30 > /dev/null');
 }
+
+exit(0);

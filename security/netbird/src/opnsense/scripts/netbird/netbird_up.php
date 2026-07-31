@@ -29,18 +29,15 @@
 
 /*
  * Wrapper script for "netbird up" that automatically reloads the packet
- * filter after the wt0 interface is created.
- *
- * When NetBird brings its tunnel up, it creates a tun device and renames
- * it to wt0.  The packet filter does not recognise the new interface until
- * a filter reload is performed, causing all traffic on wt0 to be dropped.
+ * filter after the tunnel interface is created.
  *
  * This script:
  *   1. Checks whether NetBird is already connected (skip reload if so).
- *   2. Runs `/usr/local/bin/netbird up` with any arguments passed through
+ *   2. Destroys an orphaned tunnel interface left over from a previous run.
+ *   3. Runs `/usr/local/bin/netbird up` with any arguments passed through
  *      by configd (e.g. -m <url> -k <key>).
- *   3. If NetBird was not already connected, polls for the wt0 interface
- *      and triggers `configctl filter reload` once it appears.
+ *   4. If NetBird was not already connected, waits for the tunnel interface
+ *      and reloads the packet filter via netbird_sync_filter().
  *
  * All configd actions that invoke "netbird up" should point here so that
  * filter reloads happen regardless of the caller (API, CARP, CLI).
@@ -48,74 +45,43 @@
 
 require_once("config.inc");
 require_once("util.inc");
+require_once("plugins.inc.d/netbird.inc");
 
-$wt_iface = 'wt0';
-$poll_interval = 1;   // seconds between interface checks
-$poll_timeout  = 15;  // maximum seconds to wait for interface
+$wt_iface = netbird_wg_iface();
 
-// --- Determine current connection state before bringing up -----------------
-$was_connected = false;
-$status_json = shell_exec('/usr/local/bin/netbird status --json 2>/dev/null');
-if ($status_json !== null) {
-    $status = json_decode($status_json, true);
-    if (json_last_error() === JSON_ERROR_NONE) {
-        $was_connected = ($status['management']['connected'] ?? false) === true;
-    }
-}
+// Determine the current connection state before bringing the tunnel up.
+$was_connected = netbird_connected();
 
-// Check whether wt0 already exists before running "netbird up".  If NetBird
-// is not connected and wt0 is present, it's orphaned from a previous run —
-// destroy it now so we have a clean slate.  NetBird will create a new wt0 
-// when it starts, and we won't have to worry about the old one.
-// Only destroy if NetBird is actually disconnected; if it's connected, the
-// interface is legitimately in use.
-exec("/sbin/ifconfig " . escapeshellarg($wt_iface) . " 2>/dev/null", $pre_out, $pre_rc);
-if ($pre_rc === 0 && !$was_connected) {
-    log_msg("NetBird: Found orphaned {$wt_iface} interface before 'netbird up', destroying");
-    mwexecf("/sbin/ifconfig " . escapeshellarg($wt_iface) . " destroy");
+// If NetBird is not connected but its interface is still present, it is
+// orphaned from a previous run — destroy it so NetBird starts from a clean
+// slate.  If NetBird is connected, the interface is legitimately in use.
+if (!$was_connected) {
+    netbird_destroy_orphan_iface($wt_iface);
 }
 
 // --- Build and execute the real "netbird up" command ------------------------
 // $argv[0] is this script; everything after is passed through by configd
-// (e.g. "-m https://mgmt.example.com -k SETUP-KEY").
+// (e.g. "-m https://mgmt.example.com -k SETUP-KEY").  Argument escaping is
+// left to mwexecfb's %s handling — pre-escaped values would be mangled by
+// its format processing.
 $extra_args = array_slice($argv, 1);
-$cmd = '/usr/local/bin/netbird up';
-if (!empty($extra_args)) {
-    $cmd .= ' ' . implode(' ', array_map('escapeshellarg', $extra_args));
-}
 
 // Run netbird up in the background.  It can block indefinitely (e.g.
 // waiting for authentication or an unreachable management server), so
-// we fork it and proceed to poll for the wt0 interface.
-mwexecfm($cmd);
+// we fork it and proceed to wait for the tunnel interface.
+mwexecfb('/usr/local/bin/netbird up' . str_repeat(' %s', count($extra_args)), $extra_args);
 
-// --- Filter reload logic ---------------------------------------------------
-// Only reload when transitioning from disconnected → connected.  If NetBird
+// Only reload when transitioning from disconnected -> connected.  If NetBird
 // was already up, the interface already exists and the filter already knows
 // about it.
-if ($was_connected) {
-    exit(0);
-}
-
-// Poll for the wt0 interface to appear.  NetBird creates a tun device and
-// renames it to wt0, which takes a few seconds.  Any orphaned wt0 was
-// already destroyed above, so this will only match the freshly created one.
-$found = false;
-for ($i = 0; $i < $poll_timeout; $i += $poll_interval) {
-    $iface_out = [];
-    exec("/sbin/ifconfig " . escapeshellarg($wt_iface) . " 2>/dev/null", $iface_out, $iface_rc);
-    if ($iface_rc === 0) {
-        $found = true;
-        break;
+if (!$was_connected) {
+    if (netbird_sync_filter($wt_iface)) {
+        echo "NetBird connection initiated, tunnel interface {$wt_iface} up\n";
+    } else {
+        echo "NetBird connection initiated, still waiting on tunnel interface {$wt_iface}\n";
     }
-    sleep($poll_interval);
-}
-
-if ($found) {
-    log_msg("NetBird: {$wt_iface} interface detected after 'netbird up', reloading packet filter");
-    mwexecfm('/usr/local/sbin/configctl filter reload');
 } else {
-    log_msg("NetBird: Timeout ({$poll_timeout}s) waiting for {$wt_iface} interface after 'netbird up'. Packet filter reload skipped.");
+    echo "NetBird already connected\n";
 }
 
 exit(0);

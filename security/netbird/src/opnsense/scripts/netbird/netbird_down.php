@@ -28,20 +28,28 @@
  */
 
 /*
- * rc.syshook.d/start hook — called during system boot after services
- * are available.
+ * Wrapper script for "netbird down" that verifies the disconnect actually
+ * happened.  A one-shot "netbird down" fired right after a service start
+ * (boot, HA config sync, GUI restart) races the daemon socket coming up
+ * and is silently lost, leaving a CARP BACKUP node connected.
  *
- * This calls NetBird's gateway monitor script in the background (non-blocking), 
- * which seeds the default gateway cache used later by the monitor hook 
- * (50-netbird) so that the first dpinger alarm after boot can correctly detect
- * whether the default gateway has changed.
+ * All callers that must guarantee a disconnect (configd [down] action,
+ * carp_guard.php) point here; the retry/verify loop lives in
+ * netbird_down_converge().  An optional numeric argument keeps watching
+ * that many seconds after the disconnect and downs the daemon again if it
+ * restores its previous "up" state on its own (service start scenario).
  */
 
 require_once("config.inc");
 require_once("util.inc");
 require_once("plugins.inc.d/netbird.inc");
 
-if (netbird_enabled()) {
-    log_msg("NetBird monitor: Starting NetBird's monitor event handler");
-    mwexecfb('/usr/local/opnsense/scripts/netbird/gw_monitor.php > /dev/null');
+$watch = !empty($argv[1]) ? (int)$argv[1] : 0;
+
+if (netbird_down_converge(10, 2, $watch)) {
+    echo "NetBird disconnected\n";
+    exit(0);
 }
+
+echo "NetBird still connected, disconnect failed\n";
+exit(1);

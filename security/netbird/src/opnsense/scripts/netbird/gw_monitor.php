@@ -32,10 +32,19 @@
  * since the last invocation.  If so, it restarts NetBird so it can
  * re-establish connections through the new default route.
  *
- * A cached copy of the previous default gateway is stored in a temp file.
- * Only when the current default gateway differs from the cached value
- * does a restart occur, avoiding unnecessary restarts for non-default
- * gateway alarms.
+ * A cached copy of the previous default gateway is stored in /var/run
+ * (cleared at boot; the start syshook re-seeds it).  Only when the
+ * observed default gateway differs from the cached value does a restart
+ * occur, avoiding unnecessary restarts for non-default gateway alarms.
+ *
+ * The dpinger alarm that triggers this script fires when a gateway
+ * changes *state*; the default route replacement happens asynchronously
+ * afterwards and emits no further alarm.  A single immediate sample could
+ * therefore still see the old (or no) default route and miss the switch
+ * for good, so the routing table is sampled for a settle window instead,
+ * restarting once a new default gateway is observed twice in a row.  A
+ * PID token collapses alarm bursts: any newer instance takes over and
+ * older ones exit at the next check.
  */
 
 require_once("config.inc");
@@ -47,40 +56,79 @@ if (!netbird_enabled()) {
     exit(0);
 }
 
-$cache_file = '/tmp/netbird_default_gw.cache';
+$token_file = '/var/run/netbird_gw_monitor.token';
+$cache_file = '/var/run/netbird_default_gw.cache';
 
-// Get the current default gateway from the routing table
-$gw_output = shell_exec('/sbin/route -n get default 2>/dev/null');
-$current_gw = '';
-if ($gw_output !== null && preg_match('/gateway:\s+(\S+)/', $gw_output, $matches)) {
-    $current_gw = $matches[1];
+function netbird_default_gw()
+{
+    $gw_output = shell_exec('/sbin/route -n get default 2>/dev/null');
+    if ($gw_output !== null && preg_match('/gateway:\s+(\S+)/', $gw_output, $matches)) {
+        return $matches[1];
+    }
+    return '';
 }
 
-if ($current_gw === '') {
-    // No default gateway — nothing to do
-    log_msg("NetBird monitor: No default gateway detected, not restarting NetBird");
+// Claim this event slot; see carp_event.php for why file contents (PID)
+// are used instead of filemtime and why the token is never deleted.
+$my_token = (string)getmypid();
+file_put_contents($token_file, $my_token, LOCK_EX);
+
+sleep(2);
+
+if (@file_get_contents($token_file) !== $my_token) {
     exit(0);
 }
 
-// Compare to the cached gateway
 $cached_gw = @file_get_contents($cache_file);
 $cached_gw = ($cached_gw !== false) ? trim($cached_gw) : '';
 
-if ($current_gw === $cached_gw) {
-    // Default gateway has not changed — no action needed
-    log_msg("NetBird monitor: Default gateway has not changed ({$current_gw}), not restarting NetBird");
+// Sample the routing table until a new default gateway settles or the
+// window closes.  "No default route" keeps the window open — the route is
+// usually mid-replacement at that point.
+$new_gw = '';
+$last_gw = null;
+$deadline = time() + 30;
+while (time() < $deadline) {
+    if (@file_get_contents($token_file) !== $my_token) {
+        // a newer alarm superseded this instance
+        exit(0);
+    }
+
+    $current_gw = netbird_default_gw();
+    if ($current_gw !== '' && $current_gw !== $cached_gw) {
+        if ($current_gw === $last_gw) {
+            // stable for two consecutive samples
+            $new_gw = $current_gw;
+            break;
+        }
+        $last_gw = $current_gw;
+    } else {
+        $last_gw = null;
+    }
+
+    sleep(2);
+}
+
+if ($new_gw === '') {
+    log_msg("NetBird monitor: No default gateway change detected, not restarting NetBird");
     exit(0);
 }
 
-// Update the cache with the new gateway
-file_put_contents($cache_file, $current_gw, LOCK_EX);
+file_put_contents($cache_file, $new_gw, LOCK_EX);
 
 // If there was no previous cache (first run / fresh boot), don't restart —
 // just seed the cache so future changes are detected.
 if ($cached_gw === '') {
-    log_msg("NetBird monitor: Seeding default gateway cache with {$current_gw}");
+    log_msg("NetBird monitor: Seeding default gateway cache with {$new_gw}");
     exit(0);
 }
 
-log_msg("NetBird monitor: Default gateway changed from {$cached_gw} to {$current_gw}, restarting NetBird");
+// On a CARP BACKUP node the tunnel is intentionally down; remember the new
+// gateway but leave the (restart + guard) churn to the MASTER.
+if (netbird_carp_enabled() && !netbird_carp_check_master()) {
+    log_msg("NetBird monitor: Default gateway changed to {$new_gw} but node is CARP BACKUP, not restarting NetBird");
+    exit(0);
+}
+
+log_msg("NetBird monitor: Default gateway changed from {$cached_gw} to {$new_gw}, restarting NetBird");
 mwexecfm('/usr/local/sbin/configctl netbird restart');

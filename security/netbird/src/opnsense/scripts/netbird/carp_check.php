@@ -28,20 +28,18 @@
  */
 
 /**
- * CARP check script for NetBird rc.d service guard.
+ * CARP state probe for NetBird HA handling.
  *
- * Returns exit code 0 if service can start:
+ * Returns exit code 0 if NetBird may connect:
  *   - CARP mode not enabled for NetBird, OR
  *   - Current host is CARP MASTER
  *
- * Returns exit code 1 if service should NOT start:
+ * Returns exit code 1 otherwise:
  *   - CARP mode enabled and current host is BACKUP
  *
- * Usage in rc.d script:
- *   start_precmd="netbird_precmd"
- *   netbird_precmd() {
- *       /usr/local/opnsense/scripts/OPNsense/Netbird/carp_check.php || return 1
- *   }
+ * The service start path itself is guarded by carp_guard.php, which the
+ * plugin injects as start_postcmd via /etc/rc.conf.d/netbird; this script
+ * remains a standalone probe for scripts and manual troubleshooting.
  */
 
 require_once('config.inc');

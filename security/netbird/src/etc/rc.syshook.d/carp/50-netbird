@@ -56,6 +56,15 @@ if (netbird_carp_enabled()) {
         exit(1);
     }
 
+    // When a specific VIP is tracked, events for other VIPs are irrelevant;
+    // the subsystem argument shares the "<vhid>@<device>" format with the
+    // stored setting.
+    $track = netbird_carp_vip_track();
+    if (strpos($track, '@') !== false && $subsystem !== $track) {
+        log_msg("NetBird CARP: ignoring '{$type}' event from '{$subsystem}', tracking '{$track}'");
+        exit(0);
+    }
+
     log_msg("NetBird CARP: '{$type}' event from '{$subsystem}', starting NetBird's carp event handler");
     mwexecfb('/usr/local/opnsense/scripts/netbird/carp_event.php %s %s > /dev/null', [$subsystem, $type]); 
 }

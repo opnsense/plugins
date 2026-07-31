@@ -16,6 +16,12 @@
         <help>When enabled, NetBird interfaces will start on MASTER state and stop on BACKUP state.</help>
     </field>
     <field>
+        <id>settings.general.carpVipTrack</id>
+        <label>CARP VIP to Track</label>
+        <type>dropdown</type>
+        <help>Which CARP virtual IP decides the MASTER/BACKUP role for NetBird. "Any" connects while this node is MASTER on at least one VIP, "All" only while it is MASTER on every VIP. Selecting a specific VIP (e.g. your WAN VIP) is recommended on multi-WAN clusters: only one node can be MASTER for a given VIP, which prevents both nodes from connecting during partial failovers. IPv6-only default gateway changes are not monitored.</help>
+    </field>
+    <field>
         <id>settings.general.wireguardPort</id>
         <label>WireGuard Port</label>
         <type>text</type>
