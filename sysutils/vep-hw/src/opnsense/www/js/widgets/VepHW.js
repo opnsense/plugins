@@ -48,8 +48,8 @@ export default class VepHw extends BaseTableWidget {
                 let fandata = await this.ajaxCall('/api/vephw/info/fanstatus');
         
                 if (fandata['status'] != 'failed') {
-                    $('#fan1').text(fandata['fan1'] + 'RPM');
-                    $('#fan2').text(fandata['fan2'] + 'RPM');
+                    $('#fan1').text(fandata['fan1'] + ' RPM');
+                    $('#fan2').text(fandata['fan2'] + ' RPM');
                 }
             }
         }
@@ -67,8 +67,8 @@ export default class VepHw extends BaseTableWidget {
             rows.push([[this.translations['boardid']], boardid]);
             let lower_nibble = boardid.substring(3);
             if (lower_nibble != '0' && lower_nibble != '1' ) {
-                rows.push([[this.translations['fan']] + '1: ', $('<span id="fan1">').prop('outerHTML')]);
-                rows.push([[this.translations['fan']] + '2: ', $('<span id="fan2">').prop('outerHTML')]);
+                rows.push([[this.translations['fan']] + ' 1', $('<span id="fan1">').prop('outerHTML')]);
+                rows.push([[this.translations['fan']] + ' 2', $('<span id="fan2">').prop('outerHTML')]);
             }
             rows.push([[this.translations['temp']], $('<span id="temp">').prop('outerHTML')]);
     
