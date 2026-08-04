@@ -12,9 +12,14 @@ from pathlib import Path
 
 SERIES_PATTERN = re.compile(r"[0-9]+\.[0-9]+")
 PACKAGE_PATTERNS = {
-    "bind-tools": re.compile(r"bind-tools-(?!devel-).+\.pkg"),
-    "bind920": re.compile(r"bind920-(?!devel-).+\.pkg"),
+    "bind-tools": re.compile(r"bind-tools-9\.20\.26_1\.pkg"),
+    "bind920": re.compile(r"bind920-9\.20\.26_1\.pkg"),
     "os-bind-rp": re.compile(r"os-bind-rp-(?!devel-).+\.pkg"),
+}
+EXPECTED_PACKAGES = {
+    "bind-tools": ("bind-tools", "9.20.26_1", "dns/bind-tools"),
+    "bind920": ("bind920", "9.20.26_1", "dns/bind920"),
+    "os-bind-rp": ("os-bind-rp", None, "opnsense/os-bind-rp"),
 }
 
 
@@ -43,6 +48,54 @@ def select_packages(directory: Path) -> list[Path]:
     return selected
 
 
+def query_package(package: Path, pkg_command: str) -> tuple[tuple[str, str, str, str], set[tuple[str, str, str]]]:
+    """Read the manifest identity and dependency edges from one package file."""
+    identity = subprocess.run(
+        [pkg_command, "query", "-F", str(package), "%n\t%v\t%o\t%q"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip().split("\t")
+    if len(identity) != 4 or not all(identity):
+        raise ValueError(f"cannot read package identity: {package.name}")
+    dependencies = subprocess.run(
+        [pkg_command, "query", "-F", str(package), "%dn\t%do\t%dv"],
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.splitlines()
+    edges = set()
+    for dependency in dependencies:
+        fields = dependency.split("\t")
+        if len(fields) != 3 or not all(fields):
+            raise ValueError(f"cannot read package dependency: {package.name}")
+        edges.add(tuple(fields))
+    return tuple(identity), edges
+
+
+def validate_package_manifests(packages: list[Path], pkg_command: str) -> None:
+    """Reject archives whose manifests do not form the required package chain."""
+    common_abi = None
+    manifests = {}
+    for family, package in zip(PACKAGE_PATTERNS, packages, strict=True):
+        identity, dependencies = query_package(package, pkg_command)
+        name, version, origin, abi = identity
+        expected_name, expected_version, expected_origin = EXPECTED_PACKAGES[family]
+        if (name, origin) != (expected_name, expected_origin) or (
+            expected_version is not None and version != expected_version
+        ):
+            raise ValueError(f"unexpected {family} package manifest")
+        if common_abi is None:
+            common_abi = abi
+        elif abi != common_abi:
+            raise ValueError("package ABI does not match the bundled BIND packages")
+        manifests[family] = (version, dependencies)
+    if ("bind-tools", "dns/bind-tools", "9.20.26_1") not in manifests["bind920"][1]:
+        raise ValueError("bind920 does not depend on bundled bind-tools")
+    if ("bind920", "dns/bind920", "9.20.26_1") not in manifests["os-bind-rp"][1]:
+        raise ValueError("os-bind-rp does not depend on bundled bind920")
+
+
 def stage_repository(packages_directory: Path, output: Path, private_key: Path, pkg_command: str) -> list[Path]:
     """Create a signed flat pkg repository containing all required packages."""
     if not private_key.is_file():
@@ -51,6 +104,7 @@ def stage_repository(packages_directory: Path, output: Path, private_key: Path, 
     if any(output.iterdir()):
         raise ValueError("repository output directory must be empty")
     packages = select_packages(packages_directory)
+    validate_package_manifests(packages, pkg_command)
     copied = [output / package.name for package in packages]
     for package, destination in zip(packages, copied, strict=True):
         shutil.copy2(package, destination)
