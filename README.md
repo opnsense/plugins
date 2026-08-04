@@ -10,9 +10,44 @@ package. They conflict and must not be installed together. The current package
 build requires OPNsense `26.1.11_10` or newer, which includes the BIND fix
 needed for DNS-over-TLS operation.
 
-This repository does not yet provide a public package repository or end-user
-installation instructions. Maintainers should start with the
-[maintainer documentation](docs/README.md).
+Packages are published through signed GitHub Release channels. Maintainers
+should start with the [maintainer documentation](docs/README.md).
+
+Installing os-bind-rp
+=====================
+
+`os-bind-rp` supports the OPNsense 26.1 and 26.7 release series. Select the
+channel that matches the first two components of the installed OPNsense
+version. Do not install it alongside the official `os-bind` plugin: the two
+packages conflict by design.
+
+For OPNsense 26.1, use `pkg-26.1`; for 26.7, use `pkg-26.7`. Replace
+`channel` below with the selected channel. From an OPNsense root shell:
+
+```sh
+channel=pkg-26.1
+install -d -m 0755 /usr/local/etc/pkg/keys /usr/local/etc/pkg/repos
+fetch -o /usr/local/etc/pkg/keys/resolver-plugins.pub \
+  "https://github.com/resolver-plugins/plugins/releases/download/$channel/resolver-plugins.pub"
+test "$(sha256 -q /usr/local/etc/pkg/keys/resolver-plugins.pub)" = \
+  bd89d6f91807c71f8a744532c9ce2f97e9590f8858ac779bfb2f23c10804e07e || exit 1
+cat > /usr/local/etc/pkg/repos/resolver-plugins.conf <<EOF
+resolver-plugins: {
+  url: "https://github.com/resolver-plugins/plugins/releases/download/$channel",
+  signature_type: "pubkey",
+  pubkey: "/usr/local/etc/pkg/keys/resolver-plugins.pub",
+  enabled: yes
+}
+EOF
+pkg update -r resolver-plugins
+pkg install os-bind-rp
+```
+
+The repository catalogue and package are signed by the public key above. A
+future release for the same OPNsense series updates the same `pkg-<series>`
+channel, so normal `pkg upgrade` operations can receive it. Review the
+[package-repository maintainer guide](docs/package-repository.md) before
+changing a release channel or its signing key.
 
 About the OPNsense plugins
 ==========================

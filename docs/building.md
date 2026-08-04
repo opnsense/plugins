@@ -11,11 +11,14 @@ inputs:
 - `tools_tag`: the matching numeric `opnsense/tools` release tag.
 - `freebsd_release`: the value of `OS?=` in
   `config/<series>/build.conf` at that `tools_tag`.
-- `core_commit`, `core_archive_url`, and `core_archive_sha256`: the exact
-  OPNsense core archive and checksum used to configure the package repository.
+- `core_commit`: the exact OPNsense core Git commit used to configure the
+  package repository. The build checks out and verifies this commit directly;
+  it does not trust the bytes of a GitHub-generated archive.
+- `core_archive_url` and `core_archive_sha256`: legacy provenance fields kept
+  in existing release profiles. They are not the build-time trust anchor.
 
 Do not substitute a moving branch, a current tools checkout, or an unverified
-core archive for these values. `tools/ci/metadata_profile.py` rejects profiles
+core commit for these values. `tools/ci/metadata_profile.py` rejects profiles
 that do not meet the required schema and provenance checks.
 
 ## Local build
@@ -41,9 +44,15 @@ git checkout "$source_commit" -- .resolver-plugins/upstream.json Mk dns/bind
 git cat-file -e "$source_commit:Mk/devel.mk" 2>/dev/null || rm -f Mk/devel.mk
 ```
 
-The runner configures the official OPNsense package repository from the pinned
-core archive, verifies its fingerprints, installs `bind920`, verifies the
+The runner checks out the pinned OPNsense core commit, installs its package
+repository configuration and fingerprints, installs `bind920`, verifies the
 OPNsense version floor, and packages the materialized `dns/bind` source.
+
+The disposable FreeBSD 14.3 GitHub Actions image may need
+`IGNORE_OSVERSION=yes` to install current builder tools after the public
+FreeBSD catalogue advances. The workflow scopes that compatibility override to
+the builder VM; it does not alter the target ABI or the OPNsense packages used
+by `os-bind-rp`.
 
 The runner installs `python3` first when the clean FreeBSD environment does
 not provide it; Python is required to validate the immutable metadata before
