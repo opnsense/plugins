@@ -47,6 +47,9 @@ git cat-file -e "$source_commit:Mk/devel.mk" 2>/dev/null || rm -f Mk/devel.mk
 The runner checks out the pinned OPNsense core commit, installs its package
 repository configuration and fingerprints, installs `bind920`, verifies the
 OPNsense version floor, and packages the materialized `dns/bind` source.
+It clears only `dns/bind/work` before packaging; do not invoke the inherited
+`make clean` target after materializing a release source, because that target
+resets `dns/bind/src` to the control-plane checkout.
 
 The disposable FreeBSD 14.3 GitHub Actions image may need
 `IGNORE_OSVERSION=yes` to install current builder tools after the public
