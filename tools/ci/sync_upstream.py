@@ -415,6 +415,9 @@ def metadata_for(
 
 
 def commit_worktree(worktree: Path, paths: list[str], metadata: str, message: str) -> None:
+    conflicts = unmerged_paths(worktree)
+    if conflicts:
+        raise ValueError(f'overlay patch conflicts: {", ".join(conflicts)}')
     metadata_file = worktree / METADATA_PATH
     metadata_file.parent.mkdir(parents=True, exist_ok=True)
     metadata_file.write_text(metadata, encoding='utf-8')
@@ -437,7 +440,7 @@ def commit_worktree(worktree: Path, paths: list[str], metadata: str, message: st
         )
 
 
-def with_worktree(repository: Path, revision: str, callback, *, detached: bool = False) -> None:
+def with_worktree(repository: Path, revision: str, callback, *, detached: bool = False) -> Any:
     with tempfile.TemporaryDirectory(prefix='sync-upstream-') as directory:
         worktree = Path(directory)
         try:
@@ -446,14 +449,34 @@ def with_worktree(repository: Path, revision: str, callback, *, detached: bool =
                 arguments.append('--detach')
             arguments.extend([str(worktree), revision])
             require_git(repository, *arguments)
-            callback(worktree)
+            return callback(worktree)
         finally:
             git_result(repository, 'worktree', 'remove', '--force', str(worktree))
 
 
-def apply_overlay(worktree: Path, patch: bytes, paths: list[str], metadata: str, message: str) -> None:
-    require_git(worktree, 'apply', '--binary', input_data=patch)
-    commit_worktree(worktree, paths, metadata, message)
+def unmerged_paths(worktree: Path) -> list[str]:
+    result = git_result(worktree, 'diff', '--name-only', '--diff-filter=U', '-z')
+    if result.returncode:
+        raise ValueError('unable to inspect overlay conflicts')
+    return [os.fsdecode(path) for path in result.stdout.split(b'\0') if path]
+
+
+def apply_overlay(worktree: Path, patch: bytes) -> None:
+    result = git_result(worktree, 'apply', '--3way', '--binary', input_data=patch)
+    conflicts = unmerged_paths(worktree)
+    if conflicts:
+        raise ValueError(f'overlay patch conflicts: {", ".join(conflicts)}')
+    if result.returncode:
+        raise ValueError('overlay patch does not apply')
+    require_git(worktree, 'reset')
+
+
+def create_branches(repository: Path, branches: dict[str, str]) -> None:
+    commands = ''.join(
+        f'create refs/heads/{branch} {commit}\n'
+        for branch, commit in branches.items()
+    ).encode()
+    require_git(repository, 'update-ref', '--stdin', input_data=commands)
 
 
 def apply(arguments: argparse.Namespace) -> None:
@@ -482,12 +505,6 @@ def apply(arguments: argparse.Namespace) -> None:
     if patch.returncode:
         raise ValueError('unable to create overlay patch')
     base = plan_data['upstream_commit']
-
-    def check_patch(worktree: Path) -> None:
-        if git_result(worktree, 'apply', '--check', '--binary', input_data=patch.stdout).returncode:
-            raise ValueError('overlay patch does not apply')
-
-    with_worktree(repository, base, check_patch, detached=True)
     new_metadata = metadata_for(
         plan_data,
         arguments.core_commit,
@@ -495,35 +512,39 @@ def apply(arguments: argparse.Namespace) -> None:
         arguments.core_archive_sha256,
     )
 
-    if action == 'update-review':
-        require_git(repository, 'branch', sync_branch, plan_data['upstream_commit'])
-        with_worktree(
-            repository,
-            sync_branch,
-            lambda worktree: apply_overlay(worktree, patch.stdout, paths, new_metadata, 'sync BIND overlay'),
+    def build_commits(worktree: Path):
+        apply_overlay(worktree, patch.stdout)
+        if action == 'bootstrap-review':
+            commit_worktree(
+                worktree, [], new_metadata, 'bootstrap resolver plugin release',
+            )
+            target_commit = require_git(worktree, 'rev-parse', 'HEAD')
+            commit_worktree(
+                worktree, paths, new_metadata, 'bootstrap resolver plugin overlay',
+            )
+            return target_commit, require_git(worktree, 'rev-parse', 'HEAD')
+        message = (
+            'bootstrap resolver plugin release'
+            if action == 'bootstrap-build'
+            else 'sync BIND overlay'
         )
-        return
+        commit_worktree(worktree, paths, new_metadata, message)
+        return require_git(worktree, 'rev-parse', 'HEAD')
 
-    require_git(repository, 'branch', plan_data['target_release'], plan_data['upstream_commit'])
-    if action == 'bootstrap-build':
-        with_worktree(
+    commits = with_worktree(repository, base, build_commits, detached=True)
+    if action == 'bootstrap-review':
+        target_commit, sync_commit = commits
+        create_branches(
             repository,
-            plan_data['target_release'],
-            lambda worktree: apply_overlay(worktree, patch.stdout, paths, new_metadata, 'bootstrap resolver plugin release'),
+            {
+                plan_data['target_release']: target_commit,
+                sync_branch: sync_commit,
+            },
         )
-        return
-
-    with_worktree(
-        repository,
-        plan_data['target_release'],
-        lambda worktree: commit_worktree(worktree, [], new_metadata, 'bootstrap resolver plugin release'),
-    )
-    require_git(repository, 'branch', sync_branch, plan_data['target_release'])
-    with_worktree(
-        repository,
-        sync_branch,
-        lambda worktree: apply_overlay(worktree, patch.stdout, paths, new_metadata, 'bootstrap resolver plugin overlay'),
-    )
+    elif action == 'bootstrap-build':
+        create_branches(repository, {plan_data['target_release']: commits})
+    else:
+        create_branches(repository, {sync_branch: commits})
 
 
 def main() -> None:
