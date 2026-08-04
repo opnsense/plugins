@@ -40,6 +40,13 @@ repo`, and removed before the VM copyback. The committed public key is
 `docs/package-repository/resolver-plugins.pub`; its SHA-256 fingerprint is
 `bd89d6f91807c71f8a744532c9ce2f97e9590f8858ac779bfb2f23c10804e07e`.
 
+Production publication has separate build, sign, and upload jobs. The build
+job runs the selected release-source code but never receives the signing key.
+A fresh signing VM checks out trusted `master` tooling and receives only the
+finished package artifact; it generates the signed catalogue before the final
+upload job publishes the channel. This keeps a release-source change from
+having direct access to the signing credential.
+
 Do not publish a stable channel manually from a workstation. A successful
 workflow run is the release record and the source of the signed catalogue.
 

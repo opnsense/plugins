@@ -21,7 +21,7 @@ on:
     branches: ["release/bind-rp/**"]
 
 permissions:
-  contents: write
+  contents: read
   pull-requests: read
 
 jobs:
@@ -99,6 +99,8 @@ jobs:
     needs: [select, profile]
     runs-on: ubuntu-24.04
     timeout-minutes: 45
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
@@ -113,14 +115,11 @@ jobs:
           git fetch --no-tags origin "$SOURCE_COMMIT"
           git checkout "$SOURCE_COMMIT" -- .resolver-plugins/upstream.json Mk dns/bind
           git cat-file -e "$SOURCE_COMMIT:Mk/devel.mk" 2>/dev/null || rm -f Mk/devel.mk
-      - name: Build and stage package repository
+      - name: Build package
         uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
-        env:
-          RP_PKG_SIGNING_KEY: ${{ needs.select.outputs.mode == 'production' && secrets.RP_PKG_SIGNING_KEY || '' }}
         with:
           release: ${{ needs.profile.outputs.freebsd_release }}
           arch: x86_64
-          envs: RP_PKG_SIGNING_KEY
           usesh: true
           disable-cache: true
           copyback: true
@@ -134,13 +133,7 @@ jobs:
               RP_PLUGIN_DEVEL=yes RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json SOURCE_COMMIT='${{ needs.profile.outputs.source_commit }}' tools/ci/build-os-bind-rp.sh "$series" "$output"
               exit 0
             fi
-            umask 077
-            key=.rp-pkg-signing-key.pem
-            printf '%s' "$RP_PKG_SIGNING_KEY" | base64 -d > "$key"
             RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json SOURCE_COMMIT='${{ needs.profile.outputs.source_commit }}' tools/ci/build-os-bind-rp.sh "$series" "$output"
-            python3 tools/ci/release_channel.py stage --package "$output"/os-bind-rp-*.pkg --output "$output/repository" --private-key "$key"
-            openssl pkey -in "$key" -pubout -out "$output/repository/resolver-plugins.pub"
-            rm -f "$key"
       - name: Publish development pre-release
         if: needs.select.outputs.mode == 'development'
         shell: bash
@@ -152,15 +145,76 @@ jobs:
           set -euo pipefail
           gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "os-bind-rp development $TAG" --prerelease --notes "Development build for pull request testing." || true
           gh release upload "$TAG" "artifacts/$SERIES"/* --clobber --repo "$GITHUB_REPOSITORY"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: os-bind-rp-build-${{ needs.select.outputs.mode }}-${{ needs.select.outputs.series }}
+          path: artifacts/${{ needs.select.outputs.series }}
+          retention-days: 7
+
+  sign:
+    if: needs.select.outputs.mode == 'production'
+    needs: [select, profile, build]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: os-bind-rp-build-production-${{ needs.select.outputs.series }}
+          path: artifacts/${{ needs.select.outputs.series }}
+      - name: Sign package repository
+        uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
+        env:
+          RP_PKG_SIGNING_KEY: ${{ secrets.RP_PKG_SIGNING_KEY }}
+        with:
+          release: ${{ needs.profile.outputs.freebsd_release }}
+          arch: x86_64
+          envs: RP_PKG_SIGNING_KEY
+          usesh: true
+          disable-cache: true
+          copyback: true
+          run: |
+            set -eu
+            export IGNORE_OSVERSION=yes
+            pkg update -f
+            pkg install -y python3
+            umask 077
+            key=.rp-pkg-signing-key.pem
+            trap 'rm -f "$key"' EXIT HUP INT TERM
+            printf '%s' "$RP_PKG_SIGNING_KEY" | base64 -d > "$key"
+            output="artifacts/${{ needs.select.outputs.series }}"
+            python3 tools/ci/release_channel.py stage --package "$output"/os-bind-rp-*.pkg --output "$output/repository" --private-key "$key"
+            openssl pkey -in "$key" -pubout -out "$output/repository/resolver-plugins.pub"
+            rm -f "$key"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: os-bind-rp-production-repository-${{ needs.select.outputs.series }}
+          path: artifacts/${{ needs.select.outputs.series }}/repository
+          retention-days: 7
+
+  publish:
+    if: needs.select.outputs.mode == 'production'
+    needs: [select, sign]
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: os-bind-rp-production-repository-${{ needs.select.outputs.series }}
+          path: artifacts/${{ needs.select.outputs.series }}/repository
       - name: Publish production package channel
-        if: needs.select.outputs.mode == 'production'
         shell: bash
         env:
           SERIES: ${{ needs.select.outputs.series }}
           GH_TOKEN: ${{ github.token }}
         run: python3 tools/ci/release_channel.py publish --repository "$GITHUB_REPOSITORY" --series "$SERIES" --directory "artifacts/$SERIES/repository"
-      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
-        with:
-          name: os-bind-rp-${{ needs.select.outputs.mode }}-${{ needs.select.outputs.series }}
-          path: artifacts/${{ needs.select.outputs.series }}
-          retention-days: 7
