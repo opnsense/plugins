@@ -1,0 +1,163 @@
+name: Publish os-bind-rp package release
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: development builds a PR pre-release; production publishes a release channel
+        required: true
+        type: choice
+        options: [development, production]
+      series:
+        description: OPNsense release series (<major>.<minor>)
+        required: true
+        type: string
+      pull_number:
+        description: Required for development builds; optional production provenance reference
+        required: false
+        type: string
+  pull_request_target:
+    types: [closed]
+    branches: ["release/bind-rp/**"]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  select:
+    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
+    runs-on: ubuntu-24.04
+    outputs:
+      mode: ${{ steps.select.outputs.mode }}
+      series: ${{ steps.select.outputs.series }}
+      source_ref: ${{ steps.select.outputs.source_ref }}
+      prerelease_tag: ${{ steps.select.outputs.prerelease_tag }}
+    steps:
+      - id: select
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_MODE: ${{ inputs.mode }}
+          INPUT_SERIES: ${{ inputs.series }}
+          INPUT_PULL_NUMBER: ${{ inputs.pull_number }}
+          PR_BASE: ${{ github.event.pull_request.base.ref }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          set -euo pipefail
+          if [[ "$EVENT_NAME" == workflow_dispatch ]]; then
+            mode="$INPUT_MODE"
+            series="$INPUT_SERIES"
+            if [[ "$mode" == development ]]; then
+              [[ "$INPUT_PULL_NUMBER" =~ ^[1-9][0-9]*$ ]]
+              source_ref="refs/pull/$INPUT_PULL_NUMBER/head"
+              prerelease_tag="pr-$INPUT_PULL_NUMBER-$series"
+            else
+              source_ref="refs/heads/release/bind-rp/$series"
+              prerelease_tag=""
+            fi
+          else
+            mode=production
+            series="${PR_BASE#release/bind-rp/}"
+            source_ref="refs/heads/$PR_BASE"
+            prerelease_tag=""
+          fi
+          [[ "$mode" == development || "$mode" == production ]]
+          [[ "$series" =~ ^[0-9]+\.[0-9]+$ ]]
+          {
+            printf 'mode=%s\n' "$mode"
+            printf 'series=%s\n' "$series"
+            printf 'source_ref=%s\n' "$source_ref"
+            printf 'prerelease_tag=%s\n' "$prerelease_tag"
+          } >> "$GITHUB_OUTPUT"
+
+  profile:
+    needs: select
+    runs-on: ubuntu-24.04
+    outputs:
+      source_commit: ${{ steps.profile.outputs.source_commit }}
+      freebsd_release: ${{ steps.profile.outputs.freebsd_release }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - id: profile
+        shell: bash
+        env:
+          SOURCE_REF: ${{ needs.select.outputs.source_ref }}
+          SERIES: ${{ needs.select.outputs.series }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "$SOURCE_REF:refs/remotes/origin/package-source"
+          source_commit=$(git rev-parse refs/remotes/origin/package-source)
+          git show "$source_commit:.resolver-plugins/upstream.json" > "$RUNNER_TEMP/upstream.json"
+          freebsd_release=$(python3 tools/ci/metadata_profile.py "$RUNNER_TEMP/upstream.json" "$SERIES" freebsd_release)
+          printf 'source_commit=%s\nfreebsd_release=%s\n' "$source_commit" "$freebsd_release" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: [select, profile]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Materialize selected release source
+        shell: bash
+        env:
+          SOURCE_COMMIT: ${{ needs.profile.outputs.source_commit }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "$SOURCE_COMMIT"
+          git checkout "$SOURCE_COMMIT" -- .resolver-plugins/upstream.json Mk dns/bind
+          git cat-file -e "$SOURCE_COMMIT:Mk/devel.mk" 2>/dev/null || rm -f Mk/devel.mk
+      - name: Build and stage package repository
+        uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
+        env:
+          RP_PKG_SIGNING_KEY: ${{ needs.select.outputs.mode == 'production' && secrets.RP_PKG_SIGNING_KEY || '' }}
+        with:
+          release: ${{ needs.profile.outputs.freebsd_release }}
+          arch: x86_64
+          envs: RP_PKG_SIGNING_KEY
+          usesh: true
+          disable-cache: true
+          copyback: true
+          run: |
+            set -eu
+            series='${{ needs.select.outputs.series }}'
+            mode='${{ needs.select.outputs.mode }}'
+            output="artifacts/$series"
+            if [ "$mode" = development ]; then
+              RP_PLUGIN_DEVEL=yes RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json SOURCE_COMMIT='${{ needs.profile.outputs.source_commit }}' tools/ci/build-os-bind-rp.sh "$series" "$output"
+              exit 0
+            fi
+            umask 077
+            key=.rp-pkg-signing-key.pem
+            printf '%s' "$RP_PKG_SIGNING_KEY" | base64 -d > "$key"
+            RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json SOURCE_COMMIT='${{ needs.profile.outputs.source_commit }}' tools/ci/build-os-bind-rp.sh "$series" "$output"
+            python3 tools/ci/release_channel.py stage --package "$output"/os-bind-rp-*.pkg --output "$output/repository" --private-key "$key"
+            openssl pkey -in "$key" -pubout -out "$output/repository/resolver-plugins.pub"
+            rm -f "$key"
+      - name: Publish development pre-release
+        if: needs.select.outputs.mode == 'development'
+        shell: bash
+        env:
+          TAG: ${{ needs.select.outputs.prerelease_tag }}
+          SERIES: ${{ needs.select.outputs.series }}
+        run: |
+          set -euo pipefail
+          gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "os-bind-rp development $TAG" --prerelease --notes "Development build for pull request testing." || true
+          gh release upload "$TAG" "artifacts/$SERIES"/* --clobber --repo "$GITHUB_REPOSITORY"
+      - name: Publish production package channel
+        if: needs.select.outputs.mode == 'production'
+        shell: bash
+        env:
+          SERIES: ${{ needs.select.outputs.series }}
+        run: python3 tools/ci/release_channel.py publish --repository "$GITHUB_REPOSITORY" --series "$SERIES" --directory "artifacts/$SERIES/repository"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: os-bind-rp-${{ needs.select.outputs.mode }}-${{ needs.select.outputs.series }}
+          path: artifacts/${{ needs.select.outputs.series }}
+          retention-days: 7
