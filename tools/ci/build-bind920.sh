@@ -41,8 +41,6 @@ trap 'rm -rf "$temporary_directory"' EXIT HUP INT TERM
 
 "$git_command" init "$ports_directory" >/dev/null
 "$git_command" -C "$ports_directory" remote add origin "$ports_repository"
-"$git_command" -C "$ports_directory" sparse-checkout init --cone
-"$git_command" -C "$ports_directory" sparse-checkout set Mk Templates Keywords dns/bind920 dns/bind-tools
 "$git_command" -C "$ports_directory" fetch --depth=1 --filter=blob:none origin "$ports_commit"
 "$git_command" -C "$ports_directory" checkout --detach FETCH_HEAD >/dev/null
 resolved_commit=$("$git_command" -C "$ports_directory" rev-parse HEAD)
