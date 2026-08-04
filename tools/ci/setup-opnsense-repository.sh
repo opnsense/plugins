@@ -20,43 +20,10 @@ case "$series" in
     *) fail "unsupported OPNsense series: $series" ;;
 esac
 
+script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 metadata_field() {
-    python3 - "$RP_UPSTREAM_METADATA" "$series" "$1" <<'PY'
-import json
-import sys
-
-metadata_path, series, field = sys.argv[1:]
-required_fields = (
-    'series',
-    'upstream_branch',
-    'upstream_commit',
-    'freebsd_release',
-    'core_commit',
-    'core_archive_url',
-    'core_archive_sha256',
-)
-try:
-    with open(metadata_path, encoding='utf-8') as metadata_file:
-        metadata = json.load(metadata_file)
-except (OSError, json.JSONDecodeError) as error:
-    raise SystemExit(f'cannot read upstream metadata: {error}')
-
-if not isinstance(metadata, dict):
-    raise SystemExit('upstream metadata must be a JSON object')
-for required_field in required_fields:
-    if not isinstance(metadata.get(required_field), str) or not metadata[required_field]:
-        raise SystemExit(f'upstream metadata has an invalid {required_field}')
-if metadata['series'] != series:
-    raise SystemExit(
-        f'upstream metadata series {metadata["series"]} does not match {series}'
-    )
-if metadata['core_archive_url'] != (
-    'https://github.com/opnsense/core/archive/'
-    f'{metadata["core_commit"]}.tar.gz'
-):
-    raise SystemExit('upstream metadata core archive URL is not immutable')
-print(metadata[field])
-PY
+    python3 "$script_directory/metadata_profile.py" \
+        "$RP_UPSTREAM_METADATA" "$series" "$1"
 }
 
 if [ -n "${RP_UPSTREAM_METADATA:-}" ]
