@@ -1,0 +1,78 @@
+name: Build os-bind-rp release artifact
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "release/bind-rp/**"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  profile:
+    runs-on: ubuntu-24.04
+    outputs:
+      series: ${{ steps.metadata.outputs.series }}
+      freebsd_release: ${{ steps.metadata.outputs.freebsd_release }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - name: Read release branch profile
+        id: metadata
+        shell: bash
+        run: |
+          branch="${GITHUB_REF_NAME:?missing workflow ref}"
+          case "$branch" in
+            release/bind-rp/*) series="${branch#release/bind-rp/}" ;;
+            *)
+              echo "workflow ref $branch is not a release branch" >&2
+              exit 1
+              ;;
+          esac
+
+          metadata_path=.resolver-plugins/upstream.json
+          metadata_field() {
+            python3 tools/ci/metadata_profile.py "$metadata_path" "$series" "$1"
+          }
+
+          validated_series=$(metadata_field series)
+          freebsd_release=$(metadata_field freebsd_release)
+          if [[ "$validated_series" != "$series" ]]; then
+            echo "validated metadata series does not match workflow ref" >&2
+            exit 1
+          fi
+          {
+            printf 'series=%s\n' "$validated_series"
+            printf 'freebsd_release=%s\n' "$freebsd_release"
+          } >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: profile
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - name: Build in declared FreeBSD release
+        uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
+        with:
+          release: ${{ needs.profile.outputs.freebsd_release }}
+          arch: x86_64
+          usesh: true
+          disable-cache: true
+          copyback: true
+          run: |
+            series='${{ needs.profile.outputs.series }}'
+            RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json \
+              SOURCE_COMMIT='${{ github.sha }}' \
+              tools/ci/build-os-bind-rp.sh "$series" "artifacts/$series"
+      - name: Upload release build artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: os-bind-rp-${{ needs.profile.outputs.series }}
+          path: artifacts/${{ needs.profile.outputs.series }}
+          retention-days: 7
