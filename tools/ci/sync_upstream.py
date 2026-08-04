@@ -13,6 +13,7 @@ from typing import Any
 from metadata_profile import (
     COMMIT_PATTERN,
     FREEBSD_RELEASE_PATTERN,
+    tools_tag_matches_series,
     validate_core_archive,
     validate_profile,
 )
@@ -20,12 +21,12 @@ from metadata_profile import (
 
 SERIES_PATTERN = re.compile(r'^stable/(\d+)\.(\d+)$')
 RELEASE_PATTERN = re.compile(r'^(\d+)\.(\d+)$')
-FREEBSD_PATTERN = re.compile(r'\bFreeBSD(?:\s+base)?\s+(\d+(?:\.\d+)?)\b', re.I)
 METADATA_PATH = '.resolver-plugins/upstream.json'
 OVERLAY_MANIFEST = '.resolver-plugins/overlay-paths.txt'
 PLAN_FIELDS = {
     'action', 'series', 'upstream_ref', 'upstream_commit', 'source_release',
-    'target_release', 'sync_branch', 'freebsd_release', 'bind_changed', 'reason',
+    'target_release', 'sync_branch', 'tools_tag', 'freebsd_release',
+    'bind_changed', 'reason',
 }
 
 
@@ -114,31 +115,31 @@ def bind_tree(repository: Path, revision: str) -> str:
     return run_git(repository, 'rev-parse', f'{revision}:dns/bind')
 
 
-def declared_freebsd_release(release_notes_directory: str | None, series: str) -> str | None:
-    if not release_notes_directory:
-        return None
-    directory = Path(release_notes_directory)
-    if not directory.is_dir():
-        return None
-    candidates = sorted(
-        path for path in directory.rglob('*')
-        if path.is_file() and (path.name == series or path.stem == series)
-    )
+def tools_release_profile(tools_repository: Path, series: str) -> tuple[str, str]:
+    tags = run_git(tools_repository, 'tag', '--list').splitlines()
+    candidates = []
+    pattern = re.compile(rf'{re.escape(series)}(?:\.(0|[1-9]\d*))?')
+    for tag in tags:
+        match = pattern.fullmatch(tag)
+        if match:
+            patch = int(match.group(1)) if match.group(1) is not None else -1
+            candidates.append((patch, tag))
     if not candidates:
-        return None
-    lines = candidates[0].read_text(encoding='utf-8').splitlines()
-    introduction = []
-    for index, line in enumerate(lines):
-        if (
-            index > 1
-            and index + 1 < len(lines)
-            and line.strip()
-            and re.fullmatch(r'[=\-~^"`:#*+]+', lines[index + 1].strip())
-        ):
-            break
-        introduction.append(line)
-    match = FREEBSD_PATTERN.search('\n'.join(introduction))
-    return match.group(1) if match else None
+        raise ValueError(f'missing numeric tools tag for {series}')
+    tools_tag = max(candidates)[1]
+    build_conf = run_git(
+        tools_repository,
+        'show',
+        f'{tools_tag}:config/{series}/build.conf',
+    )
+    assignments = []
+    for line in build_conf.splitlines():
+        match = re.fullmatch(r'\s*OS\?=\s*([^\s#]+)\s*(?:#.*)?', line)
+        if match:
+            assignments.append(match.group(1))
+    if len(assignments) != 1 or FREEBSD_RELEASE_PATTERN.fullmatch(assignments[0]) is None:
+        raise ValueError(f'missing or invalid OS assignment at tools tag {tools_tag}')
+    return tools_tag, assignments[0]
 
 
 def decision(
@@ -147,6 +148,7 @@ def decision(
     upstream_commit: str | None,
     source_release: str | None,
     target_release: str | None,
+    tools_tag: str | None,
     freebsd_release: str | None,
     bind_changed: bool,
     reason: str,
@@ -165,6 +167,7 @@ def decision(
         'source_release': source_release,
         'target_release': target_release,
         'sync_branch': sync_branch,
+        'tools_tag': tools_tag,
         'freebsd_release': freebsd_release,
         'bind_changed': bind_changed,
         'reason': reason,
@@ -177,7 +180,9 @@ def plan(arguments: argparse.Namespace) -> dict:
     releases = release_refs(repository, arguments.release_prefix)
     available = sorted(stable, key=series_key)
     if not available or not releases:
-        return decision('blocked', None, None, None, None, None, False, 'no release source')
+        return decision(
+            'blocked', None, None, None, None, None, None, False, 'no release source'
+        )
 
     latest_release = max(releases, key=series_key)
     source_release = f'{arguments.release_prefix}{latest_release}'
@@ -194,7 +199,18 @@ def plan(arguments: argparse.Namespace) -> dict:
     except (ValueError, subprocess.CalledProcessError):
         return decision(
             'blocked', latest_release, source_upstream_commit, source_release, source_release,
-            None, False, 'missing or invalid source metadata',
+            None, None, False, 'missing or invalid source metadata',
+        )
+
+    try:
+        tools_tag, freebsd_release = tools_release_profile(
+            Path(arguments.tools_repository), latest_release
+        )
+    except (ValueError, subprocess.CalledProcessError):
+        return decision(
+            'blocked', latest_release, source_upstream_commit, source_release,
+            source_release, None, None, False,
+            'missing or invalid tools release profile',
         )
 
     if source_upstream_commit:
@@ -203,13 +219,10 @@ def plan(arguments: argparse.Namespace) -> dict:
         except subprocess.CalledProcessError:
             current_bind_tree = None
         if current_bind_tree and source_bind_tree != current_bind_tree:
-            freebsd_release = (
-                declared_freebsd_release(arguments.release_notes_directory, latest_release)
-                or metadata['freebsd_release']
-            )
             return decision(
                 'update-review', latest_release, source_upstream_commit, source_release,
-                source_release, freebsd_release, True, 'upstream BIND tree changed',
+                source_release, tools_tag, freebsd_release, True,
+                'upstream BIND tree changed',
             )
 
     target_series = next(
@@ -218,29 +231,36 @@ def plan(arguments: argparse.Namespace) -> dict:
     if target_series is None:
         return decision(
             'noop', latest_release, source_upstream_commit, source_release, source_release,
-            metadata['freebsd_release'], False, 'upstream BIND tree is unchanged',
+            tools_tag, freebsd_release, False, 'upstream BIND tree is unchanged',
         )
     target_release = f'{arguments.release_prefix}{target_series}'
     upstream_commit = stable[target_series]
+    try:
+        tools_tag, freebsd_release = tools_release_profile(
+            Path(arguments.tools_repository), target_series
+        )
+    except (ValueError, subprocess.CalledProcessError):
+        return decision(
+            'blocked', target_series, upstream_commit, source_release, target_release,
+            None, None, False, 'missing or invalid tools release profile',
+        )
     try:
         bind_changed = source_bind_tree != bind_tree(repository, upstream_commit)
     except subprocess.CalledProcessError:
         return decision(
             'blocked', target_series, upstream_commit, source_release, target_release,
-            None, False, 'upstream BIND tree is unavailable',
+            None, None, False, 'upstream BIND tree is unavailable',
         )
-    freebsd_release = (
-        declared_freebsd_release(arguments.release_notes_directory, target_series)
-        or metadata['freebsd_release']
-    )
     if bind_changed:
         return decision(
             'bootstrap-review', target_series, upstream_commit, source_release,
-            target_release, freebsd_release, True, 'new series has an upstream BIND change',
+            target_release, tools_tag, freebsd_release, True,
+            'new series has an upstream BIND change',
         )
     return decision(
         'bootstrap-build', target_series, upstream_commit, source_release,
-        target_release, freebsd_release, False, 'new series has an unchanged BIND tree',
+        target_release, tools_tag, freebsd_release, False,
+        'new series has an unchanged BIND tree',
     )
 
 
@@ -350,11 +370,13 @@ def validate_apply_plan(repository: Path, plan_data: dict[str, Any]) -> tuple[st
     source_release = required_plan_string(plan_data, 'source_release')
     target_release = required_plan_string(plan_data, 'target_release')
     freebsd_release = required_plan_string(plan_data, 'freebsd_release')
+    tools_tag = required_plan_string(plan_data, 'tools_tag')
     if upstream_ref != f'upstream/stable/{series}' or target_release.rsplit('/', 1)[-1] != series:
         raise ValueError('missing or invalid plan')
     if (
         COMMIT_PATTERN.fullmatch(upstream_commit) is None
         or FREEBSD_RELEASE_PATTERN.fullmatch(freebsd_release) is None
+        or not tools_tag_matches_series(tools_tag, series)
     ):
         raise ValueError('missing or invalid plan')
     if require_git(repository, 'rev-parse', f'{upstream_commit}^{{commit}}') != upstream_commit:
@@ -401,6 +423,7 @@ def metadata_for(
         'series': plan_data['series'],
         'upstream_branch': f"stable/{plan_data['series']}",
         'upstream_commit': plan_data['upstream_commit'],
+        'tools_tag': plan_data['tools_tag'],
         'freebsd_release': plan_data['freebsd_release'],
         'core_commit': core_commit,
         'core_archive_url': core_archive_url,
@@ -553,7 +576,7 @@ def main() -> None:
     plan_parser.add_argument('--upstream', required=True)
     plan_parser.add_argument('--release-prefix', required=True)
     plan_parser.add_argument('--metadata-path', required=True)
-    plan_parser.add_argument('--release-notes-directory')
+    plan_parser.add_argument('--tools-repository', required=True)
     apply_parser = commands.add_parser('apply')
     apply_parser.add_argument('--repository', required=True)
     apply_parser.add_argument('--plan', required=True)

@@ -24,6 +24,7 @@ metadata_field() {
 
 upstream_commit=$(metadata_field upstream_commit) || fail 'invalid upstream metadata'
 core_commit=$(metadata_field core_commit) || fail 'invalid upstream metadata'
+tools_tag=$(metadata_field tools_tag) || fail 'invalid upstream metadata'
 freebsd_release=$(metadata_field freebsd_release) || fail 'invalid upstream metadata'
 
 repository_root=$(CDPATH= cd -- "$script_directory/../.." && pwd)
@@ -65,6 +66,7 @@ cp "$package" "$artifact_directory/"
     printf 'opnsense_core_archive_sha256=%s\n' "$opnsense_core_archive_sha256"
     printf 'upstream_commit=%s\n' "$upstream_commit"
     printf 'core_commit=%s\n' "$core_commit"
+    printf 'tools_tag=%s\n' "$tools_tag"
     printf 'freebsd_release=%s\n' "$freebsd_release"
     printf 'source_commit=%s\n' "${SOURCE_COMMIT:-unknown}"
 } > "$artifact_directory/build-metadata.txt"

@@ -15,7 +15,8 @@ from urllib.parse import quote, urlencode
 METADATA_PATH = '.resolver-plugins/upstream.json'
 PLAN_FIELDS = {
     'action', 'series', 'upstream_ref', 'upstream_commit', 'source_release',
-    'target_release', 'sync_branch', 'freebsd_release', 'bind_changed', 'reason',
+    'target_release', 'sync_branch', 'tools_tag', 'freebsd_release',
+    'bind_changed', 'reason',
 }
 SERIES_PATTERN = re.compile(r'^\d+\.\d+$')
 SYNC_PATTERN = re.compile(r'^sync/(bootstrap|bind)/(\d+\.\d+)/([0-9a-f]{12})$')
@@ -50,6 +51,12 @@ def metadata_at(repository: Path, revision: str) -> dict[str, str]:
     required = ('series', 'upstream_commit')
     if any(not isinstance(metadata.get(field), str) or not metadata[field] for field in required):
         raise ValueError(f'missing synchronization metadata at {revision}')
+    if not valid_release_metadata(
+        metadata,
+        metadata['series'],
+        metadata['upstream_commit'],
+    ):
+        raise ValueError(f'missing synchronization metadata at {revision}')
     return metadata
 
 
@@ -62,12 +69,13 @@ def valid_release_metadata(
         'series',
         'upstream_branch',
         'upstream_commit',
+        'tools_tag',
         'freebsd_release',
         'core_commit',
         'core_archive_url',
         'core_archive_sha256',
     )
-    if any(
+    if set(metadata) != set(required) or any(
         not isinstance(metadata.get(field), str) or not metadata[field]
         for field in required
     ):
@@ -78,6 +86,11 @@ def valid_release_metadata(
         and metadata['upstream_branch'] == f'stable/{series}'
         and metadata['upstream_commit'] == upstream_commit
         and re.fullmatch(r'[0-9a-f]{40}', upstream_commit) is not None
+        and re.fullmatch(
+            rf'{re.escape(series)}(?:\.(?:0|[1-9]\d*))?',
+            metadata['tools_tag'],
+        ) is not None
+        and re.fullmatch(r'[1-9]\d*(?:\.\d+)?', metadata['freebsd_release']) is not None
         and re.fullmatch(r'[0-9a-f]{40}', core_commit) is not None
         and metadata['core_archive_url']
         == f'https://github.com/opnsense/core/archive/{core_commit}.tar.gz'
@@ -412,6 +425,8 @@ def validate_plan(plan: dict[str, Any]) -> tuple[str, str, str, str | None]:
     series = plan.get('series')
     upstream_commit = plan.get('upstream_commit')
     target = plan.get('target_release')
+    tools_tag = plan.get('tools_tag')
+    freebsd_release = plan.get('freebsd_release')
     if (
         not isinstance(series, str)
         or not SERIES_PATTERN.fullmatch(series)
@@ -419,6 +434,12 @@ def validate_plan(plan: dict[str, Any]) -> tuple[str, str, str, str | None]:
         or not re.fullmatch(r'[0-9a-f]{40}', upstream_commit)
         or target != f'release/bind-rp/{series}'
         or plan.get('upstream_ref') != f'upstream/stable/{series}'
+        or not isinstance(tools_tag, str)
+        or re.fullmatch(
+            rf'{re.escape(series)}(?:\.(?:0|[1-9]\d*))?', tools_tag
+        ) is None
+        or not isinstance(freebsd_release, str)
+        or re.fullmatch(r'[1-9]\d*(?:\.\d+)?', freebsd_release) is None
     ):
         raise ValueError('missing or invalid publication plan')
     sync = plan.get('sync_branch')

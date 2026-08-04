@@ -13,6 +13,7 @@ REQUIRED_FIELDS = (
     "series",
     "upstream_branch",
     "upstream_commit",
+    "tools_tag",
     "freebsd_release",
     "core_commit",
     "core_archive_url",
@@ -22,6 +23,13 @@ COMMIT_PATTERN = re.compile(r"[0-9a-f]{40}")
 SHA256_PATTERN = re.compile(r"[0-9a-f]{64}")
 SERIES_PATTERN = re.compile(r"\d+\.\d+")
 FREEBSD_RELEASE_PATTERN = re.compile(r"[1-9]\d*(?:\.\d+)?")
+
+
+def tools_tag_matches_series(tools_tag: str, series: str) -> bool:
+    return re.fullmatch(
+        rf"{re.escape(series)}(?:\.(?:0|[1-9]\d*))?",
+        tools_tag,
+    ) is not None
 
 
 def fail(message: str) -> None:
@@ -50,6 +58,8 @@ def validate_core_archive(
 def validate_profile(metadata: object, series: str) -> dict[str, str]:
     if not isinstance(metadata, dict):
         raise ValueError("upstream metadata must be a JSON object")
+    if set(metadata) != set(REQUIRED_FIELDS):
+        raise ValueError("upstream metadata does not match the required schema")
     if SERIES_PATTERN.fullmatch(series) is None:
         raise ValueError(f"invalid upstream metadata series {series}")
 
@@ -69,6 +79,8 @@ def validate_profile(metadata: object, series: str) -> dict[str, str]:
         raise ValueError(
             "upstream metadata upstream_commit is not an immutable commit hash"
         )
+    if not tools_tag_matches_series(profile["tools_tag"], series):
+        raise ValueError("upstream metadata tools_tag does not match its series")
     if FREEBSD_RELEASE_PATTERN.fullmatch(profile["freebsd_release"]) is None:
         raise ValueError("upstream metadata has an invalid freebsd_release")
     validate_core_archive(

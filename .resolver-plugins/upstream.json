@@ -2,6 +2,7 @@
   "series": "26.1",
   "upstream_branch": "stable/26.1",
   "upstream_commit": "6f3937f938377464534ebebde66cc13d84186542",
+  "tools_tag": "26.1.11",
   "freebsd_release": "14.3",
   "core_commit": "8cc69b21e0f4c2622fc8a62df2a15ba7cb1e731f",
   "core_archive_url": "https://github.com/opnsense/core/archive/8cc69b21e0f4c2622fc8a62df2a15ba7cb1e731f.tar.gz",
