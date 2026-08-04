@@ -4,9 +4,38 @@ This repository is an OPNsense plugins fork maintained by Resolver Plugins.
 Treat the upstream OPNsense source as the compatibility baseline and keep this
 fork's changes narrow and reviewable.
 
-Read [docs/README.md](docs/README.md) before changing build, synchronization,
-or package-related code.  The focused maintainer guides are the source of truth
-for the fork model, local builds, and upstream synchronization.
+## Design at a glance
+
+The fork exists to maintain `os-bind-rp`, a community-maintained BIND plugin
+that can follow upstream OPNsense plugin releases while carrying a small,
+reviewed feature set. `os-bind-rp` intentionally replaces official `os-bind`:
+the packages conflict and must never be installed together.
+
+`master` is the control plane. It contains documentation and CI code that
+discovers compatible upstream releases. Each `release/bind-rp/<series>` branch
+is a reviewed build source for one OPNsense series. The release branch records
+immutable plugin, tools, FreeBSD, core archive, and checksum provenance in
+`.resolver-plugins/upstream.json`.
+
+Automation is deliberately conservative. An upstream BIND change becomes a
+review PR; it does not silently advance a release branch. An unchanged BIND
+tree for a new series can receive a temporary build artifact. No package
+repository, GitHub Release, Pages site, signing, or end-user installation
+mechanism exists yet.
+
+## Repository map
+
+- `dns/bind/`: the `os-bind-rp` plugin package definition and fork-specific
+  plugin changes.
+- `.resolver-plugins/`: release build metadata and the synchronization overlay
+  manifest.
+- `tools/ci/`: metadata validation, OPNsense repository setup, package build,
+  synchronization planning, and safe GitHub publication helpers.
+- `.github/workflows/`: the daily/manual synchronizer and release artifact
+  build workflows.
+- `docs/`: maintainer reference material. Start with
+  [docs/README.md](docs/README.md) before changing build, synchronization, or
+  package-related code.
 
 ## Non-negotiable rules
 
@@ -38,4 +67,9 @@ for the fork model, local builds, and upstream synchronization.
 
 Update the relevant maintainer guide in the same change when behavior or a
 workflow contract changes. Keep the root README user-oriented; operational
-detail belongs under `docs/`.
+detail belongs under `docs/`. The focused references are:
+
+- [Fork model](docs/fork-model.md) for package and branch policy.
+- [Building](docs/building.md) for local build inputs and verification.
+- [Upstream synchronization](docs/upstream-sync.md) for CI decisions and
+  operational recovery.
