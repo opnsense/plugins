@@ -13,13 +13,32 @@ needed for DNS-over-TLS operation.
 Packages are published through signed GitHub Release channels. Maintainers
 should start with the [maintainer documentation](docs/README.md).
 
+Custom BIND functionality
+==========================
+
+`os-bind-rp` keeps the upstream BIND plugin as its base and adds focused DNS
+management features:
+
+* DNS-over-TLS (DoT) forwarders with TLS hostname verification, per-forwarder
+  destination ports, and Forward First / Forward Only behavior.
+* A DHCP lease watcher that publishes scoped dynamic DNS mappings.
+* Reverse DNS zone management and optional zone notifications.
+* DNSBL definitions sourced from the same lists used by Unbound.
+* Listener-interface selection that follows the Unbound model, custom
+  `named.conf.d` includes, and forward-zone support.
+* HTTPS, SVCB, and NAPTR record support in the BIND record editor.
+
+These additions are currently published in the `pkg-26.1` channel. The
+`pkg-26.7` channel is available, but its release source has not yet received
+this extended feature set.
+
 Installing os-bind-rp
 =====================
 
-`os-bind-rp` supports the OPNsense 26.1 and 26.7 release series. Select the
-channel that matches the first two components of the installed OPNsense
-version. Do not install it alongside the official `os-bind` plugin: the two
-packages conflict by design.
+`os-bind-rp` has package channels for the OPNsense 26.1 and 26.7 release
+series. Select the channel that matches the first two components of the
+installed OPNsense version. Do not install it alongside the official `os-bind`
+plugin: the two packages conflict by design.
 
 For OPNsense 26.1, use `pkg-26.1`; for 26.7, use `pkg-26.7`. Replace
 `channel` below with the selected channel. From an OPNsense root shell:
