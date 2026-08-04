@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
+import re
 
 
 REQUIRED_FIELDS = (
@@ -39,6 +40,11 @@ def load_profile(metadata_path: Path, series: str) -> dict[str, str]:
         profile[field] = value
     if profile["series"] != series:
         fail(f"upstream metadata series {profile['series']} does not match {series}")
+    for field in ("upstream_commit", "core_commit"):
+        if re.fullmatch(r"[0-9a-f]{40}", profile[field]) is None:
+            fail(f"upstream metadata {field} is not an immutable commit hash")
+    if re.fullmatch(r"[0-9a-f]{64}", profile["core_archive_sha256"]) is None:
+        fail("upstream metadata core_archive_sha256 is not an immutable SHA-256 hash")
     expected_url = (
         "https://github.com/opnsense/core/archive/"
         f"{profile['core_commit']}.tar.gz"
