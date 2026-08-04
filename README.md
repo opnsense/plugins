@@ -1,3 +1,19 @@
+Resolver Plugins fork
+=====================
+
+This repository is a Resolver Plugins fork of the OPNsense plugins collection.
+It currently maintains `os-bind-rp`, a community-maintained BIND plugin based
+on the upstream `os-bind` plugin with a small set of additional features.
+
+`os-bind-rp` is intentionally separate from OPNsense's official `os-bind`
+package. They conflict and must not be installed together. The current package
+build requires OPNsense `26.1.11_10` or newer, which includes the BIND fix
+needed for DNS-over-TLS operation.
+
+This repository does not yet provide a public package repository or end-user
+installation instructions. Maintainers should start with the
+[maintainer documentation](docs/README.md).
+
 About the OPNsense plugins
 ==========================
 
