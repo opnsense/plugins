@@ -41,7 +41,7 @@ def load_profile(path: Path) -> dict[str, str | int]:
             raise ValueError(f"BIND profile has an invalid {field}")
     if DISTVERSION_PATTERN.fullmatch(profile["distversion"]) is None:
         raise ValueError("BIND profile has an invalid distversion")
-    if profile["distversion"] < "9.20.26":
+    if tuple(map(int, profile["distversion"].split("."))) < (9, 20, 26):
         raise ValueError("BIND profile is below the required 9.20.26 release")
     if profile["portrevision"] != 1:
         raise ValueError("BIND profile has an invalid portrevision")
