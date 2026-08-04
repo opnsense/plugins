@@ -7,10 +7,12 @@ manually from GitHub Actions on `master`. It fetches OPNsense plugin stable
 branches, the fork's release branches, and `opnsense/tools`. It then validates
 the current release metadata and plans one safe outcome.
 
-`Build os-bind-rp release artifact` runs when a
-`release/bind-rp/<series>` branch is pushed or is manually dispatched. It uses
-the matching FreeBSD VM declared by release metadata and uploads its artifact
-for seven days.
+`Build os-bind-rp release artifact` is manually dispatched from `master` with
+a required `series` input such as `26.7`. It validates the numeric series,
+constructs and checks out the corresponding release branch, validates its
+metadata, builds in the matching FreeBSD VM, and uploads its artifact for seven
+days. It is not triggered by release-branch pushes: release branches
+intentionally do not need to carry control-plane workflow files.
 
 ## Synchronizer outcomes
 

@@ -2,36 +2,59 @@ name: Build os-bind-rp release artifact
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - "release/bind-rp/**"
+    inputs:
+      series:
+        description: OPNsense release series to build (<major>.<minor>)
+        required: true
+        type: string
 
 permissions:
   contents: read
   actions: read
 
 jobs:
+  validate:
+    runs-on: ubuntu-24.04
+    outputs:
+      series: ${{ steps.release.outputs.series }}
+      release_ref: ${{ steps.release.outputs.release_ref }}
+    steps:
+      - name: Validate requested release series
+        id: release
+        shell: bash
+        env:
+          RELEASE_SERIES: ${{ inputs.series }}
+        run: |
+          series="${RELEASE_SERIES:?missing series}"
+          if ! printf '%s\n' "$series" | grep -Eq '^[0-9]+\.[0-9]+$'; then
+            echo "series must use <major>.<minor> form" >&2
+            exit 1
+          fi
+          release_ref="refs/heads/release/bind-rp/$series"
+          {
+            printf 'series=%s\n' "$series"
+            printf 'release_ref=%s\n' "$release_ref"
+          } >> "$GITHUB_OUTPUT"
+
   profile:
+    needs: validate
     runs-on: ubuntu-24.04
     outputs:
       series: ${{ steps.metadata.outputs.series }}
       freebsd_release: ${{ steps.metadata.outputs.freebsd_release }}
+      source_commit: ${{ steps.metadata.outputs.source_commit }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
+          ref: ${{ needs.validate.outputs.release_ref }}
           persist-credentials: false
       - name: Read release branch profile
         id: metadata
         shell: bash
+        env:
+          RELEASE_SERIES: ${{ needs.validate.outputs.series }}
         run: |
-          branch="${GITHUB_REF_NAME:?missing workflow ref}"
-          case "$branch" in
-            release/bind-rp/*) series="${branch#release/bind-rp/}" ;;
-            *)
-              echo "workflow ref $branch is not a release branch" >&2
-              exit 1
-              ;;
-          esac
+          series="${RELEASE_SERIES:?missing series}"
 
           metadata_path=.resolver-plugins/upstream.json
           metadata_field() {
@@ -41,12 +64,14 @@ jobs:
           validated_series=$(metadata_field series)
           freebsd_release=$(metadata_field freebsd_release)
           if [[ "$validated_series" != "$series" ]]; then
-            echo "validated metadata series does not match workflow ref" >&2
+            echo "validated metadata series does not match requested series" >&2
             exit 1
           fi
+          source_commit=$(git rev-parse HEAD)
           {
             printf 'series=%s\n' "$validated_series"
             printf 'freebsd_release=%s\n' "$freebsd_release"
+            printf 'source_commit=%s\n' "$source_commit"
           } >> "$GITHUB_OUTPUT"
 
   build:
@@ -56,6 +81,7 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
+          ref: ${{ needs.profile.outputs.source_commit }}
           persist-credentials: false
       - name: Build in declared FreeBSD release
         uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
@@ -68,7 +94,7 @@ jobs:
           run: |
             series='${{ needs.profile.outputs.series }}'
             RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json \
-              SOURCE_COMMIT='${{ github.sha }}' \
+              SOURCE_COMMIT='${{ needs.profile.outputs.source_commit }}' \
               tools/ci/build-os-bind-rp.sh "$series" "artifacts/$series"
       - name: Upload release build artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
