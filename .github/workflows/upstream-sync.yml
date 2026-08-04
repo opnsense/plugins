@@ -1,0 +1,150 @@
+name: Synchronize os-bind-rp upstream
+
+on:
+  schedule:
+    - cron: "17 4 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  reconcile:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Fetch release and upstream inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin \
+            '+refs/heads/release/bind-rp/*:refs/heads/release/bind-rp/*' \
+            '+refs/heads/sync/bind/*:refs/remotes/origin/sync/bind/*' \
+            '+refs/heads/sync/bootstrap/*:refs/remotes/origin/sync/bootstrap/*'
+          git remote add upstream https://github.com/opnsense/plugins.git
+          git fetch --no-tags upstream \
+            '+refs/heads/stable/*:refs/remotes/upstream/stable/*'
+          git clone --depth 1 https://github.com/opnsense/changelog.git \
+            "$RUNNER_TEMP/opnsense-changelog"
+      - name: Recover an interrupted review publication
+        id: recovery
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RP_SYNC_REVIEWER: ${{ vars.RP_SYNC_REVIEWER }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/publish_upstream.py recover \
+            --repository . \
+            --github-repository "$GITHUB_REPOSITORY" \
+            --reviewer "$RP_SYNC_REVIEWER" \
+            --output "$GITHUB_OUTPUT"
+      - name: Plan reconciliation
+        if: steps.recovery.outputs.handled != 'true'
+        id: plan
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/ci/sync_upstream.py plan \
+            --repository . \
+            --upstream upstream \
+            --release-prefix release/bind-rp/ \
+            --metadata-path .resolver-plugins/upstream.json \
+            --release-notes-directory "$RUNNER_TEMP/opnsense-changelog/community" \
+            > "$RUNNER_TEMP/plan.json"
+          python3 - "$RUNNER_TEMP/plan.json" "$GITHUB_OUTPUT" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          plan_path, output_path = sys.argv[1:]
+          plan = json.loads(pathlib.Path(plan_path).read_text(encoding='utf-8'))
+          if plan.get('action') == 'blocked':
+              raise SystemExit(f"upstream synchronization is blocked: {plan.get('reason')}")
+          output_fields = (
+              'action',
+              'series',
+              'upstream_commit',
+              'source_release',
+              'target_release',
+              'sync_branch',
+              'freebsd_release',
+          )
+          with pathlib.Path(output_path).open('a', encoding='utf-8') as output:
+              for field in output_fields:
+                  value = plan.get(field)
+                  print(f'{field}={value if value is not None else ""}', file=output)
+          PY
+      - name: Apply non-noop plan locally
+        if: steps.recovery.outputs.handled != 'true' && steps.plan.outputs.action != 'noop'
+        shell: bash
+        run: |
+          set -euo pipefail
+          series='${{ steps.plan.outputs.series }}'
+          core_line=$(git ls-remote https://github.com/opnsense/core.git \
+            "refs/heads/stable/$series")
+          read -r core_commit core_ref extra <<EOF
+          $core_line
+          EOF
+          if [ -z "${core_commit:-}" ] || [ "$core_ref" != "refs/heads/stable/$series" ] || \
+            [ -n "${extra:-}" ]
+          then
+            echo "cannot resolve the exact opnsense/core stable/$series commit" >&2
+            exit 1
+          fi
+          core_archive_url="https://github.com/opnsense/core/archive/$core_commit.tar.gz"
+          curl --fail --location --silent --show-error \
+            --output "$RUNNER_TEMP/opnsense-core.tar.gz" "$core_archive_url"
+          core_archive_sha256=$(sha256sum "$RUNNER_TEMP/opnsense-core.tar.gz" | awk '{print $1}')
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          python3 tools/ci/sync_upstream.py apply \
+            --repository . \
+            --plan "$RUNNER_TEMP/plan.json" \
+            --core-commit "$core_commit" \
+            --core-archive-url "$core_archive_url" \
+            --core-archive-sha256 "$core_archive_sha256"
+      - name: Publish validated plan state
+        if: steps.recovery.outputs.handled != 'true' && steps.plan.outputs.action != 'noop'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RP_SYNC_REVIEWER: ${{ vars.RP_SYNC_REVIEWER }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/publish_upstream.py publish \
+            --repository . \
+            --plan "$RUNNER_TEMP/plan.json" \
+            --github-repository "$GITHUB_REPOSITORY" \
+            --reviewer "$RP_SYNC_REVIEWER"
+      - name: Check out bootstrap release
+        if: steps.recovery.outputs.handled != 'true' && steps.plan.outputs.action == 'bootstrap-build'
+        shell: bash
+        run: git checkout '${{ steps.plan.outputs.target_release }}'
+      - name: Build bootstrap in planner-selected FreeBSD release
+        if: steps.recovery.outputs.handled != 'true' && steps.plan.outputs.action == 'bootstrap-build'
+        uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
+        with:
+          release: ${{ steps.plan.outputs.freebsd_release }}
+          arch: x86_64
+          usesh: true
+          disable-cache: true
+          copyback: true
+          run: |
+            series='${{ steps.plan.outputs.series }}'
+            RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json \
+              SOURCE_COMMIT="$(git rev-parse HEAD)" \
+              tools/ci/build-os-bind-rp.sh "$series" "artifacts/$series"
+      - name: Upload bootstrap artifact
+        if: steps.recovery.outputs.handled != 'true' && steps.plan.outputs.action == 'bootstrap-build'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: os-bind-rp-${{ steps.plan.outputs.series }}
+          path: artifacts/${{ steps.plan.outputs.series }}
+          retention-days: 7

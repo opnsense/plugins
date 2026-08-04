@@ -1,0 +1,86 @@
+name: Build os-bind-rp release artifact
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "release/bind-rp/**"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  profile:
+    runs-on: ubuntu-24.04
+    outputs:
+      series: ${{ steps.metadata.outputs.series }}
+      freebsd_release: ${{ steps.metadata.outputs.freebsd_release }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - name: Read release branch profile
+        id: metadata
+        shell: bash
+        run: |
+          python3 - "$GITHUB_REF_NAME" "$GITHUB_OUTPUT" <<'PY'
+          import json
+          import pathlib
+          import sys
+
+          branch, output_path = sys.argv[1:]
+          metadata_path = pathlib.Path('.resolver-plugins/upstream.json')
+          try:
+              metadata = json.loads(metadata_path.read_text(encoding='utf-8'))
+          except (OSError, json.JSONDecodeError) as error:
+              raise SystemExit(f'cannot read release branch metadata: {error}')
+          required = (
+              'series',
+              'upstream_branch',
+              'upstream_commit',
+              'freebsd_release',
+              'core_commit',
+              'core_archive_url',
+              'core_archive_sha256',
+          )
+          if not isinstance(metadata, dict) or any(
+              not isinstance(metadata.get(field), str) or not metadata[field]
+              for field in required
+          ):
+              raise SystemExit('release branch metadata is invalid')
+          expected_branch = f"release/bind-rp/{metadata['series']}"
+          if branch != expected_branch:
+              raise SystemExit(f'workflow ref {branch} does not match {expected_branch}')
+          with pathlib.Path(output_path).open('a', encoding='utf-8') as output:
+              print(f"series={metadata['series']}", file=output)
+              print(f"freebsd_release={metadata['freebsd_release']}", file=output)
+          PY
+
+  build:
+    needs: profile
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          persist-credentials: false
+      - name: Build in declared FreeBSD release
+        uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
+        with:
+          release: ${{ needs.profile.outputs.freebsd_release }}
+          arch: x86_64
+          usesh: true
+          disable-cache: true
+          copyback: true
+          run: |
+            series='${{ needs.profile.outputs.series }}'
+            RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json \
+              SOURCE_COMMIT='${{ github.sha }}' \
+              tools/ci/build-os-bind-rp.sh "$series" "artifacts/$series"
+      - name: Upload release build artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: os-bind-rp-${{ needs.profile.outputs.series }}
+          path: artifacts/${{ needs.profile.outputs.series }}
+          retention-days: 7
