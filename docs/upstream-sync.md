@@ -7,14 +7,6 @@ manually from GitHub Actions on `master`. It fetches OPNsense plugin stable
 branches, the fork's release branches, and `opnsense/tools`. It then validates
 the current release metadata and plans one safe outcome.
 
-`Build os-bind-rp release artifact` is manually dispatched from `master` with
-a required `series` input such as `26.7`. It validates the numeric series,
-constructs and fetches the corresponding release branch, validates its
-metadata, and materializes its BIND source alongside the `master` CI scripts.
-It then builds in the matching FreeBSD VM and uploads its artifact for seven
-days. It is not triggered by release-branch pushes: release branches
-intentionally do not need to carry control-plane workflow files.
-
 ## Synchronizer outcomes
 
 | Planner action | Meaning | Automation result |
