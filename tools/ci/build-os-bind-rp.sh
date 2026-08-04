@@ -11,10 +11,10 @@ fail() {
 
 series=$1
 artifact_directory=$2
-case "$series" in
-    26.1|26.7) ;;
-    *) fail "unsupported OPNsense series: $series" ;;
-esac
+if [ -z "${RP_UPSTREAM_METADATA:-}" ]
+then
+    fail 'RP_UPSTREAM_METADATA is required'
+fi
 
 script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 metadata_field() {
@@ -22,19 +22,9 @@ metadata_field() {
         "$RP_UPSTREAM_METADATA" "$series" "$1"
 }
 
-if [ -n "${RP_UPSTREAM_METADATA:-}" ]
-then
-    upstream_commit=$(metadata_field upstream_commit) || fail 'invalid upstream metadata'
-    core_commit=$(metadata_field core_commit) || fail 'invalid upstream metadata'
-    freebsd_release=$(metadata_field freebsd_release) || fail 'invalid upstream metadata'
-else
-    upstream_commit=unknown
-    core_commit=unknown
-    case "$series" in
-        26.1) freebsd_release=14.3 ;;
-        26.7) freebsd_release=15 ;;
-    esac
-fi
+upstream_commit=$(metadata_field upstream_commit) || fail 'invalid upstream metadata'
+core_commit=$(metadata_field core_commit) || fail 'invalid upstream metadata'
+freebsd_release=$(metadata_field freebsd_release) || fail 'invalid upstream metadata'
 
 repository_root=$(CDPATH= cd -- "$script_directory/../.." && pwd)
 pkg_command=${PKG_COMMAND:-pkg}

@@ -10,15 +10,10 @@ fail() {
 [ "$#" -eq 1 ] || fail "usage: $0 <26.1|26.7>"
 
 series=$1
-case "$series" in
-    26.1)
-        expected_archive_sha256=95cb9d549165520de984adbe7bd740ca237dd470b779d7ef3706d5f11b8c321e
-        ;;
-    26.7)
-        expected_archive_sha256=2706f4a078b60db164fb1f0a98f5e89ead7c3b77aee35e6d9ff77b65338d29e3
-        ;;
-    *) fail "unsupported OPNsense series: $series" ;;
-esac
+if [ -z "${RP_UPSTREAM_METADATA:-}" ]
+then
+    fail 'RP_UPSTREAM_METADATA is required'
+fi
 
 script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 metadata_field() {
@@ -26,14 +21,9 @@ metadata_field() {
         "$RP_UPSTREAM_METADATA" "$series" "$1"
 }
 
-if [ -n "${RP_UPSTREAM_METADATA:-}" ]
-then
-    expected_archive_sha256=$(metadata_field core_archive_sha256) || \
-        fail 'invalid upstream metadata'
-    archive_url=$(metadata_field core_archive_url) || fail 'invalid upstream metadata'
-else
-    archive_url=${OPNSENSE_CORE_ARCHIVE_URL:-https://github.com/opnsense/core/archive/refs/heads/stable/$series.tar.gz}
-fi
+expected_archive_sha256=$(metadata_field core_archive_sha256) || \
+    fail 'invalid upstream metadata'
+archive_url=$(metadata_field core_archive_url) || fail 'invalid upstream metadata'
 
 repository_directory=${PKG_REPOS_DIR:-/usr/local/etc/pkg/repos}
 fingerprint_directory=${PKG_FINGERPRINTS_DIR:-/usr/local/etc/pkg/fingerprints/OPNsense}
