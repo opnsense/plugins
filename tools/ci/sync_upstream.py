@@ -10,19 +10,17 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
+from metadata_profile import (
+    COMMIT_PATTERN,
+    FREEBSD_RELEASE_PATTERN,
+    validate_core_archive,
+    validate_profile,
+)
+
 
 SERIES_PATTERN = re.compile(r'^stable/(\d+)\.(\d+)$')
 RELEASE_PATTERN = re.compile(r'^(\d+)\.(\d+)$')
 FREEBSD_PATTERN = re.compile(r'\bFreeBSD(?:\s+base)?\s+(\d+(?:\.\d+)?)\b', re.I)
-REQUIRED_METADATA_FIELDS = (
-    'series',
-    'upstream_branch',
-    'upstream_commit',
-    'freebsd_release',
-    'core_commit',
-    'core_archive_url',
-    'core_archive_sha256',
-)
 METADATA_PATH = '.resolver-plugins/upstream.json'
 OVERLAY_MANIFEST = '.resolver-plugins/overlay-paths.txt'
 PLAN_FIELDS = {
@@ -63,7 +61,7 @@ def stable_refs(repository: Path, upstream: str) -> dict[str, str]:
             continue
         upstream_branch = reference[len(prefix):]
         match = SERIES_PATTERN.fullmatch(upstream_branch)
-        if match:
+        if match and COMMIT_PATTERN.fullmatch(commit):
             result[f'{match.group(1)}.{match.group(2)}'] = commit
     return result
 
@@ -97,21 +95,19 @@ def load_metadata(
         metadata = json.loads(run_git(repository, 'show', f'{release}:{metadata_path}'))
     except (subprocess.CalledProcessError, json.JSONDecodeError):
         raise ValueError('missing or invalid source metadata') from None
-    if not isinstance(metadata, dict):
-        raise ValueError('missing or invalid source metadata')
-    if any(not isinstance(metadata.get(field), str) or not metadata[field] for field in REQUIRED_METADATA_FIELDS):
-        raise ValueError('missing or invalid source metadata')
     expected_branch = f'stable/{source_series}'
-    if metadata['series'] != source_series or metadata['upstream_branch'] != expected_branch:
+    try:
+        profile = validate_profile(metadata, source_series)
+    except ValueError:
         raise ValueError('missing or invalid source metadata')
     run_git(
         repository,
         'merge-base',
         '--is-ancestor',
-        metadata['upstream_commit'],
+        profile['upstream_commit'],
         f'{upstream}/{expected_branch}',
     )
-    return metadata
+    return profile
 
 
 def bind_tree(repository: Path, revision: str) -> str:
@@ -315,14 +311,11 @@ def source_metadata(repository: Path, source_release: str) -> dict[str, str]:
         metadata = json.loads(require_git(repository, 'show', f'{source_release}:{METADATA_PATH}'))
     except (ValueError, json.JSONDecodeError):
         raise ValueError('missing or invalid source metadata') from None
-    if not isinstance(metadata, dict):
-        raise ValueError('missing or invalid source metadata')
-    if any(not isinstance(metadata.get(field), str) or not metadata[field] for field in REQUIRED_METADATA_FIELDS):
-        raise ValueError('missing or invalid source metadata')
     series = source_release.rsplit('/', maxsplit=1)[-1]
-    if metadata['series'] != series or metadata['upstream_branch'] != f'stable/{series}':
+    try:
+        return validate_profile(metadata, series)
+    except ValueError:
         raise ValueError('missing or invalid source metadata')
-    return metadata
 
 
 def overlay_paths(repository: Path, source_release: str) -> list[str]:
@@ -356,8 +349,13 @@ def validate_apply_plan(repository: Path, plan_data: dict[str, Any]) -> tuple[st
     upstream_commit = required_plan_string(plan_data, 'upstream_commit')
     source_release = required_plan_string(plan_data, 'source_release')
     target_release = required_plan_string(plan_data, 'target_release')
-    required_plan_string(plan_data, 'freebsd_release')
+    freebsd_release = required_plan_string(plan_data, 'freebsd_release')
     if upstream_ref != f'upstream/stable/{series}' or target_release.rsplit('/', 1)[-1] != series:
+        raise ValueError('missing or invalid plan')
+    if (
+        COMMIT_PATTERN.fullmatch(upstream_commit) is None
+        or FREEBSD_RELEASE_PATTERN.fullmatch(freebsd_release) is None
+    ):
         raise ValueError('missing or invalid plan')
     if require_git(repository, 'rev-parse', f'{upstream_commit}^{{commit}}') != upstream_commit:
         raise ValueError('missing or invalid plan')
@@ -399,16 +397,18 @@ def metadata_for(
     core_archive_url: str,
     core_archive_sha256: str,
 ) -> str:
+    profile = {
+        'series': plan_data['series'],
+        'upstream_branch': f"stable/{plan_data['series']}",
+        'upstream_commit': plan_data['upstream_commit'],
+        'freebsd_release': plan_data['freebsd_release'],
+        'core_commit': core_commit,
+        'core_archive_url': core_archive_url,
+        'core_archive_sha256': core_archive_sha256,
+    }
+    validate_profile(profile, plan_data['series'])
     return json.dumps(
-        {
-            'series': plan_data['series'],
-            'upstream_branch': f"stable/{plan_data['series']}",
-            'upstream_commit': plan_data['upstream_commit'],
-            'freebsd_release': plan_data['freebsd_release'],
-            'core_commit': core_commit,
-            'core_archive_url': core_archive_url,
-            'core_archive_sha256': core_archive_sha256,
-        },
+        profile,
         indent=2,
         sort_keys=False,
     ) + '\n'
@@ -485,15 +485,13 @@ def apply(arguments: argparse.Namespace) -> None:
         raise ValueError('repository does not exist')
     require_clean_checkout(repository)
     plan_data = read_apply_plan(arguments.plan)
-    if not re.fullmatch(r'[0-9a-f]{40}', arguments.core_commit or ''):
-        raise ValueError('missing immutable core archive metadata')
-    expected_core_archive_url = (
-        f'https://github.com/opnsense/core/archive/{arguments.core_commit}.tar.gz'
-    )
-    if (
-        arguments.core_archive_url != expected_core_archive_url
-        or not arguments.core_archive_sha256
-    ):
+    try:
+        validate_core_archive(
+            arguments.core_commit,
+            arguments.core_archive_url,
+            arguments.core_archive_sha256,
+        )
+    except ValueError:
         raise ValueError('missing immutable core archive metadata')
     action, source_release, sync_branch = validate_apply_plan(repository, plan_data)
     metadata = source_metadata(repository, source_release)
