@@ -23,8 +23,10 @@ that do not meet the required schema and provenance checks.
 The GitHub Actions workflow is the canonical build path. It keeps the CI
 scripts checked out from `master`, fetches the selected immutable release
 commit, then materializes only that commit's `dns/bind` source and
-`.resolver-plugins/upstream.json`. This matters for legacy release branches,
-which intentionally do not carry the control-plane scripts.
+`.resolver-plugins/upstream.json` and `Mk` build framework. This matters for
+legacy release branches, which intentionally do not carry the control-plane
+scripts. In particular, the release `Mk` files prevent a development-branch
+marker from adding an unintended `-devel` package suffix.
 
 Reproduce that split in a disposable worktree when building locally. Start
 from `master`, fetch the selected release branch, and overlay only its release
@@ -35,7 +37,8 @@ series=26.7
 release_ref="refs/heads/release/bind-rp/$series"
 git fetch --no-tags origin "$release_ref:refs/remotes/origin/build-source"
 source_commit=$(git rev-parse refs/remotes/origin/build-source)
-git checkout "$source_commit" -- .resolver-plugins/upstream.json dns/bind
+git checkout "$source_commit" -- .resolver-plugins/upstream.json Mk dns/bind
+git cat-file -e "$source_commit:Mk/devel.mk" 2>/dev/null || rm -f Mk/devel.mk
 ```
 
 The runner configures the official OPNsense package repository from the pinned

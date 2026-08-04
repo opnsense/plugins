@@ -100,7 +100,8 @@ jobs:
         run: |
           source_commit="${SOURCE_COMMIT:?missing source commit}"
           git fetch --no-tags origin "$source_commit"
-          git checkout "$source_commit" -- .resolver-plugins/upstream.json dns/bind
+          git checkout "$source_commit" -- .resolver-plugins/upstream.json Mk dns/bind
+          git cat-file -e "$source_commit:Mk/devel.mk" 2>/dev/null || rm -f Mk/devel.mk
       - name: Build in declared FreeBSD release
         uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
         with:
