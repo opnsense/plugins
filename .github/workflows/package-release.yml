@@ -126,6 +126,8 @@ jobs:
           run: |
             set -eu
             export IGNORE_OSVERSION=yes
+            pkg update -f
+            pkg install -y python3
             series='${{ needs.select.outputs.series }}'
             mode='${{ needs.select.outputs.mode }}'
             output="artifacts/$series"
