@@ -21,6 +21,7 @@ repository_root=$(CDPATH= cd -- "$script_directory/../.." && pwd)
 pkg_command=${PKG_COMMAND:-pkg}
 make_command=${MAKE_COMMAND:-make}
 python_command=${PYTHON_COMMAND:-python3}
+plugin_devel=${RP_PLUGIN_DEVEL:-}
 
 if ! command -v "$python_command" >/dev/null 2>&1
 then
@@ -55,8 +56,17 @@ case "$comparison" in
     *) fail "OPNsense $opnsense_version is below the required 26.1.11_10" ;;
 esac
 
-"$make_command" -C "$repository_root/dns/bind" clean
-"$make_command" -C "$repository_root/dns/bind" package
+make_plugin() {
+    if [ "$plugin_devel" = yes ]
+    then
+        "$make_command" -C "$repository_root/dns/bind" _PLUGIN_DEVEL=yes "$1"
+    else
+        "$make_command" -C "$repository_root/dns/bind" "$1"
+    fi
+}
+
+make_plugin clean
+make_plugin package
 
 set -- "$repository_root"/dns/bind/work/pkg/os-bind-rp-*.pkg
 [ -f "$1" ] || fail 'package build did not produce os-bind-rp'
