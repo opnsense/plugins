@@ -31,9 +31,9 @@ makefile_sha256=$(metadata_field makefile_sha256) || fail 'invalid BIND profile'
 distinfo_sha256=$(metadata_field distinfo_sha256) || fail 'invalid BIND profile'
 distversion=$(metadata_field distversion) || fail 'invalid BIND profile'
 
-"$script_directory/setup-opnsense-repository.sh" "$series" >/dev/null
 "$pkg_command" update -f
 "$pkg_command" install -y git patch
+"$script_directory/setup-opnsense-repository.sh" "$series" >/dev/null
 
 temporary_directory=$(mktemp -d)
 ports_directory="$temporary_directory/ports"
