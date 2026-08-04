@@ -65,7 +65,7 @@ make_plugin() {
     fi
 }
 
-make_plugin clean
+rm -rf "$repository_root/dns/bind/work"
 make_plugin package
 
 set -- "$repository_root"/dns/bind/work/pkg/os-bind-rp-*.pkg
