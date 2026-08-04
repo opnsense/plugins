@@ -47,6 +47,12 @@ opnsense_core_commit=$("$script_directory/setup-opnsense-repository.sh" "$series
 "$pkg_command" install -y bind920
 bind_version=$("$pkg_command" query -e '%n = bind920' '%v') || \
     fail 'bind920 is not installed after package setup'
+comparison=$("$pkg_command" version -t "$bind_version" 9.20.26) || \
+    fail "cannot compare BIND version: $bind_version"
+case "$comparison" in
+    '='|'>') ;;
+    *) fail "BIND $bind_version is below the required 9.20.26" ;;
+esac
 opnsense_version=$("$pkg_command" rquery -r OPNsense -e '%n = opnsense' '%v') || \
     fail 'OPNsense core package is not available after package setup'
 comparison=$("$pkg_command" version -t "$opnsense_version" 26.1.11_10) || \

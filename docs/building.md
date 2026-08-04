@@ -44,9 +44,13 @@ git checkout "$source_commit" -- .resolver-plugins/upstream.json Mk dns/bind
 git cat-file -e "$source_commit:Mk/devel.mk" 2>/dev/null || rm -f Mk/devel.mk
 ```
 
-The runner checks out the pinned OPNsense core commit, installs its package
-repository configuration and fingerprints, installs `bind920`, verifies the
-OPNsense version floor, and packages the materialized `dns/bind` source.
+The runner checks out the pinned OPNsense core commit and configures its
+package repository and fingerprints. It then checks out the exact FreeBSD
+Ports recipe pinned in `.resolver-plugins/bind920.json`, verifies its hashes,
+and builds `bind-tools` followed by `bind920` at `9.20.26_1`. Those packages
+are installed in the build VM before `os-bind-rp` is packaged, which records
+the exact BIND dependency in the plugin manifest. The plugin builder rejects
+any BIND version below `9.20.26` and verifies the OPNsense version floor.
 It clears only `dns/bind/work` before packaging; do not invoke the inherited
 `make clean` target after materializing a release source, because that target
 resets `dns/bind/src` to the control-plane checkout.
@@ -64,6 +68,9 @@ any OPNsense package repository configuration is used.
 For example, after preparing the selected release source:
 
 ```sh
+RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json \
+SOURCE_COMMIT="$source_commit" \
+tools/ci/build-bind920.sh "$series" "artifacts/$series"
 RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json \
 SOURCE_COMMIT="$source_commit" \
 tools/ci/build-os-bind-rp.sh "$series" "artifacts/$series"
@@ -84,7 +91,8 @@ Check that the metadata is valid before running a full VM build:
 ```sh
 python3 tools/ci/metadata_profile.py \
   .resolver-plugins/upstream.json "$series" freebsd_release
-sh -n tools/ci/build-os-bind-rp.sh tools/ci/setup-opnsense-repository.sh
+sh -n tools/ci/build-bind920.sh tools/ci/build-os-bind-rp.sh \
+  tools/ci/setup-opnsense-repository.sh
 python3 -m py_compile tools/ci/*.py
 git diff --check
 ```

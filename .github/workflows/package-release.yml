@@ -131,6 +131,7 @@ jobs:
             series='${{ needs.select.outputs.series }}'
             mode='${{ needs.select.outputs.mode }}'
             output="artifacts/$series"
+            RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json SOURCE_COMMIT='${{ needs.profile.outputs.source_commit }}' tools/ci/build-bind920.sh "$series" "$output"
             if [ "$mode" = development ]; then
               RP_PLUGIN_DEVEL=yes RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json SOURCE_COMMIT='${{ needs.profile.outputs.source_commit }}' tools/ci/build-os-bind-rp.sh "$series" "$output"
               exit 0
@@ -190,7 +191,7 @@ jobs:
             trap 'rm -f "$key"' EXIT HUP INT TERM
             printf '%s' "$RP_PKG_SIGNING_KEY" | base64 -d > "$key"
             output="artifacts/${{ needs.select.outputs.series }}"
-            python3 tools/ci/release_channel.py stage --package "$output"/os-bind-rp-*.pkg --output "$output/repository" --private-key "$key"
+            python3 tools/ci/release_channel.py stage --packages-directory "$output" --output "$output/repository" --private-key "$key"
             openssl pkey -in "$key" -pubout -out "$output/repository/resolver-plugins.pub"
             rm -f "$key"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

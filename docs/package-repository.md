@@ -19,9 +19,25 @@ The tag is the package repository base URL:
 https://github.com/resolver-plugins/plugins/releases/download/pkg-<series>
 ```
 
-Every channel includes `meta.conf`, catalogue data, the current
-`os-bind-rp-*.pkg`, and `resolver-plugins.pub`. Package clients verify the
-catalogue and package using that public key.
+Every channel includes `meta.conf`, catalogue data, `resolver-plugins.pub`,
+and exactly these packages:
+
+- `bind-tools-9.20.26_1.pkg`
+- `bind920-9.20.26_1.pkg`
+- the current `os-bind-rp-*.pkg`
+
+`os-bind-rp` records the exact locally-built `bind920` package as a dependency,
+and `bind920` records its matching `bind-tools` dependency. Installing the
+plugin from this channel therefore installs the fixed BIND daemon without a
+separate user step. Package clients verify the catalogue and packages using
+the published public key.
+
+The BIND packages deliberately retain the normal FreeBSD names and origins
+(`bind920`/`dns/bind920` and `bind-tools`/`dns/bind-tools`), so they replace
+OPNsense's older BIND packages. Their custom revision is `9.20.26_1`; an
+official package at `9.20.27` or later wins normal `pkg` version ordering and
+supersedes this replacement. Until then, Resolver Plugins maintains the BIND
+security and compatibility update in its channels.
 
 Development builds use pre-release tags such as `pr-123-26.7`. They are for
 review testing only and are never signed or promoted to a stable channel.
@@ -64,7 +80,7 @@ channel:
 
 ```sh
 pkg update -r resolver-plugins
-pkg rquery -r resolver-plugins -e '%n = os-bind-rp' '%n-%v'
+pkg rquery -r resolver-plugins -e '%n = bind920 OR %n = bind-tools OR %n = os-bind-rp' '%n-%v'
 ```
 
 If a signing-key rotation is required, generate and store the replacement
