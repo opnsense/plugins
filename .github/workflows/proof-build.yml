@@ -19,6 +19,13 @@ jobs:
       series: ${{ steps.release.outputs.series }}
       release_ref: ${{ steps.release.outputs.release_ref }}
     steps:
+      - name: Require master control plane
+        shell: bash
+        run: |
+          if [[ "$GITHUB_REF" != "refs/heads/master" ]]; then
+            echo "release builds must be dispatched from master" >&2
+            exit 1
+          fi
       - name: Validate requested release series
         id: release
         shell: bash
@@ -46,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
-          ref: ${{ needs.validate.outputs.release_ref }}
+          ref: ${{ github.sha }}
           persist-credentials: false
       - name: Read release branch profile
         id: metadata
@@ -55,8 +62,12 @@ jobs:
           RELEASE_SERIES: ${{ needs.validate.outputs.series }}
         run: |
           series="${RELEASE_SERIES:?missing series}"
+          release_ref="refs/heads/release/bind-rp/$series"
+          git fetch --no-tags origin "$release_ref:refs/remotes/origin/build-source"
+          source_commit=$(git rev-parse refs/remotes/origin/build-source)
 
-          metadata_path=.resolver-plugins/upstream.json
+          metadata_path="$RUNNER_TEMP/upstream.json"
+          git show "$source_commit:.resolver-plugins/upstream.json" > "$metadata_path"
           metadata_field() {
             python3 tools/ci/metadata_profile.py "$metadata_path" "$series" "$1"
           }
@@ -67,7 +78,6 @@ jobs:
             echo "validated metadata series does not match requested series" >&2
             exit 1
           fi
-          source_commit=$(git rev-parse HEAD)
           {
             printf 'series=%s\n' "$validated_series"
             printf 'freebsd_release=%s\n' "$freebsd_release"
@@ -81,8 +91,16 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
-          ref: ${{ needs.profile.outputs.source_commit }}
+          ref: ${{ github.sha }}
           persist-credentials: false
+      - name: Materialize profiled release source
+        shell: bash
+        env:
+          SOURCE_COMMIT: ${{ needs.profile.outputs.source_commit }}
+        run: |
+          source_commit="${SOURCE_COMMIT:?missing source commit}"
+          git fetch --no-tags origin "$source_commit"
+          git checkout "$source_commit" -- .resolver-plugins/upstream.json dns/bind
       - name: Build in declared FreeBSD release
         uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
         with:
