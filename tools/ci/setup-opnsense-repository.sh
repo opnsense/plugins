@@ -21,38 +21,24 @@ metadata_field() {
         "$RP_UPSTREAM_METADATA" "$series" "$1"
 }
 
-expected_archive_sha256=$(metadata_field core_archive_sha256) || \
-    fail 'invalid upstream metadata'
-archive_url=$(metadata_field core_archive_url) || fail 'invalid upstream metadata'
+core_commit=$(metadata_field core_commit) || fail 'invalid upstream metadata'
 
 repository_directory=${PKG_REPOS_DIR:-/usr/local/etc/pkg/repos}
 fingerprint_directory=${PKG_FINGERPRINTS_DIR:-/usr/local/etc/pkg/fingerprints/OPNsense}
-fetch_command=${FETCH_COMMAND:-fetch}
+git_command=${GIT_COMMAND:-git}
+core_repository=${OPNSENSE_CORE_REPOSITORY:-https://github.com/opnsense/core.git}
 temporary_directory=$(mktemp -d)
-archive_path="$temporary_directory/core.tar.gz"
 checkout_directory="$temporary_directory/core"
 trap 'rm -rf "$temporary_directory"' EXIT HUP INT TERM
 
-"$fetch_command" -q -o "$archive_path" "$archive_url"
-if [ -n "${SHA256_COMMAND:-}" ]
-then
-    archive_sha256=$("$SHA256_COMMAND" "$archive_path")
-elif command -v sha256 >/dev/null 2>&1
-then
-    archive_sha256=$(sha256 -q "$archive_path")
-elif command -v sha256sum >/dev/null 2>&1
-then
-    archive_sha256=$(sha256sum "$archive_path" | awk '{print $1}')
-else
-    fail 'no SHA-256 command is available'
-fi
-[ "$archive_sha256" = "$expected_archive_sha256" ] || \
-    fail "OPNsense core archive does not match the pinned SHA-256 for $series"
-mkdir -p "$checkout_directory"
-tar -xzf "$archive_path" -C "$checkout_directory"
-set -- "$checkout_directory"/*
-[ "$#" -eq 1 ] || fail 'OPNsense core archive has an unexpected layout'
-core_directory=$1
+"$git_command" init "$checkout_directory" >/dev/null
+"$git_command" -C "$checkout_directory" remote add origin "$core_repository"
+"$git_command" -C "$checkout_directory" fetch --depth=1 origin "$core_commit"
+"$git_command" -C "$checkout_directory" checkout --detach FETCH_HEAD >/dev/null
+resolved_commit=$("$git_command" -C "$checkout_directory" rev-parse HEAD)
+[ "$resolved_commit" = "$core_commit" ] || \
+    fail "OPNsense core checkout does not match the pinned commit for $series"
+core_directory=$checkout_directory
 
 repository_template="$core_directory/src/etc/pkg/repos/OPNsense.conf.shadow.in"
 fingerprints_source="$core_directory/src/etc/pkg/fingerprints/OPNsense"
@@ -89,4 +75,4 @@ done
 set -- "$fingerprint_directory/trusted"/*
 [ -f "$1" ] || fail 'no trusted OPNsense fingerprint was installed'
 
-printf '%s\n' "$archive_sha256"
+printf '%s\n' "$resolved_commit"

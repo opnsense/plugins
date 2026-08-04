@@ -40,10 +40,10 @@ core_commit=$(metadata_field core_commit) || fail 'invalid upstream metadata'
 tools_tag=$(metadata_field tools_tag) || fail 'invalid upstream metadata'
 freebsd_release=$(metadata_field freebsd_release) || fail 'invalid upstream metadata'
 
-opnsense_core_archive_sha256=$("$script_directory/setup-opnsense-repository.sh" "$series")
 "$pkg_command" update -f
 "$pkg_command" install -y git
 git config --global --add safe.directory "$repository_root"
+opnsense_core_commit=$("$script_directory/setup-opnsense-repository.sh" "$series")
 "$pkg_command" install -y bind920
 bind_version=$("$pkg_command" query -e '%n = bind920' '%v') || \
     fail 'bind920 is not installed after package setup'
@@ -81,7 +81,7 @@ cp "$package" "$artifact_directory/"
     printf 'pkg_abi=%s\n' "$("$pkg_command" config ABI)"
     printf 'bind920=%s\n' "$bind_version"
     printf 'opnsense=%s\n' "$opnsense_version"
-    printf 'opnsense_core_archive_sha256=%s\n' "$opnsense_core_archive_sha256"
+    printf 'opnsense_core_commit=%s\n' "$opnsense_core_commit"
     printf 'upstream_commit=%s\n' "$upstream_commit"
     printf 'core_commit=%s\n' "$core_commit"
     printf 'tools_tag=%s\n' "$tools_tag"
