@@ -17,8 +17,20 @@ then
 fi
 
 script_directory=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+repository_root=$(CDPATH= cd -- "$script_directory/../.." && pwd)
+pkg_command=${PKG_COMMAND:-pkg}
+make_command=${MAKE_COMMAND:-make}
+python_command=${PYTHON_COMMAND:-python3}
+
+if ! command -v "$python_command" >/dev/null 2>&1
+then
+    "$pkg_command" install -y python3
+fi
+command -v "$python_command" >/dev/null 2>&1 || \
+    fail 'python3 is not available after package setup'
+
 metadata_field() {
-    python3 "$script_directory/metadata_profile.py" \
+    "$python_command" "$script_directory/metadata_profile.py" \
         "$RP_UPSTREAM_METADATA" "$series" "$1"
 }
 
@@ -26,10 +38,6 @@ upstream_commit=$(metadata_field upstream_commit) || fail 'invalid upstream meta
 core_commit=$(metadata_field core_commit) || fail 'invalid upstream metadata'
 tools_tag=$(metadata_field tools_tag) || fail 'invalid upstream metadata'
 freebsd_release=$(metadata_field freebsd_release) || fail 'invalid upstream metadata'
-
-repository_root=$(CDPATH= cd -- "$script_directory/../.." && pwd)
-pkg_command=${PKG_COMMAND:-pkg}
-make_command=${MAKE_COMMAND:-make}
 
 opnsense_core_archive_sha256=$("$script_directory/setup-opnsense-repository.sh" "$series")
 "$pkg_command" update -f

@@ -26,6 +26,10 @@ runner configures the official OPNsense package repository from the pinned
 core archive, verifies its fingerprints, installs `bind920`, verifies the
 OPNsense version floor, and packages `dns/bind`.
 
+The runner installs `python3` first when the clean FreeBSD environment does
+not provide it; Python is required to validate the immutable metadata before
+any OPNsense package repository configuration is used.
+
 For example, while on the `26.1` release branch:
 
 ```sh
