@@ -20,22 +20,38 @@ that do not meet the required schema and provenance checks.
 
 ## Local build
 
-Run the build from a checkout of the intended
-`release/bind-rp/<series>` branch inside the matching FreeBSD environment. The
-runner configures the official OPNsense package repository from the pinned
+The GitHub Actions workflow is the canonical build path. It keeps the CI
+scripts checked out from `master`, fetches the selected immutable release
+commit, then materializes only that commit's `dns/bind` source and
+`.resolver-plugins/upstream.json`. This matters for legacy release branches,
+which intentionally do not carry the control-plane scripts.
+
+Reproduce that split in a disposable worktree when building locally. Start
+from `master`, fetch the selected release branch, and overlay only its release
+inputs before entering the matching FreeBSD environment:
+
+```sh
+series=26.7
+release_ref="refs/heads/release/bind-rp/$series"
+git fetch --no-tags origin "$release_ref:refs/remotes/origin/build-source"
+source_commit=$(git rev-parse refs/remotes/origin/build-source)
+git checkout "$source_commit" -- .resolver-plugins/upstream.json dns/bind
+```
+
+The runner configures the official OPNsense package repository from the pinned
 core archive, verifies its fingerprints, installs `bind920`, verifies the
-OPNsense version floor, and packages `dns/bind`.
+OPNsense version floor, and packages the materialized `dns/bind` source.
 
 The runner installs `python3` first when the clean FreeBSD environment does
 not provide it; Python is required to validate the immutable metadata before
 any OPNsense package repository configuration is used.
 
-For example, while on the `26.1` release branch:
+For example, after preparing the selected release source:
 
 ```sh
 RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json \
-SOURCE_COMMIT="$(git rev-parse HEAD)" \
-tools/ci/build-os-bind-rp.sh 26.1 artifacts/26.1
+SOURCE_COMMIT="$source_commit" \
+tools/ci/build-os-bind-rp.sh "$series" "artifacts/$series"
 ```
 
 The package and `build-metadata.txt` are written below the output directory.
@@ -52,12 +68,11 @@ Check that the metadata is valid before running a full VM build:
 
 ```sh
 python3 tools/ci/metadata_profile.py \
-  .resolver-plugins/upstream.json 26.1 freebsd_release
+  .resolver-plugins/upstream.json "$series" freebsd_release
 sh -n tools/ci/build-os-bind-rp.sh tools/ci/setup-opnsense-repository.sh
 python3 -m py_compile tools/ci/*.py
 git diff --check
 ```
 
-Use the target release series in place of `26.1`. Inspect the resulting package
-and `build-metadata.txt` before treating a build artifact as suitable for later
-package-repository publication.
+Inspect the resulting package and `build-metadata.txt` before treating a build
+artifact as suitable for later package-repository publication.
