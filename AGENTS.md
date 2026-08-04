@@ -31,8 +31,8 @@ mechanism exists yet.
   manifest.
 - `tools/ci/`: metadata validation, OPNsense repository setup, package build,
   synchronization planning, and safe GitHub publication helpers.
-- `.github/workflows/`: the daily/manual synchronizer and release artifact
-  build workflows.
+- `.github/workflows/`: the daily/manual synchronizer and signed package
+  publication workflows.
 - `docs/`: maintainer reference material. Start with
   [docs/README.md](docs/README.md) before changing build, synchronization, or
   package-related code.
@@ -56,9 +56,9 @@ mechanism exists yet.
   the explicit `os-bind` conflict to make a build pass.
 - Keep CI discovery and regression harnesses local unless the maintainer asks
   to commit them. Do not add `tools/ci/tests/` to normal repository commits.
-- Do not add package-repository publication, GitHub Pages, releases, signing,
-  tokens, secrets, or installation instructions without explicit maintainer
-  authorization. Current CI uploads only temporary Actions artifacts.
+- The signed package repository is an approved system. Do not alter its
+  GitHub Release publication, signing boundary, tokens, secrets, or end-user
+  installation contract without explicit maintainer authorization.
 - Verify CI changes with the focused local checks in
   [docs/building.md](docs/building.md), and run the affected workflow manually
   only when authorized. Report the workflow URL and its actual outcome.
