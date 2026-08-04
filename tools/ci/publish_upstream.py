@@ -470,6 +470,29 @@ def publish_plan(
     if sync:
         sync_commit = local_commit(local_repository, sync)
 
+    source = plan.get('source_release')
+    if not isinstance(source, str):
+        raise ValueError('missing or invalid publication plan')
+    source_commit = metadata_at(local_repository, source)['upstream_commit']
+    generated_metadata = []
+    if target_commit:
+        generated_metadata.append(metadata_at(local_repository, target_commit))
+    if sync_commit:
+        generated_metadata.append(metadata_at(local_repository, sync_commit))
+    for metadata in generated_metadata:
+        if any(
+            metadata[field] != plan[field]
+            for field in (
+                'series',
+                'upstream_commit',
+                'tools_tag',
+                'freebsd_release',
+            )
+        ):
+            raise ValueError('generated metadata does not match publication plan')
+    if len(generated_metadata) == 2 and generated_metadata[0] != generated_metadata[1]:
+        raise ValueError('generated metadata does not match publication plan')
+
     if sync:
         if not reviewer:
             raise ValueError('RP_SYNC_REVIEWER is required for review publication')
@@ -486,10 +509,6 @@ def publish_plan(
         ensure_ref(github, github_repository, target, target_commit)
 
     if sync:
-        source = plan.get('source_release')
-        if not isinstance(source, str):
-            raise ValueError('missing or invalid publication plan')
-        source_commit = metadata_at(local_repository, source)['upstream_commit']
         title, body = review_text(series, source_commit, plan['upstream_commit'])
         ensure_pull(
             github, github_repository, sync, target, reviewer, title, body
