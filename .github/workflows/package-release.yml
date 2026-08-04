@@ -147,6 +147,7 @@ jobs:
         env:
           TAG: ${{ needs.select.outputs.prerelease_tag }}
           SERIES: ${{ needs.select.outputs.series }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           gh release create "$TAG" --repo "$GITHUB_REPOSITORY" --title "os-bind-rp development $TAG" --prerelease --notes "Development build for pull request testing." || true
@@ -156,6 +157,7 @@ jobs:
         shell: bash
         env:
           SERIES: ${{ needs.select.outputs.series }}
+          GH_TOKEN: ${{ github.token }}
         run: python3 tools/ci/release_channel.py publish --repository "$GITHUB_REPOSITORY" --series "$SERIES" --directory "artifacts/$SERIES/repository"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
