@@ -126,6 +126,7 @@ jobs:
           copyback: true
           run: |
             set -eu
+            export IGNORE_OSVERSION=yes
             series='${{ needs.select.outputs.series }}'
             mode='${{ needs.select.outputs.mode }}'
             output="artifacts/$series"
