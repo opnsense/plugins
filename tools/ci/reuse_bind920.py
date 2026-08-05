@@ -135,6 +135,14 @@ def write_repository_config(directory: Path, channel_url: str, public_key: Path)
     return config.parent
 
 
+def fetch_package(pkg_options: list[str], downloads: Path, filename: str) -> None:
+    """Fetch one exact archive without allowing an interactive confirmation."""
+    run([
+        *pkg_options, "fetch", "-y", "-r", REPOSITORY_NAME, "-o", str(downloads),
+        filename.removesuffix(".pkg"),
+    ])
+
+
 def reuse(
     profile_path: Path,
     series: str,
@@ -159,10 +167,7 @@ def reuse(
         downloads = temporary / "downloads"
         for package_name in ("bind-tools", "bind920"):
             package = packages[package_name]
-            versioned_name = package["filename"].removesuffix(".pkg")
-            run([
-                *pkg_options, "fetch", "-r", REPOSITORY_NAME, "-o", str(downloads), versioned_name,
-            ])
+            fetch_package(pkg_options, downloads, package["filename"])
         archives = {
             package_name: downloads / "All" / package["filename"]
             for package_name, package in packages.items()
