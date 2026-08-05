@@ -26,7 +26,8 @@
 
 **Interfaces:**
 - Consumes: the two existing `make ... package` commands for `dns/bind-tools` and `dns/bind920`.
-- Produces: both commands receive `GSSAPI_NONE=on` in addition to their existing build flags.
+- Produces: both commands select `GSSAPI_NONE` through the Ports
+  `OPTIONS_SET`/`OPTIONS_UNSET` interface.
 
 - [ ] **Step 1: Write the failing regression harness**
 
@@ -35,9 +36,10 @@
 set -eu
 
 builder=.github/ci/build-bind920.sh
-count=$(grep -Fc 'GSSAPI_NONE=on' "$builder")
-[ "$count" -eq 2 ] || {
-    printf '%s\n' 'both BIND package commands must select GSSAPI_NONE' >&2
+set_count=$(grep -Fc 'OPTIONS_SET=GSSAPI_NONE' "$builder" || true)
+unset_count=$(grep -Fc "OPTIONS_UNSET='DOCS GSSAPI_BASE'" "$builder" || true)
+[ "$set_count" -eq 2 ] && [ "$unset_count" -eq 2 ] || {
+    printf '%s\n' 'both BIND package commands must force GSSAPI_NONE through Ports options' >&2
     exit 1
 }
 ```
@@ -46,17 +48,17 @@ count=$(grep -Fc 'GSSAPI_NONE=on' "$builder")
 
 Run: `sh .github/ci-local/test-build-bind920-gssapi.sh`
 
-Expected: exit 1 with `both BIND package commands must select GSSAPI_NONE`.
+Expected: exit 1 with `both BIND package commands must force GSSAPI_NONE through Ports options`.
 
 - [ ] **Step 3: Add the explicit FreeBSD Ports option to both package commands**
 
 ```sh
-ALLOW_UNSUPPORTED_SYSTEM=yes BATCH=yes NO_DEPENDS=yes OPTIONS_UNSET=DOCS \
-    GSSAPI_NONE=on "$make_command" -C "$ports_directory/dns/bind-tools" \
+ALLOW_UNSUPPORTED_SYSTEM=yes BATCH=yes NO_DEPENDS=yes OPTIONS_SET=GSSAPI_NONE \
+    OPTIONS_UNSET='DOCS GSSAPI_BASE' "$make_command" -C "$ports_directory/dns/bind-tools" \
     PORTSDIR="$ports_directory" package
 
-ALLOW_UNSUPPORTED_SYSTEM=yes BATCH=yes NO_DEPENDS=yes OPTIONS_UNSET=DOCS \
-    GSSAPI_NONE=on "$make_command" -C "$ports_directory/dns/bind920" \
+ALLOW_UNSUPPORTED_SYSTEM=yes BATCH=yes NO_DEPENDS=yes OPTIONS_SET=GSSAPI_NONE \
+    OPTIONS_UNSET='DOCS GSSAPI_BASE' "$make_command" -C "$ports_directory/dns/bind920" \
     PORTSDIR="$ports_directory" package
 ```
 
