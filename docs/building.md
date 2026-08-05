@@ -99,6 +99,12 @@ version, ABI, provenance values, and FreeBSD environment used for the build.
 build runner. Use it directly only when diagnosing repository setup; it changes
 the FreeBSD VM's package repository configuration.
 
+The `Test BIND plugin` pull-request workflow discovers every active
+`release/bind-rp/<series>` branch, materializes its `dns/bind/src` tree, and
+runs the canonical `dns/bind/tests` suite from the pull request. Do not add a
+static release matrix: a newly created release branch is included
+automatically.
+
 ## Before approving a build change
 
 Check that the metadata is valid before running a full VM build:
@@ -109,6 +115,7 @@ python3 .github/ci/metadata_profile.py \
 sh -n .github/ci/build-bind920.sh .github/ci/build-os-bind-rp.sh \
   .github/ci/setup-opnsense-repository.sh
 python3 -m py_compile .github/ci/*.py
+pytest -q .github/ci/ci-tests
 git diff --check
 ```
 
