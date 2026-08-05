@@ -94,3 +94,13 @@ def test_signer_uses_master_control_plane_and_self_contained_channel_layout():
     assert 'publish-channels' in workflow
     assert 'prune-snapshots' in workflow
     assert '--recovery "$RUNNER_TEMP/recovery"' in workflow
+
+
+def test_publication_waits_for_current_and_rollback_installation_in_freebsd():
+    workflow = workflow_text()
+    publisher = workflow.split('  publish:', 1)[1].split('  verify:', 1)[0]
+    verifier = workflow.split('  verify:', 1)[1].split('  source-release:', 1)[0]
+    assert 'needs: [select, profile, sign, verify]' in publisher
+    assert 'pkg install -y -r resolver-plugins bind-tools bind920 os-bind-rp' in verifier
+    assert 'url: "file://$PWD/$root/snapshot"' in verifier
+    assert 'pkg install -f -y -r resolver-plugins-rollback os-bind-rp' in verifier

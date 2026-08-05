@@ -354,6 +354,19 @@ jobs:
             pkg rquery -r resolver-plugins -e '%n = bind920 OR %n = bind-tools OR %n = os-bind-rp' '%n-%v'
             pkg install -y -r resolver-plugins bind-tools bind920 os-bind-rp
             pkg query -e '%n = bind-tools OR %n = bind920 OR %n = os-bind-rp' '%n-%v'
+            cat > /usr/local/etc/pkg/repos/resolver-plugins-rollback.conf <<EOF
+            resolver-plugins-rollback: {
+              url: "file://$PWD/$root/snapshot",
+              mirror_type: "none",
+              signature_type: "pubkey",
+              pubkey: "/usr/local/etc/pkg/keys/resolver-plugins.pub",
+              enabled: yes
+            }
+            EOF
+            pkg update -r resolver-plugins-rollback
+            pkg rquery -r resolver-plugins-rollback -e '%n = bind920 OR %n = bind-tools OR %n = os-bind-rp' '%n-%v'
+            pkg install -f -y -r resolver-plugins-rollback os-bind-rp
+            pkg query -e '%n = os-bind-rp' '%n-%v'
 
   source-release:
     if: needs.select.outputs.mode == 'production'
