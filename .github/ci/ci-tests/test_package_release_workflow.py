@@ -79,7 +79,7 @@ def test_workflow_uses_sha_pinned_actions_and_nonpersistent_checkout_credentials
     references = action_references(workflow)
     assert references
     assert all(PINNED_ACTION.fullmatch(reference) for reference in references)
-    assert workflow.count('persist-credentials: false') == 8
+    assert workflow.count('persist-credentials: false') == 9
     assert 'actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803' in references
     assert 'vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d' in references
 
@@ -132,6 +132,10 @@ def test_publication_waits_for_current_and_snapshot_installability_in_freebsd():
     assert 'needs: [select, profile, sign, verify]' in publisher
     assert 'permissions:\n      contents: read' in publisher
     assert 'pkg install -y -r resolver-plugins bind-tools bind920 os-bind-rp' in verifier
+    assert 'pkg query -F "$package" \'%dn\'' in verifier
+    assert verifier.index('.github/ci/setup-opnsense-repository.sh') < verifier.index(
+        'pkg install -y -r resolver-plugins bind-tools bind920 os-bind-rp'
+    )
     assert 'url: "file://$PWD/$root/snapshot"' in verifier
     assert 'pkg install -f -y -r resolver-plugins-rollback os-bind-rp' in verifier
     assert ' OR ' not in verifier
