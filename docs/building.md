@@ -18,7 +18,7 @@ inputs:
   in existing release profiles. They are not the build-time trust anchor.
 
 Do not substitute a moving branch, a current tools checkout, or an unverified
-core commit for these values. `tools/ci/metadata_profile.py` rejects profiles
+core commit for these values. `.github/ci/metadata_profile.py` rejects profiles
 that do not meet the required schema and provenance checks.
 
 ## Local build
@@ -85,17 +85,17 @@ For example, after preparing the selected release source:
 ```sh
 RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json \
 SOURCE_COMMIT="$source_commit" \
-tools/ci/build-bind920.sh "$series" "artifacts/$series"
+.github/ci/build-bind920.sh "$series" "artifacts/$series"
 RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json \
 SOURCE_COMMIT="$source_commit" \
-tools/ci/build-os-bind-rp.sh "$series" "artifacts/$series"
+.github/ci/build-os-bind-rp.sh "$series" "artifacts/$series"
 ```
 
 The package and `build-metadata.txt` are written below the output directory.
 The metadata records the source commit, BIND package version, OPNsense package
 version, ABI, provenance values, and FreeBSD environment used for the build.
 
-`tools/ci/setup-opnsense-repository.sh <series>` is normally called by the
+`.github/ci/setup-opnsense-repository.sh <series>` is normally called by the
 build runner. Use it directly only when diagnosing repository setup; it changes
 the FreeBSD VM's package repository configuration.
 
@@ -104,11 +104,11 @@ the FreeBSD VM's package repository configuration.
 Check that the metadata is valid before running a full VM build:
 
 ```sh
-python3 tools/ci/metadata_profile.py \
+python3 .github/ci/metadata_profile.py \
   .resolver-plugins/upstream.json "$series" freebsd_release
-sh -n tools/ci/build-bind920.sh tools/ci/build-os-bind-rp.sh \
-  tools/ci/setup-opnsense-repository.sh
-python3 -m py_compile tools/ci/*.py
+sh -n .github/ci/build-bind920.sh .github/ci/build-os-bind-rp.sh \
+  .github/ci/setup-opnsense-repository.sh
+python3 -m py_compile .github/ci/*.py
 git diff --check
 ```
 

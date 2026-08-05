@@ -29,7 +29,7 @@ mechanism exists yet.
   plugin changes.
 - `.resolver-plugins/`: release build metadata and the synchronization overlay
   manifest.
-- `tools/ci/`: metadata validation, OPNsense repository setup, package build,
+- `.github/ci/`: metadata validation, OPNsense repository setup, package build,
   synchronization planning, and safe GitHub publication helpers.
 - `.github/workflows/`: the daily/manual synchronizer and signed package
   publication workflows.
@@ -54,8 +54,10 @@ mechanism exists yet.
   the `OS?=` value from `config/<series>/build.conf`.
 - Do not weaken provenance checks, pin checks, package fingerprint checks, or
   the explicit `os-bind` conflict to make a build pass.
-- Keep CI discovery and regression harnesses local unless the maintainer asks
-  to commit them. Do not add `tools/ci/tests/` to normal repository commits.
+- Use the ignored `.github/ci-local/` directory for temporary CI discovery and
+  regression harnesses while making changes. Remove obsolete harnesses when
+  practical; never stage or commit anything under this directory unless the
+  maintainer explicitly changes this policy.
 - The signed package repository is an approved system. Do not alter its
   GitHub Release publication, signing boundary, tokens, secrets, or end-user
   installation contract without explicit maintainer authorization.

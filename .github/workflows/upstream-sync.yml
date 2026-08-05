@@ -40,7 +40,7 @@ jobs:
           RP_SYNC_REVIEWER: ${{ vars.RP_SYNC_REVIEWER }}
         run: |
           set -euo pipefail
-          python3 tools/ci/publish_upstream.py recover \
+          python3 .github/ci/publish_upstream.py recover \
             --repository . \
             --github-repository "$GITHUB_REPOSITORY" \
             --reviewer "$RP_SYNC_REVIEWER" \
@@ -51,7 +51,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python3 tools/ci/sync_upstream.py plan \
+          python3 .github/ci/sync_upstream.py plan \
             --repository . \
             --upstream upstream \
             --release-prefix release/bind-rp/ \
@@ -105,7 +105,7 @@ jobs:
           core_archive_sha256=$(sha256sum "$RUNNER_TEMP/opnsense-core.tar.gz" | awk '{print $1}')
           git config user.name github-actions
           git config user.email github-actions@github.com
-          python3 tools/ci/sync_upstream.py apply \
+          python3 .github/ci/sync_upstream.py apply \
             --repository . \
             --plan "$RUNNER_TEMP/plan.json" \
             --core-commit "$core_commit" \
@@ -119,7 +119,7 @@ jobs:
           RP_SYNC_REVIEWER: ${{ vars.RP_SYNC_REVIEWER }}
         run: |
           set -euo pipefail
-          python3 tools/ci/publish_upstream.py publish \
+          python3 .github/ci/publish_upstream.py publish \
             --repository . \
             --plan "$RUNNER_TEMP/plan.json" \
             --github-repository "$GITHUB_REPOSITORY" \
@@ -141,7 +141,7 @@ jobs:
             series='${{ steps.plan.outputs.series }}'
             RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json \
               SOURCE_COMMIT="$(git rev-parse HEAD)" \
-              tools/ci/build-os-bind-rp.sh "$series" "artifacts/$series"
+              .github/ci/build-os-bind-rp.sh "$series" "artifacts/$series"
       - name: Upload bootstrap artifact
         if: steps.recovery.outputs.handled != 'true' && steps.plan.outputs.action == 'bootstrap-build'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

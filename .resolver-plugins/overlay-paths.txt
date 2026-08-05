@@ -1,5 +1,5 @@
 Mk/plugins.mk
 dns/bind
-tools/ci
+.github/ci
 .github/workflows
 .resolver-plugins
