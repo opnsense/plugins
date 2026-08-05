@@ -107,6 +107,7 @@ pkg install -f -r resolver-plugins-rollback os-bind-rp
 pkg query -e '%n = os-bind-rp' '%n-%v'
 configctl template reload OPNsense/Bind || true
 configctl service restart bind || true
+rm -f /usr/local/etc/pkg/repos/resolver-plugins-rollback.conf
 ```
 
 If configuration, template generation, or service validation fails, restore
@@ -139,8 +140,9 @@ Before replacing mutable Release assets, publication downloads every prior
 asset—packages, catalogues, metadata, provenance, and public key—to local
 recovery storage and verifies checksums. If an upload or verification fails,
 it restores each affected Release from those preserved bytes. The snapshot,
-fallback when present, and latest channel are verified after upload; pruning
-to the newest five snapshots happens only after that promotion succeeds.
+fallback when present, and latest channel have their published asset sets
+checked after upload; pruning to the newest five snapshots happens only after
+that promotion succeeds.
 
 Do not publish a stable channel manually from a workstation. A successful
 workflow run is the release record and source of the signed catalogue.

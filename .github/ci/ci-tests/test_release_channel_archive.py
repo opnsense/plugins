@@ -217,7 +217,11 @@ class PublicationRecoveryTest(unittest.TestCase):
             {"tag_name": f"pkg-26.7-os-bind-rp-1.36_{number}", "created_at": f"2026-01-0{number}T00:00:00Z"}
             for number in range(1, 7)
         ]
-        result = subprocess.CompletedProcess(["gh"], 0, stdout=json.dumps(releases))
+        # `gh api --paginate --slurp` returns one JSON array per fetched page.
+        # Retention must therefore flatten all pages before selecting the oldest tag.
+        result = subprocess.CompletedProcess(
+            ["gh"], 0, stdout=json.dumps([releases[:3], releases[3:]])
+        )
         deleted: list[list[str]] = []
         with (
             patch.object(release_channel.subprocess, "run", return_value=result),

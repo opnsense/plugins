@@ -510,16 +510,21 @@ def prune_snapshots(repository: str, series: str, keep: int = 5) -> None:
     if keep < 1:
         raise ValueError("snapshot retention must be positive")
     result = subprocess.run(
-        ["gh", "api", f"repos/{repository}/releases?per_page=100"],
+        ["gh", "api", "--paginate", "--slurp", f"repos/{repository}/releases?per_page=100"],
         check=True,
         capture_output=True,
         text=True,
     )
-    releases = json.loads(result.stdout)
+    pages = json.loads(result.stdout)
     prefix = f"{channel_tag(series)}-os-bind-rp-"
     snapshots = []
-    if not isinstance(releases, list):
+    if not isinstance(pages, list):
         raise RuntimeError("cannot list snapshot releases")
+    releases = [
+        release
+        for page in pages
+        for release in (page if isinstance(page, list) else [page])
+    ]
     for release in releases:
         if not isinstance(release, dict):
             continue
