@@ -63,9 +63,10 @@ scopes that flag, along with `BATCH=yes`, to the two Ports package builds. None
 of these builder-only compatibility overrides alter the target ABI or the
 OPNsense packages used by `os-bind-rp`.
 
-The wrapper also sets `USE_PACKAGE_DEPENDS=yes`: it compiles only the pinned
-BIND source and obtains its ordinary build dependencies from the configured
-OPNsense repository. This keeps the build time and workspace size bounded,
+The wrapper explicitly installs the pinned recipe's ordinary build and linked
+library dependencies from the configured OPNsense repository, then invokes the
+two BIND builds with `NO_DEPENDS=yes`. It therefore compiles only the pinned
+BIND source instead of recursively rebuilding ordinary Ports dependencies,
 while retaining OPNsense-compatible linked libraries.
 
 The runner installs `python3` first when the clean FreeBSD environment does

@@ -34,6 +34,8 @@ distversion=$(metadata_field distversion) || fail 'invalid BIND profile'
 "$pkg_command" update -f
 "$pkg_command" install -y git patch
 "$script_directory/setup-opnsense-repository.sh" "$series" >/dev/null
+"$pkg_command" install -y autoconf automake fstrm gmake json-c libedit libidn2 \
+    libnghttp2 libtool liburcu libuv libxml2 lmdb pkgconf
 
 temporary_directory=$(mktemp -d)
 ports_directory="$temporary_directory/ports"
@@ -53,13 +55,13 @@ distinfo="$ports_directory/dns/bind920/distinfo"
 grep -Fqx "DISTVERSION=	$distversion" "$makefile" || fail 'BIND Makefile does not declare the pinned version'
 patch -d "$ports_directory" -p1 < "$script_directory/patches/bind920-portrevision.patch"
 
-ALLOW_UNSUPPORTED_SYSTEM=yes BATCH=yes USE_PACKAGE_DEPENDS=yes "$make_command" -C "$ports_directory/dns/bind-tools" PORTSDIR="$ports_directory" package
+ALLOW_UNSUPPORTED_SYSTEM=yes BATCH=yes NO_DEPENDS=yes "$make_command" -C "$ports_directory/dns/bind-tools" PORTSDIR="$ports_directory" package
 set -- "$ports_directory"/dns/bind-tools/work/pkg/bind-tools-"$distversion"_1.pkg
 [ "$#" -eq 1 ] && [ -f "$1" ] || fail 'bind-tools package was not produced as expected'
 bind_tools_package=$1
 "$pkg_command" add "$bind_tools_package"
 
-ALLOW_UNSUPPORTED_SYSTEM=yes BATCH=yes USE_PACKAGE_DEPENDS=yes "$make_command" -C "$ports_directory/dns/bind920" PORTSDIR="$ports_directory" package
+ALLOW_UNSUPPORTED_SYSTEM=yes BATCH=yes NO_DEPENDS=yes "$make_command" -C "$ports_directory/dns/bind920" PORTSDIR="$ports_directory" package
 set -- "$ports_directory"/dns/bind920/work/pkg/bind920-"$distversion"_1.pkg
 [ "$#" -eq 1 ] && [ -f "$1" ] || fail 'bind920 package was not produced as expected'
 bind_package=$1
