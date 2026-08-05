@@ -57,9 +57,11 @@ resets `dns/bind/src` to the control-plane checkout.
 
 The disposable FreeBSD 14.3 GitHub Actions image may need
 `IGNORE_OSVERSION=yes` to install current builder tools after the public
-FreeBSD catalogue advances. The workflow scopes that compatibility override to
-the builder VM; it does not alter the target ABI or the OPNsense packages used
-by `os-bind-rp`.
+FreeBSD catalogue advances. Current FreeBSD Ports also requires
+`ALLOW_UNSUPPORTED_SYSTEM=yes` for its end-of-life release; the BIND wrapper
+scopes that flag, along with `BATCH=yes`, to the two Ports package builds. None
+of these builder-only compatibility overrides alter the target ABI or the
+OPNsense packages used by `os-bind-rp`.
 
 The runner installs `python3` first when the clean FreeBSD environment does
 not provide it; Python is required to validate the immutable metadata before
