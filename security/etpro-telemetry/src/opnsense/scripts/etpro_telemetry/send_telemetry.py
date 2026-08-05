@@ -114,9 +114,9 @@ if not telemetry_state.is_running():
                             syslog.syslog(syslog.LOG_ERR, 'telemetry unexpected response %s' % r.text[:256])
                             exit_code = -1
                             break
-                if exit_code == 0:
-                    # update timestamp, last record processed
-                    telemetry_state.set_last_update(max_timestamp)
+
+                # update timestamp, last record processed
+                telemetry_state.set_last_update(max_timestamp)
             else:
                 # no data
                 exit_code = 0
