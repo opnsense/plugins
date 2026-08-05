@@ -1,0 +1,125 @@
+import json
+import os
+import pathlib
+import subprocess
+
+
+REPOSITORY_ROOT = pathlib.Path(__file__).resolve().parents[3]
+BUILD_SCRIPT = pathlib.Path(
+    os.environ.get('BUILD_OS_BIND_RP', REPOSITORY_ROOT / '.github/ci/build-os-bind-rp.sh')
+)
+OPNSENSE_26_1_ARCHIVE_SHA256 = (
+    '95cb9d549165520de984adbe7bd740ca237dd470b779d7ef3706d5f11b8c321e'
+)
+UPSTREAM_COMMIT = '6f3937f938377464534ebebde66cc13d84186542'
+FREEBSD_RELEASE = '14.3'
+
+
+def git(directory: pathlib.Path, *arguments: str) -> str:
+    return subprocess.run(
+        ['git', '-C', directory, *arguments], check=True, text=True, capture_output=True
+    ).stdout.strip()
+
+
+def create_core_repository(path: pathlib.Path) -> str:
+    git(path.parent, 'init', path)
+    git(path, 'config', 'user.name', 'CI test')
+    git(path, 'config', 'user.email', 'ci@example.invalid')
+    template = path / 'src/etc/pkg/repos/OPNsense.conf.shadow.in'
+    template.parent.mkdir(parents=True)
+    template.write_text(
+        'OPNsense: {\n  url: "%%CORE_PACKAGESITE%%/${ABI}/%%CORE_ABI%%/latest",\n'
+        '  signature_type: "fingerprints",\n  enabled: yes\n}\n', encoding='utf-8'
+    )
+    fingerprint = path / 'src/etc/pkg/fingerprints/OPNsense/trusted/pkg.fixture'
+    fingerprint.parent.mkdir(parents=True)
+    fingerprint.write_text('fixture\n', encoding='utf-8')
+    git(path, 'add', 'src')
+    git(path, 'commit', '-m', 'fixture core')
+    return git(path, 'rev-parse', 'HEAD')
+
+
+def write_upstream_metadata(path: pathlib.Path, core_commit: str) -> None:
+    path.write_text(
+        json.dumps(
+            {
+                'series': '26.1',
+                'upstream_branch': 'stable/26.1',
+                'upstream_commit': UPSTREAM_COMMIT,
+                'tools_tag': '26.1.11',
+                'freebsd_release': FREEBSD_RELEASE,
+                'core_commit': core_commit,
+                'core_archive_url': (
+                    f'https://github.com/opnsense/core/archive/{core_commit}.tar.gz'
+                ),
+                'core_archive_sha256': OPNSENSE_26_1_ARCHIVE_SHA256,
+            }
+        )
+    )
+
+
+def test_build_wrapper_creates_package_and_metadata_for_26_1(tmp_path):
+    core = tmp_path / 'core'
+    core_commit = create_core_repository(core)
+    environment = os.environ.copy()
+    environment['MAKE_COMMAND'] = str(
+        REPOSITORY_ROOT / '.github/ci/ci-tests/make-package-fixture.sh'
+    )
+    environment['PKG_COMMAND'] = str(
+        REPOSITORY_ROOT / '.github/ci/ci-tests/pkg-build-fixture.sh'
+    )
+    python_command = (
+        REPOSITORY_ROOT / '.pytest_cache' / f'python3-fixture-{tmp_path.name}'
+    )
+    python_command.unlink(missing_ok=True)
+    environment['PYTHON_COMMAND'] = str(python_command)
+    environment['GIT_CONFIG_GLOBAL'] = str(tmp_path / 'gitconfig')
+    environment['OPNSENSE_CORE_REPOSITORY'] = str(core)
+    environment['PKG_REPOS_DIR'] = str(tmp_path / 'repos')
+    environment['PKG_FINGERPRINTS_DIR'] = str(tmp_path / 'fingerprints' / 'OPNsense')
+    metadata_path = tmp_path / 'upstream.json'
+    write_upstream_metadata(metadata_path, core_commit)
+    environment['RP_UPSTREAM_METADATA'] = str(metadata_path)
+    package_call_log = tmp_path / 'pkg-calls.log'
+    environment['PKG_CALL_LOG'] = str(package_call_log)
+
+    assert BUILD_SCRIPT.is_file(), 'non-publishing build wrapper is missing'
+    result = subprocess.run(
+        [BUILD_SCRIPT, '26.1', str(tmp_path)],
+        cwd=REPOSITORY_ROOT,
+        text=True,
+        capture_output=True,
+        check=False,
+        env=environment,
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert python_command.is_file()
+    assert (tmp_path / 'os-bind-rp-1.36_3.pkg').is_file()
+    assert (tmp_path / 'repos' / 'OPNsense.conf').is_file()
+    metadata = (tmp_path / 'build-metadata.txt').read_text()
+    assert 'series=26.1\n' in metadata
+    assert 'pkg_abi=FreeBSD:14:amd64\n' in metadata
+    assert 'bind920=9.20.24\n' in metadata
+    assert 'opnsense=26.1.11_10\n' in metadata
+    assert 'switch_test=' not in metadata
+    assert f'upstream_commit={UPSTREAM_COMMIT}\n' in metadata
+    assert f'core_commit={core_commit}\n' in metadata
+    assert 'tools_tag=26.1.11\n' in metadata
+    assert f'freebsd_release={FREEBSD_RELEASE}\n' in metadata
+    assert 'source_commit=unknown\n' in metadata
+    package_calls = package_call_log.read_text().splitlines()
+    assert 'update -f' in package_calls
+    assert 'install -y python3' in package_calls
+    assert 'install -y git' in package_calls
+    assert 'install -y bind920' in package_calls
+    assert not any(call.startswith('fetch ') for call in package_calls)
+    safe_directories = subprocess.run(
+        ['git', 'config', '--global', '--get-all', 'safe.directory'],
+        text=True,
+        capture_output=True,
+        check=False,
+        env=environment,
+    )
+    assert safe_directories.returncode == 0, safe_directories.stderr
+    assert BUILD_SCRIPT.parents[2].as_posix() in safe_directories.stdout.splitlines()

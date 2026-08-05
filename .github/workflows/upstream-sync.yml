@@ -10,7 +10,21 @@ permissions:
   pull-requests: write
 
 jobs:
+  test:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Run CI helper tests
+        run: python3 -m pytest -q .github/ci/ci-tests
+
   reconcile:
+    needs: test
     if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-24.04
     timeout-minutes: 60

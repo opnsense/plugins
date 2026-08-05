@@ -54,10 +54,11 @@ mechanism exists yet.
   the `OS?=` value from `config/<series>/build.conf`.
 - Do not weaken provenance checks, pin checks, package fingerprint checks, or
   the explicit `os-bind` conflict to make a build pass.
-- Use the ignored `.github/ci-local/` directory for temporary CI discovery and
-  regression harnesses while making changes. Remove obsolete harnesses when
-  practical; never stage or commit anything under this directory unless the
-  maintainer explicitly changes this policy.
+- Keep durable CI helper and workflow regression tests in
+  `.github/ci/ci-tests/`; use local Git and command fixtures rather than live
+  services. Put BIND plugin behavior tests in `dns/bind/tests/`. Use the
+  ignored `.github/ci-local/` directory only for temporary CI discovery and
+  investigation harnesses; never stage or commit anything under it.
 - The signed package repository is an approved system. Do not alter its
   GitHub Release publication, signing boundary, tokens, secrets, or end-user
   installation contract without explicit maintainer authorization.

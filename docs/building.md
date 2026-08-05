@@ -109,6 +109,7 @@ python3 .github/ci/metadata_profile.py \
 sh -n .github/ci/build-bind920.sh .github/ci/build-os-bind-rp.sh \
   .github/ci/setup-opnsense-repository.sh
 python3 -m py_compile .github/ci/*.py
+pytest -q .github/ci/ci-tests
 git diff --check
 ```
 

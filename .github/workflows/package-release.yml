@@ -25,6 +25,16 @@ permissions:
   pull-requests: read
 
 jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Run CI helper tests
+        run: python3 -m pytest -q .github/ci/ci-tests
+
   select:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     runs-on: ubuntu-24.04
@@ -96,7 +106,7 @@ jobs:
           printf 'source_commit=%s\nfreebsd_release=%s\n' "$source_commit" "$freebsd_release" >> "$GITHUB_OUTPUT"
 
   build:
-    needs: [select, profile]
+    needs: [select, profile, test]
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     permissions:
