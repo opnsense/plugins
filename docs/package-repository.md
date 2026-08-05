@@ -102,10 +102,31 @@ The `Publish os-bind-rp package release` workflow builds from the selected
 from the current distribution channel or builds the pinned pair on a verified
 cache miss. The plugin is built against that exact pair.
 
+Production publication is an explicit `workflow_dispatch` from the `master`
+branch after the release-source change has been reviewed and merged. Select
+`production` and the target series; a production dispatch from any other ref
+is rejected. Release branches supply immutable build inputs only and never run
+publication helpers. Runs are serialized per series so two promotions cannot
+replace or restore the same current channel concurrently.
+
+The source repository must define these Actions secrets before production:
+
+- `RP_PKG_SIGNING_KEY`: the base64-encoded private package-signing key. It is
+  exposed only to the FreeBSD signing job.
+- `RP_DISTRIBUTION_REPOSITORY_TOKEN`: a fine-grained token owned by the release
+  operator, limited to `resolver-plugins/repository` with `Contents: write`.
+  It is exposed only to the distribution publication job. Rotate it according
+  to the repository's credential policy and replace this secret when rotated.
+
+A missing or expired distribution token fails the publication job with a
+GitHub authentication or authorization error; it must never be replaced with
+a broad source-repository or session credential.
+
 The production signer resolves and checks out a specific `master`
 control-plane SHA, verifies the finished artifact's source commit, and receives
 no release-source helper code with `RP_PKG_SIGNING_KEY`. It validates BIND
-provenance against trusted control-plane metadata, then stages identical
+provenance and every security-relevant build field against trusted release
+metadata, then stages identical
 self-contained current and immutable rollback repositories. It generates the
 signed catalogue once and copies those exact bytes to both publication paths.
 The derived public key must match the key committed in this repository before
@@ -113,7 +134,9 @@ either path can proceed.
 
 Before replacing mutable Release assets, publication downloads every prior
 asset—packages, catalogues, metadata, provenance, and public key—to local
-recovery storage and verifies checksums. If an upload or verification fails,
+recovery storage, validates its audit checksums and expected channel structure,
+and confirms the remote release did not change during preflight. Every uploaded
+asset is downloaded again and compared byte-for-byte. If an upload or verification fails,
 it restores each affected Release from those preserved bytes. The snapshot
 and current channel have their published asset sets checked after upload;
 pruning to the newest five snapshots happens only after promotion succeeds.

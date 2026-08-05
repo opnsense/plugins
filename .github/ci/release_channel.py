@@ -10,6 +10,7 @@ import shutil
 import re
 import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 
@@ -21,6 +22,21 @@ SERIES_PATTERN = re.compile(r"[0-9]+\.[0-9]+")
 PLUGIN_PATTERN = re.compile(r"os-bind-rp-(?!devel-).+\.pkg")
 PROVENANCE_NAME = "bind920-provenance.json"
 PACKAGE_VERSION_PATTERN = re.compile(r"[0-9][0-9A-Za-z._-]*")
+BUILD_METADATA_FIELDS = {
+    "series",
+    "uname",
+    "pkg_abi",
+    "bind920",
+    "bind_source",
+    "opnsense",
+    "opnsense_core_commit",
+    "upstream_commit",
+    "core_commit",
+    "tools_tag",
+    "freebsd_release",
+    "source_commit",
+}
+TRUSTED_BUILD_FIELDS = {"series", "upstream_commit", "core_commit", "tools_tag", "freebsd_release"}
 
 
 def channel_tag(series: str) -> str:
@@ -230,9 +246,48 @@ def read_build_metadata(path: Path) -> dict[str, str]:
         if not separator or not key or not value or key in fields:
             raise ValueError("plugin build metadata is invalid")
         fields[key] = value
-    if SERIES_PATTERN.fullmatch(fields.get("series", "")) is None or not fields.get("source_commit"):
+    if (
+        set(fields) != BUILD_METADATA_FIELDS
+        or SERIES_PATTERN.fullmatch(fields.get("series", "")) is None
+        or not all(fields.values())
+    ):
         raise ValueError("plugin build metadata is invalid")
     return fields
+
+
+def validate_build_metadata(
+    metadata_path: Path,
+    upstream_path: Path,
+    provenance_path: Path,
+    series: str,
+    source_commit: str,
+) -> dict[str, str]:
+    """Match every security-relevant build field to trusted release inputs."""
+    metadata = read_build_metadata(metadata_path)
+    try:
+        upstream = json.loads(upstream_path.read_text(encoding="utf-8"))
+        provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+        bind_version = provenance["packages"]["bind920"]["version"]
+    except (OSError, json.JSONDecodeError, KeyError, TypeError) as error:
+        raise ValueError("trusted release metadata is invalid") from error
+    if not isinstance(upstream, dict) or any(
+        not isinstance(upstream.get(field), str) or not upstream[field]
+        for field in TRUSTED_BUILD_FIELDS
+    ):
+        raise ValueError("trusted release metadata is invalid")
+    expected = {field: upstream[field] for field in TRUSTED_BUILD_FIELDS}
+    if (
+        {field: metadata[field] for field in TRUSTED_BUILD_FIELDS} != expected
+        or metadata["series"] != series
+        or metadata["source_commit"] != source_commit
+        or metadata["opnsense_core_commit"] != metadata["core_commit"]
+        or metadata["bind920"] != bind_version
+        or metadata["bind_source"] != "resolver"
+        or provenance.get("series") != series
+        or provenance.get("freebsd_release") != metadata["freebsd_release"]
+    ):
+        raise ValueError("build artifact does not match trusted release metadata")
+    return metadata
 
 
 def stage_channel_repository(
@@ -246,8 +301,6 @@ def stage_channel_repository(
     build_metadata = packages_directory / "build-metadata.txt"
     metadata = read_build_metadata(build_metadata)
     required_build_fields = {"upstream_commit", "core_commit", "tools_tag", "freebsd_release"}
-    if not required_build_fields <= metadata.keys():
-        raise ValueError("plugin build metadata is incomplete")
     try:
         bind_metadata = json.loads(provenance.read_text(encoding="utf-8"))
         bind_identity = {
@@ -258,6 +311,13 @@ def stage_channel_repository(
         raise ValueError("BIND provenance is invalid") from error
     if bind_metadata.get("series") != metadata["series"]:
         raise ValueError("BIND provenance series does not match plugin build metadata")
+    records = read_bind_package_records(provenance)
+    if (
+        bind_metadata.get("freebsd_release") != metadata["freebsd_release"]
+        or records["bind920"]["version"] != metadata["bind920"]
+        or metadata["opnsense_core_commit"] != metadata["core_commit"]
+    ):
+        raise ValueError("BIND provenance does not match plugin build metadata")
     validate_channel_package_manifests(packages, provenance, pkg_command)
     stage_selected_repository(
         packages, output, private_key, pkg_command, [provenance, build_metadata]
@@ -299,6 +359,62 @@ def sha256(path: Path) -> str:
     return digest.hexdigest()
 
 
+def directory_checksums(directory: Path) -> dict[str, str]:
+    """Checksum every flat Release asset in a staged or downloaded channel."""
+    return {
+        path.name: sha256(path)
+        for path in directory.iterdir()
+        if path.is_file()
+    }
+
+
+def validate_channel_directory(directory: Path) -> None:
+    """Reject malformed recovery bytes before mutating the current channel."""
+    packages = select_channel_packages(directory)
+    if len(packages) != 3:
+        raise ValueError("prior channel has an unexpected package set")
+    try:
+        channel = json.loads((directory / "channel.json").read_text(encoding="utf-8"))
+        provenance = json.loads((directory / PROVENANCE_NAME).read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise ValueError("prior channel audit metadata is invalid") from error
+    expected_checksums = {package.name: sha256(package) for package in packages}
+    if not isinstance(channel, dict) or channel.get("packages") != expected_checksums:
+        raise ValueError("prior channel package checksum does not match its audit manifest")
+    metadata = read_build_metadata(directory / "build-metadata.txt")
+    required_channel_fields = {
+        "schema", "series", "plugin_version", "source_commit", "build", "bind", "packages",
+    }
+    required_build_fields = {"upstream_commit", "core_commit", "tools_tag", "freebsd_release"}
+    expected_bind = {
+        field: provenance.get(field)
+        for field in ("fingerprint", "freebsd_release", "architecture")
+    }
+    if (
+        set(channel) != required_channel_fields
+        or channel["schema"] != 1
+        or channel["series"] != metadata["series"]
+        or channel["plugin_version"]
+        != packages[2].name.removeprefix("os-bind-rp-").removesuffix(".pkg")
+        or channel["source_commit"] != metadata["source_commit"]
+        or channel["build"] != {
+            field: metadata[field] for field in sorted(required_build_fields)
+        }
+        or channel["bind"] != expected_bind
+        or any(value is None for value in expected_bind.values())
+    ):
+        raise ValueError("prior channel audit metadata is inconsistent")
+    public_key = directory / "resolver-plugins.pub"
+    assets = [path.name for path in directory.iterdir() if path.is_file()]
+    if (
+        not public_key.is_file()
+        or public_key.stat().st_size == 0
+        or not any(name.startswith("meta") for name in assets)
+        or not any(name.startswith(("data", "packagesite")) for name in assets)
+    ):
+        raise ValueError("prior channel signed catalogue is incomplete")
+
+
 class ReleaseSnapshot:
     """Verified local bytes required to restore one mutable GitHub Release."""
 
@@ -307,6 +423,31 @@ class ReleaseSnapshot:
         self.existed = existed
         self.directory = directory
         self.manifest = manifest
+
+
+def release_snapshots_match(left: ReleaseSnapshot, right: ReleaseSnapshot) -> bool:
+    """Return whether two observations contain the same remote Release bytes."""
+    if left.existed != right.existed:
+        return False
+    if not left.existed:
+        return True
+    try:
+        return json.loads(left.manifest.read_text(encoding="utf-8")) == json.loads(
+            right.manifest.read_text(encoding="utf-8")
+        )
+    except (OSError, json.JSONDecodeError):
+        return False
+
+
+def snapshot_matches_directory(snapshot: ReleaseSnapshot, directory: Path) -> bool:
+    """Return whether downloaded Release assets match all staged bytes."""
+    if not snapshot.existed:
+        return False
+    try:
+        checksums = json.loads(snapshot.manifest.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return False
+    return checksums == directory_checksums(directory)
 
 
 def snapshot_release(repository: str, tag: str, recovery: Path) -> ReleaseSnapshot:
@@ -376,6 +517,16 @@ def publish_channels(
     for snapshot in snapshots:
         if "-os-bind-rp-" in snapshot.tag and snapshot.existed:
             raise RuntimeError(f"immutable rollback snapshot already exists: {snapshot.tag}")
+        if snapshot.existed and SERIES_PATTERN.fullmatch(snapshot.tag.removeprefix("pkg-")):
+            validate_channel_directory(snapshot.directory)
+    preflight_root = recovery / "preflight"
+    preflight_root.mkdir()
+    preflight = [snapshot_release(repository, tag, preflight_root) for tag, _ in channels]
+    if any(
+        not release_snapshots_match(before, after)
+        for before, after in zip(snapshots, preflight, strict=True)
+    ):
+        raise RuntimeError("package channel changed during publication preflight")
     try:
         for tag, directory in channels:
             publish(repository, tag, directory, False)
@@ -480,6 +631,10 @@ def publish(repository: str, tag: str, directory: Path, prerelease: bool) -> Non
         asset.get("name") for asset in published if isinstance(asset, dict)
     } != asset_names:
         raise RuntimeError(f"published GitHub Release {tag} has an unexpected asset set")
+    with tempfile.TemporaryDirectory() as temporary_directory:
+        verified = snapshot_release(repository, tag, Path(temporary_directory))
+        if not snapshot_matches_directory(verified, directory):
+            raise RuntimeError(f"published GitHub Release {tag} has unexpected asset bytes")
 
 
 def write_bootstrap(output: Path, base_url: str, series: str, public_key_path: str) -> None:
@@ -505,6 +660,12 @@ def main() -> None:
     validate_provenance.add_argument("--profile", type=Path, required=True)
     validate_provenance.add_argument("--series", required=True)
     validate_provenance.add_argument("--freebsd-release", required=True)
+    validate_metadata = commands.add_parser("validate-build-metadata")
+    validate_metadata.add_argument("--metadata", type=Path, required=True)
+    validate_metadata.add_argument("--upstream", type=Path, required=True)
+    validate_metadata.add_argument("--provenance", type=Path, required=True)
+    validate_metadata.add_argument("--series", required=True)
+    validate_metadata.add_argument("--source-commit", required=True)
     snapshot_tag = commands.add_parser("snapshot-tag")
     snapshot_tag.add_argument("series")
     snapshot_tag.add_argument("version")
@@ -544,6 +705,14 @@ def main() -> None:
         validate_bind_provenance(
             provenance, bind920_profile.load_profile(arguments.profile),
             arguments.series, arguments.freebsd_release,
+        )
+    elif arguments.command == "validate-build-metadata":
+        validate_build_metadata(
+            arguments.metadata,
+            arguments.upstream,
+            arguments.provenance,
+            arguments.series,
+            arguments.source_commit,
         )
     elif arguments.command == "snapshot-tag":
         print(snapshot_channel_tag(arguments.series, arguments.version))

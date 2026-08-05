@@ -81,5 +81,63 @@ class StageProvenanceTest(unittest.TestCase):
                 [path.name for path in release_channel.select_channel_packages(packages)],
             )
 
+    def test_build_metadata_must_match_trusted_release_and_bind_provenance(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            metadata = root / "build-metadata.txt"
+            metadata.write_text(
+                "series=26.7\n"
+                "uname=FreeBSD test 15.1\n"
+                "pkg_abi=FreeBSD:15:amd64\n"
+                "bind920=9.20.26_1\n"
+                "bind_source=resolver\n"
+                "opnsense=26.7\n"
+                "opnsense_core_commit=core-commit\n"
+                "upstream_commit=upstream-commit\n"
+                "core_commit=core-commit\n"
+                "tools_tag=26.7.1\n"
+                "freebsd_release=15.1\n"
+                "source_commit=source-commit\n",
+                encoding="utf-8",
+            )
+            upstream = root / "upstream.json"
+            upstream.write_text(
+                json.dumps(
+                    {
+                        "series": "26.7",
+                        "upstream_commit": "upstream-commit",
+                        "core_commit": "core-commit",
+                        "tools_tag": "26.7.1",
+                        "freebsd_release": "15.1",
+                    }
+                ),
+                encoding="utf-8",
+            )
+            provenance = root / "bind920-provenance.json"
+            provenance.write_text(
+                json.dumps(
+                    {
+                        "series": "26.7",
+                        "freebsd_release": "15.1",
+                        "packages": {"bind920": {"version": "9.20.26_1"}},
+                    }
+                ),
+                encoding="utf-8",
+            )
+
+            release_channel.validate_build_metadata(
+                metadata, upstream, provenance, "26.7", "source-commit"
+            )
+            metadata.write_text(
+                metadata.read_text(encoding="utf-8").replace(
+                    "core_commit=core-commit", "core_commit=untrusted", 1
+                ),
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "trusted release metadata"):
+                release_channel.validate_build_metadata(
+                    metadata, upstream, provenance, "26.7", "source-commit"
+                )
+
 if __name__ == "__main__":
     unittest.main()

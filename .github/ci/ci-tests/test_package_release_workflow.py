@@ -19,12 +19,30 @@ def action_references(workflow: str) -> list[str]:
 def test_workflow_selects_an_immutable_release_source():
     workflow = workflow_text()
     assert 'workflow_dispatch:' in workflow
-    assert 'pull_request_target:' in workflow
+    assert 'pull_request_target:' not in workflow
     assert 'refs/heads/release/bind-rp/$series' in workflow
     assert 'refs/pull/$INPUT_PULL_NUMBER/head' in workflow
     assert 'git fetch --no-tags origin "$SOURCE_REF:refs/remotes/origin/package-source"' in workflow
     assert 'source_commit=$(git rev-parse refs/remotes/origin/package-source)' in workflow
     assert 'git checkout "$SOURCE_COMMIT" -- .resolver-plugins/upstream.json Mk dns/bind' in workflow
+
+
+def test_production_runs_only_from_the_master_control_plane():
+    workflow = workflow_text()
+    select = workflow.split('  select:', 1)[1].split('  profile:', 1)[0]
+    profile = workflow.split('  profile:', 1)[1].split('  bind:', 1)[0]
+    test = workflow.split('  test:', 1)[1].split('  select:', 1)[0]
+    bind = workflow.split('  bind:', 1)[1].split('  build:', 1)[0]
+    build = workflow.split('  build:', 1)[1].split('  publish-development:', 1)[0]
+    assert 'GITHUB_REF: ${{ github.ref }}' in select
+    assert '[[ "$GITHUB_REF" == refs/heads/master ]]' in select
+    assert 'control_ref=master' in select
+    assert 'control_ref=$GITHUB_SHA' in select
+    assert 'ref: ${{ needs.select.outputs.control_ref }}' in profile
+    for job in (test, bind, build):
+        assert 'ref: ${{ needs.profile.outputs.control_commit }}' in job
+    assert 'group: package-release-${{ inputs.series }}' in workflow
+    assert 'cancel-in-progress: false' in workflow
 
 
 def test_workflow_validates_metadata_before_selecting_the_freebsd_vm():
@@ -82,7 +100,8 @@ def test_signer_uses_master_control_plane_and_self_contained_channel_layout():
     workflow = workflow_text()
     signer = workflow.split('  sign:', 1)[1].split('  publish:', 1)[0]
     assert 'control_commit: ${{ steps.profile.outputs.control_commit }}' in workflow
-    assert "refs/heads/master:refs/remotes/origin/package-control" in workflow
+    assert 'control_ref=master' in workflow
+    assert 'control_commit=$(git rev-parse HEAD)' in workflow
     assert 'ref: ${{ needs.profile.outputs.control_commit }}' in signer
     assert 'RP_PKG_SIGNING_KEY' in signer
     assert 'repository/current' in signer
@@ -90,6 +109,8 @@ def test_signer_uses_master_control_plane_and_self_contained_channel_layout():
     assert signer.count('stage-channel') == 1
     assert 'cp -R "$output/repository/current" "$output/repository/snapshot"' in signer
     assert 'cmp -s docs/package-repository/resolver-plugins.pub "$output/resolver-plugins.pub"' in signer
+    assert 'trusted-upstream.json' in signer
+    assert 'validate-build-metadata' in signer
     assert 'repository/bind920' not in signer
     assert 'RP_DISTRIBUTION_REPOSITORY_TOKEN' in workflow
     assert 'resolver-plugins/repository' in workflow

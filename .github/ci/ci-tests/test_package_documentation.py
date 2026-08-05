@@ -11,3 +11,10 @@ def test_user_guides_use_only_the_distribution_repository_for_package_channels()
     assert "resolver-plugins/plugins/releases/download/pkg-" not in text
     assert "pkg-<series>-bind920" not in text
     assert "pkg-$series-bind920" not in text
+
+
+def test_maintainer_guide_documents_cross_repository_publication_setup():
+    text = (ROOT / "docs/package-repository.md").read_text(encoding="utf-8")
+    assert "RP_DISTRIBUTION_REPOSITORY_TOKEN" in text
+    assert "Contents: write" in text
+    assert "master" in text and "workflow_dispatch" in text

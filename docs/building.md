@@ -31,6 +31,9 @@ legacy release branches, which intentionally do not carry the control-plane
 scripts. In particular, the release `Mk` files prevent a development-branch
 marker from adding an unintended `-devel` package suffix.
 
+Production release runs are manually dispatched from `master`; merging a
+release-source pull request does not execute helpers from that release branch.
+
 Reproduce that split in a disposable worktree when building locally. Start
 from `master`, fetch the selected release branch, and overlay only its release
 inputs before entering the matching FreeBSD environment:

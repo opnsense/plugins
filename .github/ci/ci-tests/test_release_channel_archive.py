@@ -82,6 +82,12 @@ class SelfContainedRepositoryStageTest(unittest.TestCase):
             )
             (packages / "build-metadata.txt").write_text(
                 "series=26.7\n"
+                "uname=FreeBSD test 15.1\n"
+                "pkg_abi=FreeBSD:15:amd64\n"
+                "bind920=9.20.26_1\n"
+                "bind_source=resolver\n"
+                "opnsense=26.7\n"
+                "opnsense_core_commit=2222222222222222222222222222222222222222\n"
                 "source_commit=0123456789abcdef\n"
                 "upstream_commit=1111111111111111111111111111111111111111\n"
                 "core_commit=2222222222222222222222222222222222222222\n"
@@ -128,6 +134,9 @@ class SelfContainedRepositoryStageTest(unittest.TestCase):
                 release_channel.sha256(packages / "os-bind-rp-1.36_7.pkg"),
                 manifest["packages"]["os-bind-rp-1.36_7.pkg"],
             )
+            (root / "channel/resolver-plugins.pub").write_text("public key", encoding="utf-8")
+            (root / "channel/packagesite.pkg").touch()
+            release_channel.validate_channel_directory(root / "channel")
 
     def test_asset_order_puts_repository_metadata_after_packages(self) -> None:
         """Publishing a self-contained channel uploads packages before catalog metadata."""
@@ -158,6 +167,83 @@ class SelfContainedRepositoryStageTest(unittest.TestCase):
 
 
 class PublicationRecoveryTest(unittest.TestCase):
+    def test_recovery_channel_rejects_an_audit_checksum_mismatch(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            directory = Path(temporary_directory)
+            packages = [
+                directory / "bind-tools-9.20.26_1.pkg",
+                directory / "bind920-9.20.26_1.pkg",
+                directory / "os-bind-rp-1.36_2.pkg",
+            ]
+            for package in packages:
+                package.write_bytes(package.name.encode())
+            (directory / "bind920-provenance.json").write_text(
+                json.dumps(
+                    {
+                        "series": "26.7",
+                        "freebsd_release": "15.1",
+                        "packages": {
+                            "bind-tools": {
+                                "name": "bind-tools",
+                                "version": "9.20.26_1",
+                                "origin": "dns/bind-tools",
+                                "filename": packages[0].name,
+                            },
+                            "bind920": {
+                                "name": "bind920",
+                                "version": "9.20.26_1",
+                                "origin": "dns/bind920",
+                                "filename": packages[1].name,
+                            },
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (directory / "build-metadata.txt").write_text(
+                "series=26.7\nuname=FreeBSD test\npkg_abi=FreeBSD:15:amd64\n"
+                "bind920=9.20.26_1\nbind_source=resolver\nopnsense=26.7\n"
+                "opnsense_core_commit=core\nupstream_commit=upstream\ncore_commit=core\n"
+                "tools_tag=26.7.1\nfreebsd_release=15.1\nsource_commit=source\n",
+                encoding="utf-8",
+            )
+            (directory / "channel.json").write_text(
+                json.dumps(
+                    {
+                        "schema": 1,
+                        "series": "26.7",
+                        "plugin_version": "1.36_2",
+                        "source_commit": "source",
+                        "build": {},
+                        "bind": {},
+                        "packages": {package.name: "0" * 64 for package in packages},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (directory / "resolver-plugins.pub").write_text("public key", encoding="utf-8")
+            (directory / "meta.conf").touch()
+            (directory / "packagesite.pkg").touch()
+
+            with self.assertRaisesRegex(ValueError, "checksum"):
+                release_channel.validate_channel_directory(directory)
+
+    def test_release_snapshot_comparison_detects_a_remote_change(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            manifests = []
+            snapshots = []
+            for number, digest in enumerate(("a" * 64, "b" * 64)):
+                directory = root / str(number)
+                directory.mkdir()
+                manifest = root / f"{number}.json"
+                manifest.write_text(json.dumps({"asset.pkg": digest}), encoding="utf-8")
+                manifests.append(manifest)
+                snapshots.append(
+                    release_channel.ReleaseSnapshot("pkg-26.7", True, directory, manifest)
+                )
+            self.assertFalse(release_channel.release_snapshots_match(*snapshots))
+
     def test_failed_promotion_restores_all_channels_from_preserved_bytes(self) -> None:
         """A failed later upload restores already changed releases without remote downloads."""
         with tempfile.TemporaryDirectory() as temporary_directory:
@@ -200,6 +286,7 @@ class PublicationRecoveryTest(unittest.TestCase):
 
             with (
                 patch.object(release_channel, "snapshot_release", side_effect=fake_snapshot),
+                patch.object(release_channel, "validate_channel_directory"),
                 patch.object(release_channel, "publish", side_effect=fake_publish),
                 patch.object(release_channel, "restore_release", side_effect=fake_restore),
             ):

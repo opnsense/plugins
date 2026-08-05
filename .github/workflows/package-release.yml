@@ -16,21 +16,22 @@ on:
         description: Required for development builds; optional production provenance reference
         required: false
         type: string
-  pull_request_target:
-    types: [closed]
-    branches: ["release/bind-rp/**"]
-
 permissions:
   contents: read
   pull-requests: read
 
+concurrency:
+  group: package-release-${{ inputs.series }}
+  cancel-in-progress: false
+
 jobs:
   test:
+    needs: profile
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ needs.profile.outputs.control_commit }}
           persist-credentials: false
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
@@ -41,41 +42,36 @@ jobs:
         run: python -m pytest -q .github/ci/ci-tests
 
   select:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.merged == true
     runs-on: ubuntu-24.04
     outputs:
       mode: ${{ steps.select.outputs.mode }}
       series: ${{ steps.select.outputs.series }}
       source_ref: ${{ steps.select.outputs.source_ref }}
       prerelease_tag: ${{ steps.select.outputs.prerelease_tag }}
+      control_ref: ${{ steps.select.outputs.control_ref }}
     steps:
       - id: select
         shell: bash
         env:
-          EVENT_NAME: ${{ github.event_name }}
+          GITHUB_REF: ${{ github.ref }}
+          GITHUB_SHA: ${{ github.sha }}
           INPUT_MODE: ${{ inputs.mode }}
           INPUT_SERIES: ${{ inputs.series }}
           INPUT_PULL_NUMBER: ${{ inputs.pull_number }}
-          PR_BASE: ${{ github.event.pull_request.base.ref }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           set -euo pipefail
-          if [[ "$EVENT_NAME" == workflow_dispatch ]]; then
-            mode="$INPUT_MODE"
-            series="$INPUT_SERIES"
-            if [[ "$mode" == development ]]; then
-              [[ "$INPUT_PULL_NUMBER" =~ ^[1-9][0-9]*$ ]]
-              source_ref="refs/pull/$INPUT_PULL_NUMBER/head"
-              prerelease_tag="pr-$INPUT_PULL_NUMBER-$series"
-            else
-              source_ref="refs/heads/release/bind-rp/$series"
-              prerelease_tag=""
-            fi
+          mode="$INPUT_MODE"
+          series="$INPUT_SERIES"
+          if [[ "$mode" == development ]]; then
+            [[ "$INPUT_PULL_NUMBER" =~ ^[1-9][0-9]*$ ]]
+            source_ref="refs/pull/$INPUT_PULL_NUMBER/head"
+            prerelease_tag="pr-$INPUT_PULL_NUMBER-$series"
+            control_ref=$GITHUB_SHA
           else
-            mode=production
-            series="${PR_BASE#release/bind-rp/}"
-            source_ref="refs/heads/$PR_BASE"
+            [[ "$GITHUB_REF" == refs/heads/master ]]
+            source_ref="refs/heads/release/bind-rp/$series"
             prerelease_tag=""
+            control_ref=master
           fi
           [[ "$mode" == development || "$mode" == production ]]
           [[ "$series" =~ ^[0-9]+\.[0-9]+$ ]]
@@ -84,6 +80,7 @@ jobs:
             printf 'series=%s\n' "$series"
             printf 'source_ref=%s\n' "$source_ref"
             printf 'prerelease_tag=%s\n' "$prerelease_tag"
+            printf 'control_ref=%s\n' "$control_ref"
           } >> "$GITHUB_OUTPUT"
 
   profile:
@@ -96,7 +93,7 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ needs.select.outputs.control_ref }}
           persist-credentials: false
       - id: profile
         shell: bash
@@ -105,10 +102,9 @@ jobs:
           SERIES: ${{ needs.select.outputs.series }}
         run: |
           set -euo pipefail
+          control_commit=$(git rev-parse HEAD)
           git fetch --no-tags origin "$SOURCE_REF:refs/remotes/origin/package-source"
           source_commit=$(git rev-parse refs/remotes/origin/package-source)
-          git fetch --no-tags origin 'refs/heads/master:refs/remotes/origin/package-control'
-          control_commit=$(git rev-parse refs/remotes/origin/package-control)
           git show "$source_commit:.resolver-plugins/upstream.json" > "$RUNNER_TEMP/upstream.json"
           freebsd_release=$(python3 .github/ci/metadata_profile.py "$RUNNER_TEMP/upstream.json" "$SERIES" freebsd_release)
           printf 'source_commit=%s\nfreebsd_release=%s\ncontrol_commit=%s\n' "$source_commit" "$freebsd_release" "$control_commit" >> "$GITHUB_OUTPUT"
@@ -124,7 +120,7 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ needs.profile.outputs.control_commit }}
           persist-credentials: false
       - name: Materialize BIND pair
         shell: bash
@@ -166,7 +162,7 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ needs.profile.outputs.control_commit }}
           persist-credentials: false
       - name: Materialize selected release source
         shell: bash
@@ -248,6 +244,15 @@ jobs:
         with:
           name: os-bind-rp-build-production-${{ needs.select.outputs.series }}
           path: artifacts/${{ needs.select.outputs.series }}
+      - name: Materialize trusted release metadata
+        shell: bash
+        env:
+          SOURCE_COMMIT: ${{ needs.profile.outputs.source_commit }}
+          SERIES: ${{ needs.select.outputs.series }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "$SOURCE_COMMIT"
+          git show "$SOURCE_COMMIT:.resolver-plugins/upstream.json" > "artifacts/$SERIES/trusted-upstream.json"
       - name: Sign package repository
         uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
         env:
@@ -271,6 +276,7 @@ jobs:
             output="artifacts/${{ needs.select.outputs.series }}"
             grep -Fqx 'source_commit=${{ needs.profile.outputs.source_commit }}' "$output/build-metadata.txt"
             python3 .github/ci/release_channel.py validate-bind-provenance --provenance "$output/bind920-provenance.json" --profile .resolver-plugins/bind920.json --series '${{ needs.select.outputs.series }}' --freebsd-release '${{ needs.profile.outputs.freebsd_release }}'
+            python3 .github/ci/release_channel.py validate-build-metadata --metadata "$output/build-metadata.txt" --upstream "$output/trusted-upstream.json" --provenance "$output/bind920-provenance.json" --series '${{ needs.select.outputs.series }}' --source-commit '${{ needs.profile.outputs.source_commit }}'
             mkdir -p "$output/repository"
             python3 .github/ci/release_channel.py stage-channel --packages-directory "$output" --output "$output/repository/current" --private-key "$key"
             cp -R "$output/repository/current" "$output/repository/snapshot"
