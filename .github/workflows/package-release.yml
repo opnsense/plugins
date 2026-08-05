@@ -13,7 +13,7 @@ on:
         required: true
         type: string
       pull_number:
-        description: Required for development builds; optional production provenance reference
+        description: Required for development builds; identifies a master or release-source PR
         required: false
         type: string
 permissions:
@@ -58,13 +58,24 @@ jobs:
           INPUT_MODE: ${{ inputs.mode }}
           INPUT_SERIES: ${{ inputs.series }}
           INPUT_PULL_NUMBER: ${{ inputs.pull_number }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
           mode="$INPUT_MODE"
           series="$INPUT_SERIES"
+          [[ "$mode" == development || "$mode" == production ]]
+          [[ "$series" =~ ^[0-9]+\.[0-9]+$ ]]
           if [[ "$mode" == development ]]; then
             [[ "$INPUT_PULL_NUMBER" =~ ^[1-9][0-9]*$ ]]
-            source_ref="refs/pull/$INPUT_PULL_NUMBER/head"
+            pr_base=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$INPUT_PULL_NUMBER" --jq .base.ref)
+            if [[ "$pr_base" == master ]]; then
+              source_ref="refs/heads/release/bind-rp/$series"
+            elif [[ "$pr_base" == "release/bind-rp/$series" ]]; then
+              source_ref="refs/pull/$INPUT_PULL_NUMBER/head"
+            else
+              echo "pull request base $pr_base does not supply control or $series release source" >&2
+              exit 1
+            fi
             prerelease_tag="pr-$INPUT_PULL_NUMBER-$series"
             control_ref=$GITHUB_SHA
           else
@@ -73,8 +84,6 @@ jobs:
             prerelease_tag=""
             control_ref=$GITHUB_SHA
           fi
-          [[ "$mode" == development || "$mode" == production ]]
-          [[ "$series" =~ ^[0-9]+\.[0-9]+$ ]]
           {
             printf 'mode=%s\n' "$mode"
             printf 'series=%s\n' "$series"

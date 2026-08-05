@@ -22,6 +22,9 @@ def test_workflow_selects_an_immutable_release_source():
     assert 'pull_request_target:' not in workflow
     assert 'refs/heads/release/bind-rp/$series' in workflow
     assert 'refs/pull/$INPUT_PULL_NUMBER/head' in workflow
+    assert 'gh api "repos/$GITHUB_REPOSITORY/pulls/$INPUT_PULL_NUMBER" --jq .base.ref' in workflow
+    assert 'if [[ "$pr_base" == master ]]' in workflow
+    assert 'elif [[ "$pr_base" == "release/bind-rp/$series" ]]' in workflow
     assert 'git fetch --no-tags origin "$SOURCE_REF:refs/remotes/origin/package-source"' in workflow
     assert 'source_commit=$(git rev-parse refs/remotes/origin/package-source)' in workflow
     assert 'git checkout "$SOURCE_COMMIT" -- .resolver-plugins/upstream.json Mk dns/bind' in workflow
