@@ -56,9 +56,11 @@ mechanism exists yet.
   the explicit `os-bind` conflict to make a build pass.
 - Keep durable CI helper and workflow regression tests in
   `.github/ci/ci-tests/`; use local Git and command fixtures rather than live
-  services. Put BIND plugin behavior tests in `dns/bind/tests/`. Use the
-  ignored `.github/ci-local/` directory only for temporary CI discovery and
-  investigation harnesses; never stage or commit anything under it.
+  services. Keep the canonical BIND behavior suite in `dns/bind/tests/` on
+  `master`; its PR workflow materializes and tests every active
+  `release/bind-rp/<series>` source. Use the ignored `.github/ci-local/`
+  directory only for temporary CI discovery and investigation harnesses;
+  never stage or commit anything under it.
 - The signed package repository is an approved system. Do not alter its
   GitHub Release publication, signing boundary, tokens, secrets, or end-user
   installation contract without explicit maintainer authorization.

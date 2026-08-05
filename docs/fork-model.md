@@ -16,9 +16,12 @@ the BIND version carrying the named DoT-related fix relied on by this fork.
 ## Branch responsibilities
 
 `master` is the control plane. It holds shared CI scripts, GitHub Actions
-workflows, and documentation. It should stay aligned with upstream OPNsense
-plugins except for the fork's deliberate control-plane and package-identity
-changes.
+workflows, documentation, and the canonical BIND behavior suite in
+`dns/bind/tests`. Pull requests run that suite against every active release
+source discovered from `release/bind-rp/<series>` branches, so a new supported
+series needs no workflow-matrix edit. It should stay aligned with upstream
+OPNsense plugins except for the fork's deliberate control-plane and
+package-identity changes.
 
 `release/bind-rp/<series>` branches are the per-OPNsense-series build sources.
 Their `.resolver-plugins/upstream.json` records immutable provenance for that
