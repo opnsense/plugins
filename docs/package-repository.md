@@ -1,101 +1,143 @@
 # Package repository
 
-`os-bind-rp` packages are published as signed GitHub Release assets in
-`resolver-plugins/plugins`. GitHub Releases store the package binary and the
-small `pkg` repository catalogue; the source repository remains binary-free.
+`os-bind-rp` is published as signed GitHub Release assets in
+`resolver-plugins/plugins`. GitHub Releases contain package binaries and the
+small `pkg` catalogues; the source repository remains binary-free.
 
 ## Channels
 
-Each supported OPNsense series has one stable Release tag:
+Every supported OPNsense series has three distinct signed channels:
 
-| OPNsense series | Release tag |
-| --- | --- |
-| 26.1 | `pkg-26.1` |
-| 26.7 | `pkg-26.7` |
+| Purpose | Release tag | Default state |
+| --- | --- | --- |
+| Current plugin | `pkg-<series>` | enabled |
+| Plugin rollback archive | `pkg-<series>-archive` | enabled only while rolling back |
+| Resolver BIND fallback | `pkg-<series>-bind920` | disabled |
 
-The tag is the package repository base URL:
+The current plugin channel contains exactly the newest `os-bind-rp` package.
+The archive contains from one up to five newest plugin versions that declare
+the same `bind920 >= 9.20.26` package solver formula. It never contains a
+legacy plugin that pins a particular Resolver BIND revision. This permits the
+standard named `pkg` selection form, for example
+`pkg install os-bind-rp-1.36_2`, when the archive repository is selected.
 
-```text
-https://github.com/resolver-plugins/plugins/releases/download/pkg-<series>
+The BIND fallback channel contains `bind-tools-9.20.26_1.pkg`,
+`bind920-9.20.26_1.pkg`, and `bind920-provenance.json`. It is a separate
+source because hosts should use OPNsense's BIND when it is eligible. The
+fallback repository is deliberately disabled, so its `9.20.26_1` revision
+cannot supersede an eligible official package with the same version.
+
+All channels include the signed `pkg` catalogue and `resolver-plugins.pub`.
+Clients verify both using that public key.
+
+## Host operation
+
+Choose the matching OPNsense series and configure the current plugin channel:
+
+```sh
+series=26.7
+base="https://github.com/resolver-plugins/plugins/releases/download/pkg-$series"
+install -d -m 0755 /usr/local/etc/pkg/keys /usr/local/etc/pkg/repos
+fetch -o /usr/local/etc/pkg/keys/resolver-plugins.pub "$base/resolver-plugins.pub"
+test "$(sha256 -q /usr/local/etc/pkg/keys/resolver-plugins.pub)" = \
+  bd89d6f91807c71f8a744532c9ce2f97e9590f8858ac779bfb2f23c10804e07e || exit 1
+cat > /usr/local/etc/pkg/repos/resolver-plugins.conf <<EOF
+resolver-plugins: {
+  url: "$base",
+  mirror_type: "none",
+  signature_type: "pubkey",
+  pubkey: "/usr/local/etc/pkg/keys/resolver-plugins.pub",
+  enabled: yes
+}
+EOF
+pkg update -r resolver-plugins
+pkg install os-bind-rp
 ```
 
-Every channel includes `meta.conf`, catalogue data, `resolver-plugins.pub`,
-`bind920-provenance.json`, and exactly these packages:
+Before enabling any fallback, check the official packages. An eligible BIND is
+`bind920` from `dns/bind920`, at least `9.20.26`, with `bind-tools` from
+`dns/bind-tools`. The plugin formula accepts that official package and does not
+require the Resolver fallback.
 
-- `bind-tools-9.20.26_1.pkg`
-- `bind920-9.20.26_1.pkg`
-- the current `os-bind-rp-*.pkg`
+Only if that check fails, add the fallback configuration with `enabled: no`:
 
-`os-bind-rp` records the exact locally-built `bind920` package as a dependency,
-and `bind920` records its matching `bind-tools` dependency. Installing the
-plugin from this channel therefore installs the fixed BIND daemon without a
-separate user step. Package clients verify the catalogue and packages using
-the published public key.
+```sh
+cat > /usr/local/etc/pkg/repos/resolver-plugins-bind920.conf <<EOF
+resolver-plugins-bind920: {
+  url: "https://github.com/resolver-plugins/plugins/releases/download/pkg-$series-bind920",
+  mirror_type: "none",
+  signature_type: "pubkey",
+  pubkey: "/usr/local/etc/pkg/keys/resolver-plugins.pub",
+  enabled: no
+}
+EOF
+```
 
-`bind920-provenance.json` records the BIND Ports profile, target series, and
-FreeBSD compatibility identity used for the two BIND packages. CI uses it only
-to determine whether a later plugin build can reuse the stable package pair;
-it still fetches the pair through this signed package channel before use.
+Set `enabled: yes` in that file only after recording why the OPNsense BIND is
+ineligible, run `pkg update -r resolver-plugins-bind920`, and install the
+fallback BIND pair. Disable the repository again before normal upgrades.
 
-The BIND packages deliberately retain the normal FreeBSD names and origins
-(`bind920`/`dns/bind920` and `bind-tools`/`dns/bind-tools`), so they replace
-OPNsense's older BIND packages. Their custom revision is `9.20.26_1`; an
-official package at `9.20.27` or later wins normal `pkg` version ordering and
-supersedes this replacement. Until then, Resolver Plugins maintains the BIND
-security and compatibility update in its channels.
+### Rollback
+
+Back up the OPNsense configuration before changing plugin versions:
+
+```sh
+cp /conf/config.xml "/conf/config.xml.os-bind-rp.$(date +%Y%m%d%H%M%S).bak"
+```
+
+Configure `resolver-plugins-archive` with the same key and the URL ending in
+`pkg-$series-archive`. Dry-run and then install the named version:
+
+```sh
+pkg install -n -r resolver-plugins-archive os-bind-rp-1.36_2
+pkg install -f -r resolver-plugins-archive os-bind-rp-1.36_2
+pkg query -e '%n = os-bind-rp' '%n-%v'
+configctl template reload OPNsense/Bind || true
+configctl service restart bind || true
+```
+
+If configuration, template generation, or service validation fails, restore
+the saved configuration and run the exact latest-channel install command:
+
+```sh
+pkg install -f -r resolver-plugins os-bind-rp
+```
+
+The archive channel is not a separate product feed; leave it disabled outside
+an explicit rollback to keep ordinary upgrades on `pkg-<series>`.
 
 Development builds use pre-release tags such as `pr-123-26.7`. They are for
-review testing only and are never signed or promoted to a stable channel.
+review testing only and are neither signed nor promoted into a stable channel.
 
 ## Publication
 
-The `Publish os-bind-rp package release` workflow builds from a selected
-`release/bind-rp/<series>` source branch. A manual development run publishes a
-PR pre-release. A production run builds, signs, and uploads the stable channel.
-When a PR is merged into a release source branch, the workflow automatically
-performs the production path.
+The `Publish os-bind-rp package release` workflow builds from the selected
+`release/bind-rp/<series>` source branch. It first attempts an OPNsense BIND
+that satisfies the policy. If it cannot, it builds or reuses the separate
+Resolver fallback pair and records that source in `build-metadata.txt`.
 
-Before compiling BIND, the build attempts to reuse the matching pair from the
-existing stable channel. A missing provenance file (including the first build
-of a new series) or a changed compatibility identity is an expected cache miss
-and triggers the pinned Ports build. Invalid provenance or a failed signed
-package fetch is a hard failure.
+The production signer checks out an immutable `master` control-plane commit,
+verifies the finished artifact's source commit, and receives no release-source
+helper code with `RP_PKG_SIGNING_KEY`. It stages the latest plugin, formula-
+compatible archive, and any new BIND fallback catalogue separately.
 
-The `RP_PKG_SIGNING_KEY` GitHub Actions secret contains the base64-encoded
-private key. It is decoded only in the disposable FreeBSD VM, used by `pkg
-repo`, and removed before the VM copyback. The committed public key is
-`docs/package-repository/resolver-plugins.pub`; its SHA-256 fingerprint is
-`bd89d6f91807c71f8a744532c9ce2f97e9590f8858ac779bfb2f23c10804e07e`.
-
-Production publication has separate build, sign, and upload jobs. The build
-job runs the selected release-source code but never receives the signing key.
-A fresh signing VM checks out trusted `master` tooling and receives only the
-finished package artifact; it generates the signed catalogue before the final
-upload job publishes the channel. This keeps a release-source change from
-having direct access to the signing credential.
+Before replacing mutable Release assets, publication downloads every prior
+asset—packages, catalogues, metadata, provenance, and public key—to local
+recovery storage and verifies checksums. If an upload or verification fails,
+it restores each affected Release from those preserved bytes. Archive is
+published before latest; pruning happens only after the new catalogues verify.
 
 Do not publish a stable channel manually from a workstation. A successful
-workflow run is the release record and the source of the signed catalogue.
+workflow run is the release record and source of the signed catalogue.
 
-## Operations
+## Verification
 
-After a production publication, check the Release has these assets and is not
-marked as a pre-release:
+After a production publication, inspect the three Release tags and use a
+disposable FreeBSD VM to verify the current package, named rollback, and (when
+present) explicitly enabled BIND fallback. Confirm the public URL and package
+identity with `pkg rquery` before using the channel on a host.
 
-```sh
-gh release view pkg-26.7 --repo resolver-plugins/plugins
-```
-
-Use a disposable FreeBSD VM to verify the public URL before relying on a new
-channel:
-
-```sh
-pkg update -r resolver-plugins
-pkg rquery -r resolver-plugins -e '%n = bind920 OR %n = bind-tools OR %n = os-bind-rp' '%n-%v'
-```
-
-If a signing-key rotation is required, generate and store the replacement
-private key as `RP_PKG_SIGNING_KEY`, commit the replacement public key, and
-republish every supported stable channel. Announce the new public-key
-fingerprint with the release; existing clients must update their local key file
-before they can verify the new catalogue.
+If a signing-key rotation is required, replace `RP_PKG_SIGNING_KEY`, commit
+the replacement public key, and republish every channel for every supported
+series. Announce the new fingerprint; existing clients must update their key
+before they can verify the replacement catalogues.

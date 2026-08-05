@@ -15,9 +15,19 @@ case "$1" in
         fi
         exit 0
         ;;
-    query) printf '%s\n' '9.20.24' ;;
+    query)
+        if [ "${4:-}" = '%n\t%v\t%o' ]
+        then
+            case "$3" in
+                *bind-tools*) printf 'bind-tools\t%s\t%s\n' "${PKG_BIND_TOOLS_VERSION:-9.20.26}" "${PKG_BIND_TOOLS_ORIGIN:-dns/bind-tools}" ;;
+                *) printf 'bind920\t%s\t%s\n' "${PKG_BIND_VERSION:-9.20.26}" "${PKG_BIND_ORIGIN:-dns/bind920}" ;;
+            esac
+        else
+            printf '%s\n' '9.20.26'
+        fi
+        ;;
     rquery) printf '%s\n' '26.1.11_10' ;;
     config) printf '%s\n' 'FreeBSD:14:amd64' ;;
-    version) printf '%s\n' '=' ;;
+    version) printf '%s\n' "${PKG_VERSION_COMPARISON:-=}" ;;
     *) exit 2 ;;
 esac

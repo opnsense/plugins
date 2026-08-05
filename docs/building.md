@@ -45,19 +45,19 @@ git cat-file -e "$source_commit:Mk/devel.mk" 2>/dev/null || rm -f Mk/devel.mk
 ```
 
 The runner checks out the pinned OPNsense core commit and configures its
-package repository and fingerprints. Before compiling, it checks the stable
-`pkg-<series>` Release for `bind920-provenance.json`. If the complete BIND
-profile, series, FreeBSD release, and architecture match, it downloads the
-two BIND packages through the signed package channel and installs them in the
-build VM. A first build or changed compatibility identity is a normal cache
-miss and uses the exact FreeBSD Ports recipe pinned in
-`.resolver-plugins/bind920.json`, verifies its hashes, and builds
-`bind-tools` followed by `bind920` at `9.20.26_1`. Documentation is excluded
-because it is not needed at runtime; this keeps the source build from pulling
-in the large Sphinx documentation toolchain. Those packages are installed in
-the build VM before `os-bind-rp` is packaged, which records the exact BIND
-dependency in the plugin manifest. The plugin builder rejects any BIND version
-below `9.20.26` and verifies the OPNsense version floor.
+package repository and fingerprints. It first installs and verifies the
+OPNsense `bind920`/`bind-tools` pair against
+`.resolver-plugins/bind-compatibility.json`: required names and origins plus
+`bind920 >= 9.20.26`. An eligible official package is the normal build input.
+If it is missing or incompatible, the wrapper returns its documented fallback
+status. The workflow then checks the separate signed
+`pkg-<series>-bind920` channel for matching provenance and otherwise builds
+the exact FreeBSD Ports recipe pinned in `.resolver-plugins/bind920.json`.
+That fallback builds `bind-tools` followed by `bind920` at `9.20.26_1`.
+Documentation is excluded because it is not needed at runtime; this keeps the
+source build from pulling in the large Sphinx documentation toolchain. The
+plugin manifest records `dep_formula: "bind920 >= 9.20.26"`, not a locally
+built BIND revision, and the builder verifies the OPNsense version floor.
 It clears only `dns/bind/work` before packaging; do not invoke the inherited
 `make clean` target after materializing a release source, because that target
 resets `dns/bind/src` to the control-plane checkout.
@@ -85,8 +85,17 @@ For example, after preparing the selected release source:
 ```sh
 RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json \
 SOURCE_COMMIT="$source_commit" \
-.github/ci/build-bind920.sh "$series" "artifacts/$series"
+.github/ci/build-os-bind-rp.sh "$series" "artifacts/$series"
+```
+
+If that command exits with status `3`, build or reuse the Resolver fallback
+and invoke the plugin wrapper with `RP_BIND920_FALLBACK=yes`:
+
+```sh
 RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json \
+SOURCE_COMMIT="$source_commit" \
+.github/ci/build-bind920.sh "$series" "artifacts/$series"
+RP_BIND920_FALLBACK=yes RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json \
 SOURCE_COMMIT="$source_commit" \
 .github/ci/build-os-bind-rp.sh "$series" "artifacts/$series"
 ```

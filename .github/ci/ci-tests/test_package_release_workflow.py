@@ -34,8 +34,9 @@ def test_workflow_validates_metadata_before_selecting_the_freebsd_vm():
     assert validator_index < vm_index
     assert 'release: ${{ needs.profile.outputs.freebsd_release }}' in workflow
     assert 'RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json' in workflow
-    assert '.github/ci/build-bind920.sh "$series" "$output"' in workflow
     assert '.github/ci/build-os-bind-rp.sh "$series" "$output"' in workflow
+    assert 'RP_BIND920_FALLBACK=yes' in workflow
+    assert 'BIND fallback is required but did not build' in workflow
 
 
 def test_workflow_uses_sha_pinned_actions_and_nonpersistent_checkout_credentials():
@@ -61,6 +62,24 @@ def test_production_signing_and_publication_are_separate_from_builds():
     workflow = workflow_text()
     assert 'RP_PKG_SIGNING_KEY: ${{ secrets.RP_PKG_SIGNING_KEY }}' in workflow
     assert 'python3 .github/ci/release_channel.py stage' in workflow
+    assert 'python3 .github/ci/release_channel.py stage-plugin' in workflow
+    assert 'python3 .github/ci/release_channel.py stage-bind920' in workflow
     assert 'python3 .github/ci/release_channel.py publish' in workflow
     assert 'permissions:\n      contents: write' in workflow
     assert workflow.index('  sign:') < workflow.index('  publish:')
+
+
+def test_signer_uses_master_control_plane_and_split_channel_layout():
+    workflow = workflow_text()
+    signer = workflow.split('  sign:', 1)[1].split('  publish:', 1)[0]
+    assert 'ref: refs/heads/master' in signer
+    assert 'RP_PKG_SIGNING_KEY' in signer
+    assert 'repository/latest' in signer
+    assert 'repository/archive' in signer
+    assert 'repository/bind920' in signer
+    assert 'pkg-${{ needs.select.outputs.series }}-bind920' in workflow
+    assert 'collect-plugin-archive' in signer
+    assert 'collect-bind920' in signer
+    assert 'archive_status' in signer
+    assert 'publish-channels' in workflow
+    assert '--recovery "$RUNNER_TEMP/recovery"' in workflow

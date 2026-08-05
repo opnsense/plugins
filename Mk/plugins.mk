@@ -148,6 +148,9 @@ manifest: check
 	done
 	@echo "}"
 .endif
+.if defined(PLUGIN_DEPEND_FORMULA)
+	@echo "dep_formula: \"${PLUGIN_DEPEND_FORMULA}\""
+.endif
 	@if [ -f ${WRKSRC}${LOCALBASE}/opnsense/version/${PLUGIN_NAME} ]; then \
 	    echo "annotations $$(cat ${WRKSRC}${LOCALBASE}/opnsense/version/${PLUGIN_NAME})"; \
 	fi
