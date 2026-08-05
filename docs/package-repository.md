@@ -1,32 +1,27 @@
 # Package repository
 
 `os-bind-rp` is published as signed GitHub Release assets in
-`resolver-plugins/plugins`. GitHub Releases contain package binaries and the
-small `pkg` catalogues; the source repository remains binary-free.
+`resolver-plugins/repository`. The distribution repository contains generated
+package channels; source releases contain only the plugin archive and build
+metadata.
 
 ## Channels
 
-Every supported OPNsense series has three distinct signed channels:
+Every supported OPNsense series has a self-contained current channel and up
+to five self-contained immutable rollback snapshots:
 
 | Purpose | Release tag | Default state |
 | --- | --- | --- |
-| Current plugin | `pkg-<series>` | enabled |
-| Plugin rollback snapshot | `pkg-<series>-os-bind-rp-<version>` | enabled only while rolling back |
-| Resolver BIND fallback | `pkg-<series>-bind920` | disabled |
+| Current plugin and BIND baseline | `pkg-<series>` | enabled |
+| Plugin rollback snapshot and its BIND baseline | `pkg-<series>-os-bind-rp-<version>` | enabled only while rolling back |
 
-The current plugin channel contains exactly the newest `os-bind-rp` package.
-Each rollback snapshot is an immutable, one-package catalogue for a plugin
-version that declares `bind920 >= 9.20.26`; it never contains a legacy plugin
-that pins a particular Resolver BIND revision. `pkg` repositories cannot
-catalogue multiple versions under the same package name, so rollback selects
-the desired snapshot repository and installs `os-bind-rp` from that source.
-Publication retains the five newest snapshots for each series.
-
-The BIND fallback channel contains `bind-tools-9.20.26_1.pkg`,
-`bind920-9.20.26_1.pkg`, and `bind920-provenance.json`. It is a separate
-source because hosts should use OPNsense's BIND when it is eligible. The
-fallback repository is deliberately disabled, so its `9.20.26_1` revision
-cannot supersede an eligible official package with the same version.
+The current channel and every rollback snapshot contain exactly one
+`os-bind-rp` package, the matching `bind920`/`bind-tools` pair, BIND
+provenance, `channel.json`, and the signed catalogue. `pkg` catalogues expose
+one selected version per package name, so rollback temporarily selects a
+retained snapshot URL from the same distribution repository. Publication
+retains the five newest snapshots and reuses a compatible BIND pair instead
+of rebuilding it for every plugin release.
 
 All channels include the signed `pkg` catalogue and `resolver-plugins.pub`.
 Clients verify both using that public key.
@@ -37,7 +32,7 @@ Choose the matching OPNsense series and configure the current plugin channel:
 
 ```sh
 series=26.7
-base="https://github.com/resolver-plugins/plugins/releases/download/pkg-$series"
+base="https://github.com/resolver-plugins/repository/releases/download/pkg-$series"
 install -d -m 0755 /usr/local/etc/pkg/keys /usr/local/etc/pkg/repos
 fetch -o /usr/local/etc/pkg/keys/resolver-plugins.pub "$base/resolver-plugins.pub"
 test "$(sha256 -q /usr/local/etc/pkg/keys/resolver-plugins.pub)" = \
@@ -94,7 +89,7 @@ only plugin package exposed by that snapshot:
 snapshot="pkg-$series-os-bind-rp-1.36_2"
 cat > /usr/local/etc/pkg/repos/resolver-plugins-rollback.conf <<EOF
 resolver-plugins-rollback: {
-  url: "https://github.com/resolver-plugins/plugins/releases/download/$snapshot",
+  url: "https://github.com/resolver-plugins/repository/releases/download/$snapshot",
   mirror_type: "none",
   signature_type: "pubkey",
   pubkey: "/usr/local/etc/pkg/keys/resolver-plugins.pub",

@@ -20,6 +20,23 @@ SPEC.loader.exec_module(release_channel)
 
 
 class ChannelTagTest(unittest.TestCase):
+    def test_source_release_tag_identifies_the_series_and_plugin_version(self) -> None:
+        self.assertEqual(
+            "os-bind-rp-26.7-1.36_7", release_channel.source_release_tag("26.7", "1.36_7")
+        )
+
+    def test_source_release_assets_exclude_package_repository_files(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            directory = Path(temporary_directory)
+            plugin = directory / "os-bind-rp-1.36_7.pkg"
+            plugin.touch()
+            metadata = directory / "build-metadata.txt"
+            metadata.write_text("series=26.7\nsource_commit=abc\n", encoding="utf-8")
+            (directory / "bind920-9.20.26_1.pkg").touch()
+            self.assertEqual(
+                [plugin, metadata], release_channel.source_release_assets(directory)
+            )
+
     def test_split_channel_tags_are_series_scoped(self) -> None:
         """Latest, snapshot, and fallback channels must never share a tag."""
         self.assertEqual("pkg-26.7", release_channel.channel_tag("26.7"))

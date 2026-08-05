@@ -51,6 +51,25 @@ def bind920_channel_tag(series: str) -> str:
     return f"{channel_tag(series)}-bind920"
 
 
+def source_release_tag(series: str, version: str) -> str:
+    """Return the immutable, human-facing plugin release tag."""
+    if SERIES_PATTERN.fullmatch(series) is None:
+        raise ValueError("invalid series")
+    if PACKAGE_VERSION_PATTERN.fullmatch(version) is None:
+        raise ValueError("invalid package version")
+    return f"os-bind-rp-{series}-{version}"
+
+
+def source_release_assets(directory: Path) -> list[Path]:
+    """Select only the human-facing plugin archive and its build metadata."""
+    packages = select_plugin_packages(directory)
+    if len(packages) != 1:
+        raise ValueError("source release requires exactly one plugin package")
+    metadata = directory / "build-metadata.txt"
+    read_build_metadata(metadata)
+    return [packages[0], metadata]
+
+
 def select_packages(directory: Path) -> list[Path]:
     """Select exactly one production package from every required family."""
     selected = []
@@ -737,11 +756,19 @@ def main() -> None:
     snapshot_tag = commands.add_parser("snapshot-tag")
     snapshot_tag.add_argument("series")
     snapshot_tag.add_argument("version")
+    source_tag = commands.add_parser("source-release-tag")
+    source_tag.add_argument("series")
+    source_tag.add_argument("version")
     stage = commands.add_parser("stage")
     stage.add_argument("--packages-directory", type=Path, required=True)
     stage.add_argument("--output", type=Path, required=True)
     stage.add_argument("--private-key", type=Path, required=True)
     stage.add_argument("--pkg-command", default="pkg")
+    stage_channel = commands.add_parser("stage-channel")
+    stage_channel.add_argument("--packages-directory", type=Path, required=True)
+    stage_channel.add_argument("--output", type=Path, required=True)
+    stage_channel.add_argument("--private-key", type=Path, required=True)
+    stage_channel.add_argument("--pkg-command", default="pkg")
     stage_plugin = commands.add_parser("stage-plugin")
     stage_plugin.add_argument("--packages-directory", type=Path, required=True)
     stage_plugin.add_argument("--output", type=Path, required=True)
@@ -786,8 +813,15 @@ def main() -> None:
             print(package)
     elif arguments.command == "snapshot-tag":
         print(snapshot_channel_tag(arguments.series, arguments.version))
+    elif arguments.command == "source-release-tag":
+        print(source_release_tag(arguments.series, arguments.version))
     elif arguments.command == "stage":
         for asset in stage_repository(
+            arguments.packages_directory, arguments.output, arguments.private_key, arguments.pkg_command
+        ):
+            print(asset)
+    elif arguments.command == "stage-channel":
+        for asset in stage_channel_repository(
             arguments.packages_directory, arguments.output, arguments.private_key, arguments.pkg_command
         ):
             print(asset)

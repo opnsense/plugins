@@ -36,7 +36,18 @@ def test_workflow_validates_metadata_before_selecting_the_freebsd_vm():
     assert 'RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json' in workflow
     assert '.github/ci/build-os-bind-rp.sh "$series" "$output"' in workflow
     assert 'RP_BIND920_FALLBACK=yes' in workflow
-    assert 'BIND fallback is required but did not build' in workflow
+    assert 'Build or reuse BIND pair' in workflow
+
+
+def test_workflow_materializes_the_distribution_bind_pair_before_building_the_plugin():
+    workflow = workflow_text()
+    assert '  bind:' in workflow
+    assert 'RP_BIND920_CHANNEL_URL: https://github.com/resolver-plugins/repository/releases/download/pkg-${{ needs.select.outputs.series }}' in workflow
+    assert 'name: Materialize BIND pair' in workflow
+    assert 'needs: [select, profile, test, bind]' in workflow
+    build = workflow.split('  build:', 1)[1].split('  publish-development:', 1)[0]
+    assert 'RP_BIND920_FALLBACK=yes' in build
+    assert 'pkg add "$output"/bind-tools-*.pkg "$output"/bind920-*.pkg' in build
 
 
 def test_workflow_uses_sha_pinned_actions_and_nonpersistent_checkout_credentials():
@@ -44,7 +55,7 @@ def test_workflow_uses_sha_pinned_actions_and_nonpersistent_checkout_credentials
     references = action_references(workflow)
     assert references
     assert all(PINNED_ACTION.fullmatch(reference) for reference in references)
-    assert workflow.count('persist-credentials: false') == 5
+    assert workflow.count('persist-credentials: false') == 7
     assert 'actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803' in references
     assert 'vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d' in references
 
@@ -61,26 +72,25 @@ def test_workflow_provisions_the_pinned_python_test_runtime():
 def test_production_signing_and_publication_are_separate_from_builds():
     workflow = workflow_text()
     assert 'RP_PKG_SIGNING_KEY: ${{ secrets.RP_PKG_SIGNING_KEY }}' in workflow
-    assert 'python3 .github/ci/release_channel.py stage' in workflow
-    assert 'python3 .github/ci/release_channel.py stage-plugin' in workflow
-    assert 'python3 .github/ci/release_channel.py stage-bind920' in workflow
-    assert 'python3 .github/ci/release_channel.py publish' in workflow
+    assert 'python3 .github/ci/release_channel.py stage-channel' in workflow
+    assert 'python3 .github/ci/release_channel.py publish-channels' in workflow
     assert 'permissions:\n      contents: write' in workflow
     assert workflow.index('  sign:') < workflow.index('  publish:')
 
 
-def test_signer_uses_master_control_plane_and_split_channel_layout():
+def test_signer_uses_master_control_plane_and_self_contained_channel_layout():
     workflow = workflow_text()
     signer = workflow.split('  sign:', 1)[1].split('  publish:', 1)[0]
     assert 'control_commit: ${{ steps.profile.outputs.control_commit }}' in workflow
     assert "refs/heads/master:refs/remotes/origin/package-control" in workflow
     assert 'ref: ${{ needs.profile.outputs.control_commit }}' in signer
     assert 'RP_PKG_SIGNING_KEY' in signer
-    assert 'repository/latest' in signer
+    assert 'repository/current' in signer
     assert 'repository/snapshot' in signer
-    assert 'repository/bind920' in signer
-    assert 'pkg-${{ needs.select.outputs.series }}-bind920' in workflow
-    assert 'collect-bind920' in signer
+    assert 'stage-channel' in signer
+    assert 'repository/bind920' not in signer
+    assert 'RP_DISTRIBUTION_REPOSITORY_TOKEN' in workflow
+    assert 'resolver-plugins/repository' in workflow
     assert 'publish-channels' in workflow
     assert 'prune-snapshots' in workflow
     assert '--recovery "$RUNNER_TEMP/recovery"' in workflow
