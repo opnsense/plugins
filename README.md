@@ -37,9 +37,9 @@ Installing os-bind-rp
 `os-bind-rp` has package channels for the OPNsense 26.1 and 26.7 release
 series. Select the channel that matches the first two components of the
 installed OPNsense version. Do not install it alongside the official `os-bind`
-plugin: the two packages conflict by design. The normal channel contains the
-current plugin only; it prefers an eligible OPNsense `bind920` package instead
-of replacing BIND automatically.
+plugin: the two packages conflict by design. The normal channel is
+self-contained and includes the `bind920`/`bind-tools` pair used to build the
+current plugin.
 
 From an OPNsense root shell, derive the supported `major.minor` release series
 from `opnsense-version` and configure its current channel:
@@ -84,19 +84,17 @@ fetch -o - https://raw.githubusercontent.com/resolver-plugins/plugins/master/scr
 The installer does not enable the BIND plugin or service, change its
 configuration, reload templates, or restart BIND. It checks the installed
 OPNsense BIND packages first. If they are incompatible, it explains the
-DNS-over-TLS issue, shows the installed and fallback versions, and asks before
-installing the fallback BIND packages. The fallback repository remains disabled
-outside that explicit package transaction; declining the prompt leaves
+DNS-over-TLS issue, shows the installed and channel versions, and asks before
+installing the channel's BIND packages. Declining the prompt leaves
 `os-bind-rp` uninstalled.
 
 The repository catalogue and package are signed by the public key above. A
 future release for the same OPNsense series updates the same `pkg-<series>`
 channel, so normal `pkg upgrade` operations can receive it. The signed
 `pkg-<series>-os-bind-rp-<version>` snapshots retain the five newest plugin
-rollback versions, while the disabled `pkg-<series>-bind920` channel is available only
-as self-contained rollback channels in the same distribution repository. See
-the [package repository guide](docs/package-repository.md) before changing a
-release channel or signing key.
+rollback versions as self-contained channels in the same distribution
+repository. See the [package repository guide](docs/package-repository.md)
+before changing a release channel or signing key.
 
 About the OPNsense plugins
 ==========================

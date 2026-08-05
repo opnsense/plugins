@@ -87,7 +87,9 @@ def test_signer_uses_master_control_plane_and_self_contained_channel_layout():
     assert 'RP_PKG_SIGNING_KEY' in signer
     assert 'repository/current' in signer
     assert 'repository/snapshot' in signer
-    assert 'stage-channel' in signer
+    assert signer.count('stage-channel') == 1
+    assert 'cp -R "$output/repository/current" "$output/repository/snapshot"' in signer
+    assert 'cmp -s docs/package-repository/resolver-plugins.pub "$output/resolver-plugins.pub"' in signer
     assert 'repository/bind920' not in signer
     assert 'RP_DISTRIBUTION_REPOSITORY_TOKEN' in workflow
     assert 'resolver-plugins/repository' in workflow
@@ -96,11 +98,24 @@ def test_signer_uses_master_control_plane_and_self_contained_channel_layout():
     assert '--recovery "$RUNNER_TEMP/recovery"' in workflow
 
 
-def test_publication_waits_for_current_and_rollback_installation_in_freebsd():
+def test_publication_waits_for_current_and_snapshot_installability_in_freebsd():
     workflow = workflow_text()
     publisher = workflow.split('  publish:', 1)[1].split('  verify:', 1)[0]
     verifier = workflow.split('  verify:', 1)[1].split('  source-release:', 1)[0]
     assert 'needs: [select, profile, sign, verify]' in publisher
+    assert 'permissions:\n      contents: read' in publisher
     assert 'pkg install -y -r resolver-plugins bind-tools bind920 os-bind-rp' in verifier
     assert 'url: "file://$PWD/$root/snapshot"' in verifier
     assert 'pkg install -f -y -r resolver-plugins-rollback os-bind-rp' in verifier
+
+
+def test_source_release_contains_only_plugin_and_build_metadata():
+    workflow = workflow_text()
+    source_release = workflow.split('  source-release:', 1)[1]
+    assert 'set -- "$output"/os-bind-rp-*.pkg' in source_release
+    assert (
+        'gh release create "$tag" "$1" "$output/build-metadata.txt" '
+        '--repo "$GITHUB_REPOSITORY"' in source_release
+    )
+    assert 'bind920-*.pkg' not in source_release
+    assert 'repository/' not in source_release

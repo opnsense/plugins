@@ -112,11 +112,7 @@ bind_tools=$(pkg query -e '%n = bind-tools' '%n|%v|%o' 2>/dev/null || true)
 
 if ! bind920_is_eligible
 then
-    fallback_repository=resolver-plugins-bind920
-    fallback_channel=$current_channel
-    write_repository "$fallback_repository" "$release_base/$fallback_channel" no
-    pkg update -r "$fallback_repository"
-    fallback_packages=$(pkg rquery -r "$fallback_repository" '%n|%v|%o') || \
+    fallback_packages=$(pkg rquery -r resolver-plugins '%n|%v|%o') || \
         fail 'could not inspect the Resolver BIND fallback repository'
     fallback_bind920=$(printf '%s\n' "$fallback_packages" | awk -F '|' '$1 == "bind920" { print; exit }')
     fallback_bind_tools=$(printf '%s\n' "$fallback_packages" | awk -F '|' '$1 == "bind-tools" { print; exit }')
@@ -140,7 +136,7 @@ then
     fi
     case "$response" in
         y|Y|yes|YES|Yes)
-            pkg install -y -r "$fallback_repository" bind920 bind-tools
+            pkg install -y -r resolver-plugins bind920 bind-tools
             bind920=$(pkg query -e '%n = bind920' '%n|%v|%o' 2>/dev/null || true)
             bind_tools=$(pkg query -e '%n = bind-tools' '%n|%v|%o' 2>/dev/null || true)
             bind920_is_eligible || fail 'Resolver BIND fallback did not satisfy plugin requirements'

@@ -113,9 +113,9 @@ baseline.
    its provenance matches, or builds the pinned pair once on a cache miss. It
    does so in a clean BIND-materialization environment rather than installing
    a competing BIND package over the normal plugin build environment.
-4. The trusted signing job stages one complete current channel and one
-   complete immutable snapshot, writes `channel.json`, and runs `pkg repo`
-   with the private key over each complete set.
+4. The trusted signing job stages one complete current channel, writes
+   `channel.json`, runs `pkg repo` with the private key, and copies those exact
+   signed bytes to the immutable snapshot publication path.
 5. It verifies that the generated catalogue, public key, manifest checksums,
    and package dependency graph exactly match the intended set.
 6. A final distribution job writes the staged assets to

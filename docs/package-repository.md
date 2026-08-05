@@ -98,33 +98,39 @@ review testing only and are neither signed nor promoted into a stable channel.
 ## Publication
 
 The `Publish os-bind-rp package release` workflow builds from the selected
-`release/bind-rp/<series>` source branch. It first attempts an OPNsense BIND
-that satisfies the policy. If it cannot, it builds or reuses the separate
-Resolver fallback pair and records that source in `build-metadata.txt`.
+`release/bind-rp/<series>` source branch. It first reuses a matching BIND pair
+from the current distribution channel or builds the pinned pair on a verified
+cache miss. The plugin is built against that exact pair.
 
 The production signer resolves and checks out a specific `master`
 control-plane SHA, verifies the finished artifact's source commit, and receives
-no release-source helper code with `RP_PKG_SIGNING_KEY`. It stages the latest
-plugin, one immutable formula-compatible rollback snapshot, and any new BIND
-fallback catalogue separately.
+no release-source helper code with `RP_PKG_SIGNING_KEY`. It validates BIND
+provenance against trusted control-plane metadata, then stages identical
+self-contained current and immutable rollback repositories. It generates the
+signed catalogue once and copies those exact bytes to both publication paths.
+The derived public key must match the key committed in this repository before
+either path can proceed.
 
 Before replacing mutable Release assets, publication downloads every prior
 asset—packages, catalogues, metadata, provenance, and public key—to local
 recovery storage and verifies checksums. If an upload or verification fails,
-it restores each affected Release from those preserved bytes. The snapshot,
-fallback when present, and latest channel have their published asset sets
-checked after upload; pruning to the newest five snapshots happens only after
-that promotion succeeds.
+it restores each affected Release from those preserved bytes. The snapshot
+and current channel have their published asset sets checked after upload;
+pruning to the newest five snapshots happens only after promotion succeeds.
 
 Do not publish a stable channel manually from a workstation. A successful
 workflow run is the release record and source of the signed catalogue.
 
 ## Verification
 
-After a production publication, inspect the three Release tags and use a
-disposable FreeBSD VM to verify the current package, named rollback, and (when
-present) explicitly enabled BIND fallback. Confirm the public URL and package
-identity with `pkg rquery` before using the channel on a host.
+Before production publication, the workflow uses a disposable FreeBSD VM to
+add the staged signed current and snapshot repositories, install all three
+current packages, and force-install the plugin through the snapshot path. The
+two staged paths contain the same new version, so this gate proves snapshot
+catalogue installability rather than a transition to an older version. After
+publication, when an older retained snapshot exists, verify the actual version
+transition from its public URL and confirm package identities with `pkg
+rquery`.
 
 If a signing-key rotation is required, replace `RP_PKG_SIGNING_KEY`, commit
 the replacement public key, and republish every channel for every supported

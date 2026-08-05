@@ -90,7 +90,7 @@ def write_command_fixtures(directory: Path) -> None:
         "  esac;;\n"
         "rquery) printf '%s\\n' 'bind920|9.20.26_1|dns/bind920' 'bind-tools|9.20.26_1|dns/bind-tools';;\n"
         "update) ;;\n"
-        "install) case \"$*\" in *resolver-plugins-bind920*) : > \"$RP_TEST_FALLBACK_MARKER\";; esac;;\n"
+        "install) case \"$*\" in *bind920*bind-tools*) : > \"$RP_TEST_FALLBACK_MARKER\";; esac;;\n"
         "*) exit 64;;\n"
         "esac\n",
     )
@@ -127,7 +127,7 @@ def test_uses_eligible_opnsense_bind_without_prompting_or_fallback(tmp_path: Pat
     assert result.returncode == 0, result.stderr
     assert "Do you wish to update BIND?" not in result.stderr
     calls = log.read_text(encoding="utf-8")
-    assert "pkg install -y -r resolver-plugins-bind920" not in calls
+    assert "pkg install -y -r resolver-plugins bind920 bind-tools" not in calls
 
 
 def test_rejects_26_1_before_the_required_core_floor(tmp_path: Path) -> None:
@@ -174,10 +174,9 @@ def test_prompts_for_and_installs_the_fallback_when_bind_is_ineligible(tmp_path:
         in result.stderr
     )
     assert "Do you wish to update BIND? [y/N]" in result.stderr
-    fallback = (repositories / "resolver-plugins-bind920.conf").read_text(encoding="utf-8")
-    assert "enabled: no" in fallback
+    assert not (repositories / "resolver-plugins-bind920.conf").exists()
     calls = log.read_text(encoding="utf-8")
-    assert calls.index("pkg install -y -r resolver-plugins-bind920 bind920 bind-tools") < calls.index(
+    assert calls.index("pkg install -y -r resolver-plugins bind920 bind-tools") < calls.index(
         "pkg install -y -r resolver-plugins os-bind-rp"
     )
 
@@ -203,7 +202,7 @@ def test_declining_bind_fallback_leaves_the_plugin_uninstalled(tmp_path: Path) -
     assert result.returncode != 0
     assert "BIND update declined; os-bind-rp was not installed." in result.stderr
     calls = log.read_text(encoding="utf-8")
-    assert "pkg install -y -r resolver-plugins-bind920 bind920 bind-tools" not in calls
+    assert "pkg install -y -r resolver-plugins bind920 bind-tools" not in calls
     assert "pkg install -y -r resolver-plugins os-bind-rp" not in calls
 
 

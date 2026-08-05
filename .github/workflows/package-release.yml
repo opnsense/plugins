@@ -273,8 +273,12 @@ jobs:
             python3 .github/ci/release_channel.py validate-bind-provenance --provenance "$output/bind920-provenance.json" --profile .resolver-plugins/bind920.json --series '${{ needs.select.outputs.series }}' --freebsd-release '${{ needs.profile.outputs.freebsd_release }}'
             mkdir -p "$output/repository"
             python3 .github/ci/release_channel.py stage-channel --packages-directory "$output" --output "$output/repository/current" --private-key "$key"
-            python3 .github/ci/release_channel.py stage-channel --packages-directory "$output" --output "$output/repository/snapshot" --private-key "$key"
+            cp -R "$output/repository/current" "$output/repository/snapshot"
             openssl pkey -in "$key" -pubout -out "$output/resolver-plugins.pub"
+            cmp -s docs/package-repository/resolver-plugins.pub "$output/resolver-plugins.pub" || {
+              echo 'signing key does not match the committed Resolver Plugins public key' >&2
+              exit 1
+            }
             for repository in "$output"/repository/*; do
               cp "$output/resolver-plugins.pub" "$repository/"
             done
@@ -290,7 +294,7 @@ jobs:
     needs: [select, profile, sign, verify]
     runs-on: ubuntu-24.04
     permissions:
-      contents: write
+      contents: read
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
@@ -329,7 +333,7 @@ jobs:
         with:
           name: os-bind-rp-production-repository-${{ needs.select.outputs.series }}
           path: artifacts/${{ needs.select.outputs.series }}/repository
-      - name: Verify signed package channel in FreeBSD
+      - name: Verify signed current and snapshot channels in FreeBSD
         uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
         with:
           release: ${{ needs.profile.outputs.freebsd_release }}

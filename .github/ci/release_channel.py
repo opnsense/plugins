@@ -10,10 +10,7 @@ import shutil
 import re
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
-from urllib.error import HTTPError, URLError
-from urllib.request import Request, urlopen
 
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -21,20 +18,9 @@ import bind920_profile
 
 
 SERIES_PATTERN = re.compile(r"[0-9]+\.[0-9]+")
-PACKAGE_PATTERNS = {
-    "bind-tools": re.compile(r"bind-tools-9\.20\.26_1\.pkg"),
-    "bind920": re.compile(r"bind920-9\.20\.26_1\.pkg"),
-    "os-bind-rp": re.compile(r"os-bind-rp-(?!devel-).+\.pkg"),
-}
-PLUGIN_PATTERN = PACKAGE_PATTERNS["os-bind-rp"]
+PLUGIN_PATTERN = re.compile(r"os-bind-rp-(?!devel-).+\.pkg")
 PROVENANCE_NAME = "bind920-provenance.json"
-SOURCE_REPOSITORY_NAME = "resolver-plugins-source"
 PACKAGE_VERSION_PATTERN = re.compile(r"[0-9][0-9A-Za-z._-]*")
-EXPECTED_PACKAGES = {
-    "bind-tools": ("bind-tools", "9.20.26_1", "dns/bind-tools"),
-    "bind920": ("bind920", "9.20.26_1", "dns/bind920"),
-    "os-bind-rp": ("os-bind-rp", None, "opnsense/os-bind-rp"),
-}
 
 
 def channel_tag(series: str) -> str:
@@ -45,15 +31,10 @@ def channel_tag(series: str) -> str:
 
 
 def snapshot_channel_tag(series: str, version: str) -> str:
-    """Return an immutable, one-package rollback snapshot tag."""
+    """Return an immutable, self-contained rollback snapshot tag."""
     if PACKAGE_VERSION_PATTERN.fullmatch(version) is None:
         raise ValueError("invalid package version")
     return f"{channel_tag(series)}-os-bind-rp-{version}"
-
-
-def bind920_channel_tag(series: str) -> str:
-    """Return the disabled-by-default Resolver BIND fallback tag."""
-    return f"{channel_tag(series)}-bind920"
 
 
 def source_release_tag(series: str, version: str) -> str:
@@ -63,34 +44,6 @@ def source_release_tag(series: str, version: str) -> str:
     if PACKAGE_VERSION_PATTERN.fullmatch(version) is None:
         raise ValueError("invalid package version")
     return f"os-bind-rp-{series}-{version}"
-
-
-def source_release_assets(directory: Path) -> list[Path]:
-    """Select only the human-facing plugin archive and its build metadata."""
-    packages = select_plugin_packages(directory)
-    if len(packages) != 1:
-        raise ValueError("source release requires exactly one plugin package")
-    metadata = directory / "build-metadata.txt"
-    read_build_metadata(metadata)
-    return [packages[0], metadata]
-
-
-def select_packages(directory: Path) -> list[Path]:
-    """Select exactly one production package from every required family."""
-    selected = []
-    for family, pattern in PACKAGE_PATTERNS.items():
-        packages = sorted(
-            path for path in directory.glob(f"{family}-*.pkg")
-            if pattern.fullmatch(path.name)
-        )
-        if not packages:
-            if list(directory.glob(f"{family}-devel-*.pkg")):
-                raise ValueError(f"development {family} package is not a production package")
-            raise ValueError(f"missing production {family} package")
-        if len(packages) != 1:
-            raise ValueError(f"expected exactly one production {family} package")
-        selected.extend(packages)
-    return selected
 
 
 def select_plugin_packages(directory: Path) -> list[Path]:
@@ -103,22 +56,6 @@ def select_plugin_packages(directory: Path) -> list[Path]:
             raise ValueError("development os-bind-rp package is not a production package")
         raise ValueError("missing production os-bind-rp package")
     return packages
-
-
-def select_bind920_packages(directory: Path) -> list[Path]:
-    """Return the exact Resolver BIND fallback pair and no plugin archive."""
-    selected = []
-    for family in ("bind-tools", "bind920"):
-        packages = sorted(
-            path for path in directory.glob(f"{family}-*.pkg")
-            if PACKAGE_PATTERNS[family].fullmatch(path.name)
-        )
-        if not packages:
-            raise ValueError(f"missing production {family} package")
-        if len(packages) != 1:
-            raise ValueError(f"expected exactly one production {family} package")
-        selected.extend(packages)
-    return selected
 
 
 def read_bind_package_records(provenance_path: Path) -> dict[str, dict[str, str]]:
@@ -218,29 +155,6 @@ def read_package_manifest(package: Path, pkg_command: str) -> dict[str, object]:
     return manifest
 
 
-def validate_package_manifests(packages: list[Path], pkg_command: str) -> None:
-    """Reject archives whose manifests do not form the required package chain."""
-    common_abi = None
-    manifests = {}
-    for family, package in zip(PACKAGE_PATTERNS, packages, strict=True):
-        identity, dependencies = query_package(package, pkg_command)
-        name, version, origin, abi = identity
-        expected_name, expected_version, expected_origin = EXPECTED_PACKAGES[family]
-        if (name, origin) != (expected_name, expected_origin) or (
-            expected_version is not None and version != expected_version
-        ):
-            raise ValueError(f"unexpected {family} package manifest")
-        if common_abi is None:
-            common_abi = abi
-        elif abi != common_abi:
-            raise ValueError("package ABI does not match the bundled BIND packages")
-        manifests[family] = (version, dependencies)
-    if ("bind-tools", "dns/bind-tools", "9.20.26_1") not in manifests["bind920"][1]:
-        raise ValueError("bind920 does not depend on bundled bind-tools")
-    if ("bind920", "dns/bind920", "9.20.26_1") not in manifests["os-bind-rp"][1]:
-        raise ValueError("os-bind-rp does not depend on bundled bind920")
-
-
 def validate_channel_package_manifests(
     packages: list[Path], provenance_path: Path, pkg_command: str
 ) -> None:
@@ -279,43 +193,6 @@ def validate_channel_package_manifests(
         raise ValueError("plugin package does not declare the required BIND dependency formula")
 
 
-def validate_plugin_package_manifests(packages: list[Path], pkg_command: str) -> None:
-    """Reject plugin rollback archives with an unexpected identity or ABI."""
-    common_abi = None
-    for package in packages:
-        identity, dependencies = query_package(package, pkg_command)
-        name, _, origin, abi = identity
-        if (name, origin) != ("os-bind-rp", "opnsense/os-bind-rp"):
-            raise ValueError("unexpected os-bind-rp package manifest")
-        if common_abi is None:
-            common_abi = abi
-        elif abi != common_abi:
-            raise ValueError("plugin package ABI does not match the archive")
-        if any(dependency[0] == "bind920" for dependency in dependencies):
-            raise ValueError("plugin package records an exact BIND dependency")
-        if read_package_manifest(package, pkg_command).get("dep_formula") != "bind920 >= 9.20.26":
-            raise ValueError("plugin package does not declare the required BIND dependency formula")
-
-
-def validate_bind920_package_manifests(packages: list[Path], pkg_command: str) -> None:
-    """Validate only the Resolver BIND fallback package chain."""
-    manifests = {}
-    common_abi = None
-    for family, package in zip(("bind-tools", "bind920"), packages, strict=True):
-        identity, dependencies = query_package(package, pkg_command)
-        name, version, origin, abi = identity
-        expected_name, expected_version, expected_origin = EXPECTED_PACKAGES[family]
-        if (name, version, origin) != (expected_name, expected_version, expected_origin):
-            raise ValueError(f"unexpected {family} package manifest")
-        if common_abi is None:
-            common_abi = abi
-        elif abi != common_abi:
-            raise ValueError("package ABI does not match the bundled BIND packages")
-        manifests[family] = dependencies
-    if ("bind-tools", "dns/bind-tools", "9.20.26_1") not in manifests["bind920"]:
-        raise ValueError("bind920 does not depend on bundled bind-tools")
-
-
 def stage_selected_repository(
     packages: list[Path],
     output: Path,
@@ -339,174 +216,6 @@ def stage_selected_repository(
     if any(package not in assets for package in copied) or any(
         output / source.name not in assets for source in metadata
     ) or not any(path.name.startswith("meta") for path in assets):
-        raise ValueError("pkg repo did not produce a repository catalog")
-    return assets
-
-
-def stage_plugin_repository(
-    packages_directory: Path, output: Path, private_key: Path, pkg_command: str
-) -> list[Path]:
-    """Create a one-package latest or immutable rollback snapshot catalogue."""
-    packages = select_plugin_packages(packages_directory)
-    if len(packages) != 1:
-        raise ValueError("plugin snapshot requires exactly one package version")
-    metadata = packages_directory / "build-metadata.txt"
-    if not metadata.is_file():
-        raise ValueError("plugin build metadata does not exist")
-    validate_plugin_package_manifests(packages, pkg_command)
-    return stage_selected_repository(packages, output, private_key, pkg_command, [metadata])
-
-
-def stage_bind920_repository(
-    packages_directory: Path, output: Path, private_key: Path, pkg_command: str
-) -> list[Path]:
-    """Create the separate signed Resolver BIND fallback catalogue."""
-    packages = select_bind920_packages(packages_directory)
-    provenance = packages_directory / PROVENANCE_NAME
-    if not provenance.is_file():
-        raise ValueError("BIND provenance does not exist")
-    validate_bind920_package_manifests(packages, pkg_command)
-    return stage_selected_repository(packages, output, private_key, pkg_command, [provenance])
-
-
-class ArchiveMissing(Exception):
-    """A previous signed channel is absent during its first publication."""
-
-
-def require_repository_metadata(channel_url: str) -> None:
-    """Distinguish an expected first-publication 404 from a broken signed channel."""
-    try:
-        with urlopen(Request(f"{channel_url.rstrip('/')}/meta.conf")) as response:
-            if response.status != 200:
-                raise RuntimeError(f"cannot read signed package catalogue: HTTP {response.status}")
-    except HTTPError as error:
-        if error.code == 404:
-            raise ArchiveMissing("signed package channel is absent") from error
-        raise RuntimeError(f"cannot read signed package catalogue: HTTP {error.code}") from error
-    except URLError as error:
-        raise RuntimeError(f"cannot read signed package catalogue: {error}") from error
-
-
-def write_signed_repository_config(
-    directory: Path, repository_name: str, channel_url: str, public_key: Path
-) -> Path:
-    """Create an isolated pkg configuration for an already signed source channel."""
-    if not public_key.is_file():
-        raise ValueError("Resolver Plugins public key does not exist")
-    directory.mkdir(parents=True, exist_ok=True)
-    config = directory / f"{repository_name}.conf"
-    config.write_text(
-        f"{repository_name}: {{\n"
-        f"  url: \"{channel_url.rstrip('/')}\",\n"
-        "  mirror_type: \"none\",\n"
-        "  signature_type: \"pubkey\",\n"
-        f"  pubkey: \"{public_key}\",\n"
-        "  enabled: yes\n"
-        "}\n",
-        encoding="utf-8",
-    )
-    return directory
-
-
-def downloaded_archive(directory: Path, filename: str) -> Path:
-    """Locate a pkg fetch result across the layouts supported by pkg."""
-    for candidate in (directory / filename, directory / "All" / filename):
-        if candidate.is_file():
-            return candidate
-    raise RuntimeError(f"pkg did not fetch {filename}")
-
-
-def collect_signed_packages(
-    channel_url: str,
-    public_key: Path,
-    output: Path,
-    repository_name: str,
-    package_names: set[str],
-    pkg_command: str,
-) -> list[Path]:
-    """Fetch named packages only through a verified prior signed catalogue."""
-    require_repository_metadata(channel_url)
-    with tempfile.TemporaryDirectory() as temporary_directory:
-        config = write_signed_repository_config(
-            Path(temporary_directory) / "repos", repository_name, channel_url, public_key
-        )
-        options = [pkg_command, "-o", f"REPOS_DIR={config}"]
-        subprocess.run([*options, "update", "-f"], check=True)
-        result = subprocess.run(
-            [*options, "rquery", "-r", repository_name, "%n\t%v"],
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        records = []
-        for line in result.stdout.splitlines():
-            fields = line.split("\t")
-            if len(fields) != 2 or not all(fields):
-                raise RuntimeError("cannot read signed repository package identities")
-            if fields[0] in package_names:
-                records.append((fields[0], fields[1]))
-        if not records:
-            raise ArchiveMissing("signed package channel has no requested packages")
-        output.mkdir(parents=True, exist_ok=True)
-        copied = []
-        for name, version in records:
-            requested = f"{name}-{version}"
-            subprocess.run(
-                [*options, "fetch", "-y", "-r", repository_name, "-o", str(output), requested],
-                check=True,
-            )
-            archive = downloaded_archive(output, f"{requested}.pkg")
-            destination = output / archive.name
-            if archive != destination:
-                shutil.copy2(archive, destination)
-            copied.append(destination)
-        return copied
-
-
-def collect_bind920_fallback(
-    channel_url: str, public_key: Path, output: Path, pkg_command: str
-) -> list[Path]:
-    """Move the prior signed BIND pair into its separate fallback channel."""
-    packages = collect_signed_packages(
-        channel_url, public_key, output, SOURCE_REPOSITORY_NAME,
-        {"bind-tools", "bind920"}, pkg_command,
-    )
-    try:
-        with urlopen(Request(f"{channel_url.rstrip('/')}/{PROVENANCE_NAME}")) as response:
-            provenance = response.read()
-    except (HTTPError, URLError) as error:
-        raise RuntimeError(f"cannot preserve BIND provenance: {error}") from error
-    if not provenance:
-        raise RuntimeError("cannot preserve empty BIND provenance")
-    (output / PROVENANCE_NAME).write_bytes(provenance)
-    return packages
-
-
-def stage_repository(packages_directory: Path, output: Path, private_key: Path, pkg_command: str) -> list[Path]:
-    """Create a signed flat pkg repository containing all required packages."""
-    if not private_key.is_file():
-        raise ValueError("private signing key does not exist")
-    output.mkdir(parents=True, exist_ok=True)
-    if any(output.iterdir()):
-        raise ValueError("repository output directory must be empty")
-    packages = select_packages(packages_directory)
-    provenance = packages_directory / PROVENANCE_NAME
-    if not provenance.is_file():
-        raise ValueError("BIND provenance does not exist")
-    validate_package_manifests(packages, pkg_command)
-    copied = [output / package.name for package in packages]
-    for package, destination in zip(packages, copied, strict=True):
-        shutil.copy2(package, destination)
-    subprocess.run(
-        [pkg_command, "repo", str(output), f"rsa:{private_key}"], check=True
-    )
-    shutil.copy2(provenance, output / PROVENANCE_NAME)
-    assets = sorted(path for path in output.iterdir() if path.is_file())
-    if (
-        any(package not in assets for package in copied)
-        or output / PROVENANCE_NAME not in assets
-        or not any(path.name.startswith("meta") for path in assets)
-    ):
         raise ValueError("pkg repo did not produce a repository catalog")
     return assets
 
@@ -536,13 +245,30 @@ def stage_channel_repository(
     packages = select_channel_packages(packages_directory)
     build_metadata = packages_directory / "build-metadata.txt"
     metadata = read_build_metadata(build_metadata)
+    required_build_fields = {"upstream_commit", "core_commit", "tools_tag", "freebsd_release"}
+    if not required_build_fields <= metadata.keys():
+        raise ValueError("plugin build metadata is incomplete")
+    try:
+        bind_metadata = json.loads(provenance.read_text(encoding="utf-8"))
+        bind_identity = {
+            field: bind_metadata[field]
+            for field in ("fingerprint", "freebsd_release", "architecture")
+        }
+    except (OSError, json.JSONDecodeError, KeyError, TypeError) as error:
+        raise ValueError("BIND provenance is invalid") from error
+    if bind_metadata.get("series") != metadata["series"]:
+        raise ValueError("BIND provenance series does not match plugin build metadata")
     validate_channel_package_manifests(packages, provenance, pkg_command)
     stage_selected_repository(
         packages, output, private_key, pkg_command, [provenance, build_metadata]
     )
     channel_manifest = {
+        "schema": 1,
         "series": metadata["series"],
+        "plugin_version": packages[2].name.removeprefix("os-bind-rp-").removesuffix(".pkg"),
         "source_commit": metadata["source_commit"],
+        "build": {field: metadata[field] for field in sorted(required_build_fields)},
+        "bind": bind_identity,
         "packages": {package.name: sha256(package) for package in packages},
     }
     (output / "channel.json").write_text(
@@ -666,7 +392,7 @@ def publish_channels(
 
 
 def prune_snapshots(repository: str, series: str, keep: int = 5) -> None:
-    """Retain only the newest immutable one-package snapshots for one series."""
+    """Retain only the newest immutable self-contained snapshots for one series."""
     if keep < 1:
         raise ValueError("snapshot retention must be positive")
     result = subprocess.run(
@@ -774,9 +500,6 @@ def write_bootstrap(output: Path, base_url: str, series: str, public_key_path: s
 def main() -> None:
     parser = argparse.ArgumentParser()
     commands = parser.add_subparsers(dest="command", required=True)
-    validate = commands.add_parser("validate")
-    validate.add_argument("series")
-    validate.add_argument("directory", type=Path)
     validate_provenance = commands.add_parser("validate-bind-provenance")
     validate_provenance.add_argument("--provenance", type=Path, required=True)
     validate_provenance.add_argument("--profile", type=Path, required=True)
@@ -788,31 +511,11 @@ def main() -> None:
     source_tag = commands.add_parser("source-release-tag")
     source_tag.add_argument("series")
     source_tag.add_argument("version")
-    stage = commands.add_parser("stage")
-    stage.add_argument("--packages-directory", type=Path, required=True)
-    stage.add_argument("--output", type=Path, required=True)
-    stage.add_argument("--private-key", type=Path, required=True)
-    stage.add_argument("--pkg-command", default="pkg")
     stage_channel = commands.add_parser("stage-channel")
     stage_channel.add_argument("--packages-directory", type=Path, required=True)
     stage_channel.add_argument("--output", type=Path, required=True)
     stage_channel.add_argument("--private-key", type=Path, required=True)
     stage_channel.add_argument("--pkg-command", default="pkg")
-    stage_plugin = commands.add_parser("stage-plugin")
-    stage_plugin.add_argument("--packages-directory", type=Path, required=True)
-    stage_plugin.add_argument("--output", type=Path, required=True)
-    stage_plugin.add_argument("--private-key", type=Path, required=True)
-    stage_plugin.add_argument("--pkg-command", default="pkg")
-    stage_bind920 = commands.add_parser("stage-bind920")
-    stage_bind920.add_argument("--packages-directory", type=Path, required=True)
-    stage_bind920.add_argument("--output", type=Path, required=True)
-    stage_bind920.add_argument("--private-key", type=Path, required=True)
-    stage_bind920.add_argument("--pkg-command", default="pkg")
-    collect_bind920 = commands.add_parser("collect-bind920")
-    collect_bind920.add_argument("--channel-url", required=True)
-    collect_bind920.add_argument("--public-key", type=Path, required=True)
-    collect_bind920.add_argument("--output", type=Path, required=True)
-    collect_bind920.add_argument("--pkg-command", default="pkg")
     publish_parser = commands.add_parser("publish")
     publish_parser.add_argument("--repository", required=True)
     publish_parser.add_argument("--series", required=True)
@@ -836,11 +539,7 @@ def main() -> None:
     bootstrap.add_argument("--series", required=True)
     bootstrap.add_argument("--public-key-path", required=True)
     arguments = parser.parse_args()
-    if arguments.command == "validate":
-        channel_tag(arguments.series)
-        for package in select_packages(arguments.directory):
-            print(package)
-    elif arguments.command == "validate-bind-provenance":
+    if arguments.command == "validate-bind-provenance":
         provenance = json.loads(arguments.provenance.read_text(encoding="utf-8"))
         validate_bind_provenance(
             provenance, bind920_profile.load_profile(arguments.profile),
@@ -850,35 +549,11 @@ def main() -> None:
         print(snapshot_channel_tag(arguments.series, arguments.version))
     elif arguments.command == "source-release-tag":
         print(source_release_tag(arguments.series, arguments.version))
-    elif arguments.command == "stage":
-        for asset in stage_repository(
-            arguments.packages_directory, arguments.output, arguments.private_key, arguments.pkg_command
-        ):
-            print(asset)
     elif arguments.command == "stage-channel":
         for asset in stage_channel_repository(
             arguments.packages_directory, arguments.output, arguments.private_key, arguments.pkg_command
         ):
             print(asset)
-    elif arguments.command == "stage-plugin":
-        for asset in stage_plugin_repository(
-            arguments.packages_directory, arguments.output, arguments.private_key, arguments.pkg_command
-        ):
-            print(asset)
-    elif arguments.command == "stage-bind920":
-        for asset in stage_bind920_repository(
-            arguments.packages_directory, arguments.output, arguments.private_key, arguments.pkg_command
-        ):
-            print(asset)
-    elif arguments.command == "collect-bind920":
-        try:
-            for package in collect_bind920_fallback(
-                arguments.channel_url, arguments.public_key, arguments.output, arguments.pkg_command
-            ):
-                print(package)
-        except ArchiveMissing as error:
-            print(error)
-            return 3
     elif arguments.command == "publish":
         publish(arguments.repository, channel_tag(arguments.series), arguments.directory, arguments.prerelease)
     elif arguments.command == "publish-tag":
