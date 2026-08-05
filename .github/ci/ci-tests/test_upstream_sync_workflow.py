@@ -48,6 +48,15 @@ def test_workflow_runs_daily_and_manually_with_exact_permissions():
     assert '  test:\n    if: github.ref == \'refs/heads/master\'\n    runs-on: ubuntu-24.04\n    permissions:\n      contents: read' in workflow
 
 
+def test_workflow_provisions_the_pinned_python_test_runtime():
+    workflow = workflow_text()
+    test_job = workflow.split('  test:', 1)[1].split('  reconcile:', 1)[0]
+
+    assert re.search(r'actions/setup-python@[0-9a-f]{40}', test_job)
+    assert "python-version: '3.12.13'" in test_job
+    assert "python -m pip install --disable-pip-version-check 'pytest==8.3.5'" in test_job
+
+
 def test_workflow_fetches_control_inputs_and_plans_before_apply():
     workflow = workflow_text()
     plan_index = workflow.index('.github/ci/sync_upstream.py plan')

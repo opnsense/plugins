@@ -1,13 +1,12 @@
 import json
 import os
 import pathlib
+import shutil
 import subprocess
+import tempfile
 
 
 REPOSITORY_ROOT = pathlib.Path(__file__).resolve().parents[3]
-BUILD_SCRIPT = pathlib.Path(
-    os.environ.get('BUILD_OS_BIND_RP', REPOSITORY_ROOT / '.github/ci/build-os-bind-rp.sh')
-)
 OPNSENSE_26_1_ARCHIVE_SHA256 = (
     '95cb9d549165520de984adbe7bd740ca237dd470b779d7ef3706d5f11b8c321e'
 )
@@ -58,20 +57,49 @@ def write_upstream_metadata(path: pathlib.Path, core_commit: str) -> None:
     )
 
 
-def test_build_wrapper_creates_package_and_metadata_for_26_1(tmp_path):
+def materialize_build_repository(request) -> pathlib.Path:
+    local_tests = REPOSITORY_ROOT / '.github/ci-local'
+    local_tests.mkdir(exist_ok=True)
+    build_repository = pathlib.Path(
+        tempfile.mkdtemp(prefix='build-os-bind-rp-', dir=local_tests)
+    )
+    request.addfinalizer(lambda: shutil.rmtree(build_repository, ignore_errors=True))
+    shutil.copytree(
+        REPOSITORY_ROOT / '.github',
+        build_repository / '.github',
+        ignore=shutil.ignore_patterns('ci-local', '__pycache__', '.pytest_cache'),
+    )
+    shutil.copytree(
+        REPOSITORY_ROOT / 'dns/bind',
+        build_repository / 'dns/bind',
+        ignore=shutil.ignore_patterns('work', '__pycache__', '.pytest_cache'),
+    )
+    return build_repository
+
+
+def test_materialize_build_repository_creates_a_disposable_copy(request):
+    build_repository = materialize_build_repository(request)
+
+    assert build_repository != REPOSITORY_ROOT
+    assert build_repository.parent == REPOSITORY_ROOT / '.github/ci-local'
+    assert (build_repository / '.github/ci/build-os-bind-rp.sh').is_file()
+    assert (build_repository / 'dns/bind').is_dir()
+    assert not (build_repository / 'dns/bind/work').exists()
+
+
+def test_build_wrapper_creates_package_and_metadata_for_26_1(tmp_path, request):
+    build_repository = materialize_build_repository(request)
+    build_script = build_repository / '.github/ci/build-os-bind-rp.sh'
     core = tmp_path / 'core'
     core_commit = create_core_repository(core)
     environment = os.environ.copy()
     environment['MAKE_COMMAND'] = str(
-        REPOSITORY_ROOT / '.github/ci/ci-tests/make-package-fixture.sh'
+        build_repository / '.github/ci/ci-tests/make-package-fixture.sh'
     )
     environment['PKG_COMMAND'] = str(
-        REPOSITORY_ROOT / '.github/ci/ci-tests/pkg-build-fixture.sh'
+        build_repository / '.github/ci/ci-tests/pkg-build-fixture.sh'
     )
-    python_command = (
-        REPOSITORY_ROOT / '.pytest_cache' / f'python3-fixture-{tmp_path.name}'
-    )
-    python_command.unlink(missing_ok=True)
+    python_command = build_repository / 'python3-fixture'
     environment['PYTHON_COMMAND'] = str(python_command)
     environment['GIT_CONFIG_GLOBAL'] = str(tmp_path / 'gitconfig')
     environment['OPNSENSE_CORE_REPOSITORY'] = str(core)
@@ -83,10 +111,10 @@ def test_build_wrapper_creates_package_and_metadata_for_26_1(tmp_path):
     package_call_log = tmp_path / 'pkg-calls.log'
     environment['PKG_CALL_LOG'] = str(package_call_log)
 
-    assert BUILD_SCRIPT.is_file(), 'non-publishing build wrapper is missing'
+    assert build_script.is_file(), 'non-publishing build wrapper is missing'
     result = subprocess.run(
-        [BUILD_SCRIPT, '26.1', str(tmp_path)],
-        cwd=REPOSITORY_ROOT,
+        [build_script, '26.1', str(tmp_path)],
+        cwd=build_repository,
         text=True,
         capture_output=True,
         check=False,
@@ -122,4 +150,4 @@ def test_build_wrapper_creates_package_and_metadata_for_26_1(tmp_path):
         env=environment,
     )
     assert safe_directories.returncode == 0, safe_directories.stderr
-    assert BUILD_SCRIPT.parents[2].as_posix() in safe_directories.stdout.splitlines()
+    assert build_repository.as_posix() in safe_directories.stdout.splitlines()

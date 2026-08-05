@@ -48,6 +48,15 @@ def test_workflow_uses_sha_pinned_actions_and_nonpersistent_checkout_credentials
     assert 'vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d' in references
 
 
+def test_workflow_provisions_the_pinned_python_test_runtime():
+    workflow = workflow_text()
+    test_job = workflow.split('  test:', 1)[1].split('  select:', 1)[0]
+
+    assert re.search(r'actions/setup-python@[0-9a-f]{40}', test_job)
+    assert "python-version: '3.12.13'" in test_job
+    assert "python -m pip install --disable-pip-version-check 'pytest==8.3.5'" in test_job
+
+
 def test_production_signing_and_publication_are_separate_from_builds():
     workflow = workflow_text()
     assert 'RP_PKG_SIGNING_KEY: ${{ secrets.RP_PKG_SIGNING_KEY }}' in workflow
