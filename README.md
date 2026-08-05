@@ -37,7 +37,9 @@ Installing os-bind-rp
 `os-bind-rp` has package channels for the OPNsense 26.1 and 26.7 release
 series. Select the channel that matches the first two components of the
 installed OPNsense version. Do not install it alongside the official `os-bind`
-plugin: the two packages conflict by design.
+plugin: the two packages conflict by design. The normal channel contains the
+current plugin only; it prefers an eligible OPNsense `bind920` package instead
+of replacing BIND automatically.
 
 For OPNsense 26.1, use `pkg-26.1`; for 26.7, use `pkg-26.7`. Replace
 `channel` below with the selected channel. From an OPNsense root shell:
@@ -63,9 +65,13 @@ pkg install os-bind-rp
 
 The repository catalogue and package are signed by the public key above. A
 future release for the same OPNsense series updates the same `pkg-<series>`
-channel, so normal `pkg upgrade` operations can receive it. Review the
-[package-repository maintainer guide](docs/package-repository.md) before
-changing a release channel or its signing key.
+channel, so normal `pkg upgrade` operations can receive it. The signed
+`pkg-<series>-os-bind-rp-<version>` snapshots retain the five newest plugin
+rollback versions, while the disabled `pkg-<series>-bind920` channel is available only
+when OPNsense BIND does not meet the documented compatibility policy. See the
+[package repository guide](docs/package-repository.md) for the explicit BIND
+fallback and rollback procedures before changing a release channel or signing
+key.
 
 About the OPNsense plugins
 ==========================

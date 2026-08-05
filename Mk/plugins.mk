@@ -140,6 +140,9 @@ manifest: check
 .if defined(PLUGIN_DEPENDS)
 	@echo "deps: {"
 	@for PLUGIN_DEPEND in ${PLUGIN_DEPENDS}; do \
+		case " ${PLUGIN_DEPEND_FORMULA_DEPENDS} " in \
+		*" $${PLUGIN_DEPEND} "*) continue;; \
+		esac; \
 		if ! ${PKG} query '  %n: { version: "%v", origin: "%o" }' \
 		    $${PLUGIN_DEPEND}; then \
 			echo ">>> Missing dependency: $${PLUGIN_DEPEND}" >&2; \
@@ -147,6 +150,9 @@ manifest: check
 		fi; \
 	done
 	@echo "}"
+.endif
+.if defined(PLUGIN_DEPEND_FORMULA)
+	@echo "dep_formula: \"${PLUGIN_DEPEND_FORMULA}\""
 .endif
 	@if [ -f ${WRKSRC}${LOCALBASE}/opnsense/version/${PLUGIN_NAME} ]; then \
 	    echo "annotations $$(cat ${WRKSRC}${LOCALBASE}/opnsense/version/${PLUGIN_NAME})"; \

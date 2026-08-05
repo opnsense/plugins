@@ -74,6 +74,11 @@ def materialize_build_repository(request) -> pathlib.Path:
         build_repository / 'dns/bind',
         ignore=shutil.ignore_patterns('work', '__pycache__', '.pytest_cache'),
     )
+    shutil.copytree(
+        REPOSITORY_ROOT / '.resolver-plugins',
+        build_repository / '.resolver-plugins',
+        ignore=shutil.ignore_patterns('__pycache__', '.pytest_cache'),
+    )
     return build_repository
 
 
@@ -128,7 +133,8 @@ def test_build_wrapper_creates_package_and_metadata_for_26_1(tmp_path, request):
     metadata = (tmp_path / 'build-metadata.txt').read_text()
     assert 'series=26.1\n' in metadata
     assert 'pkg_abi=FreeBSD:14:amd64\n' in metadata
-    assert 'bind920=9.20.24\n' in metadata
+    assert 'bind920=9.20.26\n' in metadata
+    assert 'bind_source=opnsense\n' in metadata
     assert 'opnsense=26.1.11_10\n' in metadata
     assert 'switch_test=' not in metadata
     assert f'upstream_commit={UPSTREAM_COMMIT}\n' in metadata
@@ -151,3 +157,33 @@ def test_build_wrapper_creates_package_and_metadata_for_26_1(tmp_path, request):
     )
     assert safe_directories.returncode == 0, safe_directories.stderr
     assert build_repository.as_posix() in safe_directories.stdout.splitlines()
+
+
+def test_build_wrapper_requests_resolver_fallback_for_an_ineligible_opnsense_bind(tmp_path, request):
+    build_repository = materialize_build_repository(request)
+    build_script = build_repository / '.github/ci/build-os-bind-rp.sh'
+    core = tmp_path / 'core'
+    core_commit = create_core_repository(core)
+    environment = os.environ.copy()
+    environment['MAKE_COMMAND'] = str(build_repository / '.github/ci/ci-tests/make-package-fixture.sh')
+    environment['PKG_COMMAND'] = str(build_repository / '.github/ci/ci-tests/pkg-build-fixture.sh')
+    environment['PYTHON_COMMAND'] = 'python3'
+    environment['GIT_CONFIG_GLOBAL'] = str(tmp_path / 'gitconfig')
+    environment['OPNSENSE_CORE_REPOSITORY'] = str(core)
+    environment['PKG_REPOS_DIR'] = str(tmp_path / 'repos')
+    environment['PKG_FINGERPRINTS_DIR'] = str(tmp_path / 'fingerprints' / 'OPNsense')
+    environment['PKG_VERSION_COMPARISON'] = '<'
+    metadata_path = tmp_path / 'upstream.json'
+    write_upstream_metadata(metadata_path, core_commit)
+    environment['RP_UPSTREAM_METADATA'] = str(metadata_path)
+
+    result = subprocess.run(
+        [build_script, '26.1', str(tmp_path / 'artifacts')],
+        cwd=build_repository,
+        text=True,
+        capture_output=True,
+        check=False,
+        env=environment,
+    )
+
+    assert result.returncode == 3

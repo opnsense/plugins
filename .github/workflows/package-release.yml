@@ -92,6 +92,7 @@ jobs:
     outputs:
       source_commit: ${{ steps.profile.outputs.source_commit }}
       freebsd_release: ${{ steps.profile.outputs.freebsd_release }}
+      control_commit: ${{ steps.profile.outputs.control_commit }}
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
@@ -106,9 +107,11 @@ jobs:
           set -euo pipefail
           git fetch --no-tags origin "$SOURCE_REF:refs/remotes/origin/package-source"
           source_commit=$(git rev-parse refs/remotes/origin/package-source)
+          git fetch --no-tags origin 'refs/heads/master:refs/remotes/origin/package-control'
+          control_commit=$(git rev-parse refs/remotes/origin/package-control)
           git show "$source_commit:.resolver-plugins/upstream.json" > "$RUNNER_TEMP/upstream.json"
           freebsd_release=$(python3 .github/ci/metadata_profile.py "$RUNNER_TEMP/upstream.json" "$SERIES" freebsd_release)
-          printf 'source_commit=%s\nfreebsd_release=%s\n' "$source_commit" "$freebsd_release" >> "$GITHUB_OUTPUT"
+          printf 'source_commit=%s\nfreebsd_release=%s\ncontrol_commit=%s\n' "$source_commit" "$freebsd_release" "$control_commit" >> "$GITHUB_OUTPUT"
 
   build:
     needs: [select, profile, test]
@@ -117,7 +120,7 @@ jobs:
     permissions:
       contents: read
     env:
-      RP_BIND920_CHANNEL_URL: https://github.com/${{ github.repository }}/releases/download/pkg-${{ needs.select.outputs.series }}
+      RP_BIND920_CHANNEL_URL: https://github.com/${{ github.repository }}/releases/download/pkg-${{ needs.select.outputs.series }}-bind920
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
@@ -149,12 +152,24 @@ jobs:
             series='${{ needs.select.outputs.series }}'
             mode='${{ needs.select.outputs.mode }}'
             output="artifacts/$series"
-            RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json SOURCE_COMMIT='${{ needs.profile.outputs.source_commit }}' .github/ci/build-bind920.sh "$series" "$output"
             if [ "$mode" = development ]; then
-              RP_PLUGIN_DEVEL=yes RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json SOURCE_COMMIT='${{ needs.profile.outputs.source_commit }}' .github/ci/build-os-bind-rp.sh "$series" "$output"
+              devel=RP_PLUGIN_DEVEL=yes
+            else
+              devel=
+            fi
+            set +e
+            env $devel RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json SOURCE_COMMIT='${{ needs.profile.outputs.source_commit }}' .github/ci/build-os-bind-rp.sh "$series" "$output"
+            status=$?
+            set -e
+            if [ "$status" -eq 0 ]; then
               exit 0
             fi
-            RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json SOURCE_COMMIT='${{ needs.profile.outputs.source_commit }}' .github/ci/build-os-bind-rp.sh "$series" "$output"
+            if [ "$status" -ne 3 ]; then
+              exit "$status"
+            fi
+            RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json SOURCE_COMMIT='${{ needs.profile.outputs.source_commit }}' .github/ci/build-bind920.sh "$series" "$output"
+            [ -f "$output/bind920-9.20.26_1.pkg" ] || { echo 'BIND fallback is required but did not build' >&2; exit 1; }
+            env $devel RP_BIND920_FALLBACK=yes RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json SOURCE_COMMIT='${{ needs.profile.outputs.source_commit }}' .github/ci/build-os-bind-rp.sh "$series" "$output"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: os-bind-rp-build-${{ needs.select.outputs.mode }}-${{ needs.select.outputs.series }}
@@ -193,7 +208,7 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ needs.profile.outputs.control_commit }}
           persist-credentials: false
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
@@ -220,8 +235,27 @@ jobs:
             trap 'rm -f "$key"' EXIT HUP INT TERM
             printf '%s' "$RP_PKG_SIGNING_KEY" | base64 -d > "$key"
             output="artifacts/${{ needs.select.outputs.series }}"
-            python3 .github/ci/release_channel.py stage --packages-directory "$output" --output "$output/repository" --private-key "$key"
-            openssl pkey -in "$key" -pubout -out "$output/repository/resolver-plugins.pub"
+            grep -Fqx 'source_commit=${{ needs.profile.outputs.source_commit }}' "$output/build-metadata.txt"
+            mkdir -p "$output/repository" "$output/bind920-input"
+            python3 .github/ci/release_channel.py stage-plugin --packages-directory "$output" --output "$output/repository/latest" --private-key "$key"
+            python3 .github/ci/release_channel.py stage-plugin --packages-directory "$output" --output "$output/repository/snapshot" --private-key "$key"
+            set -- "$output"/bind920-*.pkg
+            if [ -f "$1" ]; then
+              python3 .github/ci/release_channel.py stage-bind920 --packages-directory "$output" --output "$output/repository/bind920" --private-key "$key"
+            else
+              set +e
+              python3 .github/ci/release_channel.py collect-bind920 --channel-url "https://github.com/$GITHUB_REPOSITORY/releases/download/pkg-${{ needs.select.outputs.series }}" --public-key docs/package-repository/resolver-plugins.pub --output "$output/bind920-input"
+              bind920_status=$?
+              set -e
+              [ "$bind920_status" -eq 0 ] || [ "$bind920_status" -eq 3 ] || exit "$bind920_status"
+              if [ "$bind920_status" -eq 0 ]; then
+                python3 .github/ci/release_channel.py stage-bind920 --packages-directory "$output/bind920-input" --output "$output/repository/bind920" --private-key "$key"
+              fi
+            fi
+            openssl pkey -in "$key" -pubout -out "$output/resolver-plugins.pub"
+            for repository in "$output"/repository/*; do
+              cp "$output/resolver-plugins.pub" "$repository/"
+            done
             rm -f "$key"
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
@@ -231,14 +265,14 @@ jobs:
 
   publish:
     if: needs.select.outputs.mode == 'production'
-    needs: [select, sign]
+    needs: [select, profile, sign]
     runs-on: ubuntu-24.04
     permissions:
       contents: write
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ needs.profile.outputs.control_commit }}
           persist-credentials: false
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
@@ -249,4 +283,17 @@ jobs:
         env:
           SERIES: ${{ needs.select.outputs.series }}
           GH_TOKEN: ${{ github.token }}
-        run: python3 .github/ci/release_channel.py publish --repository "$GITHUB_REPOSITORY" --series "$SERIES" --directory "artifacts/$SERIES/repository"
+        run: |
+          set -euo pipefail
+          root="artifacts/$SERIES/repository"
+          set -- "$root"/snapshot/os-bind-rp-*.pkg
+          version=${1##*/os-bind-rp-}
+          version=${version%.pkg}
+          snapshot_tag=$(python3 .github/ci/release_channel.py snapshot-tag "$SERIES" "$version")
+          channels=(--channel "$snapshot_tag=$root/snapshot")
+          if [ -d "$root/bind920" ]; then
+            channels+=(--channel "pkg-$SERIES-bind920=$root/bind920")
+          fi
+          channels+=(--channel "pkg-$SERIES=$root/latest")
+          python3 .github/ci/release_channel.py publish-channels --repository "$GITHUB_REPOSITORY" --recovery "$RUNNER_TEMP/recovery" "${channels[@]}"
+          python3 .github/ci/release_channel.py prune-snapshots --repository "$GITHUB_REPOSITORY" --series "$SERIES" --keep 5

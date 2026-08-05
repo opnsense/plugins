@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "minimum_version": "9.20.26",
+  "bind920": {
+    "name": "bind920",
+    "origin": "dns/bind920"
+  },
+  "bind_tools": {
+    "name": "bind-tools",
+    "origin": "dns/bind-tools"
+  },
+  "series": {
+    "26.1": "14.3",
+    "26.7": "15.1"
+  }
+}

@@ -22,6 +22,8 @@ pkg_command=${PKG_COMMAND:-pkg}
 make_command=${MAKE_COMMAND:-make}
 python_command=${PYTHON_COMMAND:-python3}
 plugin_devel=${RP_PLUGIN_DEVEL:-}
+bind_fallback=${RP_BIND920_FALLBACK:-}
+compatibility_policy=${RP_BIND_COMPATIBILITY_POLICY:-$repository_root/.resolver-plugins/bind-compatibility.json}
 
 if ! command -v "$python_command" >/dev/null 2>&1
 then
@@ -39,19 +41,52 @@ upstream_commit=$(metadata_field upstream_commit) || fail 'invalid upstream meta
 core_commit=$(metadata_field core_commit) || fail 'invalid upstream metadata'
 tools_tag=$(metadata_field tools_tag) || fail 'invalid upstream metadata'
 freebsd_release=$(metadata_field freebsd_release) || fail 'invalid upstream metadata'
+minimum_bind_version=$("$python_command" "$script_directory/bind_compatibility.py" \
+    minimum-version "$compatibility_policy" "$series") || fail 'invalid BIND compatibility policy'
+expected_bind920=$("$python_command" "$script_directory/bind_compatibility.py" \
+    identity "$compatibility_policy" "$series" bind920) || fail 'invalid BIND compatibility policy'
+expected_bind_tools=$("$python_command" "$script_directory/bind_compatibility.py" \
+    identity "$compatibility_policy" "$series" bind_tools) || fail 'invalid BIND compatibility policy'
 
 "$pkg_command" update -f
 "$pkg_command" install -y git
 git config --global --add safe.directory "$repository_root"
 opnsense_core_commit=$("$script_directory/setup-opnsense-repository.sh" "$series")
-"$pkg_command" install -y bind920
-bind_version=$("$pkg_command" query -e '%n = bind920' '%v') || \
-    fail 'bind920 is not installed after package setup'
-comparison=$("$pkg_command" version -t "$bind_version" 9.20.26) || \
+
+package_identity() {
+    "$pkg_command" query -e "%n = $1" '%n\t%v\t%o'
+}
+
+identity_matches_policy() {
+    actual=$1
+    expected=$2
+    actual_name=$(printf '%s\n' "$actual" | cut -f1)
+    actual_origin=$(printf '%s\n' "$actual" | cut -f3)
+    expected_name=$(printf '%s\n' "$expected" | cut -f1)
+    expected_origin=$(printf '%s\n' "$expected" | cut -f2)
+    [ "$actual_name" = "$expected_name" ] && [ "$actual_origin" = "$expected_origin" ]
+}
+
+if [ "$bind_fallback" = yes ]
+then
+    bind_source=resolver
+else
+    if ! "$pkg_command" install -y bind920
+    then
+        exit 3
+    fi
+    bind_source=opnsense
+fi
+bind_identity=$(package_identity bind920) || exit 3
+bind_tools_identity=$(package_identity bind-tools) || exit 3
+identity_matches_policy "$bind_identity" "$expected_bind920" || exit 3
+identity_matches_policy "$bind_tools_identity" "$expected_bind_tools" || exit 3
+bind_version=$(printf '%s\n' "$bind_identity" | cut -f2)
+comparison=$("$pkg_command" version -t "$bind_version" "$minimum_bind_version") || \
     fail "cannot compare BIND version: $bind_version"
 case "$comparison" in
     '='|'>') ;;
-    *) fail "BIND $bind_version is below the required 9.20.26" ;;
+    *) exit 3 ;;
 esac
 opnsense_version=$("$pkg_command" rquery -r OPNsense -e '%n = opnsense' '%v') || \
     fail 'OPNsense core package is not available after package setup'
@@ -86,6 +121,7 @@ cp "$package" "$artifact_directory/"
     printf 'uname=%s\n' "$(uname -a)"
     printf 'pkg_abi=%s\n' "$("$pkg_command" config ABI)"
     printf 'bind920=%s\n' "$bind_version"
+    printf 'bind_source=%s\n' "$bind_source"
     printf 'opnsense=%s\n' "$opnsense_version"
     printf 'opnsense_core_commit=%s\n' "$opnsense_core_commit"
     printf 'upstream_commit=%s\n' "$upstream_commit"
