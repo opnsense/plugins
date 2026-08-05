@@ -25,6 +25,7 @@
 import os
 import pathlib
 import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -65,7 +66,7 @@ class JournalLifecycleTest(unittest.TestCase):
             named.chmod(0o755)
 
             result = subprocess.run(
-                [stop_script],
+                [sys.executable, stop_script],
                 env=os.environ | {
                     "BIND_STOP_CONFIG": str(config),
                     "BIND_STOP_NAMED_RC": str(named),
@@ -105,7 +106,7 @@ class JournalLifecycleTest(unittest.TestCase):
             named.chmod(0o755)
 
             result = subprocess.run(
-                [stop_script],
+                [sys.executable, stop_script],
                 env=os.environ | {
                     "BIND_STOP_NAMED_RC": str(named),
                     "BIND_STOP_WATCHER_CONFIG": str(watcher_config),

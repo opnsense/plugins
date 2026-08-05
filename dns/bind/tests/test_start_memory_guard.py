@@ -25,6 +25,7 @@
 import os
 import pathlib
 import subprocess
+import sys
 import tempfile
 import unittest
 
@@ -215,7 +216,7 @@ class BindStartMemoryGuardTest(unittest.TestCase):
                 "TEST_RECOVERY_LOG": str(recovery_file),
             }
             result = subprocess.run(
-                [self.guard],
+                [sys.executable, self.guard],
                 env=environment,
                 text=True,
                 capture_output=True,
@@ -266,7 +267,7 @@ class BindStartMemoryGuardTest(unittest.TestCase):
             self._mock(mock_bin, "recover", "#!/bin/sh\nexit 0\n")
 
             result = subprocess.run(
-                [self.guard],
+                [sys.executable, self.guard],
                 env=os.environ | {
                     "PATH": f"{mock_bin}:/bin:/usr/bin",
                     "NAMED_GUARD_DNSBL_FILE": str(dnsbl_file),
@@ -321,7 +322,7 @@ class BindStartMemoryGuardTest(unittest.TestCase):
             )
 
             result = subprocess.run(
-                [self.guard],
+                [sys.executable, self.guard],
                 env=os.environ | {
                     "PATH": f"{mock_bin}:/bin:/usr/bin",
                     "NAMED_GUARD_DNSBL_FILE": str(dnsbl_file),

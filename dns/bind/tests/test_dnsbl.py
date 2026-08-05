@@ -163,10 +163,12 @@ class TestNormalizeDomains(unittest.TestCase):
                 'DNSBL_APPLY_LOCK_DIR': str(temp_path / 'apply.lock'),
                 'TEST_EVENTS': str(events),
             }
-            first = subprocess.Popen([apply_script], env=environment)
+            first = subprocess.Popen([sys.executable, apply_script], env=environment)
             try:
                 time.sleep(0.1)
-                second = subprocess.run([apply_script], env=environment, check=False)
+                second = subprocess.run(
+                    [sys.executable, apply_script], env=environment, check=False
+                )
                 self.assertEqual(second.returncode, 0)
             finally:
                 self.assertEqual(first.wait(), 0)
