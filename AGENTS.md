@@ -29,7 +29,7 @@ mechanism exists yet.
   plugin changes.
 - `.resolver-plugins/`: release build metadata and the synchronization overlay
   manifest.
-- `tools/ci/`: metadata validation, OPNsense repository setup, package build,
+- `.github/ci/`: metadata validation, OPNsense repository setup, package build,
   synchronization planning, and safe GitHub publication helpers.
 - `.github/workflows/`: the daily/manual synchronizer and signed package
   publication workflows.
@@ -54,14 +54,27 @@ mechanism exists yet.
   the `OS?=` value from `config/<series>/build.conf`.
 - Do not weaken provenance checks, pin checks, package fingerprint checks, or
   the explicit `os-bind` conflict to make a build pass.
-- Keep CI discovery and regression harnesses local unless the maintainer asks
-  to commit them. Do not add `tools/ci/tests/` to normal repository commits.
+- Keep durable CI helper and workflow regression tests in
+  `.github/ci/ci-tests/`; use local Git and command fixtures rather than live
+  services. Keep the canonical BIND behavior suite in `dns/bind/tests/` on
+  `master`; its PR workflow materializes and tests every active
+  `release/bind-rp/<series>` source. Use the ignored `.github/ci-local/`
+  directory only for temporary CI discovery and investigation harnesses;
+  never stage or commit anything under it.
 - The signed package repository is an approved system. Do not alter its
   GitHub Release publication, signing boundary, tokens, secrets, or end-user
   installation contract without explicit maintainer authorization.
 - Verify CI changes with the focused local checks in
   [docs/building.md](docs/building.md), and run the affected workflow manually
   only when authorized. Report the workflow URL and its actual outcome.
+- A code review agent must be run on pr's when they are "ready", as a fianl step
+  befor merge. High priority items must be resolved before a pr can be merged.
+  Perform a remeditation and review cycle util the items are resolved and the
+  code-review agent approve the pr as ready, when no high priority items are
+  observed.
+
+- An agent must be used to review generated plans, and high priority items must be
+  resolved before a plan can be approved and implemented.
 
 ## Documentation updates
 
