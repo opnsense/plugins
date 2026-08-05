@@ -99,7 +99,22 @@ def package_identity(pkg_command: str, package: Path) -> tuple[str, str, str]:
     fields = result.stdout.strip().split("\t")
     if len(fields) != 3 or not all(fields):
         raise RuntimeError(f"cannot read package identity: {package.name}")
-    return tuple(fields)  # type: ignore[return-value]
+    return fields[0], fields[1], fields[2]
+
+
+def installed_package_identity(pkg_command: str, package_name: str) -> tuple[str, str, str]:
+    """Read one installed package identity without relying on compound predicates."""
+    result = run(
+        [pkg_command, "query", "-e", f"%n = {package_name}", "%n\t%v\t%o"],
+        capture_output=True,
+    )
+    lines = result.stdout.strip().splitlines()
+    if len(lines) != 1:
+        raise RuntimeError(f"cannot read installed package identity: {package_name}")
+    fields = lines[0].split("\t")
+    if len(fields) != 3 or not all(fields):
+        raise RuntimeError(f"cannot read installed package identity: {package_name}")
+    return fields[0], fields[1], fields[2]
 
 
 def write_repository_config(directory: Path, channel_url: str, public_key: Path) -> Path:
@@ -163,15 +178,9 @@ def reuse(
         for package_name in ("bind-tools", "bind920"):
             run([pkg_command, "add", str(archives[package_name])])
         for package_name, package in packages.items():
-            result = run(
-                [
-                    pkg_command, "query", "-e",
-                    f"%n = {package['name']} AND %v = {package['version']} AND %o = {package['origin']}",
-                    "%n",
-                ],
-                capture_output=True,
-            )
-            if result.stdout.strip() != package_name:
+            installed_identity = installed_package_identity(pkg_command, package_name)
+            expected_identity = (package["name"], package["version"], package["origin"])
+            if installed_identity != expected_identity:
                 raise RuntimeError(f"installed {package_name} package identity does not match provenance")
         output.mkdir(parents=True, exist_ok=True)
         for archive in archives.values():
