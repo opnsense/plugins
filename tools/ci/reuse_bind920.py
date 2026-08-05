@@ -143,6 +143,16 @@ def fetch_package(pkg_options: list[str], downloads: Path, filename: str) -> Non
     ])
 
 
+def downloaded_archive(downloads: Path, filename: str) -> Path:
+    """Locate a named pkg fetch result across supported output layouts."""
+    candidates = (downloads / filename, downloads / "All" / filename)
+    for candidate in candidates:
+        if candidate.is_file():
+            return candidate
+    locations = ", ".join(str(candidate) for candidate in candidates)
+    raise RuntimeError(f"pkg did not fetch {filename}; checked {locations}")
+
+
 def reuse(
     profile_path: Path,
     series: str,
@@ -169,13 +179,11 @@ def reuse(
             package = packages[package_name]
             fetch_package(pkg_options, downloads, package["filename"])
         archives = {
-            package_name: downloads / "All" / package["filename"]
+            package_name: downloaded_archive(downloads, package["filename"])
             for package_name, package in packages.items()
         }
         for package_name, package in packages.items():
             archive = archives[package_name]
-            if not archive.is_file():
-                raise RuntimeError(f"pkg did not fetch {archive.name}")
             identity = package_identity(pkg_command, archive)
             expected_identity = (package["name"], package["version"], package["origin"])
             if identity != expected_identity:
