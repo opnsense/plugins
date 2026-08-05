@@ -38,6 +38,15 @@ def test_workflow_discovers_release_branches_and_runs_canonical_tests():
     assert 'python3 -m pytest -q dns/bind/tests' in workflow
 
 
+def test_workflow_provisions_the_pinned_python_test_runtime():
+    workflow = workflow_text()
+    test_job = workflow.split('  test:', 1)[1]
+
+    assert re.search(r'actions/setup-python@[0-9a-f]{40}', test_job)
+    assert "python-version: '3.12.13'" in test_job
+    assert "python -m pip install --disable-pip-version-check 'pytest==8.3.5'" in test_job
+
+
 def test_release_source_pull_requests_test_their_proposed_source():
     workflow = workflow_text()
 
