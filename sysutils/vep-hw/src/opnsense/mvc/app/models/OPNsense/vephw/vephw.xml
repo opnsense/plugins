@@ -5,13 +5,17 @@
         <!-- container -->
         <general>
             <!-- fields -->
+            <enabled type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enabled>
             <FanControl type="BooleanField">
                 <Default>0</Default>
                 <Required>N</Required>
             </FanControl>
             <FanDutyCycle type="OptionField">
                 <Default>0x0b</Default>
-                <Required>N</Required>
+                <Required>Y</Required>
                 <OptionValues>
                     <opt1 value="0x00">30%</opt1>
                     <opt2 value="0x01">34.67%</opt2>

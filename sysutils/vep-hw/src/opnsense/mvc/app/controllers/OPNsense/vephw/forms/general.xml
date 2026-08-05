@@ -1,5 +1,11 @@
 <form>
     <field>
+        <id>vephw.general.enabled</id>
+        <label>Restore settings on startup/restart</label>
+        <type>checkbox</type>
+        <help>Allow the plugin to restore the below settings on system startup or restart</help>
+    </field>
+    <field>
         <id>vephw.general.FanControl</id>
         <label>Fan Control Enabled</label>
         <type>checkbox</type>
