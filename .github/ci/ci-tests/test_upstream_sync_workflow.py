@@ -113,10 +113,24 @@ def test_workflow_recovers_partial_review_state_before_planning_and_uses_api_pub
 
 def test_bootstrap_build_uses_the_planner_profile_and_expires():
     workflow = workflow_text()
+    bootstrap = workflow.split('Build bootstrap in planner-selected FreeBSD release', 1)[1].split(
+        'Upload bootstrap artifact', 1
+    )[0]
 
     assert "steps.plan.outputs.action == 'bootstrap-build'" in workflow
     assert 'release: ${{ steps.plan.outputs.freebsd_release }}' in workflow
-    assert '.github/ci/build-os-bind-rp.sh "$series" "artifacts/$series"' in workflow
+    assert 'set -eu' in bootstrap
+    assert 'export IGNORE_OSVERSION=yes' in bootstrap
+    assert 'pkg update -f' in bootstrap
+    assert 'pkg install -y python3' in bootstrap
+    assert bootstrap.index('pkg install -y python3') < bootstrap.index('.github/ci/build-bind920.sh')
+    assert 'output="artifacts/$series"' in bootstrap
+    assert 'source_commit="$(git rev-parse HEAD)"' in bootstrap
+    assert 'RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json' in bootstrap
+    assert bootstrap.count('SOURCE_COMMIT="$source_commit"') == 2
+    bind_index = bootstrap.index('.github/ci/build-bind920.sh "$series" "$output"')
+    plugin_index = bootstrap.index('.github/ci/build-os-bind-rp.sh "$series" "$output"')
+    assert bind_index < plugin_index
     assert 'actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02' in workflow
     assert 'retention-days: 7' in workflow
 

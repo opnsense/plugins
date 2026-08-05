@@ -14,7 +14,12 @@ the current release metadata and plans one safe outcome.
 | `noop` | Current upstream BIND tree is unchanged and no newer stable series exists. | Finish without creating a ref, PR, or artifact. |
 | `update-review` | The current release series has an upstream BIND tree change. | Create or recover a `sync/bind/...` review PR. No artifact is built before review. |
 | `bootstrap-review` | A newer OPNsense series exists and its BIND tree differs. | Create a `sync/bootstrap/...` review PR for the new release source. No artifact is built before review. |
-| `bootstrap-build` | A newer OPNsense series exists and its BIND tree is unchanged. | Create the release branch, build it in the selected FreeBSD VM, and upload a seven-day artifact. |
+| `bootstrap-build` | A newer OPNsense series exists and its BIND tree is unchanged. | Create the release branch, build the pinned BIND pair and plugin in the selected FreeBSD VM, and upload a seven-day artifact. |
+
+A bootstrap artifact contains the pinned `bind-tools` and `bind920` packages,
+their BIND provenance, `os-bind-rp`, and build metadata. It is temporary,
+retained for seven days, and is neither signed nor published to a package
+channel.
 
 When a BIND change is present, review the generated PR and merge it only after
 the fork-specific behavior has been verified. The synchronizer never silently
