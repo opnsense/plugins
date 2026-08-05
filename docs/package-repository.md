@@ -11,15 +11,16 @@ Every supported OPNsense series has three distinct signed channels:
 | Purpose | Release tag | Default state |
 | --- | --- | --- |
 | Current plugin | `pkg-<series>` | enabled |
-| Plugin rollback archive | `pkg-<series>-archive` | enabled only while rolling back |
+| Plugin rollback snapshot | `pkg-<series>-os-bind-rp-<version>` | enabled only while rolling back |
 | Resolver BIND fallback | `pkg-<series>-bind920` | disabled |
 
 The current plugin channel contains exactly the newest `os-bind-rp` package.
-The archive contains from one up to five newest plugin versions that declare
-the same `bind920 >= 9.20.26` package solver formula. It never contains a
-legacy plugin that pins a particular Resolver BIND revision. This permits the
-standard named `pkg` selection form, for example
-`pkg install os-bind-rp-1.36_2`, when the archive repository is selected.
+Each rollback snapshot is an immutable, one-package catalogue for a plugin
+version that declares `bind920 >= 9.20.26`; it never contains a legacy plugin
+that pins a particular Resolver BIND revision. `pkg` repositories cannot
+catalogue multiple versions under the same package name, so rollback selects
+the desired snapshot repository and installs `os-bind-rp` from that source.
+Publication retains the five newest snapshots for each series.
 
 The BIND fallback channel contains `bind-tools-9.20.26_1.pkg`,
 `bind920-9.20.26_1.pkg`, and `bind920-provenance.json`. It is a separate
@@ -85,12 +86,13 @@ Back up the OPNsense configuration before changing plugin versions:
 cp /conf/config.xml "/conf/config.xml.os-bind-rp.$(date +%Y%m%d%H%M%S).bak"
 ```
 
-Configure `resolver-plugins-archive` with the same key and the URL ending in
-`pkg-$series-archive`. Dry-run and then install the named version:
+Configure `resolver-plugins-rollback` with the same key and the exact snapshot
+URL, for example `pkg-$series-os-bind-rp-1.36_2`. Dry-run and then install the
+only plugin package exposed by that snapshot:
 
 ```sh
-pkg install -n -r resolver-plugins-archive os-bind-rp-1.36_2
-pkg install -f -r resolver-plugins-archive os-bind-rp-1.36_2
+pkg install -n -r resolver-plugins-rollback os-bind-rp
+pkg install -f -r resolver-plugins-rollback os-bind-rp
 pkg query -e '%n = os-bind-rp' '%n-%v'
 configctl template reload OPNsense/Bind || true
 configctl service restart bind || true
@@ -103,8 +105,8 @@ the saved configuration and run the exact latest-channel install command:
 pkg install -f -r resolver-plugins os-bind-rp
 ```
 
-The archive channel is not a separate product feed; leave it disabled outside
-an explicit rollback to keep ordinary upgrades on `pkg-<series>`.
+The rollback snapshot is not a separate product feed; leave it disabled
+outside an explicit rollback to keep ordinary upgrades on `pkg-<series>`.
 
 Development builds use pre-release tags such as `pr-123-26.7`. They are for
 review testing only and are neither signed nor promoted into a stable channel.
@@ -116,16 +118,18 @@ The `Publish os-bind-rp package release` workflow builds from the selected
 that satisfies the policy. If it cannot, it builds or reuses the separate
 Resolver fallback pair and records that source in `build-metadata.txt`.
 
-The production signer checks out an immutable `master` control-plane commit,
-verifies the finished artifact's source commit, and receives no release-source
-helper code with `RP_PKG_SIGNING_KEY`. It stages the latest plugin, formula-
-compatible archive, and any new BIND fallback catalogue separately.
+The production signer resolves and checks out a specific `master`
+control-plane SHA, verifies the finished artifact's source commit, and receives
+no release-source helper code with `RP_PKG_SIGNING_KEY`. It stages the latest
+plugin, one immutable formula-compatible rollback snapshot, and any new BIND
+fallback catalogue separately.
 
 Before replacing mutable Release assets, publication downloads every prior
 asset—packages, catalogues, metadata, provenance, and public key—to local
 recovery storage and verifies checksums. If an upload or verification fails,
-it restores each affected Release from those preserved bytes. Archive is
-published before latest; pruning happens only after the new catalogues verify.
+it restores each affected Release from those preserved bytes. The snapshot,
+fallback when present, and latest channel are verified after upload; pruning
+to the newest five snapshots happens only after that promotion succeeds.
 
 Do not publish a stable channel manually from a workstation. A successful
 workflow run is the release record and source of the signed catalogue.

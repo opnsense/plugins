@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regression coverage for split package channels and plugin rollback archives."""
+"""Regression coverage for split package channels and rollback snapshots."""
 
 from __future__ import annotations
 
@@ -21,20 +21,24 @@ SPEC.loader.exec_module(release_channel)
 
 class ChannelTagTest(unittest.TestCase):
     def test_split_channel_tags_are_series_scoped(self) -> None:
-        """Latest, rollback, and fallback channels must never share a tag."""
+        """Latest, snapshot, and fallback channels must never share a tag."""
         self.assertEqual("pkg-26.7", release_channel.channel_tag("26.7"))
-        self.assertEqual("pkg-26.7-archive", release_channel.archive_channel_tag("26.7"))
+        self.assertEqual(
+            "pkg-26.7-os-bind-rp-1.36_2",
+            release_channel.snapshot_channel_tag("26.7", "1.36_2"),
+        )
         self.assertEqual("pkg-26.7-bind920", release_channel.bind920_channel_tag("26.7"))
 
     def test_split_channel_tags_reject_invalid_series(self) -> None:
         """Channel names remain constrained to the supported series form."""
         for channel in (
             release_channel.channel_tag,
-            release_channel.archive_channel_tag,
             release_channel.bind920_channel_tag,
         ):
             with self.assertRaisesRegex(ValueError, "invalid series"):
                 channel("26.7/archive")
+        with self.assertRaisesRegex(ValueError, "invalid package version"):
+            release_channel.snapshot_channel_tag("26.7", "1.36/2")
 
 
 class SplitRepositoryStageTest(unittest.TestCase):
@@ -47,7 +51,6 @@ class SplitRepositoryStageTest(unittest.TestCase):
             for name in (
                 "bind-tools-9.20.26_1.pkg",
                 "bind920-9.20.26_1.pkg",
-                "os-bind-rp-1.36_1.pkg",
                 "os-bind-rp-1.36_2.pkg",
             ):
                 (packages / name).touch()
@@ -61,7 +64,6 @@ class SplitRepositoryStageTest(unittest.TestCase):
 
             with (
                 patch.object(release_channel, "validate_plugin_package_manifests"),
-                patch.object(release_channel, "newest_plugin_packages", side_effect=lambda packages, _: packages),
                 patch.object(release_channel.subprocess, "run", side_effect=fake_repo),
             ):
                 assets = release_channel.stage_plugin_repository(
@@ -70,9 +72,24 @@ class SplitRepositoryStageTest(unittest.TestCase):
 
             names = {asset.name for asset in assets}
             self.assertEqual(
-                {"os-bind-rp-1.36_1.pkg", "os-bind-rp-1.36_2.pkg", "build-metadata.txt", "meta.conf"},
+                {"os-bind-rp-1.36_2.pkg", "build-metadata.txt", "meta.conf"},
                 names,
             )
+
+    def test_plugin_stage_rejects_multiple_versions_in_one_catalogue(self) -> None:
+        """pkg catalogues cannot index two versions with the same package name."""
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            packages = root / "packages"
+            packages.mkdir()
+            for name in ("os-bind-rp-1.36_1.pkg", "os-bind-rp-1.36_2.pkg"):
+                (packages / name).touch()
+            (packages / "build-metadata.txt").touch()
+            key = root / "private.pem"
+            key.touch()
+
+            with self.assertRaisesRegex(ValueError, "exactly one package"):
+                release_channel.stage_plugin_repository(packages, root / "snapshot", key, "pkg")
 
     def test_bind_stage_excludes_plugin_packages_and_requires_provenance(self) -> None:
         """Fallback BIND remains a separate signed repository with provenance."""
@@ -143,11 +160,11 @@ class PublicationRecoveryTest(unittest.TestCase):
         """A failed later upload restores already changed releases without remote downloads."""
         with tempfile.TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
-            archive = root / "archive"
+            snapshot = root / "snapshot"
             latest = root / "latest"
-            archive.mkdir()
+            snapshot.mkdir()
             latest.mkdir()
-            (archive / "os-bind-rp-1.36_1.pkg").write_bytes(b"archive-new")
+            (snapshot / "os-bind-rp-1.36_1.pkg").write_bytes(b"snapshot-new")
             (latest / "os-bind-rp-1.36_2.pkg").write_bytes(b"latest-new")
             restored: list[tuple[str, bytes]] = []
 
@@ -176,19 +193,47 @@ class PublicationRecoveryTest(unittest.TestCase):
                 with self.assertRaisesRegex(RuntimeError, "latest upload failed"):
                     release_channel.publish_channels(
                         "resolver-plugins/plugins",
-                        [("pkg-26.7-archive", archive), ("pkg-26.7", latest)],
+                        [("pkg-26.7-bind920", snapshot), ("pkg-26.7", latest)],
                         root / "recovery",
                     )
 
             self.assertEqual(
-                [("pkg-26.7", b"pkg-26.7-old"), ("pkg-26.7-archive", b"pkg-26.7-archive-old")],
+                [("pkg-26.7", b"pkg-26.7-old"), ("pkg-26.7-bind920", b"pkg-26.7-bind920-old")],
                 restored,
             )
 
+    def test_restore_absent_release_accepts_a_not_found_delete(self) -> None:
+        """A failed release creation has no remote state to restore."""
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            snapshot = release_channel.ReleaseSnapshot("pkg-26.7-test", False, root, root / "missing.json")
+            result = subprocess.CompletedProcess(["gh"], 1, stderr="release not found")
+            with patch.object(release_channel.subprocess, "run", return_value=result):
+                release_channel.restore_release("resolver-plugins/plugins", snapshot)
+
+    def test_snapshot_pruning_keeps_the_newest_five_immutable_tags(self) -> None:
+        """Only a successful promotion may remove the sixth-oldest snapshot."""
+        releases = [
+            {"tag_name": f"pkg-26.7-os-bind-rp-1.36_{number}", "created_at": f"2026-01-0{number}T00:00:00Z"}
+            for number in range(1, 7)
+        ]
+        result = subprocess.CompletedProcess(["gh"], 0, stdout=json.dumps(releases))
+        deleted: list[list[str]] = []
+        with (
+            patch.object(release_channel.subprocess, "run", return_value=result),
+            patch.object(release_channel, "run_gh", side_effect=deleted.append),
+        ):
+            release_channel.prune_snapshots("resolver-plugins/plugins", "26.7")
+
+        self.assertEqual(
+            [["release", "delete", "pkg-26.7-os-bind-rp-1.36_1", "--yes", "--repo", "resolver-plugins/plugins"]],
+            deleted,
+        )
+
 
 class PluginManifestValidationTest(unittest.TestCase):
-    def test_archive_rejects_a_plugin_without_the_minimum_bind_formula(self) -> None:
-        """An old exact BIND dependency cannot enter the formula-compatible archive."""
+    def test_snapshot_rejects_a_plugin_without_the_minimum_bind_formula(self) -> None:
+        """An old exact BIND dependency cannot enter a rollback snapshot."""
         package = Path("/tmp/os-bind-rp-1.36_2.pkg")
         identity = (("os-bind-rp", "1.36_2", "opnsense/os-bind-rp", "FreeBSD:15:amd64"), set())
         with (
@@ -198,8 +243,8 @@ class PluginManifestValidationTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "dependency formula"):
                 release_channel.validate_plugin_package_manifests([package], "pkg")
 
-    def test_archive_accepts_the_declared_minimum_bind_formula(self) -> None:
-        """Every retained plugin uses the same BIND compatibility floor."""
+    def test_snapshot_accepts_the_declared_minimum_bind_formula(self) -> None:
+        """Every rollback snapshot uses the BIND compatibility floor."""
         package = Path("/tmp/os-bind-rp-1.36_2.pkg")
         identity = (("os-bind-rp", "1.36_2", "opnsense/os-bind-rp", "FreeBSD:15:amd64"), set())
         with (
@@ -208,26 +253,19 @@ class PluginManifestValidationTest(unittest.TestCase):
         ):
             release_channel.validate_plugin_package_manifests([package], "pkg")
 
-    def test_archive_keeps_the_five_newest_versions_by_pkg_ordering(self) -> None:
-        """Retention uses pkg ordering rather than a lexical filename sort."""
-        packages = [Path(f"/tmp/os-bind-rp-1.36_{version}.pkg") for version in range(1, 7)]
-
-        def fake_version(package: Path, _: str) -> str:
-            return package.stem.rsplit("_", 1)[1]
-
-        def fake_run(command: list[str], **_: object) -> subprocess.CompletedProcess[str]:
-            left, right = int(command[-2]), int(command[-1])
-            result = ">" if left > right else "<" if left < right else "="
-            return subprocess.CompletedProcess(command, 0, stdout=result)
-
+    def test_snapshot_rejects_a_formula_package_with_an_exact_bind_edge(self) -> None:
+        """Formula compatibility must not be defeated by an ordinary dependency edge."""
+        package = Path("/tmp/os-bind-rp-1.36_2.pkg")
+        identity = (
+            ("os-bind-rp", "1.36_2", "opnsense/os-bind-rp", "FreeBSD:15:amd64"),
+            {("bind920", "dns/bind920", "9.20.26_1")},
+        )
         with (
-            patch.object(release_channel, "plugin_package_version", side_effect=fake_version),
-            patch.object(release_channel.subprocess, "run", side_effect=fake_run),
+            patch.object(release_channel, "query_package", return_value=identity),
+            patch.object(release_channel, "read_package_manifest", return_value={"dep_formula": "bind920 >= 9.20.26"}),
         ):
-            retained = release_channel.newest_plugin_packages(packages, "pkg")
-
-        self.assertEqual(["6", "5", "4", "3", "2"], [path.stem.rsplit("_", 1)[1] for path in retained])
-
+            with self.assertRaisesRegex(ValueError, "exact BIND"):
+                release_channel.validate_plugin_package_manifests([package], "pkg")
 
 if __name__ == "__main__":
     unittest.main()

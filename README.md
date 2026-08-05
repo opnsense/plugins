@@ -66,8 +66,8 @@ pkg install os-bind-rp
 The repository catalogue and package are signed by the public key above. A
 future release for the same OPNsense series updates the same `pkg-<series>`
 channel, so normal `pkg upgrade` operations can receive it. The signed
-`pkg-<series>-archive` channel retains up to five named plugin rollback
-versions, while the disabled `pkg-<series>-bind920` channel is available only
+`pkg-<series>-os-bind-rp-<version>` snapshots retain the five newest plugin
+rollback versions, while the disabled `pkg-<series>-bind920` channel is available only
 when OPNsense BIND does not meet the documented compatibility policy. See the
 [package repository guide](docs/package-repository.md) for the explicit BIND
 fallback and rollback procedures before changing a release channel or signing

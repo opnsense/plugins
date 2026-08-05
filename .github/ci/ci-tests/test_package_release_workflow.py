@@ -72,14 +72,15 @@ def test_production_signing_and_publication_are_separate_from_builds():
 def test_signer_uses_master_control_plane_and_split_channel_layout():
     workflow = workflow_text()
     signer = workflow.split('  sign:', 1)[1].split('  publish:', 1)[0]
-    assert 'ref: refs/heads/master' in signer
+    assert 'control_commit: ${{ steps.profile.outputs.control_commit }}' in workflow
+    assert "refs/heads/master:refs/remotes/origin/package-control" in workflow
+    assert 'ref: ${{ needs.profile.outputs.control_commit }}' in signer
     assert 'RP_PKG_SIGNING_KEY' in signer
     assert 'repository/latest' in signer
-    assert 'repository/archive' in signer
+    assert 'repository/snapshot' in signer
     assert 'repository/bind920' in signer
     assert 'pkg-${{ needs.select.outputs.series }}-bind920' in workflow
-    assert 'collect-plugin-archive' in signer
     assert 'collect-bind920' in signer
-    assert 'archive_status' in signer
     assert 'publish-channels' in workflow
+    assert 'prune-snapshots' in workflow
     assert '--recovery "$RUNNER_TEMP/recovery"' in workflow

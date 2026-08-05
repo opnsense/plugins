@@ -4,7 +4,6 @@
 from __future__ import annotations
 
 import argparse
-import functools
 import hashlib
 import json
 import shutil
@@ -24,8 +23,8 @@ PACKAGE_PATTERNS = {
 }
 PLUGIN_PATTERN = PACKAGE_PATTERNS["os-bind-rp"]
 PROVENANCE_NAME = "bind920-provenance.json"
-ARCHIVE_REPOSITORY_NAME = "resolver-plugins-archive"
 SOURCE_REPOSITORY_NAME = "resolver-plugins-source"
+PACKAGE_VERSION_PATTERN = re.compile(r"[0-9][0-9A-Za-z._-]*")
 EXPECTED_PACKAGES = {
     "bind-tools": ("bind-tools", "9.20.26_1", "dns/bind-tools"),
     "bind920": ("bind920", "9.20.26_1", "dns/bind920"),
@@ -40,9 +39,11 @@ def channel_tag(series: str) -> str:
     return f"pkg-{series}"
 
 
-def archive_channel_tag(series: str) -> str:
-    """Return the rollback catalogue tag for a numeric OPNsense series."""
-    return f"{channel_tag(series)}-archive"
+def snapshot_channel_tag(series: str, version: str) -> str:
+    """Return an immutable, one-package rollback snapshot tag."""
+    if PACKAGE_VERSION_PATTERN.fullmatch(version) is None:
+        raise ValueError("invalid package version")
+    return f"{channel_tag(series)}-os-bind-rp-{version}"
 
 
 def bind920_channel_tag(series: str) -> str:
@@ -162,7 +163,7 @@ def validate_plugin_package_manifests(packages: list[Path], pkg_command: str) ->
     """Reject plugin rollback archives with an unexpected identity or ABI."""
     common_abi = None
     for package in packages:
-        identity, _ = query_package(package, pkg_command)
+        identity, dependencies = query_package(package, pkg_command)
         name, _, origin, abi = identity
         if (name, origin) != ("os-bind-rp", "opnsense/os-bind-rp"):
             raise ValueError("unexpected os-bind-rp package manifest")
@@ -170,37 +171,10 @@ def validate_plugin_package_manifests(packages: list[Path], pkg_command: str) ->
             common_abi = abi
         elif abi != common_abi:
             raise ValueError("plugin package ABI does not match the archive")
+        if any(dependency[0] == "bind920" for dependency in dependencies):
+            raise ValueError("plugin package records an exact BIND dependency")
         if read_package_manifest(package, pkg_command).get("dep_formula") != "bind920 >= 9.20.26":
             raise ValueError("plugin package does not declare the required BIND dependency formula")
-
-
-def plugin_package_version(package: Path, pkg_command: str) -> str:
-    """Read one validated plugin version for archive ordering."""
-    identity, _ = query_package(package, pkg_command)
-    name, version, origin, _ = identity
-    if (name, origin) != ("os-bind-rp", "opnsense/os-bind-rp"):
-        raise ValueError("unexpected os-bind-rp package manifest")
-    return version
-
-
-def newest_plugin_packages(packages: list[Path], pkg_command: str) -> list[Path]:
-    """Keep no more than five package versions using pkg's native ordering."""
-    versions = {package: plugin_package_version(package, pkg_command) for package in packages}
-    if len(set(versions.values())) != len(versions):
-        raise ValueError("plugin archive contains duplicate package versions")
-
-    def compare(left: Path, right: Path) -> int:
-        result = subprocess.run(
-            [pkg_command, "version", "-t", versions[left], versions[right]],
-            check=True,
-            capture_output=True,
-            text=True,
-        ).stdout.strip()
-        if result not in {"<", "=", ">"}:
-            raise ValueError("cannot order plugin package versions")
-        return {"<": -1, "=": 0, ">": 1}[result]
-
-    return sorted(packages, key=functools.cmp_to_key(compare), reverse=True)[:5]
 
 
 def validate_bind920_package_manifests(packages: list[Path], pkg_command: str) -> None:
@@ -252,13 +226,14 @@ def stage_selected_repository(
 def stage_plugin_repository(
     packages_directory: Path, output: Path, private_key: Path, pkg_command: str
 ) -> list[Path]:
-    """Create a latest or rollback catalogue containing plugin packages only."""
+    """Create a one-package latest or immutable rollback snapshot catalogue."""
     packages = select_plugin_packages(packages_directory)
+    if len(packages) != 1:
+        raise ValueError("plugin snapshot requires exactly one package version")
     metadata = packages_directory / "build-metadata.txt"
     if not metadata.is_file():
         raise ValueError("plugin build metadata does not exist")
     validate_plugin_package_manifests(packages, pkg_command)
-    packages = newest_plugin_packages(packages, pkg_command)
     return stage_selected_repository(packages, output, private_key, pkg_command, [metadata])
 
 
@@ -366,15 +341,6 @@ def collect_signed_packages(
                 shutil.copy2(archive, destination)
             copied.append(destination)
         return copied
-
-
-def collect_plugin_archive(
-    channel_url: str, public_key: Path, output: Path, pkg_command: str
-) -> list[Path]:
-    """Retrieve retained plugin versions from the previous signed archive only."""
-    return collect_signed_packages(
-        channel_url, public_key, output, ARCHIVE_REPOSITORY_NAME, {"os-bind-rp"}, pkg_command
-    )
 
 
 def collect_bind920_fallback(
@@ -496,7 +462,13 @@ def snapshot_release(repository: str, tag: str, recovery: Path) -> ReleaseSnapsh
 def restore_release(repository: str, snapshot: ReleaseSnapshot) -> None:
     """Restore one channel exclusively from its verified local recovery bytes."""
     if not snapshot.existed:
-        run_gh(["release", "delete", snapshot.tag, "--yes", "--repo", repository])
+        result = subprocess.run(
+            ["gh", "release", "delete", snapshot.tag, "--yes", "--repo", repository],
+            capture_output=True,
+            text=True,
+        )
+        if result.returncode and "not found" not in result.stderr.lower():
+            raise RuntimeError(result.stderr.strip() or f"cannot remove new Release {snapshot.tag}")
         return
     checksums = json.loads(snapshot.manifest.read_text(encoding="utf-8"))
     if not isinstance(checksums, dict) or {
@@ -515,6 +487,9 @@ def publish_channels(
     """Publish related channels or restore all mutable releases from local snapshots."""
     recovery.mkdir(parents=True, exist_ok=False)
     snapshots = [snapshot_release(repository, tag, recovery) for tag, _ in channels]
+    for snapshot in snapshots:
+        if "-os-bind-rp-" in snapshot.tag and snapshot.existed:
+            raise RuntimeError(f"immutable rollback snapshot already exists: {snapshot.tag}")
     try:
         for tag, directory in channels:
             publish(repository, tag, directory, False)
@@ -528,6 +503,37 @@ def publish_channels(
         if restore_errors:
             raise RuntimeError("promotion failed and recovery failed: " + "; ".join(restore_errors))
         raise
+
+
+def prune_snapshots(repository: str, series: str, keep: int = 5) -> None:
+    """Retain only the newest immutable one-package snapshots for one series."""
+    if keep < 1:
+        raise ValueError("snapshot retention must be positive")
+    result = subprocess.run(
+        ["gh", "api", f"repos/{repository}/releases?per_page=100"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    releases = json.loads(result.stdout)
+    prefix = f"{channel_tag(series)}-os-bind-rp-"
+    snapshots = []
+    if not isinstance(releases, list):
+        raise RuntimeError("cannot list snapshot releases")
+    for release in releases:
+        if not isinstance(release, dict):
+            continue
+        tag = release.get("tag_name")
+        created = release.get("created_at")
+        if (
+            isinstance(tag, str)
+            and isinstance(created, str)
+            and tag.startswith(prefix)
+            and PACKAGE_VERSION_PATTERN.fullmatch(tag.removeprefix(prefix))
+        ):
+            snapshots.append((created, tag))
+    for _, tag in sorted(snapshots, reverse=True)[keep:]:
+        run_gh(["release", "delete", tag, "--yes", "--repo", repository])
 
 
 def parse_channel(value: str) -> tuple[str, Path]:
@@ -571,6 +577,18 @@ def publish(repository: str, tag: str, directory: Path, prerelease: bool) -> Non
         "release", "upload", tag, *(str(path) for path in assets),
         "--clobber", "--repo", repository,
     ])
+    result = subprocess.run(
+        ["gh", "release", "view", tag, "--repo", repository, "--json", "assets"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    payload = json.loads(result.stdout)
+    published = payload.get("assets")
+    if not isinstance(published, list) or {
+        asset.get("name") for asset in published if isinstance(asset, dict)
+    } != asset_names:
+        raise RuntimeError(f"published GitHub Release {tag} has an unexpected asset set")
 
 
 def write_bootstrap(output: Path, base_url: str, series: str, public_key_path: str) -> None:
@@ -594,6 +612,9 @@ def main() -> None:
     validate = commands.add_parser("validate")
     validate.add_argument("series")
     validate.add_argument("directory", type=Path)
+    snapshot_tag = commands.add_parser("snapshot-tag")
+    snapshot_tag.add_argument("series")
+    snapshot_tag.add_argument("version")
     stage = commands.add_parser("stage")
     stage.add_argument("--packages-directory", type=Path, required=True)
     stage.add_argument("--output", type=Path, required=True)
@@ -609,11 +630,6 @@ def main() -> None:
     stage_bind920.add_argument("--output", type=Path, required=True)
     stage_bind920.add_argument("--private-key", type=Path, required=True)
     stage_bind920.add_argument("--pkg-command", default="pkg")
-    collect_archive = commands.add_parser("collect-plugin-archive")
-    collect_archive.add_argument("--channel-url", required=True)
-    collect_archive.add_argument("--public-key", type=Path, required=True)
-    collect_archive.add_argument("--output", type=Path, required=True)
-    collect_archive.add_argument("--pkg-command", default="pkg")
     collect_bind920 = commands.add_parser("collect-bind920")
     collect_bind920.add_argument("--channel-url", required=True)
     collect_bind920.add_argument("--public-key", type=Path, required=True)
@@ -632,6 +648,10 @@ def main() -> None:
     publish_channels_parser.add_argument("--repository", required=True)
     publish_channels_parser.add_argument("--recovery", type=Path, required=True)
     publish_channels_parser.add_argument("--channel", type=parse_channel, action="append", required=True)
+    prune = commands.add_parser("prune-snapshots")
+    prune.add_argument("--repository", required=True)
+    prune.add_argument("--series", required=True)
+    prune.add_argument("--keep", type=int, default=5)
     bootstrap = commands.add_parser("bootstrap")
     bootstrap.add_argument("--output", type=Path, required=True)
     bootstrap.add_argument("--base-url", required=True)
@@ -642,6 +662,8 @@ def main() -> None:
         channel_tag(arguments.series)
         for package in select_packages(arguments.directory):
             print(package)
+    elif arguments.command == "snapshot-tag":
+        print(snapshot_channel_tag(arguments.series, arguments.version))
     elif arguments.command == "stage":
         for asset in stage_repository(
             arguments.packages_directory, arguments.output, arguments.private_key, arguments.pkg_command
@@ -657,15 +679,6 @@ def main() -> None:
             arguments.packages_directory, arguments.output, arguments.private_key, arguments.pkg_command
         ):
             print(asset)
-    elif arguments.command == "collect-plugin-archive":
-        try:
-            for package in collect_plugin_archive(
-                arguments.channel_url, arguments.public_key, arguments.output, arguments.pkg_command
-            ):
-                print(package)
-        except ArchiveMissing as error:
-            print(error)
-            return 3
     elif arguments.command == "collect-bind920":
         try:
             for package in collect_bind920_fallback(
@@ -681,6 +694,8 @@ def main() -> None:
         publish(arguments.repository, arguments.tag, arguments.directory, False)
     elif arguments.command == "publish-channels":
         publish_channels(arguments.repository, arguments.channel, arguments.recovery)
+    elif arguments.command == "prune-snapshots":
+        prune_snapshots(arguments.repository, arguments.series, arguments.keep)
     else:
         write_bootstrap(
             arguments.output, arguments.base_url, arguments.series, arguments.public_key_path
