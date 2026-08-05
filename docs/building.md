@@ -47,7 +47,9 @@ git cat-file -e "$source_commit:Mk/devel.mk" 2>/dev/null || rm -f Mk/devel.mk
 The runner checks out the pinned OPNsense core commit and configures its
 package repository and fingerprints. It then checks out the exact FreeBSD
 Ports recipe pinned in `.resolver-plugins/bind920.json`, verifies its hashes,
-and builds `bind-tools` followed by `bind920` at `9.20.26_1`. Those packages
+and builds `bind-tools` followed by `bind920` at `9.20.26_1`. Documentation is
+excluded because it is not needed at runtime; this keeps the source build from
+pulling in the large Sphinx documentation toolchain. Those packages
 are installed in the build VM before `os-bind-rp` is packaged, which records
 the exact BIND dependency in the plugin manifest. The plugin builder rejects
 any BIND version below `9.20.26` and verifies the OPNsense version floor.
