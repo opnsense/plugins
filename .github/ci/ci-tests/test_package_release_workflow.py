@@ -79,7 +79,7 @@ def test_workflow_uses_sha_pinned_actions_and_nonpersistent_checkout_credentials
     references = action_references(workflow)
     assert references
     assert all(PINNED_ACTION.fullmatch(reference) for reference in references)
-    assert workflow.count('persist-credentials: false') == 7
+    assert workflow.count('persist-credentials: false') == 8
     assert 'actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803' in references
     assert 'vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d' in references
 
@@ -134,6 +134,19 @@ def test_publication_waits_for_current_and_snapshot_installability_in_freebsd():
     assert 'pkg install -y -r resolver-plugins bind-tools bind920 os-bind-rp' in verifier
     assert 'url: "file://$PWD/$root/snapshot"' in verifier
     assert 'pkg install -f -y -r resolver-plugins-rollback os-bind-rp' in verifier
+
+
+def test_development_release_installs_from_a_temporary_freebsd_repository():
+    workflow = workflow_text()
+    verifier = workflow.split('  verify-development:', 1)[1].split('  publish-development:', 1)[0]
+    publisher = workflow.split('  publish-development:', 1)[1].split('  sign:', 1)[0]
+    assert 'needs: [select, profile, build]' in verifier
+    assert 'pkg repo "$output"' in verifier
+    assert 'signature_type: "none"' in verifier
+    assert 'pkg update -r resolver-plugins-development' in verifier
+    assert 'pkg install -y -r resolver-plugins-development bind-tools bind920 os-bind-rp' in verifier
+    assert "'%n-%v'" in verifier
+    assert 'needs: [select, build, verify-development]' in publisher
 
 
 def test_source_release_contains_only_plugin_and_build_metadata():
