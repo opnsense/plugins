@@ -47,7 +47,13 @@ from `opnsense-version` and configure its current channel:
 ```sh
 series=$(opnsense-version | awk 'NR == 1 { print $2 }' | sed -E 's/^([0-9]+\.[0-9]+).*/\1/')
 case "$series" in
-  26.1|26.7) ;;
+  26.1)
+    case "$(pkg version -t "$(opnsense-version | awk 'NR == 1 { print $2 }')" 26.1.11_10)" in
+      '='|'>') ;;
+      *) echo 'OPNsense 26.1.11_10 or newer is required' >&2; exit 1 ;;
+    esac
+    ;;
+  26.7) ;;
   *) echo "unsupported OPNsense release series: ${series:-unknown}" >&2; exit 1 ;;
 esac
 channel="pkg-$series"

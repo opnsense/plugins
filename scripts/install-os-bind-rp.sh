@@ -46,7 +46,14 @@ series_from_opnsense_version() {
     product_version=$(opnsense-version 2>/dev/null | awk 'NR == 1 { print $2 }')
     series=$(printf '%s\n' "$product_version" | sed -E 's/^([0-9]+\.[0-9]+).*/\1/')
     case "$series" in
-        26.1|26.7)
+        26.1)
+            case "$(pkg version -t "$product_version" '26.1.11_10')" in
+                '='|'>') ;;
+                *) fail "OPNsense 26.1.11_10 or newer is required (installed: $product_version)" ;;
+            esac
+            printf '%s\n' "$series"
+            ;;
+        26.7)
             printf '%s\n' "$series"
             ;;
         *)
@@ -90,10 +97,12 @@ fi
 series=$(series_from_opnsense_version)
 current_channel=pkg-$series
 public_key="$key_directory/resolver-plugins.pub"
+public_key_candidate="$temporary_directory/resolver-plugins.pub"
 
-fetch -o "$public_key" "$release_base/$current_channel/resolver-plugins.pub"
-[ "$(sha256 -q "$public_key")" = "$public_key_sha256" ] || \
+fetch -o "$public_key_candidate" "$release_base/$current_channel/resolver-plugins.pub"
+[ "$(sha256 -q "$public_key_candidate")" = "$public_key_sha256" ] || \
     fail 'resolver-plugins public-key fingerprint verification failed'
+install -m 0644 "$public_key_candidate" "$public_key"
 
 write_repository resolver-plugins "$release_base/$current_channel" yes
 pkg update -r resolver-plugins
@@ -116,7 +125,8 @@ then
     [ -n "$fallback_bind920_version" ] && [ -n "$fallback_bind_tools_version" ] || \
         fail 'Resolver BIND fallback repository is incomplete'
 
-    printf '%s\n' "Installed BIND: $(package_description "$bind920")" >&2
+    printf '%s\n' "Installed bind920: $(package_description "$bind920")" >&2
+    printf '%s\n' "Installed bind-tools: $(package_description "$bind_tools")" >&2
     printf '%s\n' \
         "Available fallback: bind920 $fallback_bind920_version and bind-tools $fallback_bind_tools_version" >&2
     printf '%s\n' 'An update to BIND is required to address a breaking issue with DoT.' >&2
