@@ -36,7 +36,6 @@ def test_production_runs_only_from_the_master_control_plane():
     build = workflow.split('  build:', 1)[1].split('  publish-development:', 1)[0]
     assert 'GITHUB_REF: ${{ github.ref }}' in select
     assert '[[ "$GITHUB_REF" == refs/heads/master ]]' in select
-    assert 'control_ref=master' in select
     assert 'control_ref=$GITHUB_SHA' in select
     assert 'ref: ${{ needs.select.outputs.control_ref }}' in profile
     for job in (test, bind, build):
@@ -100,7 +99,7 @@ def test_signer_uses_master_control_plane_and_self_contained_channel_layout():
     workflow = workflow_text()
     signer = workflow.split('  sign:', 1)[1].split('  publish:', 1)[0]
     assert 'control_commit: ${{ steps.profile.outputs.control_commit }}' in workflow
-    assert 'control_ref=master' in workflow
+    assert 'control_ref=$GITHUB_SHA' in workflow
     assert 'control_commit=$(git rev-parse HEAD)' in workflow
     assert 'ref: ${{ needs.profile.outputs.control_commit }}' in signer
     assert 'RP_PKG_SIGNING_KEY' in signer

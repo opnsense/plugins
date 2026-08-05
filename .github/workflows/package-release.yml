@@ -71,7 +71,7 @@ jobs:
             [[ "$GITHUB_REF" == refs/heads/master ]]
             source_ref="refs/heads/release/bind-rp/$series"
             prerelease_tag=""
-            control_ref=master
+            control_ref=$GITHUB_SHA
           fi
           [[ "$mode" == development || "$mode" == production ]]
           [[ "$series" =~ ^[0-9]+\.[0-9]+$ ]]
