@@ -68,6 +68,10 @@ def test_workflow_materializes_the_distribution_bind_pair_before_building_the_pl
     build = workflow.split('  build:', 1)[1].split('  publish-development:', 1)[0]
     assert 'RP_BIND920_FALLBACK=yes' in build
     assert 'pkg add "$output"/bind-tools-*.pkg "$output"/bind920-*.pkg' in build
+    assert 'pkg query -F "$package" \'%dn\'' in build
+    assert build.index('.github/ci/setup-opnsense-repository.sh') < build.index(
+        'pkg add "$output"/bind-tools-*.pkg'
+    )
 
 
 def test_workflow_uses_sha_pinned_actions_and_nonpersistent_checkout_credentials():

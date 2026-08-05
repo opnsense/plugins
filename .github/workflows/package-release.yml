@@ -198,10 +198,20 @@ jobs:
             set -eu
             export IGNORE_OSVERSION=yes
             pkg update -f
-            pkg install -y python3
+            pkg install -y python3 git
             series='${{ needs.select.outputs.series }}'
             mode='${{ needs.select.outputs.mode }}'
             output="artifacts/$series"
+            RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json .github/ci/setup-opnsense-repository.sh "$series" >/dev/null
+            pkg update -f
+            dependencies=$(
+              for package in "$output"/bind-tools-*.pkg "$output"/bind920-*.pkg; do
+                pkg query -F "$package" '%dn'
+              done | awk '$0 != "bind-tools" && !seen[$0]++'
+            )
+            if [ -n "$dependencies" ]; then
+              pkg install -y $dependencies
+            fi
             pkg add "$output"/bind-tools-*.pkg "$output"/bind920-*.pkg
             if [ "$mode" = development ]; then
               devel=RP_PLUGIN_DEVEL=yes
