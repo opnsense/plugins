@@ -134,6 +134,7 @@ def test_publication_waits_for_current_and_snapshot_installability_in_freebsd():
     assert 'pkg install -y -r resolver-plugins bind-tools bind920 os-bind-rp' in verifier
     assert 'url: "file://$PWD/$root/snapshot"' in verifier
     assert 'pkg install -f -y -r resolver-plugins-rollback os-bind-rp' in verifier
+    assert ' OR ' not in verifier
 
 
 def test_development_release_installs_from_a_temporary_freebsd_repository():
@@ -146,6 +147,7 @@ def test_development_release_installs_from_a_temporary_freebsd_repository():
     assert 'pkg update -r resolver-plugins-development' in verifier
     assert 'pkg install -y -r resolver-plugins-development bind-tools bind920 os-bind-rp' in verifier
     assert "'%n-%v'" in verifier
+    assert ' OR ' not in verifier
     assert 'needs: [select, build, verify-development]' in publisher
 
 
