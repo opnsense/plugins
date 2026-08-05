@@ -19,9 +19,9 @@ immutable plugin, tools, FreeBSD, core archive, and checksum provenance in
 
 Automation is deliberately conservative. An upstream BIND change becomes a
 review PR; it does not silently advance a release branch. An unchanged BIND
-tree for a new series can receive a temporary build artifact. No package
-repository, GitHub Release, Pages site, signing, or end-user installation
-mechanism exists yet.
+tree for a new series can receive a temporary build artifact. Signed,
+self-contained current and rollback channels are generated in
+`resolver-plugins/repository`; source releases remain narrow and human-facing.
 
 ## Repository map
 

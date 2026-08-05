@@ -31,6 +31,9 @@ legacy release branches, which intentionally do not carry the control-plane
 scripts. In particular, the release `Mk` files prevent a development-branch
 marker from adding an unintended `-devel` package suffix.
 
+Production release runs are manually dispatched from `master`; merging a
+release-source pull request does not execute helpers from that release branch.
+
 Reproduce that split in a disposable worktree when building locally. Start
 from `master`, fetch the selected release branch, and overlay only its release
 inputs before entering the matching FreeBSD environment:
@@ -45,15 +48,14 @@ git cat-file -e "$source_commit:Mk/devel.mk" 2>/dev/null || rm -f Mk/devel.mk
 ```
 
 The runner checks out the pinned OPNsense core commit and configures its
-package repository and fingerprints. It first installs and verifies the
-OPNsense `bind920`/`bind-tools` pair against
-`.resolver-plugins/bind-compatibility.json`: required names and origins plus
-`bind920 >= 9.20.26`. An eligible official package is the normal build input.
-If it is missing or incompatible, the wrapper returns its documented fallback
-status. The workflow then checks the separate signed
-`pkg-<series>-bind920` channel for matching provenance and otherwise builds
-the exact FreeBSD Ports recipe pinned in `.resolver-plugins/bind920.json`.
-That fallback builds `bind-tools` followed by `bind920` at `9.20.26_1`.
+package repository and fingerprints. A separate BIND job first checks the
+self-contained `pkg-<series>` channel in `resolver-plugins/repository` for a
+pair whose signed provenance matches `.resolver-plugins/bind920.json`. On a
+cache miss, it builds the exact pinned FreeBSD Ports recipe. The plugin build
+then installs that exact pair before packaging `os-bind-rp`, so the current
+channel and its rollback snapshot contain the BIND packages actually used by
+the build. The pinned recipe builds `bind-tools` followed by `bind920` at
+`9.20.26_1`.
 Documentation is excluded because it is not needed at runtime; this keeps the
 source build from pulling in the large Sphinx documentation toolchain. The
 plugin manifest records `dep_formula: "bind920 >= 9.20.26"`, not a locally

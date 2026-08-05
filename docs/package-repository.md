@@ -1,32 +1,27 @@
 # Package repository
 
 `os-bind-rp` is published as signed GitHub Release assets in
-`resolver-plugins/plugins`. GitHub Releases contain package binaries and the
-small `pkg` catalogues; the source repository remains binary-free.
+`resolver-plugins/repository`. The distribution repository contains generated
+package channels; source releases contain only the plugin archive and build
+metadata.
 
 ## Channels
 
-Every supported OPNsense series has three distinct signed channels:
+Every supported OPNsense series has a self-contained current channel and up
+to five self-contained immutable rollback snapshots:
 
 | Purpose | Release tag | Default state |
 | --- | --- | --- |
-| Current plugin | `pkg-<series>` | enabled |
-| Plugin rollback snapshot | `pkg-<series>-os-bind-rp-<version>` | enabled only while rolling back |
-| Resolver BIND fallback | `pkg-<series>-bind920` | disabled |
+| Current plugin and BIND baseline | `pkg-<series>` | enabled |
+| Plugin rollback snapshot and its BIND baseline | `pkg-<series>-os-bind-rp-<version>` | enabled only while rolling back |
 
-The current plugin channel contains exactly the newest `os-bind-rp` package.
-Each rollback snapshot is an immutable, one-package catalogue for a plugin
-version that declares `bind920 >= 9.20.26`; it never contains a legacy plugin
-that pins a particular Resolver BIND revision. `pkg` repositories cannot
-catalogue multiple versions under the same package name, so rollback selects
-the desired snapshot repository and installs `os-bind-rp` from that source.
-Publication retains the five newest snapshots for each series.
-
-The BIND fallback channel contains `bind-tools-9.20.26_1.pkg`,
-`bind920-9.20.26_1.pkg`, and `bind920-provenance.json`. It is a separate
-source because hosts should use OPNsense's BIND when it is eligible. The
-fallback repository is deliberately disabled, so its `9.20.26_1` revision
-cannot supersede an eligible official package with the same version.
+The current channel and every rollback snapshot contain exactly one
+`os-bind-rp` package, the matching `bind920`/`bind-tools` pair, BIND
+provenance, `channel.json`, and the signed catalogue. `pkg` catalogues expose
+one selected version per package name, so rollback temporarily selects a
+retained snapshot URL from the same distribution repository. Publication
+retains the five newest snapshots and reuses a compatible BIND pair instead
+of rebuilding it for every plugin release.
 
 All channels include the signed `pkg` catalogue and `resolver-plugins.pub`.
 Clients verify both using that public key.
@@ -37,7 +32,7 @@ Choose the matching OPNsense series and configure the current plugin channel:
 
 ```sh
 series=26.7
-base="https://github.com/resolver-plugins/plugins/releases/download/pkg-$series"
+base="https://github.com/resolver-plugins/repository/releases/download/pkg-$series"
 install -d -m 0755 /usr/local/etc/pkg/keys /usr/local/etc/pkg/repos
 fetch -o /usr/local/etc/pkg/keys/resolver-plugins.pub "$base/resolver-plugins.pub"
 test "$(sha256 -q /usr/local/etc/pkg/keys/resolver-plugins.pub)" = \
@@ -55,29 +50,6 @@ pkg update -r resolver-plugins
 pkg install os-bind-rp
 ```
 
-Before enabling any fallback, check the official packages. An eligible BIND is
-`bind920` from `dns/bind920`, at least `9.20.26`, with `bind-tools` from
-`dns/bind-tools`. The plugin formula accepts that official package and does not
-require the Resolver fallback.
-
-Only if that check fails, add the fallback configuration with `enabled: no`:
-
-```sh
-cat > /usr/local/etc/pkg/repos/resolver-plugins-bind920.conf <<EOF
-resolver-plugins-bind920: {
-  url: "https://github.com/resolver-plugins/plugins/releases/download/pkg-$series-bind920",
-  mirror_type: "none",
-  signature_type: "pubkey",
-  pubkey: "/usr/local/etc/pkg/keys/resolver-plugins.pub",
-  enabled: no
-}
-EOF
-```
-
-Set `enabled: yes` in that file only after recording why the OPNsense BIND is
-ineligible, run `pkg update -r resolver-plugins-bind920`, and install the
-fallback BIND pair. Disable the repository again before normal upgrades.
-
 ### Rollback
 
 Back up the OPNsense configuration before changing plugin versions:
@@ -94,7 +66,7 @@ only plugin package exposed by that snapshot:
 snapshot="pkg-$series-os-bind-rp-1.36_2"
 cat > /usr/local/etc/pkg/repos/resolver-plugins-rollback.conf <<EOF
 resolver-plugins-rollback: {
-  url: "https://github.com/resolver-plugins/plugins/releases/download/$snapshot",
+  url: "https://github.com/resolver-plugins/repository/releases/download/$snapshot",
   mirror_type: "none",
   signature_type: "pubkey",
   pubkey: "/usr/local/etc/pkg/keys/resolver-plugins.pub",
@@ -126,33 +98,62 @@ review testing only and are neither signed nor promoted into a stable channel.
 ## Publication
 
 The `Publish os-bind-rp package release` workflow builds from the selected
-`release/bind-rp/<series>` source branch. It first attempts an OPNsense BIND
-that satisfies the policy. If it cannot, it builds or reuses the separate
-Resolver fallback pair and records that source in `build-metadata.txt`.
+`release/bind-rp/<series>` source branch. It first reuses a matching BIND pair
+from the current distribution channel or builds the pinned pair on a verified
+cache miss. The plugin is built against that exact pair.
+
+Production publication is an explicit `workflow_dispatch` from the `master`
+branch after the release-source change has been reviewed and merged. Select
+`production` and the target series; a production dispatch from any other ref
+is rejected. Release branches supply immutable build inputs only and never run
+publication helpers. Runs are serialized per series so two promotions cannot
+replace or restore the same current channel concurrently.
+
+The source repository must define these Actions secrets before production:
+
+- `RP_PKG_SIGNING_KEY`: the base64-encoded private package-signing key. It is
+  exposed only to the FreeBSD signing job.
+- `RP_DISTRIBUTION_REPOSITORY_TOKEN`: a fine-grained token owned by the release
+  operator, limited to `resolver-plugins/repository` with `Contents: write`.
+  It is exposed only to the distribution publication job. Rotate it according
+  to the repository's credential policy and replace this secret when rotated.
+
+A missing or expired distribution token fails the publication job with a
+GitHub authentication or authorization error; it must never be replaced with
+a broad source-repository or session credential.
 
 The production signer resolves and checks out a specific `master`
 control-plane SHA, verifies the finished artifact's source commit, and receives
-no release-source helper code with `RP_PKG_SIGNING_KEY`. It stages the latest
-plugin, one immutable formula-compatible rollback snapshot, and any new BIND
-fallback catalogue separately.
+no release-source helper code with `RP_PKG_SIGNING_KEY`. It validates BIND
+provenance and every security-relevant build field against trusted release
+metadata, then stages identical
+self-contained current and immutable rollback repositories. It generates the
+signed catalogue once and copies those exact bytes to both publication paths.
+The derived public key must match the key committed in this repository before
+either path can proceed.
 
 Before replacing mutable Release assets, publication downloads every prior
 asset—packages, catalogues, metadata, provenance, and public key—to local
-recovery storage and verifies checksums. If an upload or verification fails,
-it restores each affected Release from those preserved bytes. The snapshot,
-fallback when present, and latest channel have their published asset sets
-checked after upload; pruning to the newest five snapshots happens only after
-that promotion succeeds.
+recovery storage, validates its audit checksums and expected channel structure,
+and confirms the remote release did not change during preflight. Every uploaded
+asset is downloaded again and compared byte-for-byte. If an upload or verification fails,
+it restores each affected Release from those preserved bytes. The snapshot
+and current channel have their published asset sets checked after upload;
+pruning to the newest five snapshots happens only after promotion succeeds.
 
 Do not publish a stable channel manually from a workstation. A successful
 workflow run is the release record and source of the signed catalogue.
 
 ## Verification
 
-After a production publication, inspect the three Release tags and use a
-disposable FreeBSD VM to verify the current package, named rollback, and (when
-present) explicitly enabled BIND fallback. Confirm the public URL and package
-identity with `pkg rquery` before using the channel on a host.
+Before production publication, the workflow uses a disposable FreeBSD VM to
+add the staged signed current and snapshot repositories, install all three
+current packages, and force-install the plugin through the snapshot path. The
+two staged paths contain the same new version, so this gate proves snapshot
+catalogue installability rather than a transition to an older version. After
+publication, when an older retained snapshot exists, verify the actual version
+transition from its public URL and confirm package identities with `pkg
+rquery`.
 
 If a signing-key rotation is required, replace `RP_PKG_SIGNING_KEY`, commit
 the replacement public key, and republish every channel for every supported

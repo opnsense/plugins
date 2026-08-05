@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Regression coverage for split package channels and rollback snapshots."""
+"""Regression coverage for self-contained package channels and rollback snapshots."""
 
 from __future__ import annotations
 
@@ -20,30 +20,30 @@ SPEC.loader.exec_module(release_channel)
 
 
 class ChannelTagTest(unittest.TestCase):
-    def test_split_channel_tags_are_series_scoped(self) -> None:
-        """Latest, snapshot, and fallback channels must never share a tag."""
+    def test_source_release_tag_identifies_the_series_and_plugin_version(self) -> None:
+        self.assertEqual(
+            "os-bind-rp-26.7-1.36_7", release_channel.source_release_tag("26.7", "1.36_7")
+        )
+
+    def test_channel_tags_are_series_scoped(self) -> None:
+        """Current and immutable snapshot channels must never share a tag."""
         self.assertEqual("pkg-26.7", release_channel.channel_tag("26.7"))
         self.assertEqual(
             "pkg-26.7-os-bind-rp-1.36_2",
             release_channel.snapshot_channel_tag("26.7", "1.36_2"),
         )
-        self.assertEqual("pkg-26.7-bind920", release_channel.bind920_channel_tag("26.7"))
 
-    def test_split_channel_tags_reject_invalid_series(self) -> None:
+    def test_channel_tags_reject_invalid_series(self) -> None:
         """Channel names remain constrained to the supported series form."""
-        for channel in (
-            release_channel.channel_tag,
-            release_channel.bind920_channel_tag,
-        ):
-            with self.assertRaisesRegex(ValueError, "invalid series"):
-                channel("26.7/archive")
+        with self.assertRaisesRegex(ValueError, "invalid series"):
+            release_channel.channel_tag("26.7/archive")
         with self.assertRaisesRegex(ValueError, "invalid package version"):
             release_channel.snapshot_channel_tag("26.7", "1.36/2")
 
 
-class SplitRepositoryStageTest(unittest.TestCase):
-    def test_plugin_stage_excludes_bind_packages_and_retains_build_metadata(self) -> None:
-        """The plugin catalogue must be independently installable and rollback-ready."""
+class SelfContainedRepositoryStageTest(unittest.TestCase):
+    def test_stage_channel_contains_the_plugin_bind_pair_and_audit_manifest(self) -> None:
+        """A self-contained channel carries one plugin, its BIND pair, and auditable metadata."""
         with tempfile.TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
             packages = root / "packages"
@@ -51,10 +51,50 @@ class SplitRepositoryStageTest(unittest.TestCase):
             for name in (
                 "bind-tools-9.20.26_1.pkg",
                 "bind920-9.20.26_1.pkg",
-                "os-bind-rp-1.36_2.pkg",
+                "os-bind-rp-1.36_7.pkg",
             ):
-                (packages / name).touch()
-            (packages / "build-metadata.txt").write_text("series=26.7\n", encoding="utf-8")
+                (packages / name).write_bytes(name.encode())
+            (packages / "bind920-provenance.json").write_text(
+                json.dumps(
+                    {
+                        "schema": 1,
+                        "fingerprint": "f" * 64,
+                        "series": "26.7",
+                        "freebsd_release": "15.1",
+                        "architecture": "x86_64",
+                        "packages": {
+                            "bind-tools": {
+                                "name": "bind-tools",
+                                "version": "9.20.26_1",
+                                "origin": "dns/bind-tools",
+                                "filename": "bind-tools-9.20.26_1.pkg",
+                            },
+                            "bind920": {
+                                "name": "bind920",
+                                "version": "9.20.26_1",
+                                "origin": "dns/bind920",
+                                "filename": "bind920-9.20.26_1.pkg",
+                            },
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (packages / "build-metadata.txt").write_text(
+                "series=26.7\n"
+                "uname=FreeBSD test 15.1\n"
+                "pkg_abi=FreeBSD:15:amd64\n"
+                "bind920=9.20.26_1\n"
+                "bind_source=resolver\n"
+                "opnsense=26.7\n"
+                "opnsense_core_commit=2222222222222222222222222222222222222222\n"
+                "source_commit=0123456789abcdef\n"
+                "upstream_commit=1111111111111111111111111111111111111111\n"
+                "core_commit=2222222222222222222222222222222222222222\n"
+                "tools_tag=26.7\n"
+                "freebsd_release=15.1\n",
+                encoding="utf-8",
+            )
             key = root / "private.pem"
             key.touch()
 
@@ -63,79 +103,48 @@ class SplitRepositoryStageTest(unittest.TestCase):
                 return subprocess.CompletedProcess(command, 0)
 
             with (
-                patch.object(release_channel, "validate_plugin_package_manifests"),
+                patch.object(release_channel, "validate_channel_package_manifests"),
                 patch.object(release_channel.subprocess, "run", side_effect=fake_repo),
             ):
-                assets = release_channel.stage_plugin_repository(
-                    packages, root / "plugin", key, "pkg"
+                assets = release_channel.stage_channel_repository(
+                    packages, root / "channel", key, "pkg"
                 )
 
             names = {asset.name for asset in assets}
             self.assertEqual(
-                {"os-bind-rp-1.36_2.pkg", "build-metadata.txt", "meta.conf"},
-                names,
-            )
-
-    def test_plugin_stage_rejects_multiple_versions_in_one_catalogue(self) -> None:
-        """pkg catalogues cannot index two versions with the same package name."""
-        with tempfile.TemporaryDirectory() as temporary_directory:
-            root = Path(temporary_directory)
-            packages = root / "packages"
-            packages.mkdir()
-            for name in ("os-bind-rp-1.36_1.pkg", "os-bind-rp-1.36_2.pkg"):
-                (packages / name).touch()
-            (packages / "build-metadata.txt").touch()
-            key = root / "private.pem"
-            key.touch()
-
-            with self.assertRaisesRegex(ValueError, "exactly one package"):
-                release_channel.stage_plugin_repository(packages, root / "snapshot", key, "pkg")
-
-    def test_bind_stage_excludes_plugin_packages_and_requires_provenance(self) -> None:
-        """Fallback BIND remains a separate signed repository with provenance."""
-        with tempfile.TemporaryDirectory() as temporary_directory:
-            root = Path(temporary_directory)
-            packages = root / "packages"
-            packages.mkdir()
-            for name in (
-                "bind-tools-9.20.26_1.pkg",
-                "bind920-9.20.26_1.pkg",
-                "os-bind-rp-1.36_2.pkg",
-            ):
-                (packages / name).touch()
-            key = root / "private.pem"
-            key.touch()
-
-            def fake_repo(command: list[str], **_: object) -> subprocess.CompletedProcess[str]:
-                Path(command[2]).joinpath("meta.conf").touch()
-                return subprocess.CompletedProcess(command, 0)
-
-            with (
-                patch.object(release_channel, "validate_bind920_package_manifests"),
-                patch.object(release_channel.subprocess, "run", side_effect=fake_repo),
-            ):
-                with self.assertRaisesRegex(ValueError, "BIND provenance"):
-                    release_channel.stage_bind920_repository(packages, root / "missing", key, "pkg")
-                (packages / "bind920-provenance.json").write_text("{}\n", encoding="utf-8")
-                assets = release_channel.stage_bind920_repository(
-                    packages, root / "bind", key, "pkg"
-                )
-
-            self.assertEqual(
                 {
                     "bind-tools-9.20.26_1.pkg",
                     "bind920-9.20.26_1.pkg",
+                    "os-bind-rp-1.36_7.pkg",
                     "bind920-provenance.json",
+                    "build-metadata.txt",
+                    "channel.json",
                     "meta.conf",
                 },
-                {asset.name for asset in assets},
+                names,
             )
+            manifest = json.loads((root / "channel/channel.json").read_text(encoding="utf-8"))
+            self.assertEqual("26.7", manifest["series"])
+            self.assertEqual("1.36_7", manifest["plugin_version"])
+            self.assertEqual("0123456789abcdef", manifest["source_commit"])
+            self.assertEqual("f" * 64, manifest["bind"]["fingerprint"])
+            self.assertEqual("15.1", manifest["build"]["freebsd_release"])
+            self.assertEqual("26.7", manifest["build"]["tools_tag"])
+            self.assertEqual(
+                release_channel.sha256(packages / "os-bind-rp-1.36_7.pkg"),
+                manifest["packages"]["os-bind-rp-1.36_7.pkg"],
+            )
+            (root / "channel/resolver-plugins.pub").write_text("public key", encoding="utf-8")
+            (root / "channel/packagesite.pkg").touch()
+            release_channel.validate_channel_directory(root / "channel")
 
-    def test_asset_order_accepts_a_plugin_only_catalogue(self) -> None:
-        """Publishing a decoupled latest channel must not require BIND assets."""
+    def test_asset_order_puts_repository_metadata_after_packages(self) -> None:
+        """Publishing a self-contained channel uploads packages before catalog metadata."""
         with tempfile.TemporaryDirectory() as temporary_directory:
             directory = Path(temporary_directory)
             for name in (
+                "bind-tools-9.20.26_1.pkg",
+                "bind920-9.20.26_1.pkg",
                 "os-bind-rp-1.36_2.pkg",
                 "build-metadata.txt",
                 "data.pkg",
@@ -145,6 +154,8 @@ class SplitRepositoryStageTest(unittest.TestCase):
                 (directory / name).touch()
             self.assertEqual(
                 [
+                    "bind-tools-9.20.26_1.pkg",
+                    "bind920-9.20.26_1.pkg",
                     "os-bind-rp-1.36_2.pkg",
                     "build-metadata.txt",
                     "data.pkg",
@@ -156,6 +167,83 @@ class SplitRepositoryStageTest(unittest.TestCase):
 
 
 class PublicationRecoveryTest(unittest.TestCase):
+    def test_recovery_channel_rejects_an_audit_checksum_mismatch(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            directory = Path(temporary_directory)
+            packages = [
+                directory / "bind-tools-9.20.26_1.pkg",
+                directory / "bind920-9.20.26_1.pkg",
+                directory / "os-bind-rp-1.36_2.pkg",
+            ]
+            for package in packages:
+                package.write_bytes(package.name.encode())
+            (directory / "bind920-provenance.json").write_text(
+                json.dumps(
+                    {
+                        "series": "26.7",
+                        "freebsd_release": "15.1",
+                        "packages": {
+                            "bind-tools": {
+                                "name": "bind-tools",
+                                "version": "9.20.26_1",
+                                "origin": "dns/bind-tools",
+                                "filename": packages[0].name,
+                            },
+                            "bind920": {
+                                "name": "bind920",
+                                "version": "9.20.26_1",
+                                "origin": "dns/bind920",
+                                "filename": packages[1].name,
+                            },
+                        },
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (directory / "build-metadata.txt").write_text(
+                "series=26.7\nuname=FreeBSD test\npkg_abi=FreeBSD:15:amd64\n"
+                "bind920=9.20.26_1\nbind_source=resolver\nopnsense=26.7\n"
+                "opnsense_core_commit=core\nupstream_commit=upstream\ncore_commit=core\n"
+                "tools_tag=26.7.1\nfreebsd_release=15.1\nsource_commit=source\n",
+                encoding="utf-8",
+            )
+            (directory / "channel.json").write_text(
+                json.dumps(
+                    {
+                        "schema": 1,
+                        "series": "26.7",
+                        "plugin_version": "1.36_2",
+                        "source_commit": "source",
+                        "build": {},
+                        "bind": {},
+                        "packages": {package.name: "0" * 64 for package in packages},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (directory / "resolver-plugins.pub").write_text("public key", encoding="utf-8")
+            (directory / "meta.conf").touch()
+            (directory / "packagesite.pkg").touch()
+
+            with self.assertRaisesRegex(ValueError, "checksum"):
+                release_channel.validate_channel_directory(directory)
+
+    def test_release_snapshot_comparison_detects_a_remote_change(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            manifests = []
+            snapshots = []
+            for number, digest in enumerate(("a" * 64, "b" * 64)):
+                directory = root / str(number)
+                directory.mkdir()
+                manifest = root / f"{number}.json"
+                manifest.write_text(json.dumps({"asset.pkg": digest}), encoding="utf-8")
+                manifests.append(manifest)
+                snapshots.append(
+                    release_channel.ReleaseSnapshot("pkg-26.7", True, directory, manifest)
+                )
+            self.assertFalse(release_channel.release_snapshots_match(*snapshots))
+
     def test_failed_promotion_restores_all_channels_from_preserved_bytes(self) -> None:
         """A failed later upload restores already changed releases without remote downloads."""
         with tempfile.TemporaryDirectory() as temporary_directory:
@@ -170,6 +258,10 @@ class PublicationRecoveryTest(unittest.TestCase):
 
             def fake_snapshot(repository: str, tag: str, recovery: Path):
                 directory = recovery / tag
+                if "-os-bind-rp-" in tag:
+                    return release_channel.ReleaseSnapshot(
+                        tag, False, directory, recovery / f"{tag}.json"
+                    )
                 directory.mkdir(parents=True, exist_ok=True)
                 asset = directory / "old.pkg"
                 asset.write_bytes(f"{tag}-old".encode())
@@ -183,22 +275,30 @@ class PublicationRecoveryTest(unittest.TestCase):
 
             def fake_restore(repository: str, snapshot: object) -> None:
                 assert isinstance(snapshot, release_channel.ReleaseSnapshot)
-                restored.append((snapshot.tag, (snapshot.directory / "old.pkg").read_bytes()))
+                restored.append(
+                    (
+                        snapshot.tag,
+                        (snapshot.directory / "old.pkg").read_bytes()
+                        if snapshot.existed
+                        else b"absent",
+                    )
+                )
 
             with (
                 patch.object(release_channel, "snapshot_release", side_effect=fake_snapshot),
+                patch.object(release_channel, "validate_channel_directory"),
                 patch.object(release_channel, "publish", side_effect=fake_publish),
                 patch.object(release_channel, "restore_release", side_effect=fake_restore),
             ):
                 with self.assertRaisesRegex(RuntimeError, "latest upload failed"):
                     release_channel.publish_channels(
                         "resolver-plugins/plugins",
-                        [("pkg-26.7-bind920", snapshot), ("pkg-26.7", latest)],
+                        [("pkg-26.7-os-bind-rp-1.36_2", snapshot), ("pkg-26.7", latest)],
                         root / "recovery",
                     )
 
             self.assertEqual(
-                [("pkg-26.7", b"pkg-26.7-old"), ("pkg-26.7-bind920", b"pkg-26.7-bind920-old")],
+                [("pkg-26.7", b"pkg-26.7-old"), ("pkg-26.7-os-bind-rp-1.36_2", b"absent")],
                 restored,
             )
 
@@ -235,41 +335,80 @@ class PublicationRecoveryTest(unittest.TestCase):
         )
 
 
-class PluginManifestValidationTest(unittest.TestCase):
-    def test_snapshot_rejects_a_plugin_without_the_minimum_bind_formula(self) -> None:
-        """An old exact BIND dependency cannot enter a rollback snapshot."""
-        package = Path("/tmp/os-bind-rp-1.36_2.pkg")
-        identity = (("os-bind-rp", "1.36_2", "opnsense/os-bind-rp", "FreeBSD:15:amd64"), set())
-        with (
-            patch.object(release_channel, "query_package", return_value=identity),
-            patch.object(release_channel, "read_package_manifest", return_value={"dep_formula": "bind920 = 9.20.26"}),
-        ):
-            with self.assertRaisesRegex(ValueError, "dependency formula"):
-                release_channel.validate_plugin_package_manifests([package], "pkg")
+class ChannelManifestValidationTest(unittest.TestCase):
+    def package_identities(self):
+        return [
+            (("bind-tools", "9.20.26_1", "dns/bind-tools", "FreeBSD:15:amd64"), set()),
+            (
+                ("bind920", "9.20.26_1", "dns/bind920", "FreeBSD:15:amd64"),
+                {("bind-tools", "dns/bind-tools", "9.20.26_1")},
+            ),
+            (("os-bind-rp", "1.36_2", "opnsense/os-bind-rp", "FreeBSD:15:amd64"), set()),
+        ]
 
-    def test_snapshot_accepts_the_declared_minimum_bind_formula(self) -> None:
-        """Every rollback snapshot uses the BIND compatibility floor."""
-        package = Path("/tmp/os-bind-rp-1.36_2.pkg")
-        identity = (("os-bind-rp", "1.36_2", "opnsense/os-bind-rp", "FreeBSD:15:amd64"), set())
-        with (
-            patch.object(release_channel, "query_package", return_value=identity),
-            patch.object(release_channel, "read_package_manifest", return_value={"dep_formula": "bind920 >= 9.20.26"}),
-        ):
-            release_channel.validate_plugin_package_manifests([package], "pkg")
+    def bind_records(self):
+        return {
+            "bind-tools": {
+                "name": "bind-tools",
+                "version": "9.20.26_1",
+                "origin": "dns/bind-tools",
+                "filename": "bind-tools-9.20.26_1.pkg",
+            },
+            "bind920": {
+                "name": "bind920",
+                "version": "9.20.26_1",
+                "origin": "dns/bind920",
+                "filename": "bind920-9.20.26_1.pkg",
+            },
+        }
 
-    def test_snapshot_rejects_a_formula_package_with_an_exact_bind_edge(self) -> None:
-        """Formula compatibility must not be defeated by an ordinary dependency edge."""
-        package = Path("/tmp/os-bind-rp-1.36_2.pkg")
-        identity = (
-            ("os-bind-rp", "1.36_2", "opnsense/os-bind-rp", "FreeBSD:15:amd64"),
+    def validate_with_formula(self, formula: str) -> None:
+        packages = [
+            Path("/tmp/bind-tools-9.20.26_1.pkg"),
+            Path("/tmp/bind920-9.20.26_1.pkg"),
+            Path("/tmp/os-bind-rp-1.36_2.pkg"),
+        ]
+        with (
+            patch.object(release_channel, "read_bind_package_records", return_value=self.bind_records()),
+            patch.object(release_channel, "query_package", side_effect=self.package_identities()),
+            patch.object(release_channel, "read_package_manifest", return_value={"dep_formula": formula}),
+        ):
+            release_channel.validate_channel_package_manifests(
+                packages, Path("/tmp/bind920-provenance.json"), "pkg"
+            )
+
+    def test_channel_rejects_plugin_without_minimum_bind_formula(self) -> None:
+        with self.assertRaisesRegex(ValueError, "dependency formula"):
+            self.validate_with_formula("bind920 = 9.20.26")
+
+    def test_channel_accepts_declared_minimum_bind_formula(self) -> None:
+        self.validate_with_formula("bind920 >= 9.20.26")
+
+    def test_channel_rejects_formula_with_exact_bind_edge(self) -> None:
+        identities = self.package_identities()
+        identities[2] = (
+            identities[2][0],
             {("bind920", "dns/bind920", "9.20.26_1")},
         )
+        packages = [
+            Path("/tmp/bind-tools-9.20.26_1.pkg"),
+            Path("/tmp/bind920-9.20.26_1.pkg"),
+            Path("/tmp/os-bind-rp-1.36_2.pkg"),
+        ]
         with (
-            patch.object(release_channel, "query_package", return_value=identity),
-            patch.object(release_channel, "read_package_manifest", return_value={"dep_formula": "bind920 >= 9.20.26"}),
+            patch.object(release_channel, "read_bind_package_records", return_value=self.bind_records()),
+            patch.object(release_channel, "query_package", side_effect=identities),
+            patch.object(
+                release_channel,
+                "read_package_manifest",
+                return_value={"dep_formula": "bind920 >= 9.20.26"},
+            ),
         ):
             with self.assertRaisesRegex(ValueError, "exact BIND"):
-                release_channel.validate_plugin_package_manifests([package], "pkg")
+                release_channel.validate_channel_package_manifests(
+                    packages, Path("/tmp/bind920-provenance.json"), "pkg"
+                )
+
 
 if __name__ == "__main__":
     unittest.main()

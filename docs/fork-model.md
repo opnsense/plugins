@@ -37,10 +37,11 @@ They are generated review inputs, not places for unrelated development.
 
 ## Current distribution boundary
 
-The signed package repository is active and approved. The publication workflow
-signs packages and publishes the approved release through GitHub Release
-publication and the repository, with an established end-user installation
-contract. A release-branch build remains a reviewed build input; it does not
+The signed package repository is active and approved. Generated current and
+rollback channels are published as GitHub Releases in
+`resolver-plugins/repository`; human-facing source releases remain in
+`resolver-plugins/plugins` and contain only the plugin package and build
+metadata. A release-branch build remains a reviewed build input; it does not
 independently authorize publication or a change to the installation contract.
 
 Do not alter signing, GitHub Release publication, package-repository
