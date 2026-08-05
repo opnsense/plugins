@@ -17,15 +17,17 @@ using source-repository GitHub Releases as the per-series package channels.
 - `https://github.com/resolver-plugins/repository` is the dedicated
   distribution repository. It contains generated signed package-channel
   assets only; it is not a source or development repository.
-- Each OPNsense series has one self-contained, rolling channel: `pkg-26.1`,
-  `pkg-26.7`, and so on.
+- Each OPNsense series has one self-contained, rolling current channel:
+  `pkg-26.1`, `pkg-26.7`, and so on. It also has up to five immutable,
+  self-contained rollback snapshots named
+  `pkg-<series>-os-bind-rp-<version>`.
 - Source-repository GitHub Releases are ordinary, immutable, human-facing
   `os-bind-rp` version releases. Their assets are limited to the plugin
   package and small release metadata; they never contain a `pkg` catalogue,
   BIND package pair, signing material, or repository bootstrap files.
-- Each distribution channel retains the five newest `os-bind-rp` versions for
-  its series and every BIND package version required by one of those five
-  packages.
+- The distribution repository retains the five newest rollback snapshots for
+  each series. The current channel carries the newest plugin; each snapshot
+  carries its own plugin and BIND baseline.
 
 ## Repository boundaries
 
@@ -53,19 +55,17 @@ as OPNsense package base URLs:
 https://github.com/resolver-plugins/repository/releases/download/pkg-<series>
 ```
 
-These tags are operational channels rather than product releases. Updating a
-tag replaces its signed package-repository snapshot, but each snapshot is
-fully self-contained for its OPNsense series.
+The current tags are operational channels rather than product releases. An
+immutable snapshot URL uses
+`pkg-<series>-os-bind-rp-<version>` in place of `pkg-<series>`. This layout is
+necessary because `pkg` publishes only one selected version of a package name
+in a catalogue. Every current or snapshot channel is fully self-contained.
 
 ## Channel contents
 
-For example, `pkg-26.7` contains:
+For example, the current `pkg-26.7` channel contains:
 
 ```text
-os-bind-rp-1.36_3.pkg
-os-bind-rp-1.36_4.pkg
-os-bind-rp-1.36_5.pkg
-os-bind-rp-1.36_6.pkg
 os-bind-rp-1.36_7.pkg
 bind920-9.20.26_1.pkg
 bind-tools-9.20.26_1.pkg
@@ -78,14 +78,15 @@ The exact names of the `packagesite` and `meta` files are produced by `pkg
 repo`; the workflow does not invent them independently.
 
 `channel.json` is a human- and automation-readable audit record. It contains
-the series, current plugin version, retained plugin versions, each retained
-package's SHA-256, selected release-source commit, BIND compatibility
-fingerprint, and upstream/tools/FreeBSD/core provenance identity. It is
-supplementary information: the signed `pkg` catalogue and package manifests
-remain the installation authority.
+the series, plugin version, each package's SHA-256, selected release-source
+commit, BIND compatibility fingerprint, and upstream/tools/FreeBSD/core
+provenance identity. It is supplementary information: the signed `pkg`
+catalogue and package manifests remain the installation authority.
 
-Normal package operations choose the newest `os-bind-rp`. An administrator
-can select a retained older version from the same channel to roll back.
+Normal package operations use the current channel. An administrator rolls
+back by temporarily changing the configured URL to a retained immutable
+snapshot in the same distribution repository, then selecting its only plugin
+package.
 
 ## BIND baseline policy
 
@@ -95,9 +96,12 @@ its compatibility fingerprint matches. It builds a new BIND pair only when
 the pinned BIND version/profile, OPNsense series, FreeBSD release,
 architecture, or an explicit security or maintenance decision requires it.
 
-When a new BIND pair is introduced, prior BIND packages remain present while
-any of the five retained plugin packages has an exact dependency on them.
-They are pruned only after no retained plugin depends on them.
+Each current channel and immutable snapshot carries the BIND pair used for its
+own build. A new BIND baseline therefore does not need an inferred package
+dependency closure: pre-existing snapshots retain their old pair, and new
+current/snapshot channels carry the replacement pair. The plugin's package
+formula remains the compatibility floor, not an assertion of an exact BIND
+baseline.
 
 ## Publication and retention
 
@@ -105,25 +109,27 @@ They are pruned only after no retained plugin depends on them.
 2. CI validates immutable source provenance and builds a production
    `os-bind-rp` package from that exact source. It reuses a compatible BIND
    pair or performs the pinned BIND build only on an expected cache miss.
-3. The trusted signing job downloads the current distribution-channel
-   snapshot, validates its manifests and provenance, and constructs the
-   intended retained package set.
-4. It keeps the five newest production `os-bind-rp` versions, computes the
-   exact BIND dependency closure of those packages, writes `channel.json`, and
-   runs `pkg repo` with the private key over the complete set.
+3. The build obtains the BIND pair from the current distribution channel when
+   its provenance matches, or builds the pinned pair once on a cache miss. It
+   does so in a clean BIND-materialization environment rather than installing
+   a competing BIND package over the normal plugin build environment.
+4. The trusted signing job stages one complete current channel and one
+   complete immutable snapshot, writes `channel.json`, and runs `pkg repo`
+   with the private key over each complete set.
 5. It verifies that the generated catalogue, public key, manifest checksums,
    and package dependency graph exactly match the intended set.
-6. The final publication job writes the staged assets to
-   `resolver-plugins/repository` under `pkg-<series>` and creates the
-   immutable source-release record.
+6. A final distribution job writes the staged assets to
+   `resolver-plugins/repository` under the current and snapshot tags using a
+   token limited to that repository. A subsequent source-release job uses the
+   source repository token to create the immutable human-facing release.
 
 The publisher fails before changing the distribution repository if the
 existing channel is malformed, package checksums differ unexpectedly, source
 provenance is invalid, a dependency is unavailable, or the generated
 catalogue is incomplete.
 
-No rollback package is removed until it falls outside the newest-five set and
-is absent from the dependency closure of all retained plugin packages.
+No rollback snapshot is removed until it falls outside the newest-five set and
+the current/snapshot publication has succeeded.
 
 ## Migration
 
@@ -149,18 +155,18 @@ is approved.
 
 Durable CI regression tests must cover:
 
-- retaining exactly five plugin versions and their complete BIND dependency
-  closure;
-- safely pruning a sixth plugin version and an unreferenced older BIND pair;
-- retaining two BIND baselines during a compatibility transition;
+- retaining exactly five complete rollback snapshots;
+- safely pruning the sixth-oldest snapshot only after promotion;
+- retaining the prior BIND baseline inside older snapshots during a baseline
+  transition;
 - refusing malformed prior channels, absent provenance, unexpected checksums,
   invalid dependency edges, and incomplete catalogues before publication;
 - emitting correct `channel.json` content and a matching signed `pkg`
   catalogue;
 - publishing only the narrow, immutable plugin-plus-metadata assets in the
   source release; and
-- installing the current package and selecting a retained rollback package
-  through a single per-series channel.
+- installing the current package and selecting a retained rollback snapshot
+  from the same distribution repository.
 
 ## Non-goals
 
