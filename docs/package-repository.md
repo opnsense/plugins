@@ -50,29 +50,6 @@ pkg update -r resolver-plugins
 pkg install os-bind-rp
 ```
 
-Before enabling any fallback, check the official packages. An eligible BIND is
-`bind920` from `dns/bind920`, at least `9.20.26`, with `bind-tools` from
-`dns/bind-tools`. The plugin formula accepts that official package and does not
-require the Resolver fallback.
-
-Only if that check fails, add the fallback configuration with `enabled: no`:
-
-```sh
-cat > /usr/local/etc/pkg/repos/resolver-plugins-bind920.conf <<EOF
-resolver-plugins-bind920: {
-  url: "https://github.com/resolver-plugins/plugins/releases/download/pkg-$series-bind920",
-  mirror_type: "none",
-  signature_type: "pubkey",
-  pubkey: "/usr/local/etc/pkg/keys/resolver-plugins.pub",
-  enabled: no
-}
-EOF
-```
-
-Set `enabled: yes` in that file only after recording why the OPNsense BIND is
-ineligible, run `pkg update -r resolver-plugins-bind920`, and install the
-fallback BIND pair. Disable the repository again before normal upgrades.
-
 ### Rollback
 
 Back up the OPNsense configuration before changing plugin versions:

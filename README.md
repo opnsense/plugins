@@ -59,12 +59,12 @@ esac
 channel="pkg-$series"
 install -d -m 0755 /usr/local/etc/pkg/keys /usr/local/etc/pkg/repos
 fetch -o /usr/local/etc/pkg/keys/resolver-plugins.pub \
-  "https://github.com/resolver-plugins/plugins/releases/download/$channel/resolver-plugins.pub"
+  "https://github.com/resolver-plugins/repository/releases/download/$channel/resolver-plugins.pub"
 test "$(sha256 -q /usr/local/etc/pkg/keys/resolver-plugins.pub)" = \
   bd89d6f91807c71f8a744532c9ce2f97e9590f8858ac779bfb2f23c10804e07e || exit 1
 cat > /usr/local/etc/pkg/repos/resolver-plugins.conf <<EOF
 resolver-plugins: {
-  url: "https://github.com/resolver-plugins/plugins/releases/download/$channel",
+  url: "https://github.com/resolver-plugins/repository/releases/download/$channel",
   signature_type: "pubkey",
   pubkey: "/usr/local/etc/pkg/keys/resolver-plugins.pub",
   enabled: yes
@@ -94,10 +94,9 @@ future release for the same OPNsense series updates the same `pkg-<series>`
 channel, so normal `pkg upgrade` operations can receive it. The signed
 `pkg-<series>-os-bind-rp-<version>` snapshots retain the five newest plugin
 rollback versions, while the disabled `pkg-<series>-bind920` channel is available only
-when OPNsense BIND does not meet the documented compatibility policy. See the
-[package repository guide](docs/package-repository.md) for the explicit BIND
-fallback and rollback procedures before changing a release channel or signing
-key.
+as self-contained rollback channels in the same distribution repository. See
+the [package repository guide](docs/package-repository.md) before changing a
+release channel or signing key.
 
 About the OPNsense plugins
 ==========================
