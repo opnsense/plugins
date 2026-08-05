@@ -42,6 +42,78 @@ class ChannelTagTest(unittest.TestCase):
 
 
 class SplitRepositoryStageTest(unittest.TestCase):
+    def test_stage_channel_contains_the_plugin_bind_pair_and_audit_manifest(self) -> None:
+        """A self-contained channel carries one plugin, its BIND pair, and auditable metadata."""
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            packages = root / "packages"
+            packages.mkdir()
+            for name in (
+                "bind-tools-9.20.26_1.pkg",
+                "bind920-9.20.26_1.pkg",
+                "os-bind-rp-1.36_7.pkg",
+            ):
+                (packages / name).write_bytes(name.encode())
+            (packages / "bind920-provenance.json").write_text(
+                json.dumps(
+                    {
+                        "packages": {
+                            "bind-tools": {
+                                "name": "bind-tools",
+                                "version": "9.20.26_1",
+                                "origin": "dns/bind-tools",
+                                "filename": "bind-tools-9.20.26_1.pkg",
+                            },
+                            "bind920": {
+                                "name": "bind920",
+                                "version": "9.20.26_1",
+                                "origin": "dns/bind920",
+                                "filename": "bind920-9.20.26_1.pkg",
+                            },
+                        }
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (packages / "build-metadata.txt").write_text(
+                "series=26.7\nsource_commit=0123456789abcdef\n", encoding="utf-8"
+            )
+            key = root / "private.pem"
+            key.touch()
+
+            def fake_repo(command: list[str], **_: object) -> subprocess.CompletedProcess[str]:
+                Path(command[2]).joinpath("meta.conf").touch()
+                return subprocess.CompletedProcess(command, 0)
+
+            with (
+                patch.object(release_channel, "validate_channel_package_manifests"),
+                patch.object(release_channel.subprocess, "run", side_effect=fake_repo),
+            ):
+                assets = release_channel.stage_channel_repository(
+                    packages, root / "channel", key, "pkg"
+                )
+
+            names = {asset.name for asset in assets}
+            self.assertEqual(
+                {
+                    "bind-tools-9.20.26_1.pkg",
+                    "bind920-9.20.26_1.pkg",
+                    "os-bind-rp-1.36_7.pkg",
+                    "bind920-provenance.json",
+                    "build-metadata.txt",
+                    "channel.json",
+                    "meta.conf",
+                },
+                names,
+            )
+            manifest = json.loads((root / "channel/channel.json").read_text(encoding="utf-8"))
+            self.assertEqual("26.7", manifest["series"])
+            self.assertEqual("0123456789abcdef", manifest["source_commit"])
+            self.assertEqual(
+                release_channel.sha256(packages / "os-bind-rp-1.36_7.pkg"),
+                manifest["packages"]["os-bind-rp-1.36_7.pkg"],
+            )
+
     def test_plugin_stage_excludes_bind_packages_and_retains_build_metadata(self) -> None:
         """The plugin catalogue must be independently installable and rollback-ready."""
         with tempfile.TemporaryDirectory() as temporary_directory:

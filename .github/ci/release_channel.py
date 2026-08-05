@@ -97,6 +97,45 @@ def select_bind920_packages(directory: Path) -> list[Path]:
     return selected
 
 
+def read_bind_package_records(provenance_path: Path) -> dict[str, dict[str, str]]:
+    """Read the exact BIND package identities from trusted build provenance."""
+    try:
+        provenance = json.loads(provenance_path.read_text(encoding="utf-8"))
+        records = provenance["packages"]
+    except (OSError, json.JSONDecodeError, KeyError, TypeError) as error:
+        raise ValueError("BIND provenance is invalid") from error
+    if not isinstance(records, dict) or set(records) != {"bind-tools", "bind920"}:
+        raise ValueError("BIND provenance is invalid")
+    expected_origins = {"bind-tools": "dns/bind-tools", "bind920": "dns/bind920"}
+    validated = {}
+    for package_name, expected_origin in expected_origins.items():
+        record = records[package_name]
+        if not isinstance(record, dict) or set(record) != {"name", "version", "origin", "filename"}:
+            raise ValueError("BIND provenance is invalid")
+        if (
+            record["name"] != package_name
+            or record["origin"] != expected_origin
+            or not all(isinstance(record[field], str) and record[field] for field in record)
+            or Path(record["filename"]).name != record["filename"]
+        ):
+            raise ValueError("BIND provenance is invalid")
+        validated[package_name] = record
+    return validated
+
+
+def select_channel_packages(directory: Path) -> list[Path]:
+    """Select a plugin and the exact BIND archive names recorded in provenance."""
+    records = read_bind_package_records(directory / PROVENANCE_NAME)
+    selected = []
+    for package_name in ("bind-tools", "bind920"):
+        filename = records[package_name]["filename"]
+        package = directory / filename
+        if not package.is_file():
+            raise ValueError(f"missing production {package_name} package")
+        selected.append(package)
+    return [*selected, *select_plugin_packages(directory)]
+
+
 def query_package(package: Path, pkg_command: str) -> tuple[tuple[str, str, str, str], set[tuple[str, str, str]]]:
     """Read the manifest identity and dependency edges from one package file."""
     identity = subprocess.run(
@@ -157,6 +196,44 @@ def validate_package_manifests(packages: list[Path], pkg_command: str) -> None:
         raise ValueError("bind920 does not depend on bundled bind-tools")
     if ("bind920", "dns/bind920", "9.20.26_1") not in manifests["os-bind-rp"][1]:
         raise ValueError("os-bind-rp does not depend on bundled bind920")
+
+
+def validate_channel_package_manifests(
+    packages: list[Path], provenance_path: Path, pkg_command: str
+) -> None:
+    """Validate a self-contained package set against its BIND provenance."""
+    if len(packages) != 3:
+        raise ValueError("channel does not contain one BIND pair and one plugin")
+    records = read_bind_package_records(provenance_path)
+    common_abi = None
+    identities = {}
+    dependencies = {}
+    for expected_name, package in zip(("bind-tools", "bind920", "os-bind-rp"), packages, strict=True):
+        identity, package_dependencies = query_package(package, pkg_command)
+        name, version, origin, abi = identity
+        if name != expected_name:
+            raise ValueError("channel package has an unexpected identity")
+        if expected_name in records:
+            expected = records[expected_name]
+            if (name, version, origin, package.name) != (
+                expected["name"], expected["version"], expected["origin"], expected["filename"]
+            ):
+                raise ValueError(f"{expected_name} package does not match BIND provenance")
+        elif origin != "opnsense/os-bind-rp":
+            raise ValueError("channel plugin has an unexpected origin")
+        if common_abi is None:
+            common_abi = abi
+        elif abi != common_abi:
+            raise ValueError("channel package ABI does not match the BIND pair")
+        identities[name] = (version, origin)
+        dependencies[name] = package_dependencies
+    bind_tools_version, _ = identities["bind-tools"]
+    if ("bind-tools", "dns/bind-tools", bind_tools_version) not in dependencies["bind920"]:
+        raise ValueError("bind920 does not depend on the channel bind-tools package")
+    if any(dependency[0] == "bind920" for dependency in dependencies["os-bind-rp"]):
+        raise ValueError("plugin package records an exact BIND dependency")
+    if read_package_manifest(packages[2], pkg_command).get("dep_formula") != "bind920 >= 9.20.26":
+        raise ValueError("plugin package does not declare the required BIND dependency formula")
 
 
 def validate_plugin_package_manifests(packages: list[Path], pkg_command: str) -> None:
@@ -389,6 +466,46 @@ def stage_repository(packages_directory: Path, output: Path, private_key: Path, 
     ):
         raise ValueError("pkg repo did not produce a repository catalog")
     return assets
+
+
+def read_build_metadata(path: Path) -> dict[str, str]:
+    """Read the small, line-oriented build identity used by channel.json."""
+    if not path.is_file():
+        raise ValueError("plugin build metadata does not exist")
+    fields = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        key, separator, value = line.partition("=")
+        if not separator or not key or not value or key in fields:
+            raise ValueError("plugin build metadata is invalid")
+        fields[key] = value
+    if SERIES_PATTERN.fullmatch(fields.get("series", "")) is None or not fields.get("source_commit"):
+        raise ValueError("plugin build metadata is invalid")
+    return fields
+
+
+def stage_channel_repository(
+    packages_directory: Path, output: Path, private_key: Path, pkg_command: str
+) -> list[Path]:
+    """Create one signed, self-contained current or rollback channel."""
+    provenance = packages_directory / PROVENANCE_NAME
+    if not provenance.is_file():
+        raise ValueError("BIND provenance does not exist")
+    packages = select_channel_packages(packages_directory)
+    build_metadata = packages_directory / "build-metadata.txt"
+    metadata = read_build_metadata(build_metadata)
+    validate_channel_package_manifests(packages, provenance, pkg_command)
+    stage_selected_repository(
+        packages, output, private_key, pkg_command, [provenance, build_metadata]
+    )
+    channel_manifest = {
+        "series": metadata["series"],
+        "source_commit": metadata["source_commit"],
+        "packages": {package.name: sha256(package) for package in packages},
+    }
+    (output / "channel.json").write_text(
+        json.dumps(channel_manifest, sort_keys=True, indent=2) + "\n", encoding="utf-8"
+    )
+    return sorted(path for path in output.iterdir() if path.is_file())
 
 
 def asset_order(directory: Path) -> list[Path]:
