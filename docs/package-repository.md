@@ -20,7 +20,7 @@ https://github.com/resolver-plugins/plugins/releases/download/pkg-<series>
 ```
 
 Every channel includes `meta.conf`, catalogue data, `resolver-plugins.pub`,
-and exactly these packages:
+`bind920-provenance.json`, and exactly these packages:
 
 - `bind-tools-9.20.26_1.pkg`
 - `bind920-9.20.26_1.pkg`
@@ -31,6 +31,11 @@ and `bind920` records its matching `bind-tools` dependency. Installing the
 plugin from this channel therefore installs the fixed BIND daemon without a
 separate user step. Package clients verify the catalogue and packages using
 the published public key.
+
+`bind920-provenance.json` records the BIND Ports profile, target series, and
+FreeBSD compatibility identity used for the two BIND packages. CI uses it only
+to determine whether a later plugin build can reuse the stable package pair;
+it still fetches the pair through this signed package channel before use.
 
 The BIND packages deliberately retain the normal FreeBSD names and origins
 (`bind920`/`dns/bind920` and `bind-tools`/`dns/bind-tools`), so they replace
@@ -49,6 +54,12 @@ The `Publish os-bind-rp package release` workflow builds from a selected
 PR pre-release. A production run builds, signs, and uploads the stable channel.
 When a PR is merged into a release source branch, the workflow automatically
 performs the production path.
+
+Before compiling BIND, the build attempts to reuse the matching pair from the
+existing stable channel. A missing provenance file (including the first build
+of a new series) or a changed compatibility identity is an expected cache miss
+and triggers the pinned Ports build. Invalid provenance or a failed signed
+package fetch is a hard failure.
 
 The `RP_PKG_SIGNING_KEY` GitHub Actions secret contains the base64-encoded
 private key. It is decoded only in the disposable FreeBSD VM, used by `pkg

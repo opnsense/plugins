@@ -16,6 +16,7 @@ PACKAGE_PATTERNS = {
     "bind920": re.compile(r"bind920-9\.20\.26_1\.pkg"),
     "os-bind-rp": re.compile(r"os-bind-rp-(?!devel-).+\.pkg"),
 }
+PROVENANCE_NAME = "bind920-provenance.json"
 EXPECTED_PACKAGES = {
     "bind-tools": ("bind-tools", "9.20.26_1", "dns/bind-tools"),
     "bind920": ("bind920", "9.20.26_1", "dns/bind920"),
@@ -104,6 +105,9 @@ def stage_repository(packages_directory: Path, output: Path, private_key: Path, 
     if any(output.iterdir()):
         raise ValueError("repository output directory must be empty")
     packages = select_packages(packages_directory)
+    provenance = packages_directory / PROVENANCE_NAME
+    if not provenance.is_file():
+        raise ValueError("BIND provenance does not exist")
     validate_package_manifests(packages, pkg_command)
     copied = [output / package.name for package in packages]
     for package, destination in zip(packages, copied, strict=True):
@@ -111,8 +115,13 @@ def stage_repository(packages_directory: Path, output: Path, private_key: Path, 
     subprocess.run(
         [pkg_command, "repo", str(output), f"rsa:{private_key}"], check=True
     )
+    shutil.copy2(provenance, output / PROVENANCE_NAME)
     assets = sorted(path for path in output.iterdir() if path.is_file())
-    if any(package not in assets for package in copied) or not any(path.name.startswith("meta") for path in assets):
+    if (
+        any(package not in assets for package in copied)
+        or output / PROVENANCE_NAME not in assets
+        or not any(path.name.startswith("meta") for path in assets)
+    ):
         raise ValueError("pkg repo did not produce a repository catalog")
     return assets
 

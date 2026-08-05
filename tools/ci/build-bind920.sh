@@ -30,12 +30,32 @@ ports_commit=$(metadata_field ports_commit) || fail 'invalid BIND profile'
 makefile_sha256=$(metadata_field makefile_sha256) || fail 'invalid BIND profile'
 distinfo_sha256=$(metadata_field distinfo_sha256) || fail 'invalid BIND profile'
 distversion=$(metadata_field distversion) || fail 'invalid BIND profile'
+freebsd_release=$("$python_command" "$script_directory/metadata_profile.py" \
+    "$RP_UPSTREAM_METADATA" "$series" freebsd_release) || fail 'invalid upstream metadata'
 
 "$pkg_command" update -f
 "$pkg_command" install -y git patch
 "$script_directory/setup-opnsense-repository.sh" "$series" >/dev/null
 "$pkg_command" install -y autoconf automake fstrm gmake json-c libedit libidn2 \
     libnghttp2 libtool liburcu libuv libxml2 lmdb pkgconf protobuf-c
+
+if [ -n "${RP_BIND920_CHANNEL_URL:-}" ]
+then
+    if "$python_command" "$script_directory/reuse_bind920.py" \
+        "$profile_path" "$series" "$freebsd_release" "$artifact_directory" \
+        --channel-url "$RP_BIND920_CHANNEL_URL" \
+        --public-key "$repository_root/docs/package-repository/resolver-plugins.pub" \
+        --pkg-command "$pkg_command"
+    then
+        exit 0
+    else
+        reuse_status=$?
+    fi
+    case "$reuse_status" in
+        3) printf '%s\n' 'BIND reuse cache miss; building pinned BIND packages' >&2 ;;
+        *) exit "$reuse_status" ;;
+    esac
+fi
 
 temporary_directory=$(mktemp -d)
 ports_directory="$temporary_directory/ports"
@@ -75,4 +95,8 @@ case "$comparison" in
 esac
 
 mkdir -p "$artifact_directory"
-cp "$bind_tools_package" "$bind_package" "$artifact_directory/"
+provenance="$temporary_directory/bind920-provenance.json"
+"$python_command" "$script_directory/bind920_profile.py" "$profile_path" \
+    provenance "$series" "$freebsd_release" \
+    --bind-tools "$bind_tools_package" --bind920 "$bind_package" --output "$provenance"
+cp "$bind_tools_package" "$bind_package" "$provenance" "$artifact_directory/"
