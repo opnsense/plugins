@@ -67,6 +67,14 @@ mechanism exists yet.
 - Verify CI changes with the focused local checks in
   [docs/building.md](docs/building.md), and run the affected workflow manually
   only when authorized. Report the workflow URL and its actual outcome.
+- A code review agent must be run on pr's when they are "ready", as a fianl step
+  befor merge. High priority items must be resolved before a pr can be merged.
+  Perform a remeditation and review cycle util the items are resolved and the
+  code-review agent approve the pr as ready, when no high priority items are
+  observed.
+
+- An agent must be used to review generated plans, and high priority items must be
+  resolved before a plan can be approved and implemented.
 
 ## Documentation updates
 
