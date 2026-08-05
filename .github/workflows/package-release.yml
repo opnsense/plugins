@@ -287,7 +287,7 @@ jobs:
 
   publish:
     if: needs.select.outputs.mode == 'production'
-    needs: [select, profile, sign]
+    needs: [select, profile, sign, verify]
     runs-on: ubuntu-24.04
     permissions:
       contents: write
@@ -316,6 +316,42 @@ jobs:
           channels+=(--channel "pkg-$SERIES=$root/current")
           python3 .github/ci/release_channel.py publish-channels --repository resolver-plugins/repository --recovery "$RUNNER_TEMP/recovery" "${channels[@]}"
           python3 .github/ci/release_channel.py prune-snapshots --repository resolver-plugins/repository --series "$SERIES" --keep 5
+
+  verify:
+    if: needs.select.outputs.mode == 'production'
+    needs: [select, profile, sign]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: os-bind-rp-production-repository-${{ needs.select.outputs.series }}
+          path: artifacts/${{ needs.select.outputs.series }}/repository
+      - name: Verify signed package channel in FreeBSD
+        uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
+        with:
+          release: ${{ needs.profile.outputs.freebsd_release }}
+          arch: x86_64
+          usesh: true
+          disable-cache: true
+          run: |
+            set -eu
+            root="artifacts/${{ needs.select.outputs.series }}/repository"
+            install -d -m 0755 /usr/local/etc/pkg/keys /usr/local/etc/pkg/repos
+            install -m 0644 "$root/current/resolver-plugins.pub" /usr/local/etc/pkg/keys/resolver-plugins.pub
+            cat > /usr/local/etc/pkg/repos/resolver-plugins.conf <<EOF
+            resolver-plugins: {
+              url: "file://$PWD/$root/current",
+              mirror_type: "none",
+              signature_type: "pubkey",
+              pubkey: "/usr/local/etc/pkg/keys/resolver-plugins.pub",
+              enabled: yes
+            }
+            EOF
+            pkg update -r resolver-plugins
+            pkg rquery -r resolver-plugins -e '%n = bind920 OR %n = bind-tools OR %n = os-bind-rp' '%n-%v'
 
   source-release:
     if: needs.select.outputs.mode == 'production'
