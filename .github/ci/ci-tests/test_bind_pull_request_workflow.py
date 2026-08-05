@@ -20,6 +20,7 @@ def test_workflow_runs_only_for_relevant_pull_request_changes():
     workflow = workflow_text()
 
     assert 'pull_request:' in workflow
+    assert 'workflow_call:' in workflow
     assert 'pull_request_target:' not in workflow
     assert "- 'dns/bind/**'" in workflow
     assert "- '.github/ci/**'" in workflow
@@ -40,9 +41,20 @@ def test_workflow_discovers_release_branches_and_runs_canonical_tests():
 def test_release_source_pull_requests_test_their_proposed_source():
     workflow = workflow_text()
 
-    assert 'PR_BASE: ${{ github.event.pull_request.base.ref }}' in workflow
+    assert 'PR_BASE: ${{ inputs.pull_request_base || github.event.pull_request.base.ref }}' in workflow
     assert 'refs/heads/master:refs/remotes/origin/canonical-tests' in workflow
+    assert 'git checkout refs/remotes/origin/canonical-tests -- \\' in workflow
+    assert '.github/ci/metadata_profile.py' in workflow
     assert 'if [[ "$PR_BASE" != "release/bind-rp/$SERIES" ]]' in workflow
+
+
+def test_reusable_workflow_accepts_the_callers_pull_request_context():
+    workflow = workflow_text()
+
+    assert 'pull_request_base:' in workflow
+    assert 'pull_request_sha:' in workflow
+    assert 'ref: ${{ inputs.pull_request_sha || github.sha }}' in workflow
+    assert 'PR_BASE: ${{ inputs.pull_request_base || github.event.pull_request.base.ref }}' in workflow
 
 
 def test_workflow_has_read_only_permissions_and_pinned_actions():

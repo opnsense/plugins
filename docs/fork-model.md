@@ -26,7 +26,10 @@ package-identity changes.
 `release/bind-rp/<series>` branches are the per-OPNsense-series build sources.
 Their `.resolver-plugins/upstream.json` records immutable provenance for that
 series. Treat a release branch as a stable, reviewed input to a package build;
-do not force-push or casually rewrite it.
+do not force-push or casually rewrite it. Each release branch carries a thin
+`.github/workflows/bind-tests.yml` caller that invokes the canonical read-only
+test workflow from `master`; new release bootstraps inherit it through the
+workflow overlay.
 
 The synchronizer creates `sync/bind/<series>/<commit>` and
 `sync/bootstrap/<series>/<commit>` branches when human review is necessary.

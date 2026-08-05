@@ -6,6 +6,14 @@ on:
       - 'dns/bind/**'
       - '.github/ci/**'
       - '.github/workflows/bind-tests.yml'
+  workflow_call:
+    inputs:
+      pull_request_base:
+        required: true
+        type: string
+      pull_request_sha:
+        required: true
+        type: string
 
 permissions:
   contents: read
@@ -55,19 +63,20 @@ jobs:
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
         with:
-          ref: ${{ github.sha }}
+          ref: ${{ inputs.pull_request_sha || github.sha }}
           persist-credentials: false
       - name: Materialize canonical tests and release BIND source
         shell: bash
         env:
-          PR_BASE: ${{ github.event.pull_request.base.ref }}
+          PR_BASE: ${{ inputs.pull_request_base || github.event.pull_request.base.ref }}
           SERIES: ${{ matrix.series }}
         run: |
           set -euo pipefail
-          if [[ ! -d dns/bind/tests ]]; then
+          if [[ ! -d dns/bind/tests || ! -f .github/ci/metadata_profile.py ]]; then
             git fetch --no-tags origin \
               'refs/heads/master:refs/remotes/origin/canonical-tests'
-            git checkout refs/remotes/origin/canonical-tests -- dns/bind/tests
+            git checkout refs/remotes/origin/canonical-tests -- \
+              .github/ci/metadata_profile.py dns/bind/tests
           fi
           source_commit=$(git rev-parse HEAD)
           if [[ "$PR_BASE" != "release/bind-rp/$SERIES" ]]; then
