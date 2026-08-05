@@ -91,6 +91,17 @@ URL, for example `pkg-$series-os-bind-rp-1.36_2`. Dry-run and then install the
 only plugin package exposed by that snapshot:
 
 ```sh
+snapshot="pkg-$series-os-bind-rp-1.36_2"
+cat > /usr/local/etc/pkg/repos/resolver-plugins-rollback.conf <<EOF
+resolver-plugins-rollback: {
+  url: "https://github.com/resolver-plugins/plugins/releases/download/$snapshot",
+  mirror_type: "none",
+  signature_type: "pubkey",
+  pubkey: "/usr/local/etc/pkg/keys/resolver-plugins.pub",
+  enabled: yes
+}
+EOF
+pkg update -r resolver-plugins-rollback
 pkg install -n -r resolver-plugins-rollback os-bind-rp
 pkg install -f -r resolver-plugins-rollback os-bind-rp
 pkg query -e '%n = os-bind-rp' '%n-%v'
