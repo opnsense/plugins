@@ -10,8 +10,8 @@
             </enabled>
             <token type="TextField">
                 <Required>Y</Required>
-                <Mask>/^[a-zA-Z0-9\._\-]+$/</Mask>
-                <ValidationMessage>Token may only contain letters, digits, dots, underscores and hyphens.</ValidationMessage>
+                <Mask>/^[a-zA-Z0-9\._\-=]+$/</Mask>
+                <ValidationMessage>Token may only contain letters, digits, dots, underscores, equal signs, and hyphens.</ValidationMessage>
             </token>
             <protocol type="OptionField">
                 <Default>auto</Default>
