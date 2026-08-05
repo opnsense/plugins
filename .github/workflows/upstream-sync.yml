@@ -157,10 +157,19 @@ jobs:
           disable-cache: true
           copyback: true
           run: |
+            set -eu
+            export IGNORE_OSVERSION=yes
+            pkg update -f
+            pkg install -y python3
             series='${{ steps.plan.outputs.series }}'
+            output="artifacts/$series"
+            source_commit="$(git rev-parse HEAD)"
             RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json \
-              SOURCE_COMMIT="$(git rev-parse HEAD)" \
-              .github/ci/build-os-bind-rp.sh "$series" "artifacts/$series"
+              SOURCE_COMMIT="$source_commit" \
+              .github/ci/build-bind920.sh "$series" "$output"
+            RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json \
+              SOURCE_COMMIT="$source_commit" \
+              .github/ci/build-os-bind-rp.sh "$series" "$output"
       - name: Upload bootstrap artifact
         if: steps.recovery.outputs.handled != 'true' && steps.plan.outputs.action == 'bootstrap-build'
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
