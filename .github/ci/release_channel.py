@@ -9,10 +9,15 @@ import json
 import shutil
 import re
 import subprocess
+import sys
 import tempfile
 from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
+
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import bind920_profile
 
 
 SERIES_PATTERN = re.compile(r"[0-9]+\.[0-9]+")
@@ -140,6 +145,25 @@ def read_bind_package_records(provenance_path: Path) -> dict[str, dict[str, str]
             raise ValueError("BIND provenance is invalid")
         validated[package_name] = record
     return validated
+
+
+def validate_bind_provenance(
+    provenance: object, profile: object, series: str, freebsd_release: str
+) -> dict[str, dict[str, str]]:
+    """Accept only the BIND pair implied by trusted control-plane metadata."""
+    if not isinstance(provenance, dict):
+        raise ValueError("BIND provenance is invalid")
+    try:
+        expected = bind920_profile.build_provenance(
+            profile, series, freebsd_release, "x86_64", provenance["packages"]
+        )
+    except (KeyError, ValueError) as error:
+        raise ValueError("BIND provenance is invalid") from error
+    if provenance.get("fingerprint") != expected["fingerprint"]:
+        raise ValueError("BIND provenance fingerprint does not match the trusted profile")
+    if provenance != expected:
+        raise ValueError("BIND provenance does not match the trusted profile")
+    return expected["packages"]
 
 
 def select_channel_packages(directory: Path) -> list[Path]:
@@ -753,6 +777,11 @@ def main() -> None:
     validate = commands.add_parser("validate")
     validate.add_argument("series")
     validate.add_argument("directory", type=Path)
+    validate_provenance = commands.add_parser("validate-bind-provenance")
+    validate_provenance.add_argument("--provenance", type=Path, required=True)
+    validate_provenance.add_argument("--profile", type=Path, required=True)
+    validate_provenance.add_argument("--series", required=True)
+    validate_provenance.add_argument("--freebsd-release", required=True)
     snapshot_tag = commands.add_parser("snapshot-tag")
     snapshot_tag.add_argument("series")
     snapshot_tag.add_argument("version")
@@ -811,6 +840,12 @@ def main() -> None:
         channel_tag(arguments.series)
         for package in select_packages(arguments.directory):
             print(package)
+    elif arguments.command == "validate-bind-provenance":
+        provenance = json.loads(arguments.provenance.read_text(encoding="utf-8"))
+        validate_bind_provenance(
+            provenance, bind920_profile.load_profile(arguments.profile),
+            arguments.series, arguments.freebsd_release,
+        )
     elif arguments.command == "snapshot-tag":
         print(snapshot_channel_tag(arguments.series, arguments.version))
     elif arguments.command == "source-release-tag":
