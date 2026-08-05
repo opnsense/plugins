@@ -41,11 +41,22 @@ plugin: the two packages conflict by design. The normal channel contains the
 current plugin only; it prefers an eligible OPNsense `bind920` package instead
 of replacing BIND automatically.
 
-For OPNsense 26.1, use `pkg-26.1`; for 26.7, use `pkg-26.7`. Replace
-`channel` below with the selected channel. From an OPNsense root shell:
+From an OPNsense root shell, derive the supported `major.minor` release series
+from `opnsense-version` and configure its current channel:
 
 ```sh
-channel=pkg-26.1
+series=$(opnsense-version | awk 'NR == 1 { print $2 }' | sed -E 's/^([0-9]+\.[0-9]+).*/\1/')
+case "$series" in
+  26.1)
+    case "$(pkg version -t "$(opnsense-version | awk 'NR == 1 { print $2 }')" 26.1.11_10)" in
+      '='|'>') ;;
+      *) echo 'OPNsense 26.1.11_10 or newer is required' >&2; exit 1 ;;
+    esac
+    ;;
+  26.7) ;;
+  *) echo "unsupported OPNsense release series: ${series:-unknown}" >&2; exit 1 ;;
+esac
+channel="pkg-$series"
 install -d -m 0755 /usr/local/etc/pkg/keys /usr/local/etc/pkg/repos
 fetch -o /usr/local/etc/pkg/keys/resolver-plugins.pub \
   "https://github.com/resolver-plugins/plugins/releases/download/$channel/resolver-plugins.pub"
@@ -62,6 +73,21 @@ EOF
 pkg update -r resolver-plugins
 pkg install os-bind-rp
 ```
+
+Or install the signed repository and package end-to-end with the interactive
+installer:
+
+```sh
+fetch -o - https://raw.githubusercontent.com/resolver-plugins/plugins/master/scripts/install-os-bind-rp.sh | sh
+```
+
+The installer does not enable the BIND plugin or service, change its
+configuration, reload templates, or restart BIND. It checks the installed
+OPNsense BIND packages first. If they are incompatible, it explains the
+DNS-over-TLS issue, shows the installed and fallback versions, and asks before
+installing the fallback BIND packages. The fallback repository remains disabled
+outside that explicit package transaction; declining the prompt leaves
+`os-bind-rp` uninstalled.
 
 The repository catalogue and package are signed by the public key above. A
 future release for the same OPNsense series updates the same `pkg-<series>`
