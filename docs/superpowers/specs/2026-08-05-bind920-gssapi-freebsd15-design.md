@@ -13,9 +13,9 @@ where the recipe's OS-version-dependent default is `GSSAPI_NONE`.
 
 ## Decision
 
-Build both `bind-tools` and `bind920` with `GSSAPI_NONE` explicitly selected,
-while retaining the existing pinned Ports recipe, OpenSSL selection, package
-identities, and `DOCS` exclusion.
+Build both `bind-tools` and `bind920` with `OPTIONS_SET=GSSAPI_NONE` and
+`OPTIONS_UNSET='DOCS GSSAPI_BASE'`, while retaining the existing pinned Ports
+recipe, OpenSSL selection, package identities, and `DOCS` exclusion.
 
 `GSSAPI_NONE` maps to BIND's `--without-gssapi` configure option. It avoids
 mixing base GSSAPI with Ports OpenSSL and makes the build deterministic across
