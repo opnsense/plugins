@@ -37,7 +37,12 @@ They are generated review inputs, not places for unrelated development.
 
 ## Current distribution boundary
 
-The current CI can build `os-bind-rp` and upload a temporary GitHub Actions
-artifact. It does not publish a package repository, a GitHub Release, a Pages
-site, signatures, or end-user installation instructions. Those are separate
-future work and must not be implied by release-branch builds.
+The signed package repository is active and approved. The publication workflow
+signs packages and publishes the approved release through GitHub Release
+publication and the repository, with an established end-user installation
+contract. A release-branch build remains a reviewed build input; it does not
+independently authorize publication or a change to the installation contract.
+
+Do not alter signing, GitHub Release publication, package-repository
+publication, tokens, secrets, or the end-user installation contract without
+explicit maintainer authorization.

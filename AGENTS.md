@@ -67,7 +67,7 @@ mechanism exists yet.
 - Verify CI changes with the focused local checks in
   [docs/building.md](docs/building.md), and run the affected workflow manually
   only when authorized. Report the workflow URL and its actual outcome.
-- A code review agent must be run on pr's when they are "ready", as a fianl step
+- A code review agent must be run on pr's when they are "ready", as a final step
   befor merge. High priority items must be resolved before a pr can be merged.
   Perform a remeditation and review cycle util the items are resolved and the
   code-review agent approve the pr as ready, when no high priority items are
@@ -75,6 +75,15 @@ mechanism exists yet.
 
 - An agent must be used to review generated plans, and high priority items must be
   resolved before a plan can be approved and implemented.
+- When creating tests, categorize each test according to type relative to purpose.
+  Tests used for discovery and troubleshooting vs tests used for enforcing outcomes
+  and preventing regressions. In other words, tests that should live temporarily
+  vs long term in the repo. Long term tests should be commited to the repo in the
+  appropriate folder. Short term tests should be kept local only, and not commited
+  to the repo. If an issue has been resolved and the problem is unlikely to occur
+  again in the future, it should be categorized as a temporaty test.
+- Code reviews should also include a code-simplication pass as well as a
+  documentation update and accuracy pass.
 
 ## Documentation updates
 
