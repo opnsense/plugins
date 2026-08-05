@@ -141,8 +141,26 @@ def publish(repository: str, tag: str, directory: Path, prerelease: bool) -> Non
     result = subprocess.run(["gh", *create], capture_output=True, text=True)
     if result.returncode and "already exists" not in result.stderr.lower():
         raise RuntimeError(result.stderr.strip() or "cannot create GitHub Release")
+    assets = asset_order(directory)
+    existing = subprocess.run(
+        [
+            "gh", "release", "view", tag, "--repo", repository,
+            "--json", "assets", "--jq", ".assets[].name",
+        ],
+        capture_output=True,
+        text=True,
+    )
+    if existing.returncode:
+        raise RuntimeError(existing.stderr.strip() or "cannot list GitHub Release assets")
+    asset_names = {asset.name for asset in assets}
+    for asset_name in existing.stdout.splitlines():
+        if asset_name not in asset_names:
+            run_gh([
+                "release", "delete-asset", tag, asset_name, "--yes",
+                "--repo", repository,
+            ])
     run_gh([
-        "release", "upload", tag, *(str(path) for path in asset_order(directory)),
+        "release", "upload", tag, *(str(path) for path in assets),
         "--clobber", "--repo", repository,
     ])
 
