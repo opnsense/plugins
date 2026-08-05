@@ -35,7 +35,7 @@ distversion=$(metadata_field distversion) || fail 'invalid BIND profile'
 "$pkg_command" install -y git patch
 "$script_directory/setup-opnsense-repository.sh" "$series" >/dev/null
 "$pkg_command" install -y autoconf automake fstrm gmake json-c libedit libidn2 \
-    libnghttp2 libtool liburcu libuv libxml2 lmdb pkgconf
+    libnghttp2 libtool liburcu libuv libxml2 lmdb pkgconf protobuf-c
 
 temporary_directory=$(mktemp -d)
 ports_directory="$temporary_directory/ports"
