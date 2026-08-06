@@ -336,7 +336,24 @@ jobs:
           set -euo pipefail
           git fetch --no-tags origin "$SOURCE_COMMIT"
           git show "$SOURCE_COMMIT:.resolver-plugins/upstream.json" > "artifacts/$SERIES/trusted-upstream.json"
+      - name: Reuse existing immutable snapshot
+        id: reuse-snapshot
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SERIES: ${{ needs.select.outputs.series }}
+          SOURCE_COMMIT: ${{ needs.profile.outputs.source_commit }}
+        run: |
+          set -euo pipefail
+          output="artifacts/$SERIES"
+          set -- "$output"/os-bind-rp-*.pkg
+          [[ "$#" -eq 1 && -f "$1" ]]
+          version=${1##*/os-bind-rp-}
+          version=${version%.pkg}
+          reused=$(python3 .github/ci/release_channel.py reuse-snapshot --repository resolver-plugins/repository --series "$SERIES" --version "$version" --source-commit "$SOURCE_COMMIT" --output "$output/repository" --public-key docs/package-repository/resolver-plugins.pub)
+          printf 'reused=%s\n' "$reused" >> "$GITHUB_OUTPUT"
       - name: Sign package repository
+        if: steps.reuse-snapshot.outputs.reused != 'true'
         uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
         env:
           RP_PKG_SIGNING_KEY: ${{ secrets.RP_PKG_SIGNING_KEY }}
@@ -645,7 +662,7 @@ jobs:
 
   source-release:
     if: needs.select.outputs.mode == 'production'
-    needs: [select, profile, verify-published, build]
+    needs: [select, profile, verify-published]
     runs-on: ubuntu-24.04
     permissions:
       contents: write
@@ -656,8 +673,8 @@ jobs:
           persist-credentials: false
       - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
-          name: os-bind-rp-build-production-${{ needs.select.outputs.series }}
-          path: artifacts/${{ needs.select.outputs.series }}
+          name: os-bind-rp-production-repository-${{ needs.select.outputs.series }}
+          path: artifacts/${{ needs.select.outputs.series }}/repository
       - name: Publish immutable source release
         shell: bash
         env:
@@ -665,7 +682,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          output="artifacts/$SERIES"
+          output="artifacts/$SERIES/repository/current"
           set -- "$output"/os-bind-rp-*.pkg
           [ "$#" -eq 1 ] && [ -f "$1" ]
           version=${1##*/os-bind-rp-}

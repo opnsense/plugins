@@ -167,6 +167,110 @@ class SelfContainedRepositoryStageTest(unittest.TestCase):
 
 
 class PublicationRecoveryTest(unittest.TestCase):
+    def test_existing_snapshot_is_materialized_for_an_exact_release_retry(self) -> None:
+        """A published version is reused instead of rebuilt under a new control commit."""
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            remote = root / "remote"
+            remote.mkdir()
+            (remote / "channel.json").write_text(
+                json.dumps(
+                    {
+                        "series": "26.7",
+                        "plugin_version": "1.36_2",
+                        "source_commit": "a" * 40,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            (remote / "os-bind-rp-1.36_2.pkg").write_bytes(b"immutable")
+            public_key = root / "resolver-plugins.pub"
+            public_key.write_bytes(b"trusted key")
+            (remote / public_key.name).write_bytes(public_key.read_bytes())
+            snapshot = release_channel.ReleaseSnapshot(
+                "pkg-26.7-os-bind-rp-1.36_2", True, remote, root / "manifest.json"
+            )
+
+            with (
+                patch.object(release_channel, "snapshot_release", return_value=snapshot),
+                patch.object(release_channel, "validate_channel_directory") as validate,
+            ):
+                reused = release_channel.materialize_existing_snapshot(
+                    "resolver-plugins/repository",
+                    "26.7",
+                    "1.36_2",
+                    "a" * 40,
+                    root / "repository",
+                    public_key,
+                )
+
+            self.assertTrue(reused)
+            validate.assert_called_once_with(remote)
+            for channel in ("current", "snapshot"):
+                self.assertEqual(
+                    b"immutable",
+                    (root / "repository" / channel / "os-bind-rp-1.36_2.pkg").read_bytes(),
+                )
+
+    def test_absent_snapshot_leaves_signing_output_unmodified(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            snapshot = release_channel.ReleaseSnapshot(
+                "pkg-26.7-os-bind-rp-1.36_3",
+                False,
+                root / "missing",
+                root / "missing.json",
+            )
+            public_key = root / "resolver-plugins.pub"
+            public_key.write_bytes(b"trusted key")
+            with patch.object(release_channel, "snapshot_release", return_value=snapshot):
+                reused = release_channel.materialize_existing_snapshot(
+                    "resolver-plugins/repository",
+                    "26.7",
+                    "1.36_3",
+                    "b" * 40,
+                    root / "repository",
+                    public_key,
+                )
+
+            self.assertFalse(reused)
+            self.assertFalse((root / "repository").exists())
+
+    def test_snapshot_reuse_rejects_different_release_source(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            remote = root / "remote"
+            remote.mkdir()
+            (remote / "channel.json").write_text(
+                json.dumps(
+                    {
+                        "series": "26.7",
+                        "plugin_version": "1.36_2",
+                        "source_commit": "a" * 40,
+                    }
+                ),
+                encoding="utf-8",
+            )
+            public_key = root / "resolver-plugins.pub"
+            public_key.write_bytes(b"trusted key")
+            (remote / public_key.name).write_bytes(public_key.read_bytes())
+            snapshot = release_channel.ReleaseSnapshot(
+                "pkg-26.7-os-bind-rp-1.36_2", True, remote, root / "manifest.json"
+            )
+            with (
+                patch.object(release_channel, "snapshot_release", return_value=snapshot),
+                patch.object(release_channel, "validate_channel_directory"),
+            ):
+                with self.assertRaisesRegex(ValueError, "does not match requested release"):
+                    release_channel.materialize_existing_snapshot(
+                        "resolver-plugins/repository",
+                        "26.7",
+                        "1.36_2",
+                        "b" * 40,
+                        root / "repository",
+                        public_key,
+                    )
+
     def test_recovery_channel_rejects_an_audit_checksum_mismatch(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             directory = Path(temporary_directory)
