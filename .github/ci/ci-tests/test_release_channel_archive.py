@@ -63,6 +63,8 @@ class PullRequestReleaseCleanupTest(unittest.TestCase):
 
         def fake_run(command: list[str], **_: object) -> subprocess.CompletedProcess[str]:
             commands.append(command)
+            if command[:3] == ["gh", "api", "--method"]:
+                return subprocess.CompletedProcess(command, 1, "", "gh: Not Found (HTTP 404)")
             return subprocess.CompletedProcess(command, 0, "", "")
 
         with patch.object(release_channel.subprocess, "run", side_effect=fake_run):
@@ -72,20 +74,51 @@ class PullRequestReleaseCleanupTest(unittest.TestCase):
 
         self.assertEqual(
             [
-                "gh", "release", "delete", "pr-51-26.7", "--cleanup-tag",
-                "--yes", "--repo", "resolver-plugins/plugins",
+                [
+                    "gh", "release", "delete", "pr-51-26.7", "--yes",
+                    "--repo", "resolver-plugins/plugins",
+                ],
+                [
+                    "gh", "api", "--method", "DELETE",
+                    "repos/resolver-plugins/plugins/git/refs/tags/pr-51-26.7",
+                ],
             ],
-            commands[0],
+            commands,
         )
 
-    def test_missing_pull_request_release_cleanup_is_idempotent(self) -> None:
-        missing = subprocess.CompletedProcess(
-            ["gh"], 1, "", "release not found"
-        )
-        with patch.object(release_channel.subprocess, "run", return_value=missing):
+    def test_missing_pull_request_release_cleanup_removes_an_orphaned_tag(self) -> None:
+        commands: list[list[str]] = []
+
+        def fake_run(command: list[str], **_: object) -> subprocess.CompletedProcess[str]:
+            commands.append(command)
+            if command[:2] == ["gh", "release"]:
+                return subprocess.CompletedProcess(command, 1, "", "release not found")
+            return subprocess.CompletedProcess(command, 0, "", "")
+
+        with patch.object(release_channel.subprocess, "run", side_effect=fake_run):
             release_channel.cleanup_development_release(
                 "resolver-plugins/plugins", "pr-51-26.7"
             )
+
+        self.assertEqual(
+            [
+                "gh", "api", "--method", "DELETE",
+                "repos/resolver-plugins/plugins/git/refs/tags/pr-51-26.7",
+            ],
+            commands[1],
+        )
+
+    def test_pull_request_release_cleanup_does_not_hide_tag_api_failure(self) -> None:
+        def fake_run(command: list[str], **_: object) -> subprocess.CompletedProcess[str]:
+            if command[:2] == ["gh", "release"]:
+                return subprocess.CompletedProcess(command, 0, "", "")
+            return subprocess.CompletedProcess(command, 1, "", "gh: Server Error (HTTP 500)")
+
+        with patch.object(release_channel.subprocess, "run", side_effect=fake_run):
+            with self.assertRaisesRegex(RuntimeError, "cannot delete development tag"):
+                release_channel.cleanup_development_release(
+                    "resolver-plugins/plugins", "pr-51-26.7"
+                )
 
     def test_invalid_pull_request_release_inputs_fail_before_mutation(self) -> None:
         with patch.object(release_channel.subprocess, "run") as run:
@@ -112,6 +145,8 @@ class PullRequestReleaseCleanupTest(unittest.TestCase):
                     {"tag_name": "pkg-26.7"},
                 ]]
                 return subprocess.CompletedProcess(command, 0, json.dumps(payload), "")
+            if command[:3] == ["gh", "api", "--method"]:
+                return subprocess.CompletedProcess(command, 1, "", "gh: Not Found (HTTP 404)")
             deleted.append(command[3])
             return subprocess.CompletedProcess(command, 0, "", "")
 

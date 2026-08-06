@@ -728,14 +728,26 @@ def cleanup_development_release(repository: str, tag: str) -> None:
         raise ValueError("invalid development release tag")
     result = subprocess.run(
         [
-            "gh", "release", "delete", tag, "--cleanup-tag", "--yes",
-            "--repo", repository,
+            "gh", "release", "delete", tag, "--yes", "--repo", repository,
         ],
         capture_output=True,
         text=True,
     )
     if result.returncode and "release not found" not in result.stderr.lower():
         raise RuntimeError(result.stderr.strip() or f"cannot delete development Release {tag}")
+    tag_result = subprocess.run(
+        [
+            "gh", "api", "--method", "DELETE",
+            f"repos/{repository}/git/refs/tags/{tag}",
+        ],
+        capture_output=True,
+        text=True,
+    )
+    if tag_result.returncode and "(http 404)" not in tag_result.stderr.lower():
+        raise RuntimeError(
+            f"cannot delete development tag {tag}: "
+            f"{tag_result.stderr.strip() or 'GitHub API request failed'}"
+        )
 
 
 def cleanup_pull_request_releases(repository: str, pull_number: str) -> None:
