@@ -10,10 +10,15 @@ metadata.
 Every supported OPNsense series has a self-contained current channel and up
 to five self-contained immutable rollback snapshots:
 
-| Purpose | Release tag | Default state |
-| --- | --- | --- |
-| Current plugin and BIND baseline | `pkg-<series>` | enabled |
-| Plugin rollback snapshot and its BIND baseline | `pkg-<series>-os-bind-rp-<version>` | enabled only while rolling back |
+| Purpose | Display title | Release tag | Default state |
+| --- | --- | --- | --- |
+| Current plugin and BIND baseline | `<series>-latest` | `pkg-<series>` | enabled |
+| Plugin rollback snapshot and its BIND baseline | `<series>-archive-<version>` | `pkg-<series>-os-bind-rp-<version>` | enabled only while rolling back |
+
+Display titles are concise labels only. The stable tags above continue to
+define repository URLs and client configuration. Package releases are not
+eligible for GitHub's singular `Latest` badge because each OPNsense series has
+its own current channel.
 
 The current channel and every rollback snapshot contain exactly one
 `os-bind-rp` package, the matching `bind920`/`bind-tools` pair, BIND
