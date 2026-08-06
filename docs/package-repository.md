@@ -155,26 +155,27 @@ When the target snapshot is absent and current differs, the staged release
 source must be a strict descendant of current's recorded source commit. This
 allows a new promotion while rejecting stale runs even after snapshot pruning.
 
-After promotion, a fresh FreeBSD VM configures the pinned OPNsense repository
-for dependencies and runs `scripts/install-os-bind-rp.sh` against the published
-`pkg-<series>` URL. It verifies the installed `bind-tools`, `bind920`, and
-`os-bind-rp` identities against the staged package archives and requires the
-public `channel.json` to match the staged bytes. The immutable source release
-is created only after this exact public-channel installation succeeds.
+After promotion, a fresh FreeBSD VM configures the pinned OPNsense repository,
+installs its matching core package, and runs `scripts/install-os-bind-rp.sh`
+against the published `pkg-<series>` URL. It verifies the installed
+`bind-tools`, `bind920`, and `os-bind-rp` identities against the staged package
+archives and requires the public `channel.json` to match the staged bytes. The
+immutable source release is created only after this exact public-channel
+installation succeeds.
 
 Do not publish a stable channel manually from a workstation. A successful
 workflow run is the release record and source of the signed catalogue.
 
 ## Verification
 
-Before production publication, the workflow uses a disposable FreeBSD VM to
-add the staged signed current and snapshot repositories, install all three
-current packages, and force-install the plugin through the snapshot path. The
-two staged paths contain the same new version, so this gate proves snapshot
-catalogue installability rather than a transition to an older version. After
-publication, when an older retained snapshot exists, verify the actual version
-transition from its public URL and confirm package identities with `pkg
-rquery`.
+Before production publication, the workflow uses a disposable FreeBSD VM with
+the matching official OPNsense core package to add the staged signed current
+and snapshot repositories, install all three current packages, and
+force-install the plugin through the snapshot path. The two staged paths
+contain the same new version, so this gate proves snapshot catalogue
+installability rather than a transition to an older version. After publication,
+when an older retained snapshot exists, verify the actual version transition
+from its public URL and confirm package identities with `pkg rquery`.
 
 If a signing-key rotation is required, replace `RP_PKG_SIGNING_KEY`, commit
 the replacement public key, and republish every channel for every supported
