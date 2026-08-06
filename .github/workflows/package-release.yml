@@ -392,11 +392,20 @@ jobs:
         with:
           name: os-bind-rp-production-repository-${{ needs.select.outputs.series }}
           path: artifacts/${{ needs.select.outputs.series }}/repository
+      - name: Mint distribution repository token
+        id: distribution-token
+        uses: actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349
+        with:
+          app-id: ${{ vars.RP_DISTRIBUTION_APP_ID }}
+          private-key: ${{ secrets.RP_DISTRIBUTION_APP_PRIVATE_KEY }}
+          owner: resolver-plugins
+          repositories: repository
+          permission-contents: write
       - name: Publish production package channel
         shell: bash
         env:
           SERIES: ${{ needs.select.outputs.series }}
-          GH_TOKEN: ${{ secrets.RP_DISTRIBUTION_REPOSITORY_TOKEN }}
+          GH_TOKEN: ${{ steps.distribution-token.outputs.token }}
         run: |
           set -euo pipefail
           root="artifacts/$SERIES/repository"

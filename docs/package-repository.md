@@ -109,18 +109,25 @@ is rejected. Release branches supply immutable build inputs only and never run
 publication helpers. Runs are serialized per series so two promotions cannot
 replace or restore the same current channel concurrently.
 
-The source repository must define these Actions secrets before production:
+The source repository must define this Actions variable and these Actions
+secrets before production:
 
 - `RP_PKG_SIGNING_KEY`: the base64-encoded private package-signing key. It is
   exposed only to the FreeBSD signing job.
-- `RP_DISTRIBUTION_REPOSITORY_TOKEN`: a fine-grained token owned by the release
-  operator, limited to `resolver-plugins/repository` with `Contents: write`.
-  It is exposed only to the distribution publication job. Rotate it according
-  to the repository's credential policy and replace this secret when rotated.
+- `RP_DISTRIBUTION_APP_ID`: the non-secret numeric ID of the organization-owned
+  Resolver Plugins publisher GitHub App. Store it as an Actions repository
+  variable.
+- `RP_DISTRIBUTION_APP_PRIVATE_KEY`: the complete PEM private key for that App.
+  Store it as an Actions repository secret and rotate it through the App's
+  credential settings.
 
-A missing or expired distribution token fails the publication job with a
-GitHub authentication or authorization error; it must never be replaced with
-a broad source-repository or session credential.
+The publisher App is owned by `resolver-plugins`, has webhooks disabled, has
+only `Contents: write`, and is installed only on
+`resolver-plugins/repository`. The publication job exchanges its ID and
+private key for a short-lived installation token; no personal access token is
+stored. A missing App variable, missing private key, or suspended installation
+fails the publication job before channel mutation. Never replace the App
+credential with a broad source-repository or session credential.
 
 The production signer resolves and checks out a specific `master`
 control-plane SHA, verifies the finished artifact's source commit, and receives
