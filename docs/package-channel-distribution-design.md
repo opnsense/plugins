@@ -121,8 +121,11 @@ baseline.
    and package dependency graph exactly match the intended set.
 6. A final distribution job writes the staged assets to
    `resolver-plugins/repository` under the current and snapshot tags using a
-   token limited to that repository. A subsequent source-release job uses the
-   source repository token to create the immutable human-facing release.
+   short-lived installation token from an organization-owned GitHub App. The
+   App has only `Contents: write`, has no webhooks, and is installed only on
+   the distribution repository. A subsequent source-release job uses the
+   source repository's automatic token to create the immutable human-facing
+   release.
 
 The publisher fails before changing the distribution repository if the
 existing channel is malformed, package checksums differ unexpectedly, source

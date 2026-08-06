@@ -118,7 +118,20 @@ def test_signer_uses_master_control_plane_and_self_contained_channel_layout():
     assert 'trusted-upstream.json' in signer
     assert 'validate-build-metadata' in signer
     assert 'repository/bind920' not in signer
-    assert 'RP_DISTRIBUTION_REPOSITORY_TOKEN' in workflow
+
+
+def test_publisher_mints_a_repository_scoped_github_app_token():
+    workflow = workflow_text()
+    publisher = workflow.split('  publish:', 1)[1].split('  verify:', 1)[0]
+    assert 'permissions:\n      contents: read' in publisher
+    assert 'actions/create-github-app-token@fee1f7d63c2ff003460e3d139729b119787bc349' in publisher
+    assert 'app-id: ${{ vars.RP_DISTRIBUTION_APP_ID }}' in publisher
+    assert 'private-key: ${{ secrets.RP_DISTRIBUTION_APP_PRIVATE_KEY }}' in publisher
+    assert 'owner: resolver-plugins' in publisher
+    assert 'repositories: repository' in publisher
+    assert 'permission-contents: write' in publisher
+    assert 'GH_TOKEN: ${{ steps.distribution-token.outputs.token }}' in publisher
+    assert 'RP_DISTRIBUTION_REPOSITORY_TOKEN' not in workflow
     assert 'resolver-plugins/repository' in workflow
     assert 'publish-channels' in workflow
     assert 'prune-snapshots' in workflow

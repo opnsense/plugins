@@ -15,6 +15,10 @@ def test_user_guides_use_only_the_distribution_repository_for_package_channels()
 
 def test_maintainer_guide_documents_cross_repository_publication_setup():
     text = (ROOT / "docs/package-repository.md").read_text(encoding="utf-8")
-    assert "RP_DISTRIBUTION_REPOSITORY_TOKEN" in text
+    assert "RP_DISTRIBUTION_APP_ID" in text
+    assert "RP_DISTRIBUTION_APP_PRIVATE_KEY" in text
+    assert "RP_DISTRIBUTION_REPOSITORY_TOKEN" not in text
     assert "Contents: write" in text
+    assert "webhooks disabled" in text
+    assert "installed only on\n`resolver-plugins/repository`" in text
     assert "master" in text and "workflow_dispatch" in text
