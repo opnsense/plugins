@@ -790,8 +790,8 @@ class PublicationRecoveryTest(unittest.TestCase):
                         root / "recovery",
                     )
 
-    def test_retry_is_a_noop_when_snapshot_and_current_are_identical(self) -> None:
-        """A repeated promotion with identical remote state changes no release."""
+    def test_retry_only_updates_titles_when_snapshot_and_current_are_identical(self) -> None:
+        """A repeated promotion corrects titles without rewriting package assets."""
         with tempfile.TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
             channels = []
@@ -812,6 +812,7 @@ class PublicationRecoveryTest(unittest.TestCase):
                     tag, True, remote, manifest
                 )
 
+            mutations: list[list[str]] = []
             with (
                 patch.object(
                     release_channel,
@@ -820,12 +821,28 @@ class PublicationRecoveryTest(unittest.TestCase):
                 ),
                 patch.object(release_channel, "validate_channel_directory"),
                 patch.object(release_channel, "publish") as publish,
+                patch.object(release_channel, "run_gh", side_effect=mutations.append),
             ):
                 release_channel.publish_channels(
                     "resolver-plugins/repository", channels, root / "recovery"
                 )
 
             publish.assert_not_called()
+            self.assertEqual(
+                [
+                    [
+                        "release", "edit", "pkg-26.7-os-bind-rp-1.36_2",
+                        "--repo", "resolver-plugins/repository",
+                        "--title", "26.7-archive-1.36_2", "--latest=false",
+                    ],
+                    [
+                        "release", "edit", "pkg-26.7",
+                        "--repo", "resolver-plugins/repository",
+                        "--title", "26.7-latest", "--latest=false",
+                    ],
+                ],
+                mutations,
+            )
 
     def test_absent_snapshot_cannot_let_a_stale_run_replace_current(self) -> None:
         """A pruned or recovered snapshot must not let an old run downgrade current."""

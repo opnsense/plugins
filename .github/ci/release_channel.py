@@ -369,6 +369,17 @@ def run_gh(arguments: list[str]) -> None:
     subprocess.run(["gh", *arguments], check=True)
 
 
+def edit_package_release_title(repository: str, tag: str, prerelease: bool = False) -> None:
+    """Converge a package Release on its purpose-first display title."""
+    edit = [
+        "release", "edit", tag, "--repo", repository,
+        "--title", package_release_title(tag),
+    ]
+    if not prerelease:
+        edit.append("--latest=false")
+    run_gh(edit)
+
+
 def sha256(path: Path) -> str:
     """Return the checksum used to verify a preserved Release asset."""
     digest = hashlib.sha256()
@@ -667,6 +678,7 @@ def publish_channels(
     try:
         for snapshot, (tag, directory) in zip(snapshots, channels, strict=True):
             if tag in reusable_channels:
+                edit_package_release_title(repository, tag)
                 continue
             mutated.append(snapshot)
             publish(repository, tag, directory, False)
@@ -843,10 +855,7 @@ def publish(repository: str, tag: str, directory: Path, prerelease: bool) -> Non
     result = subprocess.run(["gh", *create], capture_output=True, text=True)
     if result.returncode and "already exists" not in result.stderr.lower():
         raise RuntimeError(result.stderr.strip() or "cannot create GitHub Release")
-    edit = ["release", "edit", tag, "--repo", repository, "--title", title]
-    if not prerelease:
-        edit.append("--latest=false")
-    run_gh(edit)
+    edit_package_release_title(repository, tag, prerelease)
     assets = asset_order(directory)
     existing = subprocess.run(
         [
