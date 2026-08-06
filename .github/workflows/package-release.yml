@@ -265,6 +265,7 @@ jobs:
             output="artifacts/$series"
             RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json .github/ci/setup-opnsense-repository.sh "$series" >/dev/null
             pkg update -f
+            pkg install -y -r OPNsense opnsense
             dependencies=$(
               for package in "$output"/*.pkg; do
                 pkg query -F "$package" '%dn'
@@ -459,8 +460,13 @@ jobs:
             root="artifacts/$series/repository"
             RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json .github/ci/setup-opnsense-repository.sh "$series" >/dev/null
             pkg update -f
+            pkg install -y -r OPNsense opnsense
             dependencies=$(
-              for package in "$root"/current/*.pkg; do
+              for package in \
+                "$root"/current/bind-tools-*.pkg \
+                "$root"/current/bind920-*.pkg \
+                "$root"/current/os-bind-rp-*.pkg
+              do
                 pkg query -F "$package" '%dn'
               done | awk '$0 != "bind-tools" && $0 != "bind920" && $0 != "os-bind-rp" && !seen[$0]++'
             )
@@ -542,12 +548,17 @@ jobs:
             root="artifacts/$series/repository/current"
             channel_url="https://github.com/resolver-plugins/repository/releases/download/pkg-$series"
             expected_identities=$(
-              for archive in "$root"/*.pkg; do
+              for archive in \
+                "$root"/bind-tools-*.pkg \
+                "$root"/bind920-*.pkg \
+                "$root"/os-bind-rp-*.pkg
+              do
                 pkg query -F "$archive" '%n|%v|%o'
               done | sort
             )
             RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json .github/ci/setup-opnsense-repository.sh "$series" >/dev/null
             pkg update -f
+            pkg install -y -r OPNsense opnsense
             install -d -m 0755 /usr/local/etc/pkg/keys /usr/local/etc/pkg/repos
             install -m 0644 docs/package-repository/resolver-plugins.pub /usr/local/etc/pkg/keys/resolver-plugins.pub
             cat > /usr/local/etc/pkg/repos/resolver-plugins.conf <<EOF
