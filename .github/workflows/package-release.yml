@@ -501,9 +501,103 @@ jobs:
             pkg install -f -y -r resolver-plugins-rollback os-bind-rp
             pkg query -e '%n = os-bind-rp' '%n-%v'
 
+  verify-published:
+    if: needs.select.outputs.mode == 'production'
+    needs: [select, profile, publish]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ needs.profile.outputs.control_commit }}
+          persist-credentials: false
+      - name: Materialize selected release metadata
+        shell: bash
+        env:
+          SOURCE_COMMIT: ${{ needs.profile.outputs.source_commit }}
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin "$SOURCE_COMMIT"
+          git checkout "$SOURCE_COMMIT" -- .resolver-plugins/upstream.json
+      - name: Install published package channel in FreeBSD
+        uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
+        with:
+          release: ${{ needs.profile.outputs.freebsd_release }}
+          arch: x86_64
+          usesh: true
+          disable-cache: true
+          run: |
+            set -eu
+            export IGNORE_OSVERSION=yes
+            pkg update -f
+            pkg install -y python3 git
+            series='${{ needs.select.outputs.series }}'
+            RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json .github/ci/setup-opnsense-repository.sh "$series" >/dev/null
+            pkg update -f
+            install -d -m 0755 /usr/local/etc/pkg/keys /usr/local/etc/pkg/repos
+            install -m 0644 docs/package-repository/resolver-plugins.pub /usr/local/etc/pkg/keys/resolver-plugins.pub
+            cat > /usr/local/etc/pkg/repos/resolver-plugins.conf <<EOF
+            resolver-plugins: {
+              url: "https://github.com/resolver-plugins/repository/releases/download/pkg-$series",
+              mirror_type: "none",
+              signature_type: "pubkey",
+              pubkey: "/usr/local/etc/pkg/keys/resolver-plugins.pub",
+              enabled: yes
+            }
+            EOF
+            attempt=1
+            until pkg update -r resolver-plugins; do
+              if [ "$attempt" -ge 5 ]; then
+                echo 'published Resolver Plugins channel did not become readable' >&2
+                exit 1
+              fi
+              sleep $((attempt * 2))
+              attempt=$((attempt + 1))
+            done
+            dependencies=$(
+              for package in bind-tools bind920 os-bind-rp; do
+                pkg rquery -r resolver-plugins -e "%n = $package" '%dn'
+              done | awk '$0 != "bind-tools" && $0 != "bind920" && $0 != "os-bind-rp" && !seen[$0]++'
+            )
+            if [ -n "$dependencies" ]; then
+              printf '%s\n' "$dependencies" | while IFS= read -r dependency; do
+                pkg install -y "$dependency"
+              done
+            fi
+            [ -z "$(pkg query -e '%n = bind920' '%n' 2>/dev/null || true)" ]
+            [ -z "$(pkg query -e '%n = bind-tools' '%n' 2>/dev/null || true)" ]
+            shim="$PWD/.published-channel-bin"
+            approval="$PWD/.published-channel-approval"
+            install -d -m 0755 "$shim"
+            product_version=$series
+            if [ "$series" = 26.1 ]; then
+              product_version=26.1.11_10
+            fi
+            cat > "$shim/opnsense-version" <<EOF
+            #!/bin/sh
+            printf '%s\n' 'OPNsense $product_version'
+            EOF
+            chmod 0755 "$shim/opnsense-version"
+            printf 'yes\n' > "$approval"
+            PATH="$shim:$PATH" RP_TTY_PATH="$approval" scripts/install-os-bind-rp.sh
+            for package in bind-tools bind920 os-bind-rp; do
+              case "$package" in
+                bind-tools) expected_origin=dns/bind-tools ;;
+                bind920) expected_origin=dns/bind920 ;;
+                os-bind-rp) expected_origin=opnsense/os-bind-rp ;;
+              esac
+              channel_identity=$(pkg rquery -r resolver-plugins -e "%n = $package" '%n|%v|%o')
+              installed_identity=$(pkg query -e "%n = $package" '%n|%v|%o')
+              [ "${channel_identity##*|}" = "$expected_origin" ]
+              [ "$installed_identity" = "$channel_identity" ]
+              printf '%s\n' "$installed_identity"
+            done
+
   source-release:
     if: needs.select.outputs.mode == 'production'
-    needs: [select, profile, publish, build]
+    needs: [select, profile, verify-published, build]
     runs-on: ubuntu-24.04
     permissions:
       contents: write

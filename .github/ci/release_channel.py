@@ -511,14 +511,32 @@ def restore_release(repository: str, snapshot: ReleaseSnapshot) -> None:
 def publish_channels(
     repository: str, channels: list[tuple[str, Path]], recovery: Path
 ) -> None:
-    """Publish related channels or restore all mutable releases from local snapshots."""
+    """Publish related channels while preserving immutable snapshot identity."""
     recovery.mkdir(parents=True, exist_ok=False)
     snapshots = [snapshot_release(repository, tag, recovery) for tag, _ in channels]
-    for snapshot in snapshots:
+    reusable_channels: set[str] = set()
+    for snapshot, (tag, directory) in zip(snapshots, channels, strict=True):
+        if snapshot.tag != tag:
+            raise RuntimeError("release snapshot does not match its requested channel")
         if "-os-bind-rp-" in snapshot.tag and snapshot.existed:
-            raise RuntimeError(f"immutable rollback snapshot already exists: {snapshot.tag}")
+            if not snapshot_matches_directory(snapshot, directory):
+                raise RuntimeError(
+                    f"immutable rollback snapshot has different bytes: {snapshot.tag}"
+                )
+            reusable_channels.add(snapshot.tag)
         if snapshot.existed and SERIES_PATTERN.fullmatch(snapshot.tag.removeprefix("pkg-")):
             validate_channel_directory(snapshot.directory)
+    if reusable_channels:
+        for snapshot, (tag, directory) in zip(snapshots, channels, strict=True):
+            if (
+                snapshot.existed
+                and SERIES_PATTERN.fullmatch(tag.removeprefix("pkg-"))
+            ):
+                if not snapshot_matches_directory(snapshot, directory):
+                    raise RuntimeError(
+                        f"current channel has different bytes during snapshot retry: {tag}"
+                    )
+                reusable_channels.add(tag)
     preflight_root = recovery / "preflight"
     preflight_root.mkdir()
     preflight = [snapshot_release(repository, tag, preflight_root) for tag, _ in channels]
@@ -527,12 +545,16 @@ def publish_channels(
         for before, after in zip(snapshots, preflight, strict=True)
     ):
         raise RuntimeError("package channel changed during publication preflight")
+    mutated = []
     try:
-        for tag, directory in channels:
+        for snapshot, (tag, directory) in zip(snapshots, channels, strict=True):
+            if tag in reusable_channels:
+                continue
+            mutated.append(snapshot)
             publish(repository, tag, directory, False)
     except Exception:
         restore_errors = []
-        for snapshot in reversed(snapshots):
+        for snapshot in reversed(mutated):
             try:
                 restore_release(repository, snapshot)
             except Exception as error:  # pragma: no cover - exercised against GitHub, not a fixture.

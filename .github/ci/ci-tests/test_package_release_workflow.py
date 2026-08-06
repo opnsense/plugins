@@ -79,7 +79,7 @@ def test_workflow_uses_sha_pinned_actions_and_nonpersistent_checkout_credentials
     references = action_references(workflow)
     assert references
     assert all(PINNED_ACTION.fullmatch(reference) for reference in references)
-    assert workflow.count('persist-credentials: false') == 9
+    assert workflow.count('persist-credentials: false') == 10
     assert 'actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803' in references
     assert 'vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d' in references
 
@@ -141,7 +141,7 @@ def test_publisher_mints_a_repository_scoped_github_app_token():
 def test_publication_waits_for_current_and_snapshot_installability_in_freebsd():
     workflow = workflow_text()
     publisher = workflow.split('  publish:', 1)[1].split('  verify:', 1)[0]
-    verifier = workflow.split('  verify:', 1)[1].split('  source-release:', 1)[0]
+    verifier = workflow.split('  verify:', 1)[1].split('  verify-published:', 1)[0]
     assert 'needs: [select, profile, sign, verify]' in publisher
     assert 'permissions:\n      contents: read' in publisher
     assert 'pkg install -y -r resolver-plugins bind-tools bind920 os-bind-rp' in verifier
@@ -152,6 +152,28 @@ def test_publication_waits_for_current_and_snapshot_installability_in_freebsd():
     assert 'url: "file://$PWD/$root/snapshot"' in verifier
     assert 'pkg install -f -y -r resolver-plugins-rollback os-bind-rp' in verifier
     assert ' OR ' not in verifier
+
+
+def test_published_channel_is_installed_from_github_in_freebsd():
+    workflow = workflow_text()
+    verifier = workflow.split('  verify-published:', 1)[1].split('  source-release:', 1)[0]
+    source_release = workflow.split('  source-release:', 1)[1]
+    assert 'needs: [select, profile, publish]' in verifier
+    assert 'permissions:\n      contents: read' in verifier
+    assert 'https://github.com/resolver-plugins/repository/releases/download/pkg-$series' in verifier
+    assert '.github/ci/setup-opnsense-repository.sh "$series"' in verifier
+    assert 'until pkg update -r resolver-plugins' in verifier
+    assert '[ "$attempt" -ge 5 ]' in verifier
+    assert 'pkg rquery -r resolver-plugins -e "%n = $package" \'%dn\'' in verifier
+    assert 'RP_TTY_PATH="$approval" scripts/install-os-bind-rp.sh' in verifier
+    assert '[ -z "$(pkg query -e \'%n = bind920\'' in verifier
+    assert '[ -z "$(pkg query -e \'%n = bind-tools\'' in verifier
+    assert "'%n|%v|%o'" in verifier
+    assert 'dns/bind-tools' in verifier
+    assert 'dns/bind920' in verifier
+    assert 'opnsense/os-bind-rp' in verifier
+    assert '[ "$installed_identity" = "$channel_identity" ]' in verifier
+    assert 'needs: [select, profile, verify-published, build]' in source_release
 
 
 def test_development_release_installs_from_a_temporary_freebsd_repository():
