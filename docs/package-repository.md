@@ -151,6 +151,9 @@ On a full workflow retry, an existing immutable snapshot is reused without an
 upload only when every staged asset is byte-identical. An existing current
 channel must also be byte-identical; different bytes fail before any channel
 is changed, preventing an older retry from moving current backward.
+When the target snapshot is absent and current differs, the staged release
+source must be a strict descendant of current's recorded source commit. This
+allows a new promotion while rejecting stale runs even after snapshot pruning.
 
 After promotion, a fresh FreeBSD VM configures the pinned OPNsense repository
 for dependencies and runs `scripts/install-os-bind-rp.sh` against the published

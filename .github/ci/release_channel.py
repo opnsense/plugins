@@ -450,6 +450,38 @@ def snapshot_matches_directory(snapshot: ReleaseSnapshot, directory: Path) -> bo
     return checksums == directory_checksums(directory)
 
 
+def staged_source_descends_from_current(current: Path, staged: Path) -> bool:
+    """Return whether staged source is a strict descendant of current source."""
+    try:
+        current_commit = json.loads(
+            (current / "channel.json").read_text(encoding="utf-8")
+        )["source_commit"]
+        staged_commit = json.loads(
+            (staged / "channel.json").read_text(encoding="utf-8")
+        )["source_commit"]
+    except (OSError, json.JSONDecodeError, KeyError, TypeError) as error:
+        raise RuntimeError("cannot compare package channel source history") from error
+    commit_pattern = re.compile(r"[0-9a-f]{40}")
+    if (
+        not isinstance(current_commit, str)
+        or not isinstance(staged_commit, str)
+        or commit_pattern.fullmatch(current_commit) is None
+        or commit_pattern.fullmatch(staged_commit) is None
+        or current_commit == staged_commit
+    ):
+        return False
+    result = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", current_commit, staged_commit],
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode not in (0, 1):
+        raise RuntimeError(
+            result.stderr.strip() or "cannot compare package channel source history"
+        )
+    return result.returncode == 0
+
+
 def snapshot_release(repository: str, tag: str, recovery: Path) -> ReleaseSnapshot:
     """Download and checksum every pre-promotion asset before changing a Release."""
     result = subprocess.run(
@@ -526,17 +558,22 @@ def publish_channels(
             reusable_channels.add(snapshot.tag)
         if snapshot.existed and SERIES_PATTERN.fullmatch(snapshot.tag.removeprefix("pkg-")):
             validate_channel_directory(snapshot.directory)
-    if reusable_channels:
-        for snapshot, (tag, directory) in zip(snapshots, channels, strict=True):
-            if (
-                snapshot.existed
-                and SERIES_PATTERN.fullmatch(tag.removeprefix("pkg-"))
-            ):
-                if not snapshot_matches_directory(snapshot, directory):
-                    raise RuntimeError(
-                        f"current channel has different bytes during snapshot retry: {tag}"
-                    )
+    reusing_immutable = bool(reusable_channels)
+    for snapshot, (tag, directory) in zip(snapshots, channels, strict=True):
+        if (
+            snapshot.existed
+            and SERIES_PATTERN.fullmatch(tag.removeprefix("pkg-"))
+        ):
+            if snapshot_matches_directory(snapshot, directory):
                 reusable_channels.add(tag)
+            elif reusing_immutable:
+                raise RuntimeError(
+                    f"current channel has different bytes during snapshot retry: {tag}"
+                )
+            elif not staged_source_descends_from_current(snapshot.directory, directory):
+                raise RuntimeError(
+                    f"stale package promotion cannot replace current channel: {tag}"
+                )
     preflight_root = recovery / "preflight"
     preflight_root.mkdir()
     preflight = [snapshot_release(repository, tag, preflight_root) for tag, _ in channels]

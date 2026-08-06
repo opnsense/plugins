@@ -147,6 +147,9 @@ An existing immutable snapshot may be reused by a full workflow retry only
 when its complete asset set is byte-identical to the staged snapshot. If the
 current channel exists, it must also be byte-identical; a mismatch is a hard
 failure so an older retry cannot roll current back.
+If the snapshot is absent and current differs, the staged source commit must
+be a strict descendant of the source recorded by current. This preserves
+forward promotion while rejecting stale runs after recovery or pruning.
 
 ## Migration
 
