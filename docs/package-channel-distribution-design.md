@@ -128,8 +128,9 @@ baseline.
    release.
 7. A fresh FreeBSD VM configures the matching pinned OPNsense repository for
    dependencies and runs the supported installer against the public current
-   channel. The source release waits for successful installation and exact
-   package-identity checks.
+   channel. The gate force-refreshes until public `channel.json` and package
+   identities match the staged release, then compares installed identities to
+   those archives. The source release waits for this exact installation.
 
 The publisher fails before changing the distribution repository if the
 existing channel is malformed, package checksums differ unexpectedly, source

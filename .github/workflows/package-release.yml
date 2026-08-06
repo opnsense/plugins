@@ -521,6 +521,10 @@ jobs:
           set -euo pipefail
           git fetch --no-tags origin "$SOURCE_COMMIT"
           git checkout "$SOURCE_COMMIT" -- .resolver-plugins/upstream.json
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: os-bind-rp-production-repository-${{ needs.select.outputs.series }}
+          path: artifacts/${{ needs.select.outputs.series }}/repository
       - name: Install published package channel in FreeBSD
         uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
         with:
@@ -534,13 +538,20 @@ jobs:
             pkg update -f
             pkg install -y python3 git
             series='${{ needs.select.outputs.series }}'
+            root="artifacts/$series/repository/current"
+            channel_url="https://github.com/resolver-plugins/repository/releases/download/pkg-$series"
+            expected_identities=$(
+              for archive in "$root"/*.pkg; do
+                pkg query -F "$archive" '%n|%v|%o'
+              done | sort
+            )
             RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json .github/ci/setup-opnsense-repository.sh "$series" >/dev/null
             pkg update -f
             install -d -m 0755 /usr/local/etc/pkg/keys /usr/local/etc/pkg/repos
             install -m 0644 docs/package-repository/resolver-plugins.pub /usr/local/etc/pkg/keys/resolver-plugins.pub
             cat > /usr/local/etc/pkg/repos/resolver-plugins.conf <<EOF
             resolver-plugins: {
-              url: "https://github.com/resolver-plugins/repository/releases/download/pkg-$series",
+              url: "$channel_url",
               mirror_type: "none",
               signature_type: "pubkey",
               pubkey: "/usr/local/etc/pkg/keys/resolver-plugins.pub",
@@ -548,9 +559,23 @@ jobs:
             }
             EOF
             attempt=1
-            until pkg update -r resolver-plugins; do
+            public_channel="$PWD/.published-channel.json"
+            while :; do
+              channel_identities=
+              if pkg update -f -r resolver-plugins \
+                && fetch -q -o "$public_channel" "$channel_url/channel.json" \
+                && cmp -s "$root/channel.json" "$public_channel"; then
+                channel_identities=$(
+                  for package in bind-tools bind920 os-bind-rp; do
+                    pkg rquery -r resolver-plugins -e "%n = $package" '%n|%v|%o'
+                  done | sort
+                )
+              fi
+              if [ "$channel_identities" = "$expected_identities" ]; then
+                break
+              fi
               if [ "$attempt" -ge 5 ]; then
-                echo 'published Resolver Plugins channel did not become readable' >&2
+                echo 'published Resolver Plugins channel did not match staged release' >&2
                 exit 1
               fi
               sleep $((attempt * 2))
@@ -588,8 +613,13 @@ jobs:
                 bind920) expected_origin=dns/bind920 ;;
                 os-bind-rp) expected_origin=opnsense/os-bind-rp ;;
               esac
+              set -- "$root"/"$package"-*.pkg
+              [ "$#" -eq 1 ] && [ -f "$1" ]
+              archive=$1
+              expected_identity=$(pkg query -F "$archive" '%n|%v|%o')
               channel_identity=$(pkg rquery -r resolver-plugins -e "%n = $package" '%n|%v|%o')
               installed_identity=$(pkg query -e "%n = $package" '%n|%v|%o')
+              [ "$channel_identity" = "$expected_identity" ]
               [ "${channel_identity##*|}" = "$expected_origin" ]
               [ "$installed_identity" = "$channel_identity" ]
               printf '%s\n' "$installed_identity"

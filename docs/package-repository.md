@@ -155,8 +155,9 @@ is changed, preventing an older retry from moving current backward.
 After promotion, a fresh FreeBSD VM configures the pinned OPNsense repository
 for dependencies and runs `scripts/install-os-bind-rp.sh` against the published
 `pkg-<series>` URL. It verifies the installed `bind-tools`, `bind920`, and
-`os-bind-rp` identities. The immutable source release is created only after
-this public-channel installation succeeds.
+`os-bind-rp` identities against the staged package archives and requires the
+public `channel.json` to match the staged bytes. The immutable source release
+is created only after this exact public-channel installation succeeds.
 
 Do not publish a stable channel manually from a workstation. A successful
 workflow run is the release record and source of the signed catalogue.

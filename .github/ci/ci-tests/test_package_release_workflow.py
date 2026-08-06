@@ -160,9 +160,13 @@ def test_published_channel_is_installed_from_github_in_freebsd():
     source_release = workflow.split('  source-release:', 1)[1]
     assert 'needs: [select, profile, publish]' in verifier
     assert 'permissions:\n      contents: read' in verifier
+    assert 'name: os-bind-rp-production-repository-${{ needs.select.outputs.series }}' in verifier
     assert 'https://github.com/resolver-plugins/repository/releases/download/pkg-$series' in verifier
     assert '.github/ci/setup-opnsense-repository.sh "$series"' in verifier
-    assert 'until pkg update -r resolver-plugins' in verifier
+    assert 'pkg update -f -r resolver-plugins' in verifier
+    assert 'cmp -s "$root/channel.json" "$public_channel"' in verifier
+    assert 'pkg query -F "$archive" \'%n|%v|%o\'' in verifier
+    assert '[ "$channel_identities" = "$expected_identities" ]' in verifier
     assert '[ "$attempt" -ge 5 ]' in verifier
     assert 'pkg rquery -r resolver-plugins -e "%n = $package" \'%dn\'' in verifier
     assert 'RP_TTY_PATH="$approval" scripts/install-os-bind-rp.sh' in verifier
@@ -172,6 +176,7 @@ def test_published_channel_is_installed_from_github_in_freebsd():
     assert 'dns/bind-tools' in verifier
     assert 'dns/bind920' in verifier
     assert 'opnsense/os-bind-rp' in verifier
+    assert '[ "$channel_identity" = "$expected_identity" ]' in verifier
     assert '[ "$installed_identity" = "$channel_identity" ]' in verifier
     assert 'needs: [select, profile, verify-published, build]' in source_release
 
