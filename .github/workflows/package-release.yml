@@ -336,7 +336,24 @@ jobs:
           set -euo pipefail
           git fetch --no-tags origin "$SOURCE_COMMIT"
           git show "$SOURCE_COMMIT:.resolver-plugins/upstream.json" > "artifacts/$SERIES/trusted-upstream.json"
+      - name: Reuse existing immutable snapshot
+        id: reuse-snapshot
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SERIES: ${{ needs.select.outputs.series }}
+          SOURCE_COMMIT: ${{ needs.profile.outputs.source_commit }}
+        run: |
+          set -euo pipefail
+          output="artifacts/$SERIES"
+          set -- "$output"/os-bind-rp-*.pkg
+          [[ "$#" -eq 1 && -f "$1" ]]
+          version=${1##*/os-bind-rp-}
+          version=${version%.pkg}
+          reused=$(python3 .github/ci/release_channel.py reuse-snapshot --repository resolver-plugins/repository --series "$SERIES" --version "$version" --source-commit "$SOURCE_COMMIT" --output "$output/repository" --public-key docs/package-repository/resolver-plugins.pub)
+          printf 'reused=%s\n' "$reused" >> "$GITHUB_OUTPUT"
       - name: Sign package repository
+        if: steps.reuse-snapshot.outputs.reused != 'true'
         uses: vmactions/freebsd-vm@77ed28d336d03fe19a3f4f7266c1d2c4714dd79d
         env:
           RP_PKG_SIGNING_KEY: ${{ secrets.RP_PKG_SIGNING_KEY }}

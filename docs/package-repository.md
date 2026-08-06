@@ -148,9 +148,11 @@ it restores each affected Release from those preserved bytes. The snapshot
 and current channel have their published asset sets checked after upload;
 pruning to the newest five snapshots happens only after promotion succeeds.
 On a full workflow retry, an existing immutable snapshot is reused without an
-upload only when every staged asset is byte-identical. An existing current
-channel must also be byte-identical; different bytes fail before any channel
-is changed, preventing an older retry from moving current backward.
+upload. The signer downloads and validates that snapshot against its series,
+plugin version, release-source commit, and the committed public key, then uses
+those exact bytes for both staged paths. An existing current channel must also
+be byte-identical; different bytes fail before any channel is changed,
+preventing an older retry from moving current backward.
 When the target snapshot is absent and current differs, the staged release
 source must be a strict descendant of current's recorded source commit. This
 allows a new promotion while rejecting stale runs even after snapshot pruning.

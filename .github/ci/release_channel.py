@@ -415,6 +415,47 @@ def validate_channel_directory(directory: Path) -> None:
         raise ValueError("prior channel signed catalogue is incomplete")
 
 
+def materialize_existing_snapshot(
+    repository: str,
+    series: str,
+    version: str,
+    source_commit: str,
+    output: Path,
+    public_key: Path,
+) -> bool:
+    """Reuse the signed immutable bytes for an already-published package version."""
+    tag = snapshot_channel_tag(series, version)
+    with tempfile.TemporaryDirectory() as temporary_directory:
+        snapshot = snapshot_release(repository, tag, Path(temporary_directory))
+        if not snapshot.existed:
+            return False
+        validate_channel_directory(snapshot.directory)
+        try:
+            channel = json.loads(
+                (snapshot.directory / "channel.json").read_text(encoding="utf-8")
+            )
+        except (OSError, json.JSONDecodeError) as error:
+            raise ValueError("immutable snapshot audit metadata is invalid") from error
+        if (
+            not isinstance(channel, dict)
+            or channel.get("series") != series
+            or channel.get("plugin_version") != version
+            or channel.get("source_commit") != source_commit
+        ):
+            raise ValueError("immutable snapshot does not match requested release")
+        try:
+            trusted_key = public_key.read_bytes()
+            snapshot_key = (snapshot.directory / "resolver-plugins.pub").read_bytes()
+        except OSError as error:
+            raise ValueError("immutable snapshot public key is unavailable") from error
+        if not trusted_key or snapshot_key != trusted_key:
+            raise ValueError("immutable snapshot public key does not match trusted key")
+        output.mkdir(parents=True, exist_ok=False)
+        shutil.copytree(snapshot.directory, output / "current")
+        shutil.copytree(snapshot.directory, output / "snapshot")
+    return True
+
+
 class ReleaseSnapshot:
     """Verified local bytes required to restore one mutable GitHub Release."""
 
@@ -736,6 +777,13 @@ def main() -> None:
     stage_channel.add_argument("--output", type=Path, required=True)
     stage_channel.add_argument("--private-key", type=Path, required=True)
     stage_channel.add_argument("--pkg-command", default="pkg")
+    reuse_snapshot = commands.add_parser("reuse-snapshot")
+    reuse_snapshot.add_argument("--repository", required=True)
+    reuse_snapshot.add_argument("--series", required=True)
+    reuse_snapshot.add_argument("--version", required=True)
+    reuse_snapshot.add_argument("--source-commit", required=True)
+    reuse_snapshot.add_argument("--output", type=Path, required=True)
+    reuse_snapshot.add_argument("--public-key", type=Path, required=True)
     publish_parser = commands.add_parser("publish")
     publish_parser.add_argument("--repository", required=True)
     publish_parser.add_argument("--series", required=True)
@@ -782,6 +830,16 @@ def main() -> None:
             arguments.packages_directory, arguments.output, arguments.private_key, arguments.pkg_command
         ):
             print(asset)
+    elif arguments.command == "reuse-snapshot":
+        reused = materialize_existing_snapshot(
+            arguments.repository,
+            arguments.series,
+            arguments.version,
+            arguments.source_commit,
+            arguments.output,
+            arguments.public_key,
+        )
+        print("true" if reused else "false")
     elif arguments.command == "publish":
         publish(arguments.repository, channel_tag(arguments.series), arguments.directory, arguments.prerelease)
     elif arguments.command == "publish-tag":
