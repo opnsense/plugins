@@ -94,6 +94,9 @@ outside an explicit rollback to keep ordinary upgrades on `pkg-<series>`.
 
 Development builds use pre-release tags such as `pr-123-26.7`. They are for
 review testing only and are neither signed nor promoted into a stable channel.
+Every development release and its Git tag are removed when the pull request
+closes, whether it is merged or not. An in-flight development publisher checks
+the pull request before and after upload so closure cannot leave a stale build.
 
 ## Publication
 

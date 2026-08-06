@@ -220,6 +220,17 @@ def test_development_release_installs_from_a_temporary_freebsd_repository():
     assert "'%n-%v'" in verifier
     assert ' OR ' not in verifier
     assert 'needs: [select, build, verify-development]' in publisher
+    assert 'pull_number: ${{ steps.select.outputs.pull_number }}' in workflow
+    assert 'PULL_NUMBER: ${{ needs.select.outputs.pull_number }}' in publisher
+    assert 'permissions:\n      contents: write\n      pull-requests: read' in publisher
+    assert publisher.count(
+        'gh api "repos/$GITHUB_REPOSITORY/pulls/$PULL_NUMBER" --jq .state'
+    ) == 2
+    assert publisher.count(
+        'release_channel.py cleanup-tag --repository "$GITHUB_REPOSITORY" --tag "$TAG"'
+    ) == 2
+    assert publisher.index('pr_state=$(gh api') < publisher.index('gh release create "$TAG"')
+    assert publisher.rindex('pr_state=$(gh api') > publisher.index('gh release upload "$TAG"')
 
 
 def test_source_release_contains_only_plugin_and_build_metadata():
