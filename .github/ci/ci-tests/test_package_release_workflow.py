@@ -201,7 +201,7 @@ def test_published_channel_is_installed_from_github_in_freebsd():
     assert 'opnsense/os-bind-rp' in verifier
     assert '[ "$channel_identity" = "$expected_identity" ]' in verifier
     assert '[ "$installed_identity" = "$channel_identity" ]' in verifier
-    assert 'needs: [select, profile, verify-published, build]' in source_release
+    assert 'needs: [select, profile, verify-published]' in source_release
 
 
 def test_development_release_installs_from_a_temporary_freebsd_repository():
@@ -225,10 +225,13 @@ def test_development_release_installs_from_a_temporary_freebsd_repository():
 def test_source_release_contains_only_plugin_and_build_metadata():
     workflow = workflow_text()
     source_release = workflow.split('  source-release:', 1)[1]
+    assert 'needs: [select, profile, verify-published]' in source_release
+    assert 'name: os-bind-rp-production-repository-${{ needs.select.outputs.series }}' in source_release
+    assert 'output="artifacts/$SERIES/repository/current"' in source_release
     assert 'set -- "$output"/os-bind-rp-*.pkg' in source_release
     assert (
         'gh release create "$tag" "$1" "$output/build-metadata.txt" '
         '--repo "$GITHUB_REPOSITORY"' in source_release
     )
     assert 'bind920-*.pkg' not in source_release
-    assert 'repository/' not in source_release
+    assert 'os-bind-rp-build-production-' not in source_release

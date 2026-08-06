@@ -163,7 +163,8 @@ against the published `pkg-<series>` URL. It verifies the installed
 `bind-tools`, `bind920`, and `os-bind-rp` identities against the staged package
 archives and requires the public `channel.json` to match the staged bytes. The
 immutable source release is created only after this exact public-channel
-installation succeeds.
+installation succeeds, using the same verified plugin archive and build
+metadata from the signed channel artifact.
 
 Do not publish a stable channel manually from a workstation. A successful
 workflow run is the release record and source of the signed catalogue.
