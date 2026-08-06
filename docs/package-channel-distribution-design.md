@@ -126,6 +126,11 @@ baseline.
    the distribution repository. A subsequent source-release job uses the
    source repository's automatic token to create the immutable human-facing
    release.
+7. A fresh FreeBSD VM configures the matching pinned OPNsense repository for
+   dependencies and runs the supported installer against the public current
+   channel. The gate force-refreshes until public `channel.json` and package
+   identities match the staged release, then compares installed identities to
+   those archives. The source release waits for this exact installation.
 
 The publisher fails before changing the distribution repository if the
 existing channel is malformed, package checksums differ unexpectedly, source
@@ -138,6 +143,13 @@ snapshot; after upload, it downloads every asset and verifies its checksum.
 
 No rollback snapshot is removed until it falls outside the newest-five set and
 the current/snapshot publication has succeeded.
+An existing immutable snapshot may be reused by a full workflow retry only
+when its complete asset set is byte-identical to the staged snapshot. If the
+current channel exists, it must also be byte-identical; a mismatch is a hard
+failure so an older retry cannot roll current back.
+If the snapshot is absent and current differs, the staged source commit must
+be a strict descendant of the source recorded by current. This preserves
+forward promotion while rejecting stale runs after recovery or pruning.
 
 ## Migration
 
