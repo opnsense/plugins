@@ -180,7 +180,10 @@ def test_published_channel_is_installed_from_github_in_freebsd():
     assert 'cmp -s "$root/channel.json" "$public_channel"' in verifier
     assert 'pkg query -F "$archive" \'%n|%v|%o\'' in verifier
     assert '[ "$channel_identities" = "$expected_identities" ]' in verifier
-    assert '[ "$attempt" -ge 5 ]' in verifier
+    assert '[ "$attempt" -ge 20 ]' in verifier
+    assert 'sleep 30' in verifier
+    assert "printf 'expected identities:\\n%s\\n' \"$expected_identities\"" in verifier
+    assert "printf 'published identities:\\n%s\\n' \"$channel_identities\"" in verifier
     assert 'pkg rquery -r resolver-plugins -e "%n = $package" \'%dn\'' in verifier
     assert 'RP_TTY_PATH="$approval" scripts/install-os-bind-rp.sh' in verifier
     assert verifier.index('pkg install -y -r OPNsense opnsense') < verifier.index(

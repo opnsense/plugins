@@ -586,11 +586,17 @@ jobs:
               if [ "$channel_identities" = "$expected_identities" ]; then
                 break
               fi
-              if [ "$attempt" -ge 5 ]; then
+              if [ "$attempt" -ge 20 ]; then
                 echo 'published Resolver Plugins channel did not match staged release' >&2
+                printf 'expected identities:\n%s\n' "$expected_identities" >&2
+                printf 'published identities:\n%s\n' "$channel_identities" >&2
+                if [ -f "$public_channel" ]; then
+                  printf 'staged channel sha256: %s\n' "$(sha256 -q "$root/channel.json")" >&2
+                  printf 'published channel sha256: %s\n' "$(sha256 -q "$public_channel")" >&2
+                fi
                 exit 1
               fi
-              sleep $((attempt * 2))
+              sleep 30
               attempt=$((attempt + 1))
             done
             dependencies=$(
