@@ -41,6 +41,88 @@ class ChannelTagTest(unittest.TestCase):
             release_channel.snapshot_channel_tag("26.7", "1.36/2")
 
 
+class PullRequestReleaseCleanupTest(unittest.TestCase):
+    def test_pull_request_release_selection_rejects_near_matches(self) -> None:
+        releases = [
+            [
+                {"tag_name": "pr-51-26.7"},
+                {"tag_name": "pr-51-26.1"},
+                {"tag_name": "pr-510-26.7"},
+                {"tag_name": "pr-51-26.7-extra"},
+                {"tag_name": "os-bind-rp-26.7-1.36_2"},
+            ]
+        ]
+
+        self.assertEqual(
+            ["pr-51-26.1", "pr-51-26.7"],
+            release_channel.select_pull_request_release_tags(releases, "51"),
+        )
+
+    def test_pull_request_release_cleanup_deletes_release_and_tag(self) -> None:
+        commands: list[list[str]] = []
+
+        def fake_run(command: list[str], **_: object) -> subprocess.CompletedProcess[str]:
+            commands.append(command)
+            return subprocess.CompletedProcess(command, 0, "", "")
+
+        with patch.object(release_channel.subprocess, "run", side_effect=fake_run):
+            release_channel.cleanup_development_release(
+                "resolver-plugins/plugins", "pr-51-26.7"
+            )
+
+        self.assertEqual(
+            [
+                "gh", "release", "delete", "pr-51-26.7", "--cleanup-tag",
+                "--yes", "--repo", "resolver-plugins/plugins",
+            ],
+            commands[0],
+        )
+
+    def test_missing_pull_request_release_cleanup_is_idempotent(self) -> None:
+        missing = subprocess.CompletedProcess(
+            ["gh"], 1, "", "release not found"
+        )
+        with patch.object(release_channel.subprocess, "run", return_value=missing):
+            release_channel.cleanup_development_release(
+                "resolver-plugins/plugins", "pr-51-26.7"
+            )
+
+    def test_invalid_pull_request_release_inputs_fail_before_mutation(self) -> None:
+        with patch.object(release_channel.subprocess, "run") as run:
+            with self.assertRaisesRegex(ValueError, "invalid pull request number"):
+                release_channel.cleanup_pull_request_releases(
+                    "resolver-plugins/plugins", "51/../../master"
+                )
+            with self.assertRaisesRegex(ValueError, "invalid development release tag"):
+                release_channel.cleanup_development_release(
+                    "resolver-plugins/plugins", "pkg-26.7"
+                )
+
+        run.assert_not_called()
+
+    def test_pull_request_release_cleanup_lists_and_deletes_exact_matches(self) -> None:
+        deleted: list[str] = []
+
+        def fake_run(command: list[str], **_: object) -> subprocess.CompletedProcess[str]:
+            if command[:3] == ["gh", "api", "--paginate"]:
+                payload = [[
+                    {"tag_name": "pr-51-26.7"},
+                    {"tag_name": "pr-51-26.1"},
+                    {"tag_name": "pr-510-26.7"},
+                    {"tag_name": "pkg-26.7"},
+                ]]
+                return subprocess.CompletedProcess(command, 0, json.dumps(payload), "")
+            deleted.append(command[3])
+            return subprocess.CompletedProcess(command, 0, "", "")
+
+        with patch.object(release_channel.subprocess, "run", side_effect=fake_run):
+            release_channel.cleanup_pull_request_releases(
+                "resolver-plugins/plugins", "51"
+            )
+
+        self.assertEqual(["pr-51-26.1", "pr-51-26.7"], deleted)
+
+
 class SelfContainedRepositoryStageTest(unittest.TestCase):
     def test_stage_channel_contains_the_plugin_bind_pair_and_audit_manifest(self) -> None:
         """A self-contained channel carries one plugin, its BIND pair, and auditable metadata."""
