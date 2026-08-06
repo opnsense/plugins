@@ -167,6 +167,100 @@ class SelfContainedRepositoryStageTest(unittest.TestCase):
 
 
 class PublicationRecoveryTest(unittest.TestCase):
+    def test_existing_identical_immutable_release_is_a_noop(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            staged = root / "staged"
+            remote = root / "remote"
+            staged.mkdir()
+            remote.mkdir()
+            for directory in (staged, remote):
+                (directory / "os-bind-rp-1.36_2.pkg").write_bytes(b"plugin")
+                (directory / "build-metadata.txt").write_bytes(b"metadata")
+            manifest = root / "manifest.json"
+            manifest.write_text(
+                json.dumps(release_channel.directory_checksums(remote)), encoding="utf-8"
+            )
+            snapshot = release_channel.ReleaseSnapshot(
+                "os-bind-rp-26.7-1.36_2", True, remote, manifest
+            )
+            with (
+                patch.object(release_channel, "snapshot_release", return_value=snapshot),
+                patch.object(release_channel, "run_gh") as run_gh,
+            ):
+                release_channel.publish_immutable_release(
+                    "resolver-plugins/plugins",
+                    snapshot.tag,
+                    staged,
+                    "os-bind-rp 26.7 1.36_2",
+                )
+
+            run_gh.assert_not_called()
+
+    def test_existing_different_immutable_release_is_rejected(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            staged = root / "staged"
+            remote = root / "remote"
+            staged.mkdir()
+            remote.mkdir()
+            (staged / "os-bind-rp-1.36_2.pkg").write_bytes(b"new")
+            (remote / "os-bind-rp-1.36_2.pkg").write_bytes(b"old")
+            manifest = root / "manifest.json"
+            manifest.write_text(
+                json.dumps(release_channel.directory_checksums(remote)), encoding="utf-8"
+            )
+            snapshot = release_channel.ReleaseSnapshot(
+                "os-bind-rp-26.7-1.36_2", True, remote, manifest
+            )
+            with patch.object(release_channel, "snapshot_release", return_value=snapshot):
+                with self.assertRaisesRegex(RuntimeError, "different bytes"):
+                    release_channel.publish_immutable_release(
+                        "resolver-plugins/plugins",
+                        snapshot.tag,
+                        staged,
+                        "os-bind-rp 26.7 1.36_2",
+                    )
+
+    def test_absent_immutable_release_is_created_and_verified(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            staged = root / "staged"
+            staged.mkdir()
+            (staged / "os-bind-rp-1.36_2.pkg").write_bytes(b"plugin")
+            absent = release_channel.ReleaseSnapshot(
+                "os-bind-rp-26.7-1.36_2",
+                False,
+                root / "missing",
+                root / "missing.json",
+            )
+            manifest = root / "manifest.json"
+            manifest.write_text(
+                json.dumps(release_channel.directory_checksums(staged)), encoding="utf-8"
+            )
+            published = release_channel.ReleaseSnapshot(
+                absent.tag, True, staged, manifest
+            )
+            calls: list[list[str]] = []
+            with (
+                patch.object(
+                    release_channel,
+                    "snapshot_release",
+                    side_effect=(absent, published),
+                ),
+                patch.object(release_channel, "run_gh", side_effect=calls.append),
+            ):
+                release_channel.publish_immutable_release(
+                    "resolver-plugins/plugins",
+                    absent.tag,
+                    staged,
+                    "os-bind-rp 26.7 1.36_2",
+                )
+
+            self.assertEqual("release", calls[0][0])
+            self.assertEqual("create", calls[0][1])
+            self.assertIn("--latest=false", calls[0])
+
     def test_existing_snapshot_is_materialized_for_an_exact_release_retry(self) -> None:
         """A published version is reused instead of rebuilt under a new control commit."""
         with tempfile.TemporaryDirectory() as temporary_directory:

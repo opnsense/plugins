@@ -228,10 +228,11 @@ def test_source_release_contains_only_plugin_and_build_metadata():
     assert 'needs: [select, profile, verify-published]' in source_release
     assert 'name: os-bind-rp-production-repository-${{ needs.select.outputs.series }}' in source_release
     assert 'output="artifacts/$SERIES/repository/current"' in source_release
+    assert 'source_output="$RUNNER_TEMP/source-release"' in source_release
+    assert 'publish-immutable --repository "$GITHUB_REPOSITORY"' in source_release
+    assert 'gh release view "$tag"' not in source_release
+    assert 'gh release create "$tag"' not in source_release
     assert 'set -- "$output"/os-bind-rp-*.pkg' in source_release
-    assert (
-        'gh release create "$tag" "$1" "$output/build-metadata.txt" '
-        '--repo "$GITHUB_REPOSITORY"' in source_release
-    )
+    assert 'cp "$1" "$output/build-metadata.txt" "$source_output/"' in source_release
     assert 'bind920-*.pkg' not in source_release
     assert 'os-bind-rp-build-production-' not in source_release

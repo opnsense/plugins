@@ -559,6 +559,27 @@ def snapshot_release(repository: str, tag: str, recovery: Path) -> ReleaseSnapsh
     return ReleaseSnapshot(tag, True, directory, manifest)
 
 
+def publish_immutable_release(
+    repository: str, tag: str, directory: Path, title: str
+) -> None:
+    """Create an immutable Release, or accept an exact byte-for-byte retry."""
+    with tempfile.TemporaryDirectory() as temporary_directory:
+        existing = snapshot_release(repository, tag, Path(temporary_directory))
+        if existing.existed:
+            if not snapshot_matches_directory(existing, directory):
+                raise RuntimeError(f"immutable GitHub Release has different bytes: {tag}")
+            return
+
+    run_gh([
+        "release", "create", tag, *(str(path) for path in asset_order(directory)),
+        "--repo", repository, "--title", title, "--latest=false",
+    ])
+    with tempfile.TemporaryDirectory() as temporary_directory:
+        published = snapshot_release(repository, tag, Path(temporary_directory))
+        if not snapshot_matches_directory(published, directory):
+            raise RuntimeError(f"published immutable GitHub Release has different bytes: {tag}")
+
+
 def restore_release(repository: str, snapshot: ReleaseSnapshot) -> None:
     """Restore one channel exclusively from its verified local recovery bytes."""
     if not snapshot.existed:
@@ -793,6 +814,11 @@ def main() -> None:
     publish_tag.add_argument("--repository", required=True)
     publish_tag.add_argument("--tag", required=True)
     publish_tag.add_argument("--directory", type=Path, required=True)
+    publish_immutable = commands.add_parser("publish-immutable")
+    publish_immutable.add_argument("--repository", required=True)
+    publish_immutable.add_argument("--tag", required=True)
+    publish_immutable.add_argument("--directory", type=Path, required=True)
+    publish_immutable.add_argument("--title", required=True)
     publish_channels_parser = commands.add_parser("publish-channels")
     publish_channels_parser.add_argument("--repository", required=True)
     publish_channels_parser.add_argument("--recovery", type=Path, required=True)
@@ -844,6 +870,10 @@ def main() -> None:
         publish(arguments.repository, channel_tag(arguments.series), arguments.directory, arguments.prerelease)
     elif arguments.command == "publish-tag":
         publish(arguments.repository, arguments.tag, arguments.directory, False)
+    elif arguments.command == "publish-immutable":
+        publish_immutable_release(
+            arguments.repository, arguments.tag, arguments.directory, arguments.title
+        )
     elif arguments.command == "publish-channels":
         publish_channels(arguments.repository, arguments.channel, arguments.recovery)
     elif arguments.command == "prune-snapshots":
