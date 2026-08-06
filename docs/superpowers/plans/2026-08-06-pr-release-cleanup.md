@@ -42,7 +42,7 @@ Expected: failures because the cleanup function and CLI do not exist.
 
 - [ ] **Step 3: Implement the minimal helper**
 
-List releases with paginated `gh api`, flatten the response, require the exact regular expression `pr-<pull-number>-[0-9]+\.[0-9]+`, then call the exact-tag helper for each match. The exact-tag helper validates the complete development tag, deletes the Release, and independently deletes `git/refs/tags/<tag>` so an orphaned tag is also removed. Only confirmed missing Release and tag responses are idempotent successes. Validate inputs before listing or deleting.
+List releases and matching Git tag refs with paginated `gh api`, flatten both responses, require the exact regular expression `pr-<pull-number>-[0-9]+\.[0-9]+`, union exact matches, then call the exact-tag helper for each. The exact-tag helper validates the complete development tag, deletes the Release, and independently deletes `git/refs/tags/<tag>` so an orphaned tag is also removed. Only confirmed missing Release and tag responses are idempotent successes. Validate inputs before listing or deleting.
 
 - [ ] **Step 4: Verify GREEN**
 

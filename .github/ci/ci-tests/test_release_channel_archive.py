@@ -138,12 +138,15 @@ class PullRequestReleaseCleanupTest(unittest.TestCase):
 
         def fake_run(command: list[str], **_: object) -> subprocess.CompletedProcess[str]:
             if command[:3] == ["gh", "api", "--paginate"]:
-                payload = [[
-                    {"tag_name": "pr-51-26.7"},
-                    {"tag_name": "pr-51-26.1"},
-                    {"tag_name": "pr-510-26.7"},
-                    {"tag_name": "pkg-26.7"},
-                ]]
+                if "/releases?" in command[-1]:
+                    payload = [[
+                        {"tag_name": "pr-51-26.7"},
+                        {"tag_name": "pr-51-26.1"},
+                        {"tag_name": "pr-510-26.7"},
+                        {"tag_name": "pkg-26.7"},
+                    ]]
+                else:
+                    payload = [[]]
                 return subprocess.CompletedProcess(command, 0, json.dumps(payload), "")
             if command[:3] == ["gh", "api", "--method"]:
                 return subprocess.CompletedProcess(command, 1, "", "gh: Not Found (HTTP 404)")
@@ -156,6 +159,35 @@ class PullRequestReleaseCleanupTest(unittest.TestCase):
             )
 
         self.assertEqual(["pr-51-26.1", "pr-51-26.7"], deleted)
+
+    def test_pull_request_release_cleanup_discovers_an_orphaned_tag(self) -> None:
+        deleted_refs: list[str] = []
+
+        def fake_run(command: list[str], **_: object) -> subprocess.CompletedProcess[str]:
+            if command[:3] == ["gh", "api", "--paginate"]:
+                if "/releases?" in command[-1]:
+                    payload = [[]]
+                else:
+                    payload = [[
+                        {"ref": "refs/tags/pr-51-26.7"},
+                        {"ref": "refs/tags/pr-510-26.7"},
+                        {"ref": "refs/tags/pkg-26.7"},
+                    ]]
+                return subprocess.CompletedProcess(command, 0, json.dumps(payload), "")
+            if command[:2] == ["gh", "release"]:
+                return subprocess.CompletedProcess(command, 1, "", "release not found")
+            deleted_refs.append(command[-1])
+            return subprocess.CompletedProcess(command, 0, "", "")
+
+        with patch.object(release_channel.subprocess, "run", side_effect=fake_run):
+            release_channel.cleanup_pull_request_releases(
+                "resolver-plugins/plugins", "51"
+            )
+
+        self.assertEqual(
+            ["repos/resolver-plugins/plugins/git/refs/tags/pr-51-26.7"],
+            deleted_refs,
+        )
 
 
 class SelfContainedRepositoryStageTest(unittest.TestCase):

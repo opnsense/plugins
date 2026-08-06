@@ -42,4 +42,3 @@ def test_pull_request_release_cleanup_has_only_required_write_permission():
     assert "permissions: {}" in workflow.split("jobs:", 1)[0]
     assert "permissions:\n      contents: write" in cleanup
     assert "GH_TOKEN: ${{ github.token }}" in cleanup
-

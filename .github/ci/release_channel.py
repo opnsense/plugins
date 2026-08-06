@@ -722,6 +722,27 @@ def select_pull_request_release_tags(releases: object, pull_number: str) -> list
     return sorted(selected)
 
 
+def select_pull_request_tag_refs(refs: object, pull_number: str) -> list[str]:
+    """Select only complete development Git tag refs for one pull request."""
+    if PULL_REQUEST_PATTERN.fullmatch(pull_number) is None:
+        raise ValueError("invalid pull request number")
+    if not isinstance(refs, list) or not all(isinstance(page, list) for page in refs):
+        raise RuntimeError("cannot list pull request tags")
+    expected_pull = int(pull_number)
+    selected = set()
+    prefix = "refs/tags/"
+    for page in refs:
+        for item in page:
+            if not isinstance(item, dict):
+                continue
+            ref = item.get("ref")
+            tag = ref.removeprefix(prefix) if isinstance(ref, str) and ref.startswith(prefix) else ""
+            match = DEVELOPMENT_RELEASE_PATTERN.fullmatch(tag)
+            if match is not None and int(match.group(1)) == expected_pull:
+                selected.add(tag)
+    return sorted(selected)
+
+
 def cleanup_development_release(repository: str, tag: str) -> None:
     """Delete one exact development Release and its Git tag, if present."""
     if DEVELOPMENT_RELEASE_PATTERN.fullmatch(tag) is None:
@@ -767,7 +788,22 @@ def cleanup_pull_request_releases(repository: str, pull_number: str) -> None:
         releases = json.loads(result.stdout)
     except json.JSONDecodeError as error:
         raise RuntimeError("cannot list pull request releases") from error
-    for tag in select_pull_request_release_tags(releases, pull_number):
+    refs_result = subprocess.run(
+        [
+            "gh", "api", "--paginate", "--slurp",
+            f"repos/{repository}/git/matching-refs/tags/pr-{pull_number}-",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    try:
+        refs = json.loads(refs_result.stdout)
+    except json.JSONDecodeError as error:
+        raise RuntimeError("cannot list pull request tags") from error
+    tags = set(select_pull_request_release_tags(releases, pull_number))
+    tags.update(select_pull_request_tag_refs(refs, pull_number))
+    for tag in sorted(tags):
         cleanup_development_release(repository, tag)
 
 
