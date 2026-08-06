@@ -688,5 +688,8 @@ jobs:
           version=${1##*/os-bind-rp-}
           version=${version%.pkg}
           tag=$(python3 .github/ci/release_channel.py source-release-tag "$SERIES" "$version")
-          gh release view "$tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1 && { echo "immutable source release already exists: $tag" >&2; exit 1; }
-          gh release create "$tag" "$1" "$output/build-metadata.txt" --repo "$GITHUB_REPOSITORY" --title "os-bind-rp $SERIES $version" --latest=false
+          source_output="$RUNNER_TEMP/source-release"
+          mkdir "$source_output"
+          cp "$1" "$output/build-metadata.txt" "$source_output/"
+          python3 .github/ci/release_channel.py publish-immutable --repository "$GITHUB_REPOSITORY" \
+            --tag "$tag" --directory "$source_output" --title "os-bind-rp $SERIES $version"

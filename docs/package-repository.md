@@ -164,7 +164,9 @@ against the published `pkg-<series>` URL. It verifies the installed
 archives and requires the public `channel.json` to match the staged bytes. The
 immutable source release is created only after this exact public-channel
 installation succeeds, using the same verified plugin archive and build
-metadata from the signed channel artifact.
+metadata from the signed channel artifact. Retrying that source release is a
+no-op when both assets are byte-identical; an existing tag with different
+bytes is rejected.
 
 Do not publish a stable channel manually from a workstation. A successful
 workflow run is the release record and source of the signed catalogue.
