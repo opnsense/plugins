@@ -19,6 +19,8 @@ import bind920_profile
 
 
 SERIES_PATTERN = re.compile(r"[0-9]+\.[0-9]+")
+PULL_REQUEST_PATTERN = re.compile(r"[1-9][0-9]*")
+DEVELOPMENT_RELEASE_PATTERN = re.compile(r"pr-([1-9][0-9]*)-([0-9]+\.[0-9]+)")
 PLUGIN_PATTERN = re.compile(r"os-bind-rp-(?!devel-).+\.pkg")
 PROVENANCE_NAME = "bind920-provenance.json"
 PACKAGE_VERSION_PATTERN = re.compile(r"[0-9][0-9A-Za-z._-]*")
@@ -699,6 +701,112 @@ def prune_snapshots(repository: str, series: str, keep: int = 5) -> None:
         run_gh(["release", "delete", tag, "--yes", "--repo", repository])
 
 
+def select_pull_request_release_tags(releases: object, pull_number: str) -> list[str]:
+    """Select only complete development Release tags for one pull request."""
+    if PULL_REQUEST_PATTERN.fullmatch(pull_number) is None:
+        raise ValueError("invalid pull request number")
+    if not isinstance(releases, list) or not all(
+        isinstance(page, list) for page in releases
+    ):
+        raise RuntimeError("cannot list pull request releases")
+    expected_pull = int(pull_number)
+    selected = set()
+    for page in releases:
+        for release in page:
+            if not isinstance(release, dict):
+                continue
+            tag = release.get("tag_name")
+            match = DEVELOPMENT_RELEASE_PATTERN.fullmatch(tag) if isinstance(tag, str) else None
+            if match is not None and int(match.group(1)) == expected_pull:
+                selected.add(tag)
+    return sorted(selected)
+
+
+def select_pull_request_tag_refs(refs: object, pull_number: str) -> list[str]:
+    """Select only complete development Git tag refs for one pull request."""
+    if PULL_REQUEST_PATTERN.fullmatch(pull_number) is None:
+        raise ValueError("invalid pull request number")
+    if not isinstance(refs, list) or not all(isinstance(page, list) for page in refs):
+        raise RuntimeError("cannot list pull request tags")
+    expected_pull = int(pull_number)
+    selected = set()
+    prefix = "refs/tags/"
+    for page in refs:
+        for item in page:
+            if not isinstance(item, dict):
+                continue
+            ref = item.get("ref")
+            tag = ref.removeprefix(prefix) if isinstance(ref, str) and ref.startswith(prefix) else ""
+            match = DEVELOPMENT_RELEASE_PATTERN.fullmatch(tag)
+            if match is not None and int(match.group(1)) == expected_pull:
+                selected.add(tag)
+    return sorted(selected)
+
+
+def cleanup_development_release(repository: str, tag: str) -> None:
+    """Delete one exact development Release and its Git tag, if present."""
+    if DEVELOPMENT_RELEASE_PATTERN.fullmatch(tag) is None:
+        raise ValueError("invalid development release tag")
+    result = subprocess.run(
+        [
+            "gh", "release", "delete", tag, "--yes", "--repo", repository,
+        ],
+        capture_output=True,
+        text=True,
+    )
+    if result.returncode and "release not found" not in result.stderr.lower():
+        raise RuntimeError(result.stderr.strip() or f"cannot delete development Release {tag}")
+    tag_result = subprocess.run(
+        [
+            "gh", "api", "--method", "DELETE",
+            f"repos/{repository}/git/refs/tags/{tag}",
+        ],
+        capture_output=True,
+        text=True,
+    )
+    if tag_result.returncode and "(http 404)" not in tag_result.stderr.lower():
+        raise RuntimeError(
+            f"cannot delete development tag {tag}: "
+            f"{tag_result.stderr.strip() or 'GitHub API request failed'}"
+        )
+
+
+def cleanup_pull_request_releases(repository: str, pull_number: str) -> None:
+    """Delete every series-scoped development Release for one pull request."""
+    if PULL_REQUEST_PATTERN.fullmatch(pull_number) is None:
+        raise ValueError("invalid pull request number")
+    result = subprocess.run(
+        [
+            "gh", "api", "--paginate", "--slurp",
+            f"repos/{repository}/releases?per_page=100",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    try:
+        releases = json.loads(result.stdout)
+    except json.JSONDecodeError as error:
+        raise RuntimeError("cannot list pull request releases") from error
+    refs_result = subprocess.run(
+        [
+            "gh", "api", "--paginate", "--slurp",
+            f"repos/{repository}/git/matching-refs/tags/pr-{pull_number}-",
+        ],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    try:
+        refs = json.loads(refs_result.stdout)
+    except json.JSONDecodeError as error:
+        raise RuntimeError("cannot list pull request tags") from error
+    tags = set(select_pull_request_release_tags(releases, pull_number))
+    tags.update(select_pull_request_tag_refs(refs, pull_number))
+    for tag in sorted(tags):
+        cleanup_development_release(repository, tag)
+
+
 def parse_channel(value: str) -> tuple[str, Path]:
     """Parse one exact mutable channel tag and its staged repository path."""
     tag, separator, directory = value.partition("=")
@@ -827,6 +935,12 @@ def main() -> None:
     prune.add_argument("--repository", required=True)
     prune.add_argument("--series", required=True)
     prune.add_argument("--keep", type=int, default=5)
+    cleanup_tag = commands.add_parser("cleanup-tag")
+    cleanup_tag.add_argument("--repository", required=True)
+    cleanup_tag.add_argument("--tag", required=True)
+    cleanup_pull = commands.add_parser("cleanup-pull-request")
+    cleanup_pull.add_argument("--repository", required=True)
+    cleanup_pull.add_argument("--pull-number", required=True)
     bootstrap = commands.add_parser("bootstrap")
     bootstrap.add_argument("--output", type=Path, required=True)
     bootstrap.add_argument("--base-url", required=True)
@@ -878,6 +992,10 @@ def main() -> None:
         publish_channels(arguments.repository, arguments.channel, arguments.recovery)
     elif arguments.command == "prune-snapshots":
         prune_snapshots(arguments.repository, arguments.series, arguments.keep)
+    elif arguments.command == "cleanup-tag":
+        cleanup_development_release(arguments.repository, arguments.tag)
+    elif arguments.command == "cleanup-pull-request":
+        cleanup_pull_request_releases(arguments.repository, arguments.pull_number)
     else:
         write_bootstrap(
             arguments.output, arguments.base_url, arguments.series, arguments.public_key_path
