@@ -64,6 +64,23 @@ def source_release_tag(series: str, version: str) -> str:
     return f"os-bind-rp-{series}-{version}"
 
 
+def package_release_title(tag: str) -> str:
+    """Return the purpose-first display title for one package channel tag."""
+    value = tag.removeprefix("pkg-")
+    if value == tag:
+        raise ValueError("invalid package release tag")
+    if SERIES_PATTERN.fullmatch(value) is not None:
+        return f"{value}-latest"
+    series, separator, version = value.partition("-os-bind-rp-")
+    if (
+        separator
+        and SERIES_PATTERN.fullmatch(series) is not None
+        and PACKAGE_VERSION_PATTERN.fullmatch(version) is not None
+    ):
+        return f"{series}-archive-{version}"
+    raise ValueError("invalid package release tag")
+
+
 def select_plugin_packages(directory: Path) -> list[Path]:
     """Return production plugin archives supplied for one signed catalogue."""
     packages = sorted(
@@ -817,7 +834,7 @@ def parse_channel(value: str) -> tuple[str, Path]:
 
 def publish(repository: str, tag: str, directory: Path, prerelease: bool) -> None:
     """Create (if needed) and replace the assets of one GitHub Release."""
-    title = f"os-bind-rp package repository {tag.removeprefix('pkg-')}"
+    title = package_release_title(tag)
     create = ["release", "create", tag, "--repo", repository, "--title", title]
     if prerelease:
         create.append("--prerelease")
@@ -826,6 +843,10 @@ def publish(repository: str, tag: str, directory: Path, prerelease: bool) -> Non
     result = subprocess.run(["gh", *create], capture_output=True, text=True)
     if result.returncode and "already exists" not in result.stderr.lower():
         raise RuntimeError(result.stderr.strip() or "cannot create GitHub Release")
+    edit = ["release", "edit", tag, "--repo", repository, "--title", title]
+    if not prerelease:
+        edit.append("--latest=false")
+    run_gh(edit)
     assets = asset_order(directory)
     existing = subprocess.run(
         [

@@ -20,6 +20,23 @@ SPEC.loader.exec_module(release_channel)
 
 
 class ChannelTagTest(unittest.TestCase):
+    def test_package_release_title_names_current_and_archive_purpose(self) -> None:
+        self.assertEqual("26.1-latest", release_channel.package_release_title("pkg-26.1"))
+        self.assertEqual(
+            "26.1-archive-1.36_9",
+            release_channel.package_release_title("pkg-26.1-os-bind-rp-1.36_9"),
+        )
+
+    def test_package_release_title_rejects_non_channel_tags(self) -> None:
+        for tag in (
+            "pkg-26.1-bind920",
+            "pkg-26.1-os-bind-rp-1.36/9",
+            "os-bind-rp-26.1-1.36_9",
+        ):
+            with self.subTest(tag=tag):
+                with self.assertRaisesRegex(ValueError, "invalid package release tag"):
+                    release_channel.package_release_title(tag)
+
     def test_source_release_tag_identifies_the_series_and_plugin_version(self) -> None:
         self.assertEqual(
             "os-bind-rp-26.7-1.36_7", release_channel.source_release_tag("26.7", "1.36_7")
@@ -316,6 +333,55 @@ class SelfContainedRepositoryStageTest(unittest.TestCase):
 
 
 class PublicationRecoveryTest(unittest.TestCase):
+    def test_existing_package_release_title_converges_during_publication(self) -> None:
+        with tempfile.TemporaryDirectory() as temporary_directory:
+            root = Path(temporary_directory)
+            directory = root / "staged"
+            directory.mkdir()
+            asset = directory / "os-bind-rp-1.36_9.pkg"
+            asset.write_bytes(b"package")
+            manifest = root / "checksums.json"
+            manifest.write_text(
+                json.dumps({asset.name: release_channel.sha256(asset)}), encoding="utf-8"
+            )
+            snapshot = release_channel.ReleaseSnapshot(
+                "pkg-26.1-os-bind-rp-1.36_9", True, directory, manifest
+            )
+            mutations: list[list[str]] = []
+
+            def fake_run(
+                command: list[str], **_: object
+            ) -> subprocess.CompletedProcess[str]:
+                if command[:3] == ["gh", "release", "create"]:
+                    return subprocess.CompletedProcess(command, 1, "", "release already exists")
+                if "--jq" in command:
+                    return subprocess.CompletedProcess(command, 0, f"{asset.name}\n", "")
+                return subprocess.CompletedProcess(
+                    command, 0, json.dumps({"assets": [{"name": asset.name}]}), ""
+                )
+
+            with (
+                patch.object(release_channel.subprocess, "run", side_effect=fake_run),
+                patch.object(release_channel, "run_gh", side_effect=mutations.append),
+                patch.object(release_channel, "snapshot_release", return_value=snapshot),
+            ):
+                release_channel.publish(
+                    "resolver-plugins/repository",
+                    snapshot.tag,
+                    directory,
+                    False,
+                )
+
+            self.assertIn(
+                [
+                    "release", "edit", snapshot.tag,
+                    "--repo", "resolver-plugins/repository",
+                    "--title", "26.1-archive-1.36_9",
+                    "--latest=false",
+                ],
+                mutations,
+            )
+
     def test_existing_identical_immutable_release_is_a_noop(self) -> None:
         with tempfile.TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
