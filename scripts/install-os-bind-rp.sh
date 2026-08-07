@@ -272,6 +272,22 @@ verify_archive_ownership() {
     done < "$state_directory/package-file-checksums.txt"
 }
 
+verify_installed_checksums() {
+    package_name=$1
+    checksum_output="$temporary_directory/$package_name.installed-checksums"
+    "$pkg_command" query -e "%n = $package_name" '%Fp|%Fs' > "$checksum_output" || \
+        fail "could not inspect installed checksums for $package_name"
+    [ -s "$checksum_output" ] || fail "installed package has no file checksums: $package_name"
+    while IFS='|' read -r file_path file_checksum extra
+    do
+        if [ -z "$file_path" ] || [ -n "${extra:-}" ] || \
+            ! printf '%s\n' "$file_checksum" | grep -Eq '^(2\$)?[[:xdigit:]]{64}$'
+        then
+            fail "incompatible installed file checksum in $package_name for ${file_path:-unknown}: ${file_checksum:-(null)}"
+        fi
+    done < "$checksum_output"
+}
+
 pkg_command=${RP_PKG_COMMAND:-pkg}
 pkg_static_command=${RP_PKG_STATIC_COMMAND:-/usr/local/sbin/pkg-static}
 repository_directory=${RP_PKG_REPOSITORY_DIR:-/usr/local/etc/pkg/repos}
@@ -397,6 +413,10 @@ then
     verify_installed_record "$candidate_bind_tools"
 fi
 verify_archive_ownership
+for installed_package in bind-tools bind920 os-bind-rp
+do
+    verify_installed_checksums "$installed_package"
+done
 "$pkg_command" check -s bind-tools bind920 os-bind-rp
 "$pkg_command" info -a > "$state_directory/packages.after.txt"
 "$pkg_command" query '%n|%v|%o' > "$state_directory/package-identities.after.txt"

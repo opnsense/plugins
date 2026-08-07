@@ -186,7 +186,12 @@ elif command == "query":
         if f"%n = {name}" in expression:
             value = installed(name)
             if value:
-                print(value)
+                if args[-1] == "%Fp|%Fs":
+                    checksum = os.environ["RP_TEST_ARCHIVE_CHECKSUM"]
+                    print(f"/usr/local/{name}/one|{checksum}")
+                    print(f"/usr/local/{name}/two|{checksum}")
+                else:
+                    print(value)
 elif command == "info":
     print("pkg-2.3.1_1")
     for name in ("bind920", "bind-tools", "os-bind-rp", "os-bind"):
@@ -374,6 +379,8 @@ def test_official_plugin_replacement_uses_verified_exact_archives_and_keeps_back
     assert all("REPOS_DIR=" in line and "isolated-repos" in line for line in live_installs)
     assert any("os-bind-rp-1.36_10" in line for line in live_installs)
     assert "-r resolver-plugins os-bind-rp" not in calls
+    for package in ("bind-tools", "bind920", "os-bind-rp"):
+        assert f"pkg query -e %n = {package} %Fp|%Fs" in calls
 
 
 def test_install_failure_retains_diagnostics_and_temporary_archives(tmp_path: Path) -> None:
