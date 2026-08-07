@@ -55,7 +55,7 @@ cache miss, it builds the exact pinned FreeBSD Ports recipe. The plugin build
 then installs that exact pair before packaging `os-bind-rp`, so the current
 channel and its rollback snapshot contain the BIND packages actually used by
 the build. The pinned recipe builds `bind-tools` followed by `bind920` at
-`9.20.26_1`.
+`9.20.26_2`.
 Documentation is excluded because it is not needed at runtime; this keeps the
 source build from pulling in the large Sphinx documentation toolchain. The
 plugin manifest records `dep_formula: "bind920 >= 9.20.26"`, not a locally
@@ -81,6 +81,31 @@ while retaining OPNsense-compatible linked libraries.
 The runner installs `python3` first when the clean FreeBSD environment does
 not provide it; Python is required to validate the immutable metadata before
 any OPNsense package repository configuration is used.
+
+### Target package manager and manifest compatibility
+
+`.resolver-plugins/target-pkg.json` pins the exact `pkg` archive and
+`pkg-static` executable hash for each OPNsense series. Build wrappers install
+and lock that target package manager before creating either BIND or plugin
+archives. This forced selection is builder-only; it is not an instruction to
+upgrade an OPNsense host package manager.
+
+Every BIND provenance document and plugin `build-metadata.txt` records the
+immutable creator as `package_creator`; the flat compatibility fields are
+`pkg_creator` and `pkg_creator_sha256`. Reuse is a cache miss unless those
+values match the selected target exactly.
+
+Before copying an artifact, each wrapper verifies that the target parser can
+read a non-null checksum for every packaged file. The equivalent manual gate
+is:
+
+```sh
+python3 .github/ci/package_checksums.py \
+  --pkg-command /usr/local/sbin/pkg-static path/to/package.pkg
+```
+
+Treat a missing, `(null)`, or malformed file checksum as an incompatible
+artifact even when the archive and repository signatures are valid.
 
 For example, after preparing the selected release source:
 

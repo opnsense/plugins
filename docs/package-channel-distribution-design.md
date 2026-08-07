@@ -114,9 +114,12 @@ baseline.
    its provenance matches, or builds the pinned pair once on a cache miss. It
    does so in a clean BIND-materialization environment rather than installing
    a competing BIND package over the normal plugin build environment.
-4. The trusted signing job stages one complete current channel, writes
-   `channel.json`, runs `pkg repo` with the private key, and copies those exact
-   signed bytes to the immutable snapshot publication path.
+4. Builders select and lock the immutable per-series target package manager,
+   record its `pkg_creator` provenance, and reject any archive whose file
+   checksums are not fully readable by that target. The trusted signing job
+   then stages one complete current channel, writes `channel.json`, runs
+   `pkg repo` with the private key, and copies those exact signed bytes to the
+   immutable snapshot publication path.
 5. It verifies that the generated catalogue, public key, manifest checksums,
    and package dependency graph exactly match the intended set.
 6. A final distribution job writes the staged assets to
@@ -126,11 +129,21 @@ baseline.
    the distribution repository. A subsequent source-release job uses the
    source repository's automatic token to create the immutable human-facing
    release.
-7. A fresh FreeBSD VM configures the matching pinned OPNsense repository for
-   dependencies and runs the supported installer against the public current
-   channel. The gate force-refreshes until public `channel.json` and package
-   identities match the staged release, then compares installed identities to
-   those archives. The source release waits for this exact installation.
+7. Fresh FreeBSD verification VMs install official `os-bind`, pin the target
+   package manager, verify every candidate archive with
+   `package_checksums.py`, and exercise the real replacement path. The public
+   gate runs the supported installer, force-refreshes until public
+   `channel.json` and package identities match the staged release, then
+   requires official-package removal, non-null installed checksums, exact
+   identities, file ownership, and `pkg check -s`. The source release waits
+   for this exact installation.
+
+An HA canary adds operational recovery boundaries to those disposable gates:
+capture a configuration backup and target-created rollback packages, prove the
+rollback repository with a dry run, mutate only the passive node, verify direct
+and VIP DNS behavior, reboot that node, and repeat acceptance. Never restore a
+saved package database over the live database, and never allow package or
+configuration changes to propagate to the active peer during the canary.
 
 The publisher fails before changing the distribution repository if the
 existing channel is malformed, package checksums differ unexpectedly, source

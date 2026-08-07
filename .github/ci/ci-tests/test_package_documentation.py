@@ -22,3 +22,25 @@ def test_maintainer_guide_documents_cross_repository_publication_setup():
     assert "webhooks disabled" in text
     assert "installed only on\n`resolver-plugins/repository`" in text
     assert "master" in text and "workflow_dispatch" in text
+
+
+def test_package_guides_document_manifest_compatibility_and_recovery_contracts():
+    building = (ROOT / "docs/building.md").read_text(encoding="utf-8")
+    repository = (ROOT / "docs/package-repository.md").read_text(encoding="utf-8")
+    design = (ROOT / "docs/package-channel-distribution-design.md").read_text(
+        encoding="utf-8"
+    )
+    combined = "\n".join((building, repository, design))
+
+    for contract in (
+        "pkg_creator",
+        "package_checksums.py",
+        "official `os-bind`",
+        "non-null",
+        "configuration backup",
+        "target package manager",
+    ):
+        assert contract in combined
+    assert "does not upgrade the host package manager" in repository
+    assert "does not change BIND service configuration" in repository
+    assert "RP_STATE_DIRECTORY" in repository

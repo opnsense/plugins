@@ -54,12 +54,39 @@ resolver-plugins: {
 }
 EOF
 pkg update -r resolver-plugins
-pkg install os-bind-rp
+scripts/install-os-bind-rp.sh
 ```
+
+### Supported installer transition
+
+Use `scripts/install-os-bind-rp.sh` for the official `os-bind` to
+`os-bind-rp` transition. Before mutation, it fetches exact candidate archives,
+requires non-null per-file checksums, records their SHA-256 values, creates a
+local isolated repository, and dry-runs the frozen transaction. It locks the
+installed `pkg` package for the transaction and restores its original lock
+state on every exit. The installer does not upgrade the host package manager
+and does not change BIND service configuration or restart BIND.
+
+Immediately before the first package install, the script creates a mode-0700
+state directory below `/var/backups`, preserves a mode-retaining configuration
+backup as `config.xml.bak`, and records package inventory and candidate
+hashes. Set `RP_STATE_DIRECTORY` to choose an explicit new directory or
+`RP_BACKUP_ROOT` to change only its parent. A caller-supplied
+`RP_TEMPORARY_DIRECTORY` is never deleted. On failure, the script retains and
+prints both the durable state directory and temporary verified archives for
+diagnosis; on success, it removes only temporary storage that it created.
+
+After replacement, the installer requires the official package to be absent,
+checks exact Resolver package origins, verifies ownership of archive-listed
+paths, rejects null installed-file checksums, and runs a scoped
+`pkg check -s`. Service configuration validation and restart remain explicit
+operator steps after package installation.
 
 ### Rollback
 
-Back up the OPNsense configuration before changing plugin versions:
+Back up the OPNsense configuration before changing plugin versions. The
+supported installer creates this configuration backup automatically; for a
+manual rollback operation, create another explicit copy:
 
 ```sh
 cp /conf/config.xml "/conf/config.xml.os-bind-rp.$(date +%Y%m%d%H%M%S).bak"
