@@ -49,7 +49,11 @@ def validate_profile(profile: object) -> dict[str, str | int]:
         raise ValueError("BIND profile has an invalid distversion")
     if tuple(map(int, profile["distversion"].split("."))) < (9, 20, 26):
         raise ValueError("BIND profile is below the required 9.20.26 release")
-    if profile["portrevision"] != 1:
+    if (
+        not isinstance(profile["portrevision"], int)
+        or isinstance(profile["portrevision"], bool)
+        or profile["portrevision"] <= 0
+    ):
         raise ValueError("BIND profile has an invalid portrevision")
     return profile
 
@@ -60,6 +64,12 @@ def load_profile(path: Path) -> dict[str, str | int]:
     except (OSError, json.JSONDecodeError) as error:
         raise ValueError(f"cannot read BIND profile: {error}") from error
     return validate_profile(profile)
+
+
+def package_version(profile: object) -> str:
+    """Return the package version implied by a validated Ports profile."""
+    profile = validate_profile(profile)
+    return f"{profile['distversion']}_{profile['portrevision']}"
 
 
 def compatibility_fingerprint(
@@ -96,7 +106,7 @@ def build_provenance(
     fingerprint = compatibility_fingerprint(profile, series, freebsd_release, architecture)
     if not isinstance(packages, dict) or set(packages) != set(PACKAGE_ORIGINS):
         raise ValueError("BIND provenance has an invalid package set")
-    expected_version = f"{profile['distversion']}_{profile['portrevision']}"
+    expected_version = package_version(profile)
     validated_packages: dict[str, dict[str, str]] = {}
     for package_name, origin in PACKAGE_ORIGINS.items():
         package = packages[package_name]
@@ -136,13 +146,13 @@ def write_provenance(
     packages = {
         "bind-tools": {
             "name": "bind-tools",
-            "version": f"{profile['distversion']}_{profile['portrevision']}",
+            "version": package_version(profile),
             "origin": "dns/bind-tools",
             "filename": bind_tools.name,
         },
         "bind920": {
             "name": "bind920",
-            "version": f"{profile['distversion']}_{profile['portrevision']}",
+            "version": package_version(profile),
             "origin": "dns/bind920",
             "filename": bind920.name,
         },
@@ -154,7 +164,7 @@ def write_provenance(
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("metadata_path", type=Path)
-    parser.add_argument("command", choices=(*FIELDS, "fingerprint", "provenance"))
+    parser.add_argument("command", choices=(*FIELDS, "package_version", "fingerprint", "provenance"))
     parser.add_argument("series", nargs="?")
     parser.add_argument("freebsd_release", nargs="?")
     parser.add_argument("--architecture", default="x86_64")
@@ -165,6 +175,9 @@ def main() -> None:
     profile = load_profile(arguments.metadata_path)
     if arguments.command in FIELDS:
         print(profile[arguments.command])
+        return
+    if arguments.command == "package_version":
+        print(package_version(profile))
         return
     if arguments.series is None or arguments.freebsd_release is None:
         parser.error(f"{arguments.command} requires series and freebsd_release")

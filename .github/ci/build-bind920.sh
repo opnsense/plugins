@@ -32,6 +32,7 @@ ports_commit=$(metadata_field ports_commit) || fail 'invalid BIND profile'
 makefile_sha256=$(metadata_field makefile_sha256) || fail 'invalid BIND profile'
 distinfo_sha256=$(metadata_field distinfo_sha256) || fail 'invalid BIND profile'
 distversion=$(metadata_field distversion) || fail 'invalid BIND profile'
+package_version=$(metadata_field package_version) || fail 'invalid BIND profile'
 freebsd_release=$("$python_command" "$script_directory/metadata_profile.py" \
     "$RP_UPSTREAM_METADATA" "$series" freebsd_release) || fail 'invalid upstream metadata'
 
@@ -91,7 +92,7 @@ ALLOW_UNSUPPORTED_SYSTEM=yes BATCH=yes NO_DEPENDS=yes OPTIONS_SET=GSSAPI_NONE OP
 "$python_command" "$script_directory/target_pkg.py" verify \
     "$target_pkg_metadata" "$series" --pkg-command "$pkg_command" \
     --pkg-static "$pkg_static"
-set -- "$ports_directory"/dns/bind-tools/work/pkg/bind-tools-"$distversion"_1.pkg
+set -- "$ports_directory"/dns/bind-tools/work/pkg/bind-tools-"$package_version".pkg
 [ "$#" -eq 1 ] && [ -f "$1" ] || fail 'bind-tools package was not produced as expected'
 bind_tools_package=$1
 "$pkg_command" add "$bind_tools_package"
@@ -103,7 +104,7 @@ ALLOW_UNSUPPORTED_SYSTEM=yes BATCH=yes NO_DEPENDS=yes OPTIONS_SET=GSSAPI_NONE OP
 "$python_command" "$script_directory/target_pkg.py" verify \
     "$target_pkg_metadata" "$series" --pkg-command "$pkg_command" \
     --pkg-static "$pkg_static"
-set -- "$ports_directory"/dns/bind920/work/pkg/bind920-"$distversion"_1.pkg
+set -- "$ports_directory"/dns/bind920/work/pkg/bind920-"$package_version".pkg
 [ "$#" -eq 1 ] && [ -f "$1" ] || fail 'bind920 package was not produced as expected'
 bind_package=$1
 "$pkg_command" add "$bind_package"

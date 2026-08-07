@@ -24,25 +24,30 @@ PROFILE = {
     "makefile_sha256": "64199c6f419c49186ee35f37d42219aff33591f0de040429f3ceddb6889d2234",
     "distinfo_sha256": "714ea8f967746994a624a55dd6e2bbdd41d173dcffe8f25242f7aa4053d116b6",
     "distversion": "9.20.26",
-    "portrevision": 1,
+    "portrevision": 2,
 }
 PACKAGES = {
     "bind-tools": {
         "name": "bind-tools",
-        "version": "9.20.26_1",
+        "version": "9.20.26_2",
         "origin": "dns/bind-tools",
-        "filename": "bind-tools-9.20.26_1.pkg",
+        "filename": "bind-tools-9.20.26_2.pkg",
     },
     "bind920": {
         "name": "bind920",
-        "version": "9.20.26_1",
+        "version": "9.20.26_2",
         "origin": "dns/bind920",
-        "filename": "bind920-9.20.26_1.pkg",
+        "filename": "bind920-9.20.26_2.pkg",
     },
 }
 
 
 class Bind920ReuseTest(unittest.TestCase):
+    def test_package_version_uses_any_positive_portrevision(self) -> None:
+        self.assertEqual("9.20.26_2", bind920_profile.package_version(PROFILE))
+        with self.assertRaisesRegex(ValueError, "portrevision"):
+            bind920_profile.validate_profile(dict(PROFILE, portrevision=0))
+
     def test_fingerprint_rejects_different_compatibility_inputs(self) -> None:
         """Changing any compatibility input must prevent package reuse."""
         baseline = bind920_profile.compatibility_fingerprint(PROFILE, "26.1", "14.3", "x86_64")
@@ -66,8 +71,8 @@ class Bind920ReuseTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary_directory:
             directory = Path(temporary_directory)
             profile = directory / "bind920.json"
-            bind_tools = directory / "bind-tools-9.20.26_1.pkg"
-            bind920 = directory / "bind920-9.20.26_1.pkg"
+            bind_tools = directory / "bind-tools-9.20.26_2.pkg"
+            bind920 = directory / "bind920-9.20.26_2.pkg"
             output = directory / "bind920-provenance.json"
             profile.write_text(json.dumps(PROFILE), encoding="utf-8")
             bind_tools.touch()
@@ -82,7 +87,7 @@ class Bind920ReuseTest(unittest.TestCase):
             )
             self.assertEqual(result.stderr, "")
             self.assertEqual(result.returncode, 0)
-            self.assertEqual("bind920-9.20.26_1.pkg", json.loads(output.read_text())["packages"]["bind920"]["filename"])
+            self.assertEqual("bind920-9.20.26_2.pkg", json.loads(output.read_text())["packages"]["bind920"]["filename"])
 
 
 if __name__ == "__main__":
