@@ -25,7 +25,8 @@ are outside this change.
 
 ## Verification
 
-Documentation tests must confirm that the manual block contains the explicit
-assignment and no longer contains `opnsense-version`, `pkg version -t`, or the
-shell `case` validation. The complete CI helper suite and whitespace checks
-must pass.
+A short-term implementation check confirms that the manual block contains the
+explicit assignment and no longer contains `opnsense-version`, `pkg version
+-t`, or the shell `case` validation. This wording-specific check is not
+committed. The existing documentation tests, complete CI helper suite, and
+whitespace checks must pass.

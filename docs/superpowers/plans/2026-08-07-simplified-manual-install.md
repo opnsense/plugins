@@ -4,7 +4,7 @@
 
 **Goal:** Simplify the root README's manual `os-bind-rp` installation commands by making `series=26.1` an explicit operator input.
 
-**Architecture:** Keep the existing signed-repository installation flow and replace only its automatic OPNsense version parsing and shell validation. A focused documentation test locks the explicit assignment and ensures automatic detection does not return to the manual block.
+**Architecture:** Keep the existing signed-repository installation flow and replace only its automatic OPNsense version parsing and shell validation. Use a short-term assertion during implementation instead of committing a brittle wording-specific documentation test.
 
 **Tech Stack:** Markdown, POSIX shell examples, pytest.
 
@@ -21,41 +21,31 @@
 ### Task 1: Simplify and verify the manual installation block
 
 **Files:**
-- Modify: `.github/ci/ci-tests/test_package_documentation.py`
 - Modify: `README.md:34-75`
 
 **Interfaces:**
 - Consumes: the `Installing os-bind-rp` README section and its `Or install` boundary.
 - Produces: a manual shell block driven by the explicit `series` variable.
 
-- [ ] **Step 1: Write the failing documentation test**
-
-Append this focused test to `.github/ci/ci-tests/test_package_documentation.py`:
+- [ ] **Step 1: Run the short-term check and verify it detects the old block**
 
 ```python
-def test_manual_install_uses_an_explicit_opnsense_series():
-    text = (ROOT / "README.md").read_text(encoding="utf-8")
-    manual = text.split("From an OPNsense root shell", 1)[1].split(
-        "Or install the signed repository", 1
-    )[0]
-    assert "series=26.1" in manual
-    assert "opnsense-version" not in manual
-    assert "pkg version -t" not in manual
-    assert 'case "$series" in' not in manual
+from pathlib import Path
+
+text = Path("README.md").read_text(encoding="utf-8")
+manual = text.split("From an OPNsense root shell", 1)[1].split(
+    "Or install the signed repository", 1
+)[0]
+assert "series=26.1" in manual
+assert "opnsense-version" not in manual
+assert "pkg version -t" not in manual
+assert 'case "$series" in' not in manual
 ```
 
-- [ ] **Step 2: Run the focused test and verify RED**
-
-Run:
-
-```sh
-python3 -m pytest -q .github/ci/ci-tests/test_package_documentation.py::test_manual_install_uses_an_explicit_opnsense_series
-```
-
-Expected: FAIL because the current block derives `series` with
+Expected: the assertion exits nonzero because the current block derives `series` with
 `opnsense-version` instead of containing `series=26.1`.
 
-- [ ] **Step 3: Simplify the README manual directions**
+- [ ] **Step 2: Simplify the README manual directions**
 
 Change the introduction to:
 
@@ -76,11 +66,23 @@ Leave the public-key verification, repository configuration, `pkg update`,
 `pkg install`, interactive-installer section, and minimum-version warning
 unchanged.
 
-- [ ] **Step 4: Run focused and complete verification**
+- [ ] **Step 3: Run short-term and complete verification**
 
 Run:
 
 ```sh
+python3 - <<'PY'
+from pathlib import Path
+
+text = Path("README.md").read_text(encoding="utf-8")
+manual = text.split("From an OPNsense root shell", 1)[1].split(
+    "Or install the signed repository", 1
+)[0]
+assert "series=26.1" in manual
+assert "opnsense-version" not in manual
+assert "pkg version -t" not in manual
+assert 'case "$series" in' not in manual
+PY
 python3 -m pytest -q .github/ci/ci-tests/test_package_documentation.py
 python3 -m pytest -q .github/ci/ci-tests
 git diff --check
@@ -88,9 +90,11 @@ git diff --check
 
 Expected: all tests pass and `git diff --check` exits 0.
 
-- [ ] **Step 5: Commit the implementation**
+- [ ] **Step 4: Commit the implementation**
 
 ```sh
-git add README.md .github/ci/ci-tests/test_package_documentation.py
+git add README.md \
+  docs/superpowers/specs/2026-08-07-simplified-manual-install-design.md \
+  docs/superpowers/plans/2026-08-07-simplified-manual-install.md
 git commit -m "Simplify manual package installation"
 ```
