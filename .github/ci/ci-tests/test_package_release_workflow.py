@@ -152,20 +152,20 @@ def test_publication_waits_for_current_and_snapshot_installability_in_freebsd():
     verifier = workflow.split('  verify:', 1)[1].split('  verify-published:', 1)[0]
     assert 'needs: [select, profile, sign, verify]' in publisher
     assert 'permissions:\n      contents: read' in publisher
-    assert 'pkg install -y -r OPNsense opnsense' in verifier
-    assert 'pkg install -y -r resolver-plugins bind-tools bind920 os-bind-rp' in verifier
+    assert 'pkg install -y -r OPNsense opnsense os-bind' in verifier
+    assert '/usr/local/sbin/pkg-static install -y -r resolver-plugins bind-tools bind920 os-bind-rp' in verifier
     assert '"$root"/current/bind-tools-*.pkg' in verifier
     assert '"$root"/current/bind920-*.pkg' in verifier
     assert '"$root"/current/os-bind-rp-*.pkg' in verifier
     assert '"$root"/current/*.pkg' not in verifier
-    assert 'pkg query -F "$package" \'%dn\'' in verifier
+    assert '/usr/local/sbin/pkg-static query -F "$package" \'%dn\'' in verifier
     assert verifier.index('.github/ci/setup-opnsense-repository.sh') < verifier.index(
-        'pkg install -y -r OPNsense opnsense'
+        'pkg install -y -r OPNsense opnsense os-bind'
     ) < verifier.index(
-        'pkg install -y -r resolver-plugins bind-tools bind920 os-bind-rp'
+        '/usr/local/sbin/pkg-static install -y -r resolver-plugins bind-tools bind920 os-bind-rp'
     )
     assert 'url: "file://$PWD/$root/snapshot"' in verifier
-    assert 'pkg install -f -y -r resolver-plugins-rollback os-bind-rp' in verifier
+    assert '/usr/local/sbin/pkg-static install -f -y -r resolver-plugins-rollback os-bind-rp' in verifier
     assert ' OR ' not in verifier
 
 
@@ -178,26 +178,25 @@ def test_published_channel_is_installed_from_github_in_freebsd():
     assert 'name: os-bind-rp-production-repository-${{ needs.select.outputs.series }}' in verifier
     assert 'https://github.com/resolver-plugins/repository/releases/download/pkg-$series' in verifier
     assert '.github/ci/setup-opnsense-repository.sh "$series"' in verifier
-    assert 'pkg install -y -r OPNsense opnsense' in verifier
+    assert 'pkg install -y -r OPNsense opnsense os-bind' in verifier
     assert '"$root"/bind-tools-*.pkg' in verifier
     assert '"$root"/bind920-*.pkg' in verifier
     assert '"$root"/os-bind-rp-*.pkg' in verifier
     assert '"$root"/*.pkg' not in verifier
     assert 'pkg update -f -r resolver-plugins' in verifier
     assert 'cmp -s "$root/channel.json" "$public_channel"' in verifier
-    assert 'pkg query -F "$archive" \'%n|%v|%o\'' in verifier
+    assert '/usr/local/sbin/pkg-static query -F "$archive" \'%n|%v|%o\'' in verifier
     assert '[ "$channel_identities" = "$expected_identities" ]' in verifier
     assert '[ "$attempt" -ge 20 ]' in verifier
     assert 'sleep 30' in verifier
     assert "printf 'expected identities:\\n%s\\n' \"$expected_identities\"" in verifier
     assert "printf 'published identities:\\n%s\\n' \"$channel_identities\"" in verifier
     assert 'pkg rquery -r resolver-plugins -e "%n = $package" \'%dn\'' in verifier
-    assert 'RP_TTY_PATH="$approval" scripts/install-os-bind-rp.sh' in verifier
-    assert verifier.index('pkg install -y -r OPNsense opnsense') < verifier.index(
-        'RP_TTY_PATH="$approval" scripts/install-os-bind-rp.sh'
+    assert 'RP_PKG_STATIC_COMMAND=/usr/local/sbin/pkg-static scripts/install-os-bind-rp.sh' in verifier
+    assert verifier.index('pkg install -y -r OPNsense opnsense os-bind') < verifier.index(
+        'RP_PKG_STATIC_COMMAND=/usr/local/sbin/pkg-static scripts/install-os-bind-rp.sh'
     )
-    assert '[ -z "$(pkg query -e \'%n = bind920\'' in verifier
-    assert '[ -z "$(pkg query -e \'%n = bind-tools\'' in verifier
+    assert '[ -z "$(pkg query -e \'%n = os-bind\'' in verifier
     assert "'%n|%v|%o'" in verifier
     assert 'dns/bind-tools' in verifier
     assert 'dns/bind920' in verifier
@@ -212,13 +211,13 @@ def test_development_release_installs_from_a_temporary_freebsd_repository():
     verifier = workflow.split('  verify-development:', 1)[1].split('  publish-development:', 1)[0]
     publisher = workflow.split('  publish-development:', 1)[1].split('  sign:', 1)[0]
     assert 'needs: [select, profile, build]' in verifier
-    assert 'pkg repo "$output"' in verifier
+    assert '/usr/local/sbin/pkg-static repo "$output"' in verifier
     assert 'signature_type: "none"' in verifier
-    assert 'pkg update -r resolver-plugins-development' in verifier
-    assert 'pkg install -y -r OPNsense opnsense' in verifier
-    assert 'pkg install -y -r resolver-plugins-development bind-tools bind920 os-bind-rp' in verifier
-    assert verifier.index('pkg install -y -r OPNsense opnsense') < verifier.index(
-        'pkg install -y -r resolver-plugins-development bind-tools bind920 os-bind-rp'
+    assert '/usr/local/sbin/pkg-static update -r resolver-plugins-development' in verifier
+    assert 'pkg install -y -r OPNsense opnsense os-bind' in verifier
+    assert '/usr/local/sbin/pkg-static install -y -r resolver-plugins-development bind-tools bind920 os-bind-rp' in verifier
+    assert verifier.index('pkg install -y -r OPNsense opnsense os-bind') < verifier.index(
+        '/usr/local/sbin/pkg-static install -y -r resolver-plugins-development bind-tools bind920 os-bind-rp'
     )
     assert "'%n-%v'" in verifier
     assert ' OR ' not in verifier
@@ -250,3 +249,36 @@ def test_source_release_contains_only_plugin_and_build_metadata():
     assert 'cp "$1" "$output/build-metadata.txt" "$source_output/"' in source_release
     assert 'bind920-*.pkg' not in source_release
     assert 'os-bind-rp-build-production-' not in source_release
+
+
+def test_all_freebsd_install_gates_pin_pkg_and_test_the_official_replacement_path():
+    workflow = workflow_text()
+    verifiers = {
+        'development': workflow.split('  verify-development:', 1)[1].split(
+            '  publish-development:', 1
+        )[0],
+        'staged': workflow.split('  verify:', 1)[1].split('  verify-published:', 1)[0],
+        'published': workflow.split('  verify-published:', 1)[1].split(
+            '  source-release:', 1
+        )[0],
+    }
+
+    for name, verifier in verifiers.items():
+        assert 'target_pkg.py install' in verifier, name
+        assert 'target_pkg.py verify' in verifier, name
+        assert 'pkg install -y -r OPNsense opnsense os-bind' in verifier, name
+        assert 'package_checksums.py' in verifier, name
+        assert '--pkg-command /usr/local/sbin/pkg-static' in verifier, name
+        assert "[ -z \"$(pkg query -e '%n = os-bind' '%n'" in verifier, name
+        assert "pkg query -e \"%n = $package\" '%Fp|%Fs'" in verifier, name
+        assert '$2 == "(null)"' in verifier, name
+        assert 'pkg check -s bind-tools bind920 os-bind-rp' in verifier, name
+        assert verifier.index('target_pkg.py install') < verifier.index(
+            'pkg install -y -r OPNsense opnsense os-bind'
+        ) < verifier.index('package_checksums.py')
+
+    assert '/usr/local/sbin/pkg-static install -y -r resolver-plugins-development' in verifiers[
+        'development'
+    ]
+    assert '/usr/local/sbin/pkg-static install -y -r resolver-plugins' in verifiers['staged']
+    assert 'RP_PKG_STATIC_COMMAND=/usr/local/sbin/pkg-static' in verifiers['published']
