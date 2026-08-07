@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import stat
 import subprocess
 import tempfile
 from pathlib import Path
@@ -23,16 +24,24 @@ def installer_environment(
     tmp_path: Path,
     *,
     opnsense_version: str = "OPNsense 26.1.11_10 (amd64)",
-    bind920: str = "bind920|9.20.26_1|dns/bind920",
-    bind_tools: str = "bind-tools|9.20.26_1|dns/bind-tools",
+    bind920: str = "bind920|9.20.26_2|dns/bind920",
+    bind_tools: str = "bind-tools|9.20.26_2|dns/bind-tools",
+    os_bind: str = "",
     confirmation: str | None = None,
     key_sha256: str = PUBLIC_KEY_SHA256,
     fetch_failure: bool = False,
+    archive_checksum: str = "2$" + "a" * 64,
+    install_failure: bool = False,
 ) -> tuple[dict[str, str], Path, Path]:
     log = tmp_path / "commands.log"
     tty = tmp_path / "tty"
     if confirmation is not None:
         tty.write_text(f"{confirmation}\n", encoding="utf-8")
+    config = tmp_path / "config.xml"
+    config.write_text("<opnsense><bind/></opnsense>\n", encoding="utf-8")
+    config.chmod(0o640)
+    opnsense_repository = tmp_path / "OPNsense.conf"
+    opnsense_repository.write_text("OPNsense: { enabled: yes }\n", encoding="utf-8")
 
     environment = os.environ.copy()
     environment.update(
@@ -43,11 +52,20 @@ def installer_environment(
             "RP_TTY_PATH": str(tty),
             "RP_TEST_BIND920": bind920,
             "RP_TEST_BIND_TOOLS": bind_tools,
+            "RP_TEST_OS_BIND": os_bind,
             "RP_TEST_FETCH_FAILURE": "yes" if fetch_failure else "no",
+            "RP_TEST_INSTALL_FAILURE": "yes" if install_failure else "no",
+            "RP_TEST_ARCHIVE_CHECKSUM": archive_checksum,
             "RP_TEST_KEY_SHA256": key_sha256,
             "RP_TEST_LOG": str(log),
             "RP_TEST_OPNSENSE_VERSION": opnsense_version,
             "RP_TEST_FALLBACK_MARKER": str(tmp_path / "fallback-installed"),
+            "RP_TEST_PLUGIN_MARKER": str(tmp_path / "plugin-installed"),
+            "RP_TEST_OFFICIAL_REMOVED_MARKER": str(tmp_path / "official-removed"),
+            "RP_TEST_LOCK_MARKER": str(tmp_path / "pkg-locked"),
+            "RP_CONFIG_FILE": str(config),
+            "RP_BACKUP_ROOT": str(tmp_path / "backups"),
+            "RP_OPNSENSE_REPOSITORY_CONFIG": str(opnsense_repository),
         }
     )
     return environment, log, tmp_path / "repos"
@@ -68,31 +86,139 @@ def write_command_fixtures(directory: Path) -> None:
     )
     write_executable(
         directory / "sha256",
-        "#!/bin/sh\nprintf '%s\\n' \"$RP_TEST_KEY_SHA256\"\n",
+        "#!/bin/sh\n"
+        "case \"$2\" in\n"
+        "  */resolver-plugins.pub) printf '%s\\n' \"$RP_TEST_KEY_SHA256\";;\n"
+        "  *) sha256sum \"$2\" | awk '{ print $1 }';;\n"
+        "esac\n",
     )
     write_executable(
         directory / "pkg",
-        "#!/bin/sh\n"
-        "{ printf 'pkg'; for argument in \"$@\"; do printf ' %s' \"$argument\"; done; printf '\\n'; } >> \"$RP_TEST_LOG\"\n"
-        "case \"$1\" in\n"
-        "query)\n"
-        "  case \"$*\" in\n"
-        "    *'%n = bind920'*)\n"
-        "      if [ -f \"$RP_TEST_FALLBACK_MARKER\" ]; then printf '%s\\n' 'bind920|9.20.26_1|dns/bind920'; else printf '%s\\n' \"${RP_TEST_BIND920:-}\"; fi;;\n"
-        "    *'%n = bind-tools'*)\n"
-        "      if [ -f \"$RP_TEST_FALLBACK_MARKER\" ]; then printf '%s\\n' 'bind-tools|9.20.26_1|dns/bind-tools'; else printf '%s\\n' \"${RP_TEST_BIND_TOOLS:-}\"; fi;;\n"
-        "  esac;;\n"
-        "version)\n"
-        "  case \"$4\" in\n"
-        "    26.1.11_10) case \"$3\" in 26.1.11_10|26.1.1[2-9]*|26.[2-9]*|2[7-9].*) printf '>\\n';; *) printf '<\\n';; esac;;\n"
-        "    9.20.26) case \"$3\" in 9.20.26*|9.20.27*|9.21*) printf '>\\n';; *) printf '<\\n';; esac;;\n"
-        "    *) exit 64;;\n"
-        "  esac;;\n"
-        "rquery) printf '%s\\n' 'bind920|9.20.26_1|dns/bind920' 'bind-tools|9.20.26_1|dns/bind-tools';;\n"
-        "update) ;;\n"
-        "install) case \"$*\" in *bind920*bind-tools*) : > \"$RP_TEST_FALLBACK_MARKER\";; esac;;\n"
-        "*) exit 64;;\n"
-        "esac\n",
+        r'''#!/usr/bin/env python3
+import hashlib
+import os
+from pathlib import Path
+import re
+import sys
+
+
+raw = sys.argv[1:]
+with open(os.environ["RP_TEST_LOG"], "a", encoding="utf-8") as stream:
+    stream.write("pkg " + " ".join(raw) + "\n")
+
+args = list(raw)
+while args[:1] == ["-o"]:
+    del args[:2]
+if not args:
+    raise SystemExit(64)
+command, args = args[0], args[1:]
+
+candidates = {
+    "bind920": ("9.20.26_2", "dns/bind920"),
+    "bind-tools": ("9.20.26_2", "dns/bind-tools"),
+    "os-bind-rp": ("1.36_10", "opnsense/os-bind-rp"),
+}
+
+
+def marker(name):
+    return Path(os.environ[name])
+
+
+def version_key(value):
+    return tuple(int(part) for part in re.findall(r"\d+", value))
+
+
+def installed(name):
+    if name == "bind920":
+        if marker("RP_TEST_FALLBACK_MARKER").exists():
+            return "bind920|9.20.26_2|dns/bind920"
+        return os.environ.get("RP_TEST_BIND920", "")
+    if name == "bind-tools":
+        if marker("RP_TEST_FALLBACK_MARKER").exists():
+            return "bind-tools|9.20.26_2|dns/bind-tools"
+        return os.environ.get("RP_TEST_BIND_TOOLS", "")
+    if name == "os-bind-rp" and marker("RP_TEST_PLUGIN_MARKER").exists():
+        return "os-bind-rp|1.36_10|opnsense/os-bind-rp"
+    if name == "os-bind" and not marker("RP_TEST_OFFICIAL_REMOVED_MARKER").exists():
+        return os.environ.get("RP_TEST_OS_BIND", "")
+    if name == "pkg":
+        return "pkg|2.3.1_1|ports-mgmt/pkg"
+    return ""
+
+
+if command == "version":
+    left, right = args[-2:]
+    comparison = (version_key(left) > version_key(right)) - (version_key(left) < version_key(right))
+    print("<=>"[comparison + 1])
+elif command == "update":
+    pass
+elif command == "rquery":
+    expression = " ".join(args)
+    for name, (version, origin) in candidates.items():
+        if f"%n = {name}" in expression:
+            print(f"{name}|{version}|{origin}")
+elif command == "fetch":
+    if os.environ.get("RP_TEST_FETCH_FAILURE") == "yes":
+        raise SystemExit(1)
+    destination = Path(args[args.index("-o") + 1]) / "All"
+    identity = args[-1]
+    destination.mkdir(parents=True, exist_ok=True)
+    (destination / f"{identity}.pkg").write_bytes(f"archive:{identity}\n".encode())
+elif command == "repo":
+    repository = Path(args[-1])
+    (repository / "meta.conf").write_text("meta\n", encoding="utf-8")
+    (repository / "packagesite.pkg").write_text("catalogue\n", encoding="utf-8")
+elif command == "query" and "-F" in args:
+    archive = Path(args[args.index("-F") + 1])
+    identity = archive.name.removesuffix(".pkg")
+    name = next(name for name in candidates if identity == f"{name}-{candidates[name][0]}")
+    version, origin = candidates[name]
+    output_format = args[-1]
+    if output_format == "%n|%v|%o":
+        print(f"{name}|{version}|{origin}")
+    elif output_format == "%Fp|%Fs":
+        checksum = os.environ["RP_TEST_ARCHIVE_CHECKSUM"]
+        print(f"/usr/local/{name}/one|{checksum}")
+        print(f"/usr/local/{name}/two|{checksum}")
+elif command == "query":
+    expression = " ".join(args)
+    for name in ("bind920", "bind-tools", "os-bind-rp", "os-bind", "pkg"):
+        if f"%n = {name}" in expression:
+            value = installed(name)
+            if value:
+                print(value)
+elif command == "info":
+    print("pkg-2.3.1_1")
+    for name in ("bind920", "bind-tools", "os-bind-rp", "os-bind"):
+        value = installed(name)
+        if value:
+            package, version, _ = value.split("|")
+            print(f"{package}-{version}")
+elif command == "install":
+    if "-n" in args:
+        print("dry run")
+    else:
+        if os.environ.get("RP_TEST_INSTALL_FAILURE") == "yes":
+            raise SystemExit(1)
+        identities = set(args)
+        if "bind920-9.20.26_2" in identities and "bind-tools-9.20.26_2" in identities:
+            marker("RP_TEST_FALLBACK_MARKER").touch()
+        if "os-bind-rp-1.36_10" in identities:
+            marker("RP_TEST_PLUGIN_MARKER").touch()
+            marker("RP_TEST_OFFICIAL_REMOVED_MARKER").touch()
+elif command == "lock":
+    if "-l" in args:
+        if marker("RP_TEST_LOCK_MARKER").exists():
+            print("pkg-2.3.1_1")
+    elif "-y" in args:
+        marker("RP_TEST_LOCK_MARKER").touch()
+    elif "-u" in args:
+        marker("RP_TEST_LOCK_MARKER").unlink(missing_ok=True)
+elif command in {"which", "check"}:
+    pass
+else:
+    raise SystemExit(64)
+''',
     )
 
 
@@ -103,6 +229,7 @@ def run_installer(tmp_path: Path, **kwargs: object) -> tuple[subprocess.Complete
         fixtures = Path(fixture_directory)
         write_command_fixtures(fixtures)
         environment["PATH"] = f"{fixtures}:{environment['PATH']}"
+        environment["RP_PKG_STATIC_COMMAND"] = str(fixtures / "pkg")
         result = subprocess.run(
             ["/bin/sh", INSTALLER], text=True, capture_output=True, check=False, env=environment
         )
@@ -115,7 +242,7 @@ def test_installs_current_plugin_for_the_detected_series_without_service_changes
     assert result.returncode == 0, result.stderr
     assert "pkg-26.1" in (repositories / "resolver-plugins.conf").read_text(encoding="utf-8")
     calls = log.read_text(encoding="utf-8")
-    assert "pkg install -y -r resolver-plugins os-bind-rp" in calls
+    assert "os-bind-rp-1.36_10" in calls
     assert "resolver-plugins-bind920" not in calls
     assert "configctl" not in calls
     assert "service" not in calls
@@ -127,7 +254,7 @@ def test_uses_eligible_opnsense_bind_without_prompting_or_fallback(tmp_path: Pat
     assert result.returncode == 0, result.stderr
     assert "Do you wish to update BIND?" not in result.stderr
     calls = log.read_text(encoding="utf-8")
-    assert "pkg install -y -r resolver-plugins bind920 bind-tools" not in calls
+    assert "bind920-9.20.26_2 bind-tools-9.20.26_2" not in calls
 
 
 def test_rejects_26_1_before_the_required_core_floor(tmp_path: Path) -> None:
@@ -167,7 +294,7 @@ def test_prompts_for_and_installs_the_fallback_when_bind_is_ineligible(tmp_path:
     assert result.returncode == 0, result.stderr
     assert "Installed bind920: bind920 9.20.25 from dns/bind920" in result.stderr
     assert "Installed bind-tools: bind-tools 9.20.25 from dns/bind-tools" in result.stderr
-    assert "Available fallback: bind920 9.20.26_1 and bind-tools 9.20.26_1" in result.stderr
+    assert "Available fallback: bind920 9.20.26_2 and bind-tools 9.20.26_2" in result.stderr
     assert "An update to BIND is required to address a breaking issue with DoT." in result.stderr
     assert (
         "Note: future OPNsense updates to BIND will still work as long as they are above the pinned version."
@@ -176,9 +303,9 @@ def test_prompts_for_and_installs_the_fallback_when_bind_is_ineligible(tmp_path:
     assert "Do you wish to update BIND? [y/N]" in result.stderr
     assert not (repositories / "resolver-plugins-bind920.conf").exists()
     calls = log.read_text(encoding="utf-8")
-    assert calls.index("pkg install -y -r resolver-plugins bind920 bind-tools") < calls.index(
-        "pkg install -y -r resolver-plugins os-bind-rp"
-    )
+    live_installs = [line for line in calls.splitlines() if " install -y " in line]
+    assert "bind920-9.20.26_2 bind-tools-9.20.26_2" in live_installs[0]
+    assert "os-bind-rp-1.36_10" in live_installs[1]
 
 
 def test_prompts_when_bind_tools_are_missing_or_from_the_wrong_origin(tmp_path: Path) -> None:
@@ -189,7 +316,7 @@ def test_prompts_when_bind_tools_are_missing_or_from_the_wrong_origin(tmp_path: 
     )
 
     assert result.returncode != 0
-    assert "Installed bind920: bind920 9.20.26_1 from dns/bind920" in result.stderr
+    assert "Installed bind920: bind920 9.20.26_2 from dns/bind920" in result.stderr
     assert "Installed bind-tools: bind-tools 9.20.26_1 from resolver/bind-tools" in result.stderr
     assert "BIND update declined; os-bind-rp was not installed." in result.stderr
 
@@ -202,8 +329,8 @@ def test_declining_bind_fallback_leaves_the_plugin_uninstalled(tmp_path: Path) -
     assert result.returncode != 0
     assert "BIND update declined; os-bind-rp was not installed." in result.stderr
     calls = log.read_text(encoding="utf-8")
-    assert "pkg install -y -r resolver-plugins bind920 bind-tools" not in calls
-    assert "pkg install -y -r resolver-plugins os-bind-rp" not in calls
+    assert "bind920-9.20.26_2 bind-tools-9.20.26_2" not in calls
+    assert "os-bind-rp-1.36_10" not in calls
 
 
 def test_rejects_an_unsupported_opnsense_series(tmp_path: Path) -> None:
@@ -211,3 +338,63 @@ def test_rejects_an_unsupported_opnsense_series(tmp_path: Path) -> None:
 
     assert result.returncode != 0
     assert "unsupported OPNsense release series: 25.7" in result.stderr
+
+
+def test_rejects_null_archive_checksums_before_any_package_install(tmp_path: Path) -> None:
+    result, log, _ = run_installer(tmp_path, archive_checksum="(null)")
+
+    assert result.returncode != 0
+    assert "incompatible file checksum" in result.stderr
+    assert " install " not in log.read_text(encoding="utf-8")
+
+
+def test_official_plugin_replacement_uses_verified_exact_archives_and_keeps_backup(
+    tmp_path: Path,
+) -> None:
+    result, log, _ = run_installer(
+        tmp_path,
+        os_bind="os-bind|1.34_3|opnsense/os-bind",
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "Replacing official os-bind" in result.stderr
+    backups = list((tmp_path / "backups").glob("os-bind-rp-install.*"))
+    assert len(backups) == 1
+    backup = backups[0]
+    assert stat.S_IMODE(backup.stat().st_mode) == 0o700
+    saved_config = backup / "config.xml.bak"
+    assert saved_config.read_text(encoding="utf-8") == "<opnsense><bind/></opnsense>\n"
+    assert stat.S_IMODE(saved_config.stat().st_mode) == 0o640
+
+    calls = log.read_text(encoding="utf-8")
+    assert calls.index(" fetch ") < calls.index(" repo ")
+    assert calls.index(" install -n ") < calls.index(" install -y ")
+    live_installs = [line for line in calls.splitlines() if " install -y " in line]
+    assert live_installs
+    assert all("REPOS_DIR=" in line and "isolated-repos" in line for line in live_installs)
+    assert any("os-bind-rp-1.36_10" in line for line in live_installs)
+    assert "-r resolver-plugins os-bind-rp" not in calls
+
+
+def test_install_failure_retains_diagnostics_and_temporary_archives(tmp_path: Path) -> None:
+    result, _, _ = run_installer(tmp_path, install_failure=True)
+
+    assert result.returncode != 0
+    backups = list((tmp_path / "backups").glob("os-bind-rp-install.*"))
+    assert len(backups) == 1
+    assert "Diagnostic state retained at" in result.stderr
+    assert "Temporary package data retained at" in result.stderr
+    temporary = tmp_path / "temporary"
+    assert temporary.exists()
+    assert list(temporary.rglob("*.pkg"))
+
+
+def test_declining_update_creates_no_durable_state(tmp_path: Path) -> None:
+    result, _, _ = run_installer(
+        tmp_path,
+        bind920="bind920|9.20.25|dns/bind920",
+        confirmation="n",
+    )
+
+    assert result.returncode != 0
+    assert not (tmp_path / "backups").exists()
