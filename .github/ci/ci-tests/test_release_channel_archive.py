@@ -747,6 +747,7 @@ class PublicationRecoveryTest(unittest.TestCase):
 
             with (
                 patch.object(release_channel, "snapshot_release", side_effect=fake_snapshot),
+                patch.object(release_channel, "run_gh"),
                 patch.object(
                     release_channel,
                     "publish",
