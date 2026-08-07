@@ -8,6 +8,8 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+import pytest
+
 
 REPOSITORY_ROOT = Path(__file__).resolve().parents[3]
 INSTALLER = REPOSITORY_ROOT / "scripts" / "install-os-bind-rp.sh"
@@ -38,6 +40,8 @@ def installer_environment(
     wrong_owner: bool = False,
     pkg_locked: bool = False,
     mutate_frozen_archive: bool = False,
+    dry_run_status: int = 1,
+    dry_run_plan: str = "valid",
 ) -> tuple[dict[str, str], Path, Path]:
     log = tmp_path / "commands.log"
     tty = tmp_path / "tty"
@@ -69,6 +73,8 @@ def installer_environment(
             "RP_TEST_FETCH_LAYOUT": fetch_layout,
             "RP_TEST_WRONG_OWNER": "yes" if wrong_owner else "no",
             "RP_TEST_MUTATE_FROZEN_ARCHIVE": "yes" if mutate_frozen_archive else "no",
+            "RP_TEST_DRY_RUN_STATUS": str(dry_run_status),
+            "RP_TEST_DRY_RUN_PLAN": dry_run_plan,
             "RP_TEST_ARCHIVE_CHECKSUM": archive_checksum,
             "RP_TEST_KEY_SHA256": key_sha256,
             "RP_TEST_LOG": str(log),
@@ -252,10 +258,18 @@ elif command == "create":
 elif command == "install":
     if "-n" in args:
         print("The following package(s) will be affected:")
-        for argument in args:
-            if re.search(r"-[0-9]", argument):
-                print(f"\t{argument}")
-        raise SystemExit(1)
+        plan = os.environ.get("RP_TEST_DRY_RUN_PLAN", "valid")
+        if plan != "missing":
+            for argument in args:
+                if re.search(r"-[0-9]", argument):
+                    print(f"\t{argument}")
+        if plan == "pkg_colon":
+            print("\tpkg: 2.3.1_1 -> 2.4.0")
+        elif plan == "opnsense_colon":
+            print("\topnsense: 26.1.11_10 -> 26.1.12")
+        elif plan == "pkg_hyphen":
+            print("\tpkg-2.4.0")
+        raise SystemExit(int(os.environ.get("RP_TEST_DRY_RUN_STATUS", "1")))
     else:
         if os.environ.get("RP_TEST_INSTALL_FAILURE") == "yes":
             raise SystemExit(1)
@@ -516,6 +530,36 @@ def test_restores_the_original_pkg_lock_state_after_success_and_failure(tmp_path
     result, _, _ = run_installer(locked, pkg_locked=True, install_failure=True)
     assert result.returncode != 0
     assert (locked / "pkg-locked").exists()
+
+
+@pytest.mark.parametrize("status", [0, 1])
+def test_accepts_pkg_dry_run_success_and_change_status(tmp_path: Path, status: int) -> None:
+    result, _, _ = run_installer(tmp_path, dry_run_status=status)
+
+    assert result.returncode == 0, result.stderr
+
+
+@pytest.mark.parametrize(
+    ("status", "plan", "diagnostic"),
+    [
+        (2, "valid", "dry run failed with status 2"),
+        (1, "missing", "omitted requested identity"),
+        (1, "pkg_colon", "attempted to change pkg or OPNsense core"),
+        (1, "opnsense_colon", "attempted to change pkg or OPNsense core"),
+        (1, "pkg_hyphen", "attempted to change pkg or OPNsense core"),
+    ],
+)
+def test_rejects_unsafe_or_invalid_pkg_dry_run_plans(
+    tmp_path: Path, status: int, plan: str, diagnostic: str
+) -> None:
+    result, _, _ = run_installer(
+        tmp_path,
+        dry_run_status=status,
+        dry_run_plan=plan,
+    )
+
+    assert result.returncode != 0
+    assert diagnostic in result.stderr
 
 
 def test_partial_bind_update_failure_preserves_recovery_packages_and_instructions(

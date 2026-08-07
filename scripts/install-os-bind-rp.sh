@@ -160,7 +160,7 @@ package_dry_run() {
         grep -Fq "$identity" "$output" || \
             fail "package dry run omitted requested identity: $identity"
     done
-    if grep -Eq '(^|[[:space:]])(pkg|opnsense)-[0-9]' "$output"
+    if grep -Eq '(^|[[:space:]])(pkg|opnsense)(-[0-9]|:[[:space:]]*[0-9])' "$output"
     then
         fail 'package dry run attempted to change pkg or OPNsense core'
     fi
