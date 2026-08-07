@@ -257,9 +257,12 @@ elif command == "create":
             )
 elif command == "install":
     if "-n" in args:
-        print("The following package(s) will be affected:")
         plan = os.environ.get("RP_TEST_DRY_RUN_PLAN", "valid")
-        if plan != "missing":
+        if plan == "all_current":
+            print("The most recent versions of packages are already installed")
+        else:
+            print("The following package(s) will be affected:")
+        if plan not in {"missing", "all_current"}:
             for argument in args:
                 if re.search(r"-[0-9]", argument):
                     print(f"\t{argument}")
@@ -540,6 +543,17 @@ def test_restores_the_original_pkg_lock_state_after_success_and_failure(tmp_path
 @pytest.mark.parametrize("status", [0, 1])
 def test_accepts_pkg_dry_run_success_and_change_status(tmp_path: Path, status: int) -> None:
     result, _, _ = run_installer(tmp_path, dry_run_status=status)
+
+    assert result.returncode == 0, result.stderr
+
+
+def test_accepts_generic_current_plan_only_for_an_exact_installed_identity(tmp_path: Path) -> None:
+    result, _, _ = run_installer(
+        tmp_path,
+        os_bind_rp="os-bind-rp|1.36_10|opnsense/os-bind-rp",
+        dry_run_status=0,
+        dry_run_plan="all_current",
+    )
 
     assert result.returncode == 0, result.stderr
 

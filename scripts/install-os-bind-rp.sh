@@ -132,6 +132,20 @@ verified_pkg() {
     "$pkg_static_command" -o "REPOS_DIR=$isolated_repository_directory" "$@"
 }
 
+exact_identity_is_installed() {
+    identity=$1
+    case "$identity" in
+        bind-tools-*) package_name=bind-tools ;;
+        bind920-*) package_name=bind920 ;;
+        os-bind-rp-*) package_name=os-bind-rp ;;
+        os-bind-*) package_name=os-bind ;;
+        *) return 1 ;;
+    esac
+    installed=$(installed_record "$package_name")
+    installed_version=$(package_field "$installed" 2)
+    [ "$package_name-$installed_version" = "$identity" ]
+}
+
 package_dry_run() {
     output=$1
     repository_config=$2
@@ -157,8 +171,10 @@ package_dry_run() {
         fail 'package dry run did not produce a recognized transaction plan'
     for identity in "$@"
     do
-        grep -Fq "$identity" "$output" || \
+        if ! grep -Fq "$identity" "$output" && ! exact_identity_is_installed "$identity"
+        then
             fail "package dry run omitted requested identity: $identity"
+        fi
     done
     if grep -Eq '(^|[[:space:]])(pkg|opnsense)(-[0-9]|:[[:space:]]*[0-9])' "$output"
     then
