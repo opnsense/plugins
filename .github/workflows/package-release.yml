@@ -451,6 +451,7 @@ jobs:
           channels+=(--channel "pkg-$SERIES=$root/current")
           python3 .github/ci/release_channel.py publish-channels --repository resolver-plugins/repository --recovery "$RUNNER_TEMP/recovery" "${channels[@]}"
           python3 .github/ci/release_channel.py prune-snapshots --repository resolver-plugins/repository --series "$SERIES" --keep 5
+          python3 .github/ci/release_channel.py mark-latest-package-channel --repository resolver-plugins/repository
 
   verify:
     if: needs.select.outputs.mode == 'production'
