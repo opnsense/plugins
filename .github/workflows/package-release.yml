@@ -304,6 +304,7 @@ jobs:
                 awk -F '|' 'NF != 2 || $2 == "" || $2 == "(null)" { exit 1 } END { if (NR == 0) exit 1 }'
             done
             pkg check -s bind-tools bind920 os-bind-rp
+            .github/ci/verify-bind-runtime.sh
 
   publish-development:
     if: needs.select.outputs.mode == 'development'
@@ -551,6 +552,7 @@ jobs:
                 awk -F '|' 'NF != 2 || $2 == "" || $2 == "(null)" { exit 1 } END { if (NR == 0) exit 1 }'
             done
             pkg check -s bind-tools bind920 os-bind-rp
+            .github/ci/verify-bind-runtime.sh
             cat > /usr/local/etc/pkg/repos/resolver-plugins-rollback.conf <<EOF
             resolver-plugins-rollback: {
               url: "file://$PWD/$root/snapshot",
@@ -712,6 +714,7 @@ jobs:
                 awk -F '|' 'NF != 2 || $2 == "" || $2 == "(null)" { exit 1 } END { if (NR == 0) exit 1 }'
             done
             pkg check -s bind-tools bind920 os-bind-rp
+            .github/ci/verify-bind-runtime.sh
 
   source-release:
     if: needs.select.outputs.mode == 'production'

@@ -38,10 +38,11 @@ def pkg_fixture(output: str) -> Iterator[Path]:
         yield executable
 
 
-def test_accepts_complete_target_readable_file_checksums(tmp_path: Path) -> None:
+@pytest.mark.parametrize("prefix", ["", "1$", "2$"])
+def test_accepts_complete_target_readable_file_checksums(tmp_path: Path, prefix: str) -> None:
     archive = tmp_path / "bind920.pkg"
     archive.touch()
-    checksum = "1$" + "a" * 64
+    checksum = prefix + "a" * 64
     with pkg_fixture(f"/usr/local/sbin/named|{checksum}\n") as pkg:
         rows = package_checksums.verify_archive(str(pkg), archive)
 
@@ -65,4 +66,13 @@ def test_rejects_malformed_checksum_rows(tmp_path: Path) -> None:
     archive.touch()
     with pkg_fixture("not-a-file-checksum-row\n") as pkg:
         with pytest.raises(package_checksums.PackageChecksumError, match="malformed"):
+            package_checksums.verify_archive(str(pkg), archive)
+
+
+@pytest.mark.parametrize("checksum", ["garbage", "3$" + "a" * 64, "1$abc"])
+def test_rejects_unrecognized_checksum_formats(tmp_path: Path, checksum: str) -> None:
+    archive = tmp_path / "bind920.pkg"
+    archive.touch()
+    with pkg_fixture(f"/usr/local/sbin/named|{checksum}\n") as pkg:
+        with pytest.raises(package_checksums.PackageChecksumError, match="unrecognized"):
             package_checksums.verify_archive(str(pkg), archive)

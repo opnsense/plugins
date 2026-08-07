@@ -13,6 +13,10 @@ pkg_lock_changed=no
 completed=no
 key_stage_directory=
 key_stage_owned=no
+transaction_started=no
+recovery_repository=
+recovery_repository_directory=
+recovery_exact_identities=
 
 cleanup() {
     status=$?
@@ -36,6 +40,15 @@ cleanup() {
         if [ -n "$temporary_directory" ]
         then
             printf 'Temporary package data retained at %s\n' "$temporary_directory" >&2
+        fi
+        if [ "$transaction_started" = yes ] && [ -n "$recovery_repository" ]
+        then
+            printf 'Recovery package repository: %s\n' "$recovery_repository" >&2
+            printf '%s\n' 'Dry-run recovery before applying it:' >&2
+            printf '  %s -o REPOS_DIR=%s install -n -f -r resolver-recovery%s\n' \
+                "$pkg_static_command" "$recovery_repository_directory" \
+                "$recovery_exact_identities" >&2
+            printf '%s\n' 'Stop BIND before an approved recovery, restore config.xml.bak, then validate and restart BIND.' >&2
         fi
     fi
     if [ "$key_stage_owned" = yes ] && [ -n "$key_stage_directory" ] && \
@@ -186,7 +199,8 @@ create_state_directory() {
     [ -f "$config_file" ] || fail "OPNsense configuration is missing: $config_file"
     cp -p "$config_file" "$state_directory/config.xml.bak"
     "$pkg_command" info -a > "$state_directory/packages.before.txt"
-    "$pkg_command" query '%n|%v|%o' > "$state_directory/package-identities.before.txt"
+    "$pkg_command" query '%n|%v|%o' | sort > "$state_directory/package-identities.before.txt"
+    cp "$state_directory/package-identities.before.txt" "$state_directory/installed-packages.txt"
     "$pkg_command" lock -l > "$state_directory/package-locks.before.txt"
 }
 
@@ -204,11 +218,46 @@ prepare_temporary_directory() {
     archive_all="$archive_root/All"
     isolated_repository_directory="$temporary_directory/isolated-repos"
     mkdir -p "$archive_all" "$isolated_repository_directory"
+    : > "$temporary_directory/package-file-checksums.txt"
+    : > "$temporary_directory/package-archives.txt"
 }
 
 archive_path_for() {
     identity=$1
-    find "$archive_all" -type f \( -name "$identity.pkg" -o -name "$identity.txz" \) -print
+    for candidate in \
+        "$archive_root/$identity.pkg" "$archive_root/$identity.txz" \
+        "$archive_all/$identity.pkg" "$archive_all/$identity.txz"
+    do
+        if [ -f "$candidate" ]
+        then
+            printf '%s\n' "$candidate"
+        fi
+    done
+}
+
+verify_archive_manifest() {
+    package_name=$1
+    package_version=$2
+    package_origin=$3
+    archive=$4
+    checksum_output=$5
+    identity="$package_name-$package_version"
+    archive_identity=$("$pkg_static_command" query -F "$archive" '%n|%v|%o') || \
+        fail "could not inspect archive identity for $identity"
+    [ "$archive_identity" = "$package_name|$package_version|$package_origin" ] || \
+        fail "archive identity mismatch for $identity: $archive_identity"
+
+    "$pkg_static_command" query -F "$archive" '%Fp|%Fs' > "$checksum_output" || \
+        fail "could not inspect file checksums for $identity"
+    [ -s "$checksum_output" ] || fail "archive contains no file checksums: $identity"
+    while IFS='|' read -r file_path file_checksum extra
+    do
+        if [ -z "$file_path" ] || [ -n "${extra:-}" ] || \
+            ! printf '%s\n' "$file_checksum" | grep -Eq '^([12]\$)?[[:xdigit:]]{64}$'
+        then
+            fail "incompatible file checksum in $identity for ${file_path:-unknown}: ${file_checksum:-(null)}"
+        fi
+    done < "$checksum_output"
 }
 
 fetch_and_verify_archive() {
@@ -221,28 +270,17 @@ fetch_and_verify_archive() {
     archive=$(archive_path_for "$identity")
     [ "$(printf '%s\n' "$archive" | awk 'NF { count++ } END { print count + 0 }')" -eq 1 ] || \
         fail "expected one archive for $identity"
-    archive_identity=$("$pkg_static_command" query -F "$archive" '%n|%v|%o') || \
-        fail "could not inspect archive identity for $identity"
-    [ "$archive_identity" = "$package_name|$package_version|$package_origin" ] || \
-        fail "archive identity mismatch for $identity: $archive_identity"
-
     checksum_output="$temporary_directory/$package_name.file-checksums"
-    "$pkg_static_command" query -F "$archive" '%Fp|%Fs' > "$checksum_output" || \
-        fail "could not inspect file checksums for $identity"
-    [ -s "$checksum_output" ] || fail "archive contains no file checksums: $identity"
-    while IFS='|' read -r file_path file_checksum extra
+    verify_archive_manifest "$package_name" "$package_version" "$package_origin" \
+        "$archive" "$checksum_output"
+    while IFS='|' read -r file_path file_checksum
     do
-        if [ -z "$file_path" ] || [ -n "${extra:-}" ] || \
-            ! printf '%s\n' "$file_checksum" | grep -Eq '^(2\$)?[[:xdigit:]]{64}$'
-        then
-            fail "incompatible file checksum in $identity for ${file_path:-unknown}: ${file_checksum:-(null)}"
-        fi
         printf '%s|%s|%s|%s\n' "$identity" "$file_path" "$file_checksum" "$archive" \
-            >> "$state_directory/package-file-checksums.txt"
+            >> "$temporary_directory/package-file-checksums.txt"
     done < "$checksum_output"
     archive_sha256=$(sha256 -q "$archive")
     printf '%s|%s|%s\n' "$identity" "$archive_sha256" "$archive" \
-        >> "$state_directory/package-archives.txt"
+        >> "$temporary_directory/package-archives.txt"
 }
 
 verify_archive_hashes() {
@@ -250,7 +288,60 @@ verify_archive_hashes() {
     do
         [ "$(sha256 -q "$archive")" = "$expected" ] || \
             fail "verified archive changed before installation: $identity"
-    done < "$state_directory/package-archives.txt"
+    done < "$temporary_directory/package-archives.txt"
+}
+
+recovery_archive_path() {
+    identity=$1
+    for candidate in \
+        "$recovery_repository/$identity.pkg" "$recovery_repository/$identity.txz" \
+        "$recovery_repository/All/$identity.pkg" "$recovery_repository/All/$identity.txz"
+    do
+        if [ -f "$candidate" ]
+        then
+            printf '%s\n' "$candidate"
+        fi
+    done
+}
+
+capture_recovery_packages() {
+    recovery_repository="$state_directory/recovery-packages"
+    recovery_repository_directory="$state_directory/recovery-repos"
+    mkdir -m 0700 "$recovery_repository" "$recovery_repository_directory"
+    : > "$state_directory/recovery-identities.txt"
+    recovery_exact_identities=
+    set --
+    for record in "$bind_tools" "$bind920" "$official_plugin" "$installed_plugin"
+    do
+        package_name=$(package_field "$record" 1)
+        if [ -n "$package_name" ]
+        then
+            set -- "$@" "$package_name"
+            printf '%s\n' "$record" >> "$state_directory/recovery-identities.txt"
+        fi
+    done
+    [ "$#" -gt 0 ] || return 0
+    "$pkg_command" create -o "$recovery_repository" "$@" || \
+        fail 'could not preserve installed packages for recovery'
+    set --
+    while IFS='|' read -r package_name package_version package_origin
+    do
+        identity="$package_name-$package_version"
+        archive=$(recovery_archive_path "$identity")
+        [ "$(printf '%s\n' "$archive" | awk 'NF { count++ } END { print count + 0 }')" -eq 1 ] || \
+            fail "expected one recovery archive for $identity"
+        verify_archive_manifest "$package_name" "$package_version" "$package_origin" \
+            "$archive" "$state_directory/$package_name.recovery-checksums.txt"
+        set -- "$@" "$identity"
+        recovery_exact_identities="$recovery_exact_identities $identity"
+    done < "$state_directory/recovery-identities.txt"
+    "$pkg_static_command" repo "$recovery_repository" || \
+        fail 'could not construct recovery package repository'
+    write_repository resolver-recovery "file://$recovery_repository" yes \
+        "$recovery_repository_directory/resolver-recovery.conf"
+    "$pkg_static_command" -o "REPOS_DIR=$recovery_repository_directory" \
+        install -n -f -r resolver-recovery "$@" > "$state_directory/pkg-recovery.dry-run.txt" || \
+        fail 'saved packages did not pass a recovery dry run'
 }
 
 installed_record() {
@@ -267,9 +358,15 @@ verify_installed_record() {
 verify_archive_ownership() {
     while IFS='|' read -r identity file_path file_checksum archive
     do
-        "$pkg_command" which -q "$file_path" >/dev/null || \
+        package_name=${identity%-*}
+        installed_identity=$(installed_record "$package_name")
+        installed_version=$(package_field "$installed_identity" 2)
+        expected_owner="$package_name-$installed_version"
+        owner=$("$pkg_command" which -q "$file_path") || \
             fail "installed file is not package-owned: $file_path ($identity)"
-    done < "$state_directory/package-file-checksums.txt"
+        [ "$owner" = "$expected_owner" ] || \
+            fail "installed file has the wrong owner: $file_path ($owner, expected $expected_owner)"
+    done < "$temporary_directory/package-file-checksums.txt"
 }
 
 verify_installed_checksums() {
@@ -281,7 +378,7 @@ verify_installed_checksums() {
     while IFS='|' read -r file_path file_checksum extra
     do
         if [ -z "$file_path" ] || [ -n "${extra:-}" ] || \
-            ! printf '%s\n' "$file_checksum" | grep -Eq '^(2\$)?[[:xdigit:]]{64}$'
+            ! printf '%s\n' "$file_checksum" | grep -Eq '^([12]\$)?[[:xdigit:]]{64}$'
         then
             fail "incompatible installed file checksum in $package_name for ${file_path:-unknown}: ${file_checksum:-(null)}"
         fi
@@ -357,26 +454,16 @@ then
 fi
 
 official_plugin=$(installed_record os-bind)
+installed_plugin=$(installed_record os-bind-rp)
 if [ -n "$official_plugin" ]
 then
     printf '%s\n' "Replacing official os-bind ($(package_description "$official_plugin")) with os-bind-rp." >&2
-fi
-
-create_state_directory
-prepare_temporary_directory
-
-if "$pkg_command" lock -l | grep -Eq '(^|[[:space:]])pkg-[^[:space:]]*($|[[:space:]])'
+elif [ -n "$installed_plugin" ]
 then
-    pkg_was_locked=yes
-else
-    pkg_was_locked=no
-    "$pkg_command" lock -y pkg >/dev/null
-    pkg_lock_changed=yes
+    printf '%s\n' "Upgrading installed os-bind-rp ($(package_description "$installed_plugin"))." >&2
 fi
-printf 'pkg_was_locked=%s\n' "$pkg_was_locked" > "$state_directory/transaction.txt"
-printf '%s\n' "$candidate_bind920" "$candidate_bind_tools" "$candidate_plugin" \
-    > "$state_directory/candidates.txt"
 
+prepare_temporary_directory
 fetch_and_verify_archive bind920 "$candidate_bind920_version" dns/bind920
 fetch_and_verify_archive bind-tools "$candidate_bind_tools_version" dns/bind-tools
 fetch_and_verify_archive os-bind-rp "$candidate_plugin_version" opnsense/os-bind-rp
@@ -390,6 +477,27 @@ opnsense_repository_config=${RP_OPNSENSE_REPOSITORY_CONFIG:-/usr/local/etc/pkg/r
 cp -p "$opnsense_repository_config" "$isolated_repository_directory/OPNsense.conf"
 
 verify_archive_hashes
+create_state_directory
+cp "$temporary_directory/package-file-checksums.txt" "$state_directory/package-file-checksums.txt"
+cp "$temporary_directory/package-archives.txt" "$state_directory/package-archives.txt"
+cp "$temporary_directory/package-archives.txt" "$state_directory/candidate-sha256.txt"
+printf '%s\n' "$candidate_bind920" "$candidate_bind_tools" "$candidate_plugin" \
+    > "$state_directory/candidates.txt"
+
+pkg_identity_before=$(installed_record pkg)
+if "$pkg_command" lock -l | grep -Eq '(^|[[:space:]])pkg-[^[:space:]]*($|[[:space:]])'
+then
+    pkg_was_locked=yes
+else
+    pkg_was_locked=no
+    "$pkg_command" lock -y pkg >/dev/null
+    pkg_lock_changed=yes
+fi
+[ "$(installed_record pkg)" = "$pkg_identity_before" ] || \
+    fail 'pkg identity changed while establishing the transaction lock'
+printf 'pkg_was_locked=%s\npkg_identity=%s\n' "$pkg_was_locked" "$pkg_identity_before" \
+    > "$state_directory/transaction.txt"
+
 set -- "os-bind-rp-$candidate_plugin_version"
 if [ "$bind_update_required" = yes ]
 then
@@ -397,7 +505,11 @@ then
 fi
 verified_pkg install -n -r resolver-verified "$@" > "$state_directory/pkg-install.dry-run.txt"
 verify_archive_hashes
+capture_recovery_packages
+[ "$(installed_record pkg)" = "$pkg_identity_before" ] || \
+    fail 'pkg identity changed before the verified package transaction'
 
+transaction_started=yes
 if [ "$bind_update_required" = yes ]
 then
     verified_pkg install -y -r resolver-verified \

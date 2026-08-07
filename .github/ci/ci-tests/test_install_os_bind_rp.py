@@ -27,11 +27,17 @@ def installer_environment(
     bind920: str = "bind920|9.20.26_2|dns/bind920",
     bind_tools: str = "bind-tools|9.20.26_2|dns/bind-tools",
     os_bind: str = "",
+    os_bind_rp: str = "",
     confirmation: str | None = None,
     key_sha256: str = PUBLIC_KEY_SHA256,
     fetch_failure: bool = False,
     archive_checksum: str = "2$" + "a" * 64,
     install_failure: bool = False,
+    plugin_install_failure: bool = False,
+    fetch_layout: str = "all",
+    wrong_owner: bool = False,
+    pkg_locked: bool = False,
+    mutate_frozen_archive: bool = False,
 ) -> tuple[dict[str, str], Path, Path]:
     log = tmp_path / "commands.log"
     tty = tmp_path / "tty"
@@ -42,6 +48,9 @@ def installer_environment(
     config.chmod(0o640)
     opnsense_repository = tmp_path / "OPNsense.conf"
     opnsense_repository.write_text("OPNsense: { enabled: yes }\n", encoding="utf-8")
+    lock_marker = tmp_path / "pkg-locked"
+    if pkg_locked:
+        lock_marker.touch()
 
     environment = os.environ.copy()
     environment.update(
@@ -53,8 +62,13 @@ def installer_environment(
             "RP_TEST_BIND920": bind920,
             "RP_TEST_BIND_TOOLS": bind_tools,
             "RP_TEST_OS_BIND": os_bind,
+            "RP_TEST_OS_BIND_RP": os_bind_rp,
             "RP_TEST_FETCH_FAILURE": "yes" if fetch_failure else "no",
             "RP_TEST_INSTALL_FAILURE": "yes" if install_failure else "no",
+            "RP_TEST_PLUGIN_INSTALL_FAILURE": "yes" if plugin_install_failure else "no",
+            "RP_TEST_FETCH_LAYOUT": fetch_layout,
+            "RP_TEST_WRONG_OWNER": "yes" if wrong_owner else "no",
+            "RP_TEST_MUTATE_FROZEN_ARCHIVE": "yes" if mutate_frozen_archive else "no",
             "RP_TEST_ARCHIVE_CHECKSUM": archive_checksum,
             "RP_TEST_KEY_SHA256": key_sha256,
             "RP_TEST_LOG": str(log),
@@ -62,7 +76,7 @@ def installer_environment(
             "RP_TEST_FALLBACK_MARKER": str(tmp_path / "fallback-installed"),
             "RP_TEST_PLUGIN_MARKER": str(tmp_path / "plugin-installed"),
             "RP_TEST_OFFICIAL_REMOVED_MARKER": str(tmp_path / "official-removed"),
-            "RP_TEST_LOCK_MARKER": str(tmp_path / "pkg-locked"),
+            "RP_TEST_LOCK_MARKER": str(lock_marker),
             "RP_CONFIG_FILE": str(config),
             "RP_BACKUP_ROOT": str(tmp_path / "backups"),
             "RP_OPNSENSE_REPOSITORY_CONFIG": str(opnsense_repository),
@@ -137,8 +151,10 @@ def installed(name):
         if marker("RP_TEST_FALLBACK_MARKER").exists():
             return "bind-tools|9.20.26_2|dns/bind-tools"
         return os.environ.get("RP_TEST_BIND_TOOLS", "")
-    if name == "os-bind-rp" and marker("RP_TEST_PLUGIN_MARKER").exists():
-        return "os-bind-rp|1.36_10|opnsense/os-bind-rp"
+    if name == "os-bind-rp":
+        if marker("RP_TEST_PLUGIN_MARKER").exists():
+            return "os-bind-rp|1.36_10|opnsense/os-bind-rp"
+        return os.environ.get("RP_TEST_OS_BIND_RP", "")
     if name == "os-bind" and not marker("RP_TEST_OFFICIAL_REMOVED_MARKER").exists():
         return os.environ.get("RP_TEST_OS_BIND", "")
     if name == "pkg":
@@ -160,19 +176,43 @@ elif command == "rquery":
 elif command == "fetch":
     if os.environ.get("RP_TEST_FETCH_FAILURE") == "yes":
         raise SystemExit(1)
-    destination = Path(args[args.index("-o") + 1]) / "All"
+    destination = Path(args[args.index("-o") + 1])
+    if os.environ.get("RP_TEST_FETCH_LAYOUT", "all") == "all":
+        destination /= "All"
     identity = args[-1]
     destination.mkdir(parents=True, exist_ok=True)
     (destination / f"{identity}.pkg").write_bytes(f"archive:{identity}\n".encode())
 elif command == "repo":
     repository = Path(args[-1])
+    if (
+        os.environ.get("RP_TEST_MUTATE_FROZEN_ARCHIVE") == "yes"
+        and repository.name == "verified-repository"
+    ):
+        archive = next(repository.rglob("bind920-*.pkg"))
+        archive.write_bytes(archive.read_bytes() + b"changed\n")
     (repository / "meta.conf").write_text("meta\n", encoding="utf-8")
     (repository / "packagesite.pkg").write_text("catalogue\n", encoding="utf-8")
 elif command == "query" and "-F" in args:
     archive = Path(args[args.index("-F") + 1])
     identity = archive.name.removesuffix(".pkg")
-    name = next(name for name in candidates if identity == f"{name}-{candidates[name][0]}")
-    version, origin = candidates[name]
+    record = next(
+        (
+            f"{name}|{version}|{origin}"
+            for name, (version, origin) in candidates.items()
+            if identity == f"{name}-{version}"
+        ),
+        "",
+    )
+    if not record:
+        record = next(
+            (
+                installed(name)
+                for name in ("bind920", "bind-tools", "os-bind-rp", "os-bind")
+                if installed(name) and identity == "-".join(installed(name).split("|")[:2])
+            ),
+            "",
+        )
+    name, version, origin = record.split("|")
     output_format = args[-1]
     if output_format == "%n|%v|%o":
         print(f"{name}|{version}|{origin}")
@@ -199,6 +239,16 @@ elif command == "info":
         if value:
             package, version, _ = value.split("|")
             print(f"{package}-{version}")
+elif command == "create":
+    destination = Path(args[args.index("-o") + 1])
+    destination.mkdir(parents=True, exist_ok=True)
+    for name in args[args.index("-o") + 2:]:
+        value = installed(name)
+        if value:
+            package, version, _ = value.split("|")
+            (destination / f"{package}-{version}.pkg").write_bytes(
+                f"recovery:{package}-{version}\n".encode()
+            )
 elif command == "install":
     if "-n" in args:
         print("dry run")
@@ -209,17 +259,30 @@ elif command == "install":
         if "bind920-9.20.26_2" in identities and "bind-tools-9.20.26_2" in identities:
             marker("RP_TEST_FALLBACK_MARKER").touch()
         if "os-bind-rp-1.36_10" in identities:
+            if os.environ.get("RP_TEST_PLUGIN_INSTALL_FAILURE") == "yes":
+                raise SystemExit(1)
             marker("RP_TEST_PLUGIN_MARKER").touch()
             marker("RP_TEST_OFFICIAL_REMOVED_MARKER").touch()
 elif command == "lock":
     if "-l" in args:
         if marker("RP_TEST_LOCK_MARKER").exists():
             print("pkg-2.3.1_1")
-    elif "-y" in args:
-        marker("RP_TEST_LOCK_MARKER").touch()
     elif "-u" in args:
         marker("RP_TEST_LOCK_MARKER").unlink(missing_ok=True)
-elif command in {"which", "check"}:
+    elif "-y" in args:
+        marker("RP_TEST_LOCK_MARKER").touch()
+elif command == "which":
+    path = args[-1]
+    name = path.split("/")[3]
+    value = installed(name)
+    if not value:
+        raise SystemExit(1)
+    package, version, _ = value.split("|")
+    if os.environ.get("RP_TEST_WRONG_OWNER") == "yes":
+        package = "wrong-owner"
+        version = "1"
+    print(f"{package}-{version}")
+elif command == "check":
     pass
 else:
     raise SystemExit(64)
@@ -351,6 +414,30 @@ def test_rejects_null_archive_checksums_before_any_package_install(tmp_path: Pat
     assert result.returncode != 0
     assert "incompatible file checksum" in result.stderr
     assert " install " not in log.read_text(encoding="utf-8")
+    assert not (tmp_path / "backups").exists()
+
+
+def test_accepts_sha256_and_blake_checksum_prefixes_from_either_fetch_layout(
+    tmp_path: Path,
+) -> None:
+    for index, (checksum, layout) in enumerate(
+        (("1$" + "b" * 64, "direct"), ("2$" + "c" * 64, "all"))
+    ):
+        case_directory = tmp_path / str(index)
+        case_directory.mkdir()
+        result, _, _ = run_installer(
+            case_directory, archive_checksum=checksum, fetch_layout=layout
+        )
+        assert result.returncode == 0, result.stderr
+
+
+def test_rejects_a_frozen_archive_change_before_state_or_install(tmp_path: Path) -> None:
+    result, log, _ = run_installer(tmp_path, mutate_frozen_archive=True)
+
+    assert result.returncode != 0
+    assert "verified archive changed" in result.stderr
+    assert " install " not in log.read_text(encoding="utf-8")
+    assert not (tmp_path / "backups").exists()
 
 
 def test_official_plugin_replacement_uses_verified_exact_archives_and_keeps_backup(
@@ -383,6 +470,23 @@ def test_official_plugin_replacement_uses_verified_exact_archives_and_keeps_back
         assert f"pkg query -e %n = {package} %Fp|%Fs" in calls
 
 
+def test_reports_an_existing_resolver_plugin_upgrade(tmp_path: Path) -> None:
+    result, _, _ = run_installer(
+        tmp_path,
+        os_bind_rp="os-bind-rp|1.36_9|opnsense/os-bind-rp",
+    )
+
+    assert result.returncode == 0, result.stderr
+    assert "Upgrading installed os-bind-rp" in result.stderr
+
+
+def test_rejects_archive_paths_owned_by_the_wrong_package(tmp_path: Path) -> None:
+    result, _, _ = run_installer(tmp_path, wrong_owner=True)
+
+    assert result.returncode != 0
+    assert "installed file has the wrong owner" in result.stderr
+
+
 def test_install_failure_retains_diagnostics_and_temporary_archives(tmp_path: Path) -> None:
     result, _, _ = run_installer(tmp_path, install_failure=True)
 
@@ -394,6 +498,50 @@ def test_install_failure_retains_diagnostics_and_temporary_archives(tmp_path: Pa
     temporary = tmp_path / "temporary"
     assert temporary.exists()
     assert list(temporary.rglob("*.pkg"))
+
+
+def test_restores_the_original_pkg_lock_state_after_success_and_failure(tmp_path: Path) -> None:
+    unlocked = tmp_path / "unlocked"
+    unlocked.mkdir()
+    result, _, _ = run_installer(unlocked)
+    assert result.returncode == 0, result.stderr
+    assert not (unlocked / "pkg-locked").exists()
+
+    locked = tmp_path / "locked"
+    locked.mkdir()
+    result, _, _ = run_installer(locked, pkg_locked=True, install_failure=True)
+    assert result.returncode != 0
+    assert (locked / "pkg-locked").exists()
+
+
+def test_partial_bind_update_failure_preserves_recovery_packages_and_instructions(
+    tmp_path: Path,
+) -> None:
+    result, log, _ = run_installer(
+        tmp_path,
+        bind920="bind920|9.20.25|dns/bind920",
+        bind_tools="bind-tools|9.20.25|dns/bind-tools",
+        confirmation="y",
+        os_bind="os-bind|1.34_3|opnsense/os-bind",
+        plugin_install_failure=True,
+    )
+
+    assert result.returncode != 0
+    backups = list((tmp_path / "backups").glob("os-bind-rp-install.*"))
+    assert len(backups) == 1
+    recovery = backups[0] / "recovery-packages"
+    assert {path.name for path in recovery.glob("*.pkg") if path.name != "packagesite.pkg"} == {
+        "bind-tools-9.20.25.pkg",
+        "bind920-9.20.25.pkg",
+        "os-bind-1.34_3.pkg",
+    }
+    assert "Recovery package repository:" in result.stderr
+    assert "Dry-run recovery before applying it" in result.stderr
+    live_installs = [
+        line for line in log.read_text(encoding="utf-8").splitlines() if " install -y " in line
+    ]
+    assert "bind920-9.20.26_2 bind-tools-9.20.26_2" in live_installs[-2]
+    assert "os-bind-rp-1.36_10" in live_installs[-1]
 
 
 def test_declining_update_creates_no_durable_state(tmp_path: Path) -> None:

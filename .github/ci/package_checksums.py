@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -11,6 +12,9 @@ from pathlib import Path
 
 class PackageChecksumError(ValueError):
     """A package archive has no complete target-readable file checksum set."""
+
+
+CHECKSUM_PATTERN = re.compile(r"(?:[12]\$)?[0-9a-fA-F]{64}")
 
 
 def archive_file_checksums(
@@ -40,6 +44,10 @@ def verify_archive(
     if not rows or any(not path or checksum in {"", "(null)"} for path, checksum in rows):
         raise PackageChecksumError(
             f"package has incomplete target-readable file checksums: {archive.name}"
+        )
+    if any(CHECKSUM_PATTERN.fullmatch(checksum) is None for _, checksum in rows):
+        raise PackageChecksumError(
+            f"package has an unrecognized target-readable checksum: {archive.name}"
         )
     return rows
 

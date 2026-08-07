@@ -273,6 +273,10 @@ def test_all_freebsd_install_gates_pin_pkg_and_test_the_official_replacement_pat
         assert "pkg query -e \"%n = $package\" '%Fp|%Fs'" in verifier, name
         assert '$2 == "(null)"' in verifier, name
         assert 'pkg check -s bind-tools bind920 os-bind-rp' in verifier, name
+        assert '.github/ci/verify-bind-runtime.sh' in verifier, name
+        assert verifier.index('pkg check -s bind-tools bind920 os-bind-rp') < verifier.index(
+            '.github/ci/verify-bind-runtime.sh'
+        ), name
         assert verifier.index('target_pkg.py install') < verifier.index(
             'pkg install -y -r OPNsense opnsense os-bind'
         ) < verifier.index('package_checksums.py')

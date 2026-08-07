@@ -70,11 +70,17 @@ and does not change BIND service configuration or restart BIND.
 Immediately before the first package install, the script creates a mode-0700
 state directory below `/var/backups`, preserves a mode-retaining configuration
 backup as `config.xml.bak`, and records package inventory and candidate
-hashes. Set `RP_STATE_DIRECTORY` to choose an explicit new directory or
-`RP_BACKUP_ROOT` to change only its parent. A caller-supplied
-`RP_TEMPORARY_DIRECTORY` is never deleted. On failure, the script retains and
+hashes. It also recreates the currently installed BIND/plugin packages in a
+validated local recovery repository and proves an exact recovery dry run
+before the first live package transaction. Set `RP_STATE_DIRECTORY` to choose
+an explicit new directory or `RP_BACKUP_ROOT` to change only its parent. A
+caller-supplied `RP_TEMPORARY_DIRECTORY` is never deleted. On failure, the script retains and
 prints both the durable state directory and temporary verified archives for
 diagnosis; on success, it removes only temporary storage that it created.
+If a live transaction fails, the diagnostic names the recovery repository and
+prints an exact dry-run command; stop BIND and review that dry run before an
+approved recovery, then restore `config.xml.bak`, validate configuration, and
+restart BIND.
 
 After replacement, the installer requires the official package to be absent,
 checks exact Resolver package origins, verifies ownership of archive-listed
@@ -218,6 +224,12 @@ contain the same new version, so this gate proves snapshot catalogue
 installability rather than a transition to an older version. After publication,
 when an older retained snapshot exists, verify the actual version transition
 from its public URL and confirm package identities with `pkg rquery`.
+
+Development, staged, and published installation gates all finish by checking a
+minimal isolated BIND configuration, starting and restarting BIND through its
+managed service script, and querying an authoritative canary name. This catches
+broken executables, linked libraries, service integration, and basic DNS
+response failures before promotion.
 
 If a signing-key rotation is required, replace `RP_PKG_SIGNING_KEY`, commit
 the replacement public key, and republish every channel for every supported
