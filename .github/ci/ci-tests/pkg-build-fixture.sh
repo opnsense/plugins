@@ -17,7 +17,12 @@ case "$1" in
         [ "$2" = -f ] || exit 2
         if [ -n "${PKG_STATIC_PATH:-}" ]
         then
-            printf '%s\n' '#!/bin/sh' '[ "$1" = -v ] || exit 64' "printf '%s\\n' '2.3.1'" > "$PKG_STATIC_PATH"
+            printf '%s\n' \
+                '#!/bin/sh' \
+                'printf '\''%s\n'\'' "$*" >> "$PKG_STATIC_CALL_LOG"' \
+                'if [ "$1" = -v ]; then printf '\''%s\n'\'' '\''2.3.1'\''; exit 0; fi' \
+                'if [ "$1" = query ]; then printf '\''%s\n'\'' '\''/usr/local/opnsense/mvc/app/models/OPNsense/Bind/Menu/Menu.xml|1$aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'\''; exit 0; fi' \
+                'exit 64' > "$PKG_STATIC_PATH"
             chmod 0755 "$PKG_STATIC_PATH"
         fi
         ;;

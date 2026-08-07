@@ -15,7 +15,11 @@ UPSTREAM_COMMIT = '6f3937f938377464534ebebde66cc13d84186542'
 FREEBSD_RELEASE = '14.3'
 TARGET_ARCHIVE_BYTES = b'fixture target package archive\n'
 TARGET_STATIC_BYTES = (
-    b'#!/bin/sh\n[ "$1" = -v ] || exit 64\nprintf \'%s\\n\' \'2.3.1\'\n'
+    b'#!/bin/sh\n'
+    b'printf \'%s\\n\' "$*" >> "$PKG_STATIC_CALL_LOG"\n'
+    b'if [ "$1" = -v ]; then printf \'%s\\n\' \'2.3.1\'; exit 0; fi\n'
+    b'if [ "$1" = query ]; then printf \'%s\\n\' \'/usr/local/opnsense/mvc/app/models/OPNsense/Bind/Menu/Menu.xml|1$aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\'; exit 0; fi\n'
+    b'exit 64\n'
 )
 
 
@@ -91,6 +95,7 @@ def configure_target_pkg_fixture(
     environment['RP_PKG_STATIC_COMMAND'] = str(executable_directory / 'pkg-static')
     environment['PKG_STATIC_PATH'] = str(executable_directory / 'pkg-static')
     environment['PKG_LOCK_MARKER'] = str(directory / 'pkg.locked')
+    environment['PKG_STATIC_CALL_LOG'] = str(directory / 'pkg-static-calls.log')
 
 
 def materialize_build_repository(request) -> pathlib.Path:
@@ -194,6 +199,11 @@ def test_build_wrapper_creates_package_and_metadata_for_26_1(tmp_path, request):
     )
     assert target_add_index < package_calls.index('install -y bind920')
     assert package_calls.count('lock -l') >= 3
+    static_calls = pathlib.Path(environment['PKG_STATIC_CALL_LOG']).read_text().splitlines()
+    assert any(
+        call.startswith('query -F ') and call.endswith(' %Fp|%Fs')
+        for call in static_calls
+    )
     safe_directories = subprocess.run(
         ['git', 'config', '--global', '--get-all', 'safe.directory'],
         text=True,

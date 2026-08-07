@@ -55,7 +55,9 @@ then
         "$profile_path" "$series" "$freebsd_release" "$artifact_directory" \
         --channel-url "$RP_BIND920_CHANNEL_URL" \
         --public-key "$repository_root/docs/package-repository/resolver-plugins.pub" \
-        --pkg-command "$pkg_command"
+        --pkg-command "$pkg_command" \
+        --pkg-static-command "$pkg_static" \
+        --target-pkg-metadata "$target_pkg_metadata"
     then
         exit 0
     else
@@ -95,6 +97,8 @@ ALLOW_UNSUPPORTED_SYSTEM=yes BATCH=yes NO_DEPENDS=yes OPTIONS_SET=GSSAPI_NONE OP
 set -- "$ports_directory"/dns/bind-tools/work/pkg/bind-tools-"$package_version".pkg
 [ "$#" -eq 1 ] && [ -f "$1" ] || fail 'bind-tools package was not produced as expected'
 bind_tools_package=$1
+"$python_command" "$script_directory/package_checksums.py" \
+    --pkg-command "$pkg_static" "$bind_tools_package"
 "$pkg_command" add "$bind_tools_package"
 
 "$python_command" "$script_directory/target_pkg.py" verify \
@@ -107,6 +111,8 @@ ALLOW_UNSUPPORTED_SYSTEM=yes BATCH=yes NO_DEPENDS=yes OPTIONS_SET=GSSAPI_NONE OP
 set -- "$ports_directory"/dns/bind920/work/pkg/bind920-"$package_version".pkg
 [ "$#" -eq 1 ] && [ -f "$1" ] || fail 'bind920 package was not produced as expected'
 bind_package=$1
+"$python_command" "$script_directory/package_checksums.py" \
+    --pkg-command "$pkg_static" "$bind_package"
 "$pkg_command" add "$bind_package"
 
 bind_version=$("$pkg_command" query -e '%n = bind920' '%v') || fail 'bind920 is not installed after package setup'
@@ -120,5 +126,6 @@ mkdir -p "$artifact_directory"
 provenance="$temporary_directory/bind920-provenance.json"
 "$python_command" "$script_directory/bind920_profile.py" "$profile_path" \
     provenance "$series" "$freebsd_release" \
+    --package-creator "$pkg_creator_record" \
     --bind-tools "$bind_tools_package" --bind920 "$bind_package" --output "$provenance"
 cp "$bind_tools_package" "$bind_package" "$provenance" "$artifact_directory/"

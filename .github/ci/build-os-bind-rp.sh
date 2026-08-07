@@ -132,6 +132,8 @@ set -- "$repository_root"/dns/bind/work/pkg/os-bind-rp-*.pkg
 [ -f "$1" ] || fail 'package build did not produce os-bind-rp'
 [ "$#" -eq 1 ] || fail 'package build produced more than one os-bind-rp package'
 package=$1
+"$python_command" "$script_directory/package_checksums.py" \
+    --pkg-command "$pkg_static" "$package"
 
 mkdir -p "$artifact_directory"
 cp "$package" "$artifact_directory/"

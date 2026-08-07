@@ -117,6 +117,7 @@ def test_signer_uses_master_control_plane_and_self_contained_channel_layout():
     assert 'cmp -s docs/package-repository/resolver-plugins.pub "$output/resolver-plugins.pub"' in signer
     assert 'trusted-upstream.json' in signer
     assert 'validate-build-metadata' in signer
+    assert signer.count('--target-pkg-metadata .resolver-plugins/target-pkg.json') == 3
     assert 'id: reuse-snapshot' in signer
     assert 'reuse-snapshot --repository resolver-plugins/repository' in signer
     assert "if: steps.reuse-snapshot.outputs.reused != 'true'" in signer

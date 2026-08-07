@@ -40,6 +40,15 @@ PACKAGES = {
         "filename": "bind920-9.20.26_2.pkg",
     },
 }
+PACKAGE_CREATOR = {
+    "name": "pkg",
+    "version": "2.3.1_1",
+    "origin": "ports-mgmt/pkg",
+    "abi": "FreeBSD:14:amd64",
+    "filename": "pkg-2.3.1_1.pkg",
+    "sha256": "a" * 64,
+    "pkg_static_sha256": "b" * 64,
+}
 
 
 class Bind920ReuseTest(unittest.TestCase):
@@ -50,21 +59,29 @@ class Bind920ReuseTest(unittest.TestCase):
 
     def test_fingerprint_rejects_different_compatibility_inputs(self) -> None:
         """Changing any compatibility input must prevent package reuse."""
-        baseline = bind920_profile.compatibility_fingerprint(PROFILE, "26.1", "14.3", "x86_64")
+        baseline = bind920_profile.compatibility_fingerprint(
+            PROFILE, "26.1", "14.3", "x86_64", PACKAGE_CREATOR
+        )
         changed_profile = dict(PROFILE, makefile_sha256="0" * 64)
-        self.assertNotEqual(baseline, bind920_profile.compatibility_fingerprint(PROFILE, "26.7", "14.3", "x86_64"))
-        self.assertNotEqual(baseline, bind920_profile.compatibility_fingerprint(PROFILE, "26.1", "14.4", "x86_64"))
-        self.assertNotEqual(baseline, bind920_profile.compatibility_fingerprint(PROFILE, "26.1", "14.3", "aarch64"))
-        self.assertNotEqual(baseline, bind920_profile.compatibility_fingerprint(changed_profile, "26.1", "14.3", "x86_64"))
+        self.assertNotEqual(baseline, bind920_profile.compatibility_fingerprint(PROFILE, "26.7", "14.3", "x86_64", PACKAGE_CREATOR))
+        self.assertNotEqual(baseline, bind920_profile.compatibility_fingerprint(PROFILE, "26.1", "14.4", "x86_64", PACKAGE_CREATOR))
+        self.assertNotEqual(baseline, bind920_profile.compatibility_fingerprint(PROFILE, "26.1", "14.3", "aarch64", PACKAGE_CREATOR))
+        self.assertNotEqual(baseline, bind920_profile.compatibility_fingerprint(changed_profile, "26.1", "14.3", "x86_64", PACKAGE_CREATOR))
+        self.assertNotEqual(baseline, bind920_profile.compatibility_fingerprint(PROFILE, "26.1", "14.3", "x86_64", dict(PACKAGE_CREATOR, sha256="c" * 64)))
 
     def test_provenance_requires_exact_bind_package_identities(self) -> None:
         """A cache candidate must identify both BIND package archives exactly."""
-        provenance = bind920_profile.build_provenance(PROFILE, "26.1", "14.3", "x86_64", PACKAGES)
+        provenance = bind920_profile.build_provenance(
+            PROFILE, "26.1", "14.3", "x86_64", PACKAGE_CREATOR, PACKAGES
+        )
         self.assertEqual("dns/bind920", provenance["packages"]["bind920"]["origin"])
+        self.assertEqual(PACKAGE_CREATOR, provenance["package_creator"])
         invalid = dict(PACKAGES)
         invalid["bind920"] = dict(PACKAGES["bind920"], origin="dns/bind918")
         with self.assertRaisesRegex(ValueError, "bind920 package"):
-            bind920_profile.build_provenance(PROFILE, "26.1", "14.3", "x86_64", invalid)
+            bind920_profile.build_provenance(
+                PROFILE, "26.1", "14.3", "x86_64", PACKAGE_CREATOR, invalid
+            )
 
     def test_provenance_command_writes_declared_package_filenames(self) -> None:
         """The shell build wrapper must be able to write reusable provenance."""
@@ -80,6 +97,7 @@ class Bind920ReuseTest(unittest.TestCase):
             result = subprocess.run(
                 [
                     "python3", str(MODULE_PATH), str(profile), "provenance", "26.1", "14.3",
+                    "--package-creator", json.dumps(PACKAGE_CREATOR),
                     "--bind-tools", str(bind_tools), "--bind920", str(bind920), "--output", str(output),
                 ],
                 capture_output=True,

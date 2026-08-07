@@ -390,10 +390,10 @@ jobs:
             printf '%s' "$RP_PKG_SIGNING_KEY" | base64 -d > "$key"
             output="artifacts/${{ needs.select.outputs.series }}"
             grep -Fqx 'source_commit=${{ needs.profile.outputs.source_commit }}' "$output/build-metadata.txt"
-            python3 .github/ci/release_channel.py validate-bind-provenance --provenance "$output/bind920-provenance.json" --profile .resolver-plugins/bind920.json --series '${{ needs.select.outputs.series }}' --freebsd-release '${{ needs.profile.outputs.freebsd_release }}'
-            python3 .github/ci/release_channel.py validate-build-metadata --metadata "$output/build-metadata.txt" --upstream "$output/trusted-upstream.json" --provenance "$output/bind920-provenance.json" --series '${{ needs.select.outputs.series }}' --source-commit '${{ needs.profile.outputs.source_commit }}'
+            python3 .github/ci/release_channel.py validate-bind-provenance --provenance "$output/bind920-provenance.json" --profile .resolver-plugins/bind920.json --series '${{ needs.select.outputs.series }}' --freebsd-release '${{ needs.profile.outputs.freebsd_release }}' --target-pkg-metadata .resolver-plugins/target-pkg.json
+            python3 .github/ci/release_channel.py validate-build-metadata --metadata "$output/build-metadata.txt" --upstream "$output/trusted-upstream.json" --provenance "$output/bind920-provenance.json" --series '${{ needs.select.outputs.series }}' --source-commit '${{ needs.profile.outputs.source_commit }}' --target-pkg-metadata .resolver-plugins/target-pkg.json
             mkdir -p "$output/repository"
-            python3 .github/ci/release_channel.py stage-channel --packages-directory "$output" --output "$output/repository/current" --private-key "$key"
+            python3 .github/ci/release_channel.py stage-channel --packages-directory "$output" --output "$output/repository/current" --private-key "$key" --target-pkg-metadata .resolver-plugins/target-pkg.json
             cp -R "$output/repository/current" "$output/repository/snapshot"
             openssl pkey -in "$key" -pubout -out "$output/resolver-plugins.pub"
             cmp -s docs/package-repository/resolver-plugins.pub "$output/resolver-plugins.pub" || {

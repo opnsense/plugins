@@ -212,6 +212,15 @@ class SelfContainedRepositoryStageTest(unittest.TestCase):
         """A self-contained channel carries one plugin, its BIND pair, and auditable metadata."""
         with tempfile.TemporaryDirectory() as temporary_directory:
             root = Path(temporary_directory)
+            package_creator = {
+                "name": "pkg",
+                "version": "2.3.1_1",
+                "origin": "ports-mgmt/pkg",
+                "abi": "FreeBSD:15:amd64",
+                "filename": "pkg-2.3.1_1.pkg",
+                "sha256": "a" * 64,
+                "pkg_static_sha256": "b" * 64,
+            }
             packages = root / "packages"
             packages.mkdir()
             for name in (
@@ -223,11 +232,12 @@ class SelfContainedRepositoryStageTest(unittest.TestCase):
             (packages / "bind920-provenance.json").write_text(
                 json.dumps(
                     {
-                        "schema": 1,
+                        "schema": 2,
                         "fingerprint": "f" * 64,
                         "series": "26.7",
                         "freebsd_release": "15.1",
                         "architecture": "x86_64",
+                        "package_creator": package_creator,
                         "packages": {
                             "bind-tools": {
                                 "name": "bind-tools",
@@ -258,7 +268,22 @@ class SelfContainedRepositoryStageTest(unittest.TestCase):
                 "upstream_commit=1111111111111111111111111111111111111111\n"
                 "core_commit=2222222222222222222222222222222222222222\n"
                 "tools_tag=26.7\n"
-                "freebsd_release=15.1\n",
+                "freebsd_release=15.1\n"
+                "pkg_creator=2.3.1_1\n"
+                "pkg_creator_sha256=" + "a" * 64 + "\n",
+                encoding="utf-8",
+            )
+            target_metadata = root / "target-pkg.json"
+            target_metadata.write_text(
+                json.dumps(
+                    {
+                        "schema": 1,
+                        "series": {
+                            "26.1": dict(package_creator, abi="FreeBSD:14:amd64"),
+                            "26.7": package_creator,
+                        },
+                    }
+                ),
                 encoding="utf-8",
             )
             key = root / "private.pem"
@@ -273,7 +298,7 @@ class SelfContainedRepositoryStageTest(unittest.TestCase):
                 patch.object(release_channel.subprocess, "run", side_effect=fake_repo),
             ):
                 assets = release_channel.stage_channel_repository(
-                    packages, root / "channel", key, "pkg"
+                    packages, root / "channel", key, "pkg", target_metadata
                 )
 
             names = {asset.name for asset in assets}
@@ -290,18 +315,43 @@ class SelfContainedRepositoryStageTest(unittest.TestCase):
                 names,
             )
             manifest = json.loads((root / "channel/channel.json").read_text(encoding="utf-8"))
+            self.assertEqual(2, manifest["schema"])
             self.assertEqual("26.7", manifest["series"])
             self.assertEqual("1.36_7", manifest["plugin_version"])
             self.assertEqual("0123456789abcdef", manifest["source_commit"])
             self.assertEqual("f" * 64, manifest["bind"]["fingerprint"])
             self.assertEqual("15.1", manifest["build"]["freebsd_release"])
             self.assertEqual("26.7", manifest["build"]["tools_tag"])
+            self.assertEqual(package_creator, manifest["package_creator"])
             self.assertEqual(
                 release_channel.sha256(packages / "os-bind-rp-1.36_7.pkg"),
                 manifest["packages"]["os-bind-rp-1.36_7.pkg"],
             )
             (root / "channel/resolver-plugins.pub").write_text("public key", encoding="utf-8")
             (root / "channel/packagesite.pkg").touch()
+            release_channel.validate_channel_directory(root / "channel")
+
+            legacy_manifest = dict(manifest, schema=1)
+            legacy_manifest.pop("package_creator")
+            (root / "channel/channel.json").write_text(
+                json.dumps(legacy_manifest), encoding="utf-8"
+            )
+            legacy_provenance = json.loads(
+                (root / "channel/bind920-provenance.json").read_text(encoding="utf-8")
+            )
+            legacy_provenance["schema"] = 1
+            legacy_provenance.pop("package_creator")
+            (root / "channel/bind920-provenance.json").write_text(
+                json.dumps(legacy_provenance), encoding="utf-8"
+            )
+            legacy_metadata = "\n".join(
+                line
+                for line in (root / "channel/build-metadata.txt").read_text().splitlines()
+                if not line.startswith(("pkg_creator=", "pkg_creator_sha256="))
+            )
+            (root / "channel/build-metadata.txt").write_text(
+                legacy_metadata + "\n", encoding="utf-8"
+            )
             release_channel.validate_channel_directory(root / "channel")
 
     def test_asset_order_puts_repository_metadata_after_packages(self) -> None:

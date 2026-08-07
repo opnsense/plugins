@@ -16,6 +16,8 @@ from urllib.request import Request, urlopen
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import bind920_profile
+import package_checksums
+import target_pkg
 
 
 CACHE_MISS = 3
@@ -23,7 +25,8 @@ PROVENANCE_NAME = "bind920-provenance.json"
 REPOSITORY_NAME = "resolver-plugins"
 PACKAGE_FIELDS = {"name", "version", "origin", "filename"}
 PROVENANCE_FIELDS = {
-    "schema", "fingerprint", "series", "freebsd_release", "architecture", "packages",
+    "schema", "fingerprint", "series", "freebsd_release", "architecture",
+    "package_creator", "packages",
 }
 
 
@@ -37,8 +40,16 @@ def select_candidate(
     series: str,
     freebsd_release: str,
     architecture: str,
+    package_creator: object,
 ) -> dict[str, dict[str, str]]:
     """Validate and select a compatible BIND package pair from provenance."""
+    if not isinstance(provenance, dict):
+        raise ValueError("BIND provenance has an invalid schema")
+    if (
+        provenance.get("schema") != bind920_profile.PROVENANCE_SCHEMA
+        or provenance.get("package_creator") != package_creator
+    ):
+        raise CacheMiss("stable BIND package creator differs")
     if not isinstance(provenance, dict) or set(provenance) != PROVENANCE_FIELDS:
         raise ValueError("BIND provenance has an invalid schema")
     if provenance["schema"] != bind920_profile.PROVENANCE_SCHEMA:
@@ -54,7 +65,7 @@ def select_candidate(
     ):
         raise CacheMiss("stable BIND package compatibility fields differ")
     fingerprint = bind920_profile.compatibility_fingerprint(
-        profile, series, freebsd_release, architecture
+        profile, series, freebsd_release, architecture, package_creator
     )
     if provenance["fingerprint"] != fingerprint:
         raise CacheMiss("stable BIND package fingerprint differs")
@@ -65,7 +76,7 @@ def select_candidate(
     ):
         raise ValueError("BIND provenance has invalid package records")
     expected = bind920_profile.build_provenance(
-        profile, series, freebsd_release, architecture, packages
+        profile, series, freebsd_release, architecture, package_creator, packages
     )
     if provenance != expected:
         raise ValueError("BIND provenance does not match the current profile")
@@ -117,6 +128,14 @@ def installed_package_identity(pkg_command: str, package_name: str) -> tuple[str
     return fields[0], fields[1], fields[2]
 
 
+def verify_archive_compatibility(pkg_static_command: str, archive: Path) -> None:
+    """Turn an old target parser's missing file sums into an ordinary rebuild."""
+    try:
+        package_checksums.verify_archive(pkg_static_command, archive)
+    except package_checksums.PackageChecksumError as error:
+        raise CacheMiss("stable BIND package lacks target-readable checksums") from error
+
+
 def write_repository_config(directory: Path, channel_url: str, public_key: Path) -> Path:
     """Write an isolated pkg configuration pinned to the published key."""
     if not public_key.is_file():
@@ -162,11 +181,20 @@ def reuse(
     channel_url: str,
     public_key: Path,
     pkg_command: str,
+    pkg_static_command: str,
+    package_creator: object,
 ) -> None:
     """Fetch, verify, install, and copy a compatible BIND package pair."""
     profile = bind920_profile.load_profile(profile_path)
     provenance = download_provenance(channel_url)
-    packages = select_candidate(provenance, profile, series, freebsd_release, architecture)
+    packages = select_candidate(
+        provenance,
+        profile,
+        series,
+        freebsd_release,
+        architecture,
+        package_creator,
+    )
     with tempfile.TemporaryDirectory() as temporary_directory:
         temporary = Path(temporary_directory)
         repository_directory = temporary / "repos"
@@ -188,6 +216,7 @@ def reuse(
             expected_identity = (package["name"], package["version"], package["origin"])
             if identity != expected_identity:
                 raise RuntimeError(f"downloaded {package_name} package identity does not match provenance")
+            verify_archive_compatibility(pkg_static_command, archive)
         for package_name in ("bind-tools", "bind920"):
             run([pkg_command, "add", str(archives[package_name])])
         for package_name, package in packages.items():
@@ -213,8 +242,13 @@ def main() -> int:
     parser.add_argument("--channel-url", required=True)
     parser.add_argument("--public-key", type=Path, required=True)
     parser.add_argument("--pkg-command", default="pkg")
+    parser.add_argument("--pkg-static-command", default="/usr/local/sbin/pkg-static")
+    parser.add_argument("--target-pkg-metadata", type=Path, required=True)
     arguments = parser.parse_args()
     try:
+        package_creator = target_pkg.load_target(
+            arguments.target_pkg_metadata, arguments.series
+        ).record()
         reuse(
             arguments.profile,
             arguments.series,
@@ -224,6 +258,8 @@ def main() -> int:
             arguments.channel_url,
             arguments.public_key,
             arguments.pkg_command,
+            arguments.pkg_static_command,
+            package_creator,
         )
     except CacheMiss as error:
         print(f"BIND reuse cache miss: {error}", file=sys.stderr)
