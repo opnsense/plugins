@@ -20,6 +20,8 @@ pkg_command=${PKG_COMMAND:-pkg}
 make_command=${MAKE_COMMAND:-make}
 git_command=${GIT_COMMAND:-git}
 python_command=${PYTHON_COMMAND:-python3}
+target_pkg_metadata=${RP_TARGET_PKG_METADATA:-$repository_root/.resolver-plugins/target-pkg.json}
+pkg_static=${RP_PKG_STATIC_COMMAND:-/usr/local/sbin/pkg-static}
 
 metadata_field() {
     "$python_command" "$script_directory/bind920_profile.py" "$profile_path" "$1"
@@ -36,8 +38,15 @@ freebsd_release=$("$python_command" "$script_directory/metadata_profile.py" \
 "$pkg_command" update -f
 "$pkg_command" install -y git patch
 "$script_directory/setup-opnsense-repository.sh" "$series" >/dev/null
+pkg_creator_record=$("$python_command" "$script_directory/target_pkg.py" install \
+    "$target_pkg_metadata" "$series" --pkg-command "$pkg_command" \
+    --pkg-static "$pkg_static") || fail 'cannot select target package creator'
+[ -n "$pkg_creator_record" ] || fail 'target package creator record is empty'
 "$pkg_command" install -y autoconf automake fstrm gmake json-c libedit libidn2 \
     libnghttp2 libtool liburcu libuv libxml2 lmdb pkgconf protobuf-c
+"$python_command" "$script_directory/target_pkg.py" verify \
+    "$target_pkg_metadata" "$series" --pkg-command "$pkg_command" \
+    --pkg-static "$pkg_static"
 
 if [ -n "${RP_BIND920_CHANNEL_URL:-}" ]
 then
@@ -75,13 +84,25 @@ distinfo="$ports_directory/dns/bind920/distinfo"
 grep -Fqx "DISTVERSION=	$distversion" "$makefile" || fail 'BIND Makefile does not declare the pinned version'
 patch -d "$ports_directory" -p1 < "$script_directory/patches/bind920-portrevision.patch"
 
+"$python_command" "$script_directory/target_pkg.py" verify \
+    "$target_pkg_metadata" "$series" --pkg-command "$pkg_command" \
+    --pkg-static "$pkg_static"
 ALLOW_UNSUPPORTED_SYSTEM=yes BATCH=yes NO_DEPENDS=yes OPTIONS_SET=GSSAPI_NONE OPTIONS_UNSET='DOCS GSSAPI_BASE' "$make_command" -C "$ports_directory/dns/bind-tools" PORTSDIR="$ports_directory" package
+"$python_command" "$script_directory/target_pkg.py" verify \
+    "$target_pkg_metadata" "$series" --pkg-command "$pkg_command" \
+    --pkg-static "$pkg_static"
 set -- "$ports_directory"/dns/bind-tools/work/pkg/bind-tools-"$distversion"_1.pkg
 [ "$#" -eq 1 ] && [ -f "$1" ] || fail 'bind-tools package was not produced as expected'
 bind_tools_package=$1
 "$pkg_command" add "$bind_tools_package"
 
+"$python_command" "$script_directory/target_pkg.py" verify \
+    "$target_pkg_metadata" "$series" --pkg-command "$pkg_command" \
+    --pkg-static "$pkg_static"
 ALLOW_UNSUPPORTED_SYSTEM=yes BATCH=yes NO_DEPENDS=yes OPTIONS_SET=GSSAPI_NONE OPTIONS_UNSET='DOCS GSSAPI_BASE' "$make_command" -C "$ports_directory/dns/bind920" PORTSDIR="$ports_directory" package
+"$python_command" "$script_directory/target_pkg.py" verify \
+    "$target_pkg_metadata" "$series" --pkg-command "$pkg_command" \
+    --pkg-static "$pkg_static"
 set -- "$ports_directory"/dns/bind920/work/pkg/bind920-"$distversion"_1.pkg
 [ "$#" -eq 1 ] && [ -f "$1" ] || fail 'bind920 package was not produced as expected'
 bind_package=$1
