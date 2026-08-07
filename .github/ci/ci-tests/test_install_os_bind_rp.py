@@ -285,6 +285,8 @@ elif command == "lock":
     if "-l" in args:
         if marker("RP_TEST_LOCK_MARKER").exists():
             print("pkg-2.3.1_1")
+        else:
+            raise SystemExit(1)
     elif "-u" in args:
         marker("RP_TEST_LOCK_MARKER").unlink(missing_ok=True)
     elif "-y" in args:

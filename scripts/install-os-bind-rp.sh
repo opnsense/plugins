@@ -235,7 +235,14 @@ create_state_directory() {
     "$pkg_command" info -a > "$state_directory/packages.before.txt"
     "$pkg_command" query '%n|%v|%o' | sort > "$state_directory/package-identities.before.txt"
     cp "$state_directory/package-identities.before.txt" "$state_directory/installed-packages.txt"
+    set +e
     "$pkg_command" lock -l > "$state_directory/package-locks.before.txt"
+    lock_status=$?
+    set -e
+    case "$lock_status" in
+        0|1) ;;
+        *) fail "could not inventory pkg locks (status $lock_status)" ;;
+    esac
 }
 
 prepare_temporary_directory() {
