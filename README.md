@@ -46,22 +46,14 @@ configure its current channel:
 
 ```sh
 series=26.1
-channel="pkg-$series"
-install -d -m 0755 /usr/local/etc/pkg/keys /usr/local/etc/pkg/repos
-fetch -o /usr/local/etc/pkg/keys/resolver-plugins.pub \
-  "https://github.com/resolver-plugins/repository/releases/download/$channel/resolver-plugins.pub"
-test "$(sha256 -q /usr/local/etc/pkg/keys/resolver-plugins.pub)" = \
-  bd89d6f91807c71f8a744532c9ce2f97e9590f8858ac779bfb2f23c10804e07e || exit 1
+url="https://github.com/resolver-plugins/repository/releases/download/pkg-$series"
+key=/usr/local/etc/pkg/keys/resolver-plugins.pub
+install -d -m 0755 "${key%/*}" /usr/local/etc/pkg/repos
+fetch -o "$key" "$url/resolver-plugins.pub"
 cat > /usr/local/etc/pkg/repos/resolver-plugins.conf <<EOF
-resolver-plugins: {
-  url: "https://github.com/resolver-plugins/repository/releases/download/$channel",
-  signature_type: "pubkey",
-  pubkey: "/usr/local/etc/pkg/keys/resolver-plugins.pub",
-  enabled: yes
-}
+resolver-plugins: { url: "$url", signature_type: "pubkey", pubkey: "$key", enabled: yes }
 EOF
-pkg update -r resolver-plugins
-pkg install os-bind-rp
+pkg update -r resolver-plugins && pkg install os-bind-rp
 ```
 
 Or install the signed repository and package end-to-end with the interactive
