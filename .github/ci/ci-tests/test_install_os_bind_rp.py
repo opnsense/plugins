@@ -291,6 +291,8 @@ elif command == "lock":
         marker("RP_TEST_LOCK_MARKER").unlink(missing_ok=True)
     elif "-y" in args:
         marker("RP_TEST_LOCK_MARKER").touch()
+elif command == "unlock":
+    marker("RP_TEST_LOCK_MARKER").unlink(missing_ok=True)
 elif command == "which":
     path = args[-1]
     name = path.split("/")[3]
@@ -526,6 +528,7 @@ def test_restores_the_original_pkg_lock_state_after_success_and_failure(tmp_path
     result, _, _ = run_installer(unlocked)
     assert result.returncode == 0, result.stderr
     assert not (unlocked / "pkg-locked").exists()
+    assert "pkg unlock -y pkg" in (unlocked / "commands.log").read_text(encoding="utf-8")
 
     locked = tmp_path / "locked"
     locked.mkdir()

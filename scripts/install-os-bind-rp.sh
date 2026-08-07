@@ -23,7 +23,7 @@ cleanup() {
     trap - EXIT HUP INT TERM
     if [ "$pkg_lock_changed" = yes ]
     then
-        "$pkg_command" lock -u -y pkg >/dev/null 2>&1 || \
+        "$pkg_command" unlock -y pkg >/dev/null 2>&1 || \
             printf '%s\n' 'WARNING: could not restore the original pkg lock state' >&2
     fi
     if [ "$status" -eq 0 ] && [ "$completed" = yes ] && \
