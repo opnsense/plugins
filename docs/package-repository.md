@@ -16,9 +16,11 @@ to five self-contained immutable rollback snapshots:
 | Plugin rollback snapshot and its BIND baseline | `<series>-archive-<version>` | `pkg-<series>-os-bind-rp-<version>` | enabled only while rolling back |
 
 Display titles are concise labels only. The stable tags above continue to
-define repository URLs and client configuration. Package releases are not
-eligible for GitHub's singular `Latest` badge because each OPNsense series has
-its own current channel.
+define repository URLs and client configuration. GitHub requires one
+repository-wide `Latest` release, so publication assigns that badge to the
+current channel for the highest numeric OPNsense series. Archive releases
+never receive it. The stable series-specific tags remain authoritative for
+client configuration.
 
 The current channel and every rollback snapshot contain exactly one
 `os-bind-rp` package, the matching `bind920`/`bind-tools` pair, BIND

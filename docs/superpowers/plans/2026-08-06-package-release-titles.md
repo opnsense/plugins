@@ -13,7 +13,8 @@
 - `pkg-<series>` displays as `<series>-latest`.
 - `pkg-<series>-os-bind-rp-<version>` displays as `<series>-archive-<version>`.
 - Git tags, repository URLs, assets, signed catalogues, retention, and rollback behavior remain unchanged.
-- Package distribution releases must not claim GitHub's singular `Latest` badge.
+- GitHub's singular `Latest` badge must identify the current channel for the
+  highest numeric OPNsense series and must never identify an archive.
 - OPNsense 26.1 and 26.7 must install successfully from the public distribution repository after deployment.
 
 ---
@@ -51,7 +52,9 @@ raise `ValueError("invalid package release tag")` for every other tag.
 
 Exercise `publish()` with an already-existing Release fixture and assert that
 the GitHub boundary receives `release edit <tag> --title <derived-title>
---latest=false` before asset publication.
+--latest=false` before asset publication. After all channel mutations and
+retention, select the highest numeric current series for GitHub's singular
+`Latest` badge.
 
 - [ ] **Step 5: Run the convergence test and verify RED**
 

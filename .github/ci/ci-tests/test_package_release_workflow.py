@@ -140,6 +140,8 @@ def test_publisher_mints_a_repository_scoped_github_app_token():
     assert 'resolver-plugins/repository' in workflow
     assert 'publish-channels' in workflow
     assert 'prune-snapshots' in workflow
+    assert 'mark-latest-package-channel' in workflow
+    assert publisher.index('prune-snapshots') < publisher.index('mark-latest-package-channel')
     assert '--recovery "$RUNNER_TEMP/recovery"' in workflow
 
 

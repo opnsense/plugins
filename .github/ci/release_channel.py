@@ -730,6 +730,32 @@ def prune_snapshots(repository: str, series: str, keep: int = 5) -> None:
         run_gh(["release", "delete", tag, "--yes", "--repo", repository])
 
 
+def mark_latest_package_channel(repository: str) -> None:
+    """Assign GitHub's repository-wide Latest badge to the newest current series."""
+    result = subprocess.run(
+        ["gh", "api", "--paginate", "--slurp", f"repos/{repository}/releases?per_page=100"],
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    pages = json.loads(result.stdout)
+    if not isinstance(pages, list) or not all(isinstance(page, list) for page in pages):
+        raise RuntimeError("cannot list package releases")
+    current_channels = []
+    for page in pages:
+        for release in page:
+            if not isinstance(release, dict) or release.get("draft") or release.get("prerelease"):
+                continue
+            tag = release.get("tag_name")
+            series = tag.removeprefix("pkg-") if isinstance(tag, str) else ""
+            if isinstance(tag, str) and tag.startswith("pkg-") and SERIES_PATTERN.fullmatch(series):
+                current_channels.append((tuple(int(part) for part in series.split(".")), tag))
+    if not current_channels:
+        raise RuntimeError("cannot find a current package channel")
+    _, tag = max(current_channels)
+    run_gh(["release", "edit", tag, "--repo", repository, "--latest"])
+
+
 def select_pull_request_release_tags(releases: object, pull_number: str) -> list[str]:
     """Select only complete development Release tags for one pull request."""
     if PULL_REQUEST_PATTERN.fullmatch(pull_number) is None:
@@ -965,6 +991,8 @@ def main() -> None:
     prune.add_argument("--repository", required=True)
     prune.add_argument("--series", required=True)
     prune.add_argument("--keep", type=int, default=5)
+    mark_latest = commands.add_parser("mark-latest-package-channel")
+    mark_latest.add_argument("--repository", required=True)
     cleanup_tag = commands.add_parser("cleanup-tag")
     cleanup_tag.add_argument("--repository", required=True)
     cleanup_tag.add_argument("--tag", required=True)
@@ -1022,6 +1050,8 @@ def main() -> None:
         publish_channels(arguments.repository, arguments.channel, arguments.recovery)
     elif arguments.command == "prune-snapshots":
         prune_snapshots(arguments.repository, arguments.series, arguments.keep)
+    elif arguments.command == "mark-latest-package-channel":
+        mark_latest_package_channel(arguments.repository)
     elif arguments.command == "cleanup-tag":
         cleanup_development_release(arguments.repository, arguments.tag)
     elif arguments.command == "cleanup-pull-request":

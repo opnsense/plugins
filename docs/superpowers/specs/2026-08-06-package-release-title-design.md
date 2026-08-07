@@ -32,10 +32,10 @@ create-or-existing step, so retries and already-existing releases converge on
 the required display name. Package assets, tags, signatures, URLs, retention,
 and rollback behavior do not change.
 
-Package distribution releases are explicitly excluded from GitHub's singular
-`Latest` badge. The repository has one current channel per OPNsense series, so
-that global badge cannot accurately represent both channels and must not mark
-an archive as current.
+GitHub requires one repository-wide `Latest` release. Publication assigns that
+badge to the current channel for the highest numeric OPNsense series, while
+archive releases are never eligible. Series-specific tags remain authoritative
+because the global badge cannot represent every supported series.
 
 ## Verification
 
@@ -44,3 +44,4 @@ editing for an existing Release. After merge, production publication runs for
 OPNsense 26.1 and 26.7 must succeed through their public FreeBSD installation
 jobs. The live release titles must match the four approved names, while the
 four Git tags and public repository URLs remain unchanged.
+The repository-wide `Latest` badge must identify `pkg-26.7`, not an archive.

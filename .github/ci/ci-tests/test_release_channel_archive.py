@@ -959,6 +959,40 @@ class PublicationRecoveryTest(unittest.TestCase):
             with patch.object(release_channel.subprocess, "run", return_value=result):
                 release_channel.restore_release("resolver-plugins/plugins", snapshot)
 
+    def test_repository_latest_is_the_current_channel_for_the_highest_series(self) -> None:
+        """GitHub's one Latest badge must never identify an archive channel."""
+        releases = [
+            {"tag_name": "pkg-26.1", "draft": False, "prerelease": False},
+            {"tag_name": "pkg-26.1-os-bind-rp-1.36_9", "draft": False, "prerelease": False},
+            {"tag_name": "pkg-26.7", "draft": False, "prerelease": False},
+            {"tag_name": "pkg-26.7-os-bind-rp-1.36_2", "draft": False, "prerelease": False},
+            {"tag_name": "pkg-26.10", "draft": False, "prerelease": False},
+            {"tag_name": "pkg-27.1", "draft": False, "prerelease": True},
+        ]
+        result = subprocess.CompletedProcess(
+            ["gh"], 0, stdout=json.dumps([releases[:3], releases[3:]])
+        )
+        mutations: list[list[str]] = []
+        with (
+            patch.object(release_channel.subprocess, "run", return_value=result) as list_releases,
+            patch.object(release_channel, "run_gh", side_effect=mutations.append),
+        ):
+            release_channel.mark_latest_package_channel("resolver-plugins/repository")
+
+        list_releases.assert_called_once_with(
+            [
+                "gh", "api", "--paginate", "--slurp",
+                "repos/resolver-plugins/repository/releases?per_page=100",
+            ],
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        self.assertEqual(
+            [["release", "edit", "pkg-26.10", "--repo", "resolver-plugins/repository", "--latest"]],
+            mutations,
+        )
+
     def test_snapshot_pruning_keeps_the_newest_five_immutable_tags(self) -> None:
         """Only a successful promotion may remove the sixth-oldest snapshot."""
         releases = [
