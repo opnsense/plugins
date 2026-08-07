@@ -251,7 +251,11 @@ elif command == "create":
             )
 elif command == "install":
     if "-n" in args:
-        print("dry run")
+        print("The following package(s) will be affected:")
+        for argument in args:
+            if re.search(r"-[0-9]", argument):
+                print(f"\t{argument}")
+        raise SystemExit(1)
     else:
         if os.environ.get("RP_TEST_INSTALL_FAILURE") == "yes":
             raise SystemExit(1)

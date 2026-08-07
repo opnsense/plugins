@@ -132,6 +132,40 @@ verified_pkg() {
     "$pkg_static_command" -o "REPOS_DIR=$isolated_repository_directory" "$@"
 }
 
+package_dry_run() {
+    output=$1
+    repository_config=$2
+    repository_name=$3
+    force=$4
+    shift 4
+    set +e
+    if [ "$force" = yes ]
+    then
+        "$pkg_static_command" -o "REPOS_DIR=$repository_config" install -n -f \
+            -r "$repository_name" "$@" > "$output" 2>&1
+    else
+        "$pkg_static_command" -o "REPOS_DIR=$repository_config" install -n \
+            -r "$repository_name" "$@" > "$output" 2>&1
+    fi
+    status=$?
+    set -e
+    case "$status" in
+        0|1) ;;
+        *) fail "package dry run failed with status $status" ;;
+    esac
+    grep -Eq 'will be affected|already installed' "$output" || \
+        fail 'package dry run did not produce a recognized transaction plan'
+    for identity in "$@"
+    do
+        grep -Fq "$identity" "$output" || \
+            fail "package dry run omitted requested identity: $identity"
+    done
+    if grep -Eq '(^|[[:space:]])(pkg|opnsense)-[0-9]' "$output"
+    then
+        fail 'package dry run attempted to change pkg or OPNsense core'
+    fi
+}
+
 remote_package() {
     requested_name=$1
     expected_origin=$2
@@ -339,9 +373,8 @@ capture_recovery_packages() {
         fail 'could not construct recovery package repository'
     write_repository resolver-recovery "file://$recovery_repository" yes \
         "$recovery_repository_directory/resolver-recovery.conf"
-    "$pkg_static_command" -o "REPOS_DIR=$recovery_repository_directory" \
-        install -n -f -r resolver-recovery "$@" > "$state_directory/pkg-recovery.dry-run.txt" || \
-        fail 'saved packages did not pass a recovery dry run'
+    package_dry_run "$state_directory/pkg-recovery.dry-run.txt" \
+        "$recovery_repository_directory" resolver-recovery yes "$@"
 }
 
 installed_record() {
@@ -503,7 +536,8 @@ if [ "$bind_update_required" = yes ]
 then
     set -- "bind920-$candidate_bind920_version" "bind-tools-$candidate_bind_tools_version" "$@"
 fi
-verified_pkg install -n -r resolver-verified "$@" > "$state_directory/pkg-install.dry-run.txt"
+package_dry_run "$state_directory/pkg-install.dry-run.txt" \
+    "$isolated_repository_directory" resolver-verified no "$@"
 verify_archive_hashes
 capture_recovery_packages
 [ "$(installed_record pkg)" = "$pkg_identity_before" ] || \
