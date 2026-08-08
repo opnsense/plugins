@@ -39,9 +39,11 @@ def installer_environment(
     fetch_layout: str = "all",
     wrong_owner: bool = False,
     pkg_locked: bool = False,
+    unlock_failure: bool = False,
     mutate_frozen_archive: bool = False,
     dry_run_status: int = 1,
     dry_run_plan: str = "valid",
+    query_fault: str = "",
 ) -> tuple[dict[str, str], Path, Path]:
     log = tmp_path / "commands.log"
     tty = tmp_path / "tty"
@@ -75,6 +77,8 @@ def installer_environment(
             "RP_TEST_MUTATE_FROZEN_ARCHIVE": "yes" if mutate_frozen_archive else "no",
             "RP_TEST_DRY_RUN_STATUS": str(dry_run_status),
             "RP_TEST_DRY_RUN_PLAN": dry_run_plan,
+            "RP_TEST_QUERY_FAULT": query_fault,
+            "RP_TEST_UNLOCK_FAILURE": "yes" if unlock_failure else "no",
             "RP_TEST_ARCHIVE_CHECKSUM": archive_checksum,
             "RP_TEST_KEY_SHA256": key_sha256,
             "RP_TEST_LOG": str(log),
@@ -229,8 +233,17 @@ elif command == "query" and "-F" in args:
 elif command == "query":
     expression = " ".join(args)
     for name in ("bind920", "bind-tools", "os-bind-rp", "os-bind", "pkg"):
-        if f"%n = {name}" in expression:
+        if f"%n = {name} " in f"{expression} ":
             value = installed(name)
+            fault, _, fault_name = os.environ.get("RP_TEST_QUERY_FAULT", "").partition(":")
+            if fault_name == name:
+                if fault == "error":
+                    raise SystemExit(2)
+                if fault == "malformed":
+                    print(f"{name}|malformed")
+                    break
+                if fault == "multiple" and value:
+                    print(value)
             if value:
                 if args[-1] == "%Fp|%Fs":
                     checksum = os.environ["RP_TEST_ARCHIVE_CHECKSUM"]
@@ -272,6 +285,14 @@ elif command == "install":
             print("\topnsense: 26.1.11_10 -> 26.1.12")
         elif plan == "pkg_hyphen":
             print("\tpkg-2.4.0")
+        elif plan == "unrelated_install":
+            print("\tpython311: 3.11.13")
+        elif plan == "unrelated_upgrade":
+            print("\tpython311: 3.11.12 -> 3.11.13")
+        elif plan == "unrelated_downgrade":
+            print("\tpython311: 3.11.13 -> 3.11.12")
+        elif plan == "unrelated_removal":
+            print("\tpython311-3.11.13")
         raise SystemExit(int(os.environ.get("RP_TEST_DRY_RUN_STATUS", "1")))
     else:
         if os.environ.get("RP_TEST_INSTALL_FAILURE") == "yes":
@@ -295,6 +316,8 @@ elif command == "lock":
     elif "-y" in args:
         marker("RP_TEST_LOCK_MARKER").touch()
 elif command == "unlock":
+    if os.environ.get("RP_TEST_UNLOCK_FAILURE") == "yes":
+        raise SystemExit(1)
     marker("RP_TEST_LOCK_MARKER").unlink(missing_ok=True)
 elif command == "which":
     path = args[-1]
@@ -540,6 +563,18 @@ def test_restores_the_original_pkg_lock_state_after_success_and_failure(tmp_path
     assert (locked / "pkg-locked").exists()
 
 
+def test_reports_failure_when_the_original_pkg_lock_state_cannot_be_restored(
+    tmp_path: Path,
+) -> None:
+    result, log, _ = run_installer(tmp_path, unlock_failure=True)
+
+    assert result.returncode != 0
+    assert "could not restore the original pkg lock state" in result.stderr
+    assert "Diagnostic state retained at" in result.stderr
+    assert (tmp_path / "pkg-locked").exists()
+    assert "pkg unlock -y pkg" in log.read_text(encoding="utf-8")
+
+
 @pytest.mark.parametrize("status", [0, 1])
 def test_accepts_pkg_dry_run_success_and_change_status(tmp_path: Path, status: int) -> None:
     result, _, _ = run_installer(tmp_path, dry_run_status=status)
@@ -579,6 +614,36 @@ def test_rejects_unsafe_or_invalid_pkg_dry_run_plans(
 
     assert result.returncode != 0
     assert diagnostic in result.stderr
+
+
+@pytest.mark.parametrize(
+    "plan",
+    ["unrelated_install", "unrelated_upgrade", "unrelated_downgrade", "unrelated_removal"],
+)
+def test_rejects_unrelated_pkg_dry_run_mutations(tmp_path: Path, plan: str) -> None:
+    result, log, _ = run_installer(tmp_path, dry_run_plan=plan)
+
+    assert result.returncode != 0
+    assert "unexpected package change: python311" in result.stderr
+    assert " install -y " not in log.read_text(encoding="utf-8")
+
+
+@pytest.mark.parametrize(
+    ("query_fault", "diagnostic"),
+    [
+        ("error:bind920", "could not inspect installed package: bind920"),
+        ("malformed:bind920", "invalid installed package record for bind920"),
+        ("multiple:bind920", "ambiguous installed package record for bind920"),
+    ],
+)
+def test_rejects_installed_package_query_failures_and_invalid_rows(
+    tmp_path: Path, query_fault: str, diagnostic: str
+) -> None:
+    result, log, _ = run_installer(tmp_path, query_fault=query_fault)
+
+    assert result.returncode != 0
+    assert diagnostic in result.stderr
+    assert " install -n " not in log.read_text(encoding="utf-8")
 
 
 def test_partial_bind_update_failure_preserves_recovery_packages_and_instructions(

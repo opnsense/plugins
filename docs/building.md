@@ -90,10 +90,10 @@ and lock that target package manager before creating either BIND or plugin
 archives. This forced selection is builder-only; it is not an instruction to
 upgrade an OPNsense host package manager.
 
-Every BIND provenance document and plugin `build-metadata.txt` records the
-immutable creator as `package_creator`; the flat compatibility fields are
-`pkg_creator` and `pkg_creator_sha256`. Reuse is a cache miss unless those
-values match the selected target exactly.
+BIND provenance records the immutable creator as `package_creator`; plugin
+`build-metadata.txt` records the flat `pkg_creator` and
+`pkg_creator_sha256` fields. Reuse is a cache miss unless those values match
+the selected target exactly.
 
 Before copying an artifact, each wrapper verifies that the target parser can
 read a non-null checksum for every packaged file. The equivalent manual gate

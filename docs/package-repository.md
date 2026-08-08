@@ -63,9 +63,10 @@ Use `scripts/install-os-bind-rp.sh` for the official `os-bind` to
 `os-bind-rp` transition. Before mutation, it fetches exact candidate archives,
 requires non-null per-file checksums, records their SHA-256 values, creates a
 local isolated repository, and dry-runs the frozen transaction. It locks the
-installed `pkg` package for the transaction and restores its original lock
-state on every exit. The installer does not upgrade the host package manager
-and does not change BIND service configuration or restart BIND.
+installed `pkg` package for the transaction, attempts to restore its original
+lock state on every exit, and reports failure if restoration does not succeed.
+The installer does not upgrade the host package manager.
+It does not change BIND service configuration or restart BIND.
 
 Immediately before the first package install, the script creates a mode-0700
 state directory below `/var/backups`, preserves a mode-retaining configuration

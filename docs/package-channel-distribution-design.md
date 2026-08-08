@@ -115,11 +115,12 @@ baseline.
    does so in a clean BIND-materialization environment rather than installing
    a competing BIND package over the normal plugin build environment.
 4. Builders select and lock the immutable per-series target package manager,
-   record its `pkg_creator` provenance, and reject any archive whose file
-   checksums are not fully readable by that target. The trusted signing job
-   then stages one complete current channel, writes `channel.json`, runs
-   `pkg repo` with the private key, and copies those exact signed bytes to the
-   immutable snapshot publication path.
+   record `pkg_creator` and `pkg_creator_sha256` in plugin build metadata and
+   the full `package_creator` record in BIND/channel provenance, and reject any
+   archive whose file checksums are not fully readable by that target. The
+   trusted signing job then stages one complete current channel, writes
+   `channel.json`, runs `pkg repo` with the private key, and copies those exact
+   signed bytes to the immutable snapshot publication path.
 5. It verifies that the generated catalogue, public key, manifest checksums,
    and package dependency graph exactly match the intended set.
 6. A final distribution job writes the staged assets to

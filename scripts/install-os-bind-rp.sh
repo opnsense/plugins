@@ -23,8 +23,11 @@ cleanup() {
     trap - EXIT HUP INT TERM
     if [ "$pkg_lock_changed" = yes ]
     then
-        "$pkg_command" unlock -y pkg >/dev/null 2>&1 || \
+        if ! "$pkg_command" unlock -y pkg >/dev/null 2>&1
+        then
             printf '%s\n' 'WARNING: could not restore the original pkg lock state' >&2
+            [ "$status" -ne 0 ] || status=1
+        fi
     fi
     if [ "$status" -eq 0 ] && [ "$completed" = yes ] && \
         [ "$temporary_directory_owned" = yes ] && [ -n "$temporary_directory" ] && \
@@ -179,6 +182,31 @@ package_dry_run() {
     if grep -Eq '(^|[[:space:]])(pkg|opnsense)(-[0-9]|:[[:space:]]*[0-9])' "$output"
     then
         fail 'package dry run attempted to change pkg or OPNsense core'
+    fi
+    unexpected_changes=$(awk '
+        function allowed(name) {
+            return name == "bind-tools" || name == "bind920" || \
+                name == "os-bind" || name == "os-bind-rp"
+        }
+        {
+            line = $0
+            sub(/^[[:space:]]*/, "", line)
+            name = ""
+            if (line ~ /^[A-Za-z0-9][A-Za-z0-9+_.-]*:[[:space:]]/) {
+                name = line
+                sub(/:.*/, "", name)
+            } else if (line ~ /^[A-Za-z0-9][A-Za-z0-9+_.-]*-[0-9][^[:space:]]*([[:space:]]|$)/) {
+                name = line
+                sub(/[[:space:]].*/, "", name)
+                sub(/-[0-9].*/, "", name)
+            }
+            if (name != "" && !allowed(name)) print name
+        }
+    ' "$output" | sort -u)
+    if [ -n "$unexpected_changes" ]
+    then
+        unexpected_change=$(printf '%s\n' "$unexpected_changes" | awk 'NR == 1 { print; exit }')
+        fail "package dry run attempted unexpected package change: $unexpected_change"
     fi
 }
 
@@ -401,7 +429,32 @@ capture_recovery_packages() {
 }
 
 installed_record() {
-    "$pkg_command" query -e "%n = $1" '%n|%v|%o' 2>/dev/null || true
+    package_name=$1
+    set +e
+    record=$("$pkg_command" query -e "%n = $package_name" '%n|%v|%o' 2>/dev/null)
+    status=$?
+    set -e
+    case "$status" in
+        0|1) ;;
+        *) fail "could not inspect installed package: $package_name" ;;
+    esac
+    record_count=$(printf '%s\n' "$record" | awk 'NF { count++ } END { print count + 0 }')
+    [ "$record_count" -le 1 ] || \
+        fail "ambiguous installed package record for $package_name"
+    if [ "$record_count" -eq 0 ]
+    then
+        return 0
+    fi
+    [ "$status" -eq 0 ] || fail "could not inspect installed package: $package_name"
+    record_name=$(package_field "$record" 1)
+    record_version=$(package_field "$record" 2)
+    record_origin=$(package_field "$record" 3)
+    if [ "$record_name" != "$package_name" ] || [ -z "$record_version" ] || \
+        [ -z "$record_origin" ]
+    then
+        fail "invalid installed package record for $package_name"
+    fi
+    printf '%s\n' "$record"
 }
 
 verify_installed_record() {
