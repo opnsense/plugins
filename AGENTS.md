@@ -61,6 +61,11 @@ self-contained current and rollback channels are generated in
   `release/bind-rp/<series>` source. Use the ignored `.github/ci-local/`
   directory only for temporary CI discovery and investigation harnesses;
   never stage or commit anything under it.
+- Keep agent-generated process documents under the ignored
+  `docs/superpowers/` directory local-only. Never force-add or commit designs,
+  specifications, implementation plans, or other process notes from that
+  directory, even when a skill requests committing them; this repository rule
+  takes precedence.
 - The signed package repository is an approved system. Do not alter its
   GitHub Release publication, signing boundary, tokens, secrets, or end-user
   installation contract without explicit maintainer authorization.

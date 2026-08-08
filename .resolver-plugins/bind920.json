@@ -4,5 +4,5 @@
   "makefile_sha256": "64199c6f419c49186ee35f37d42219aff33591f0de040429f3ceddb6889d2234",
   "distinfo_sha256": "714ea8f967746994a624a55dd6e2bbdd41d173dcffe8f25242f7aa4053d116b6",
   "distversion": "9.20.26",
-  "portrevision": 1
+  "portrevision": 2
 }

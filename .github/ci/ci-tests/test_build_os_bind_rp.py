@@ -1,4 +1,5 @@
 import json
+import hashlib
 import os
 import pathlib
 import shutil
@@ -12,6 +13,14 @@ OPNSENSE_26_1_ARCHIVE_SHA256 = (
 )
 UPSTREAM_COMMIT = '6f3937f938377464534ebebde66cc13d84186542'
 FREEBSD_RELEASE = '14.3'
+TARGET_ARCHIVE_BYTES = b'fixture target package archive\n'
+TARGET_STATIC_BYTES = (
+    b'#!/bin/sh\n'
+    b'printf \'%s\\n\' "$*" >> "$PKG_STATIC_CALL_LOG"\n'
+    b'if [ "$1" = -v ]; then printf \'%s\\n\' \'2.3.1\'; exit 0; fi\n'
+    b'if [ "$1" = query ]; then printf \'%s\\n\' \'/usr/local/opnsense/mvc/app/models/OPNsense/Bind/Menu/Menu.xml|1$aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\'; exit 0; fi\n'
+    b'exit 64\n'
+)
 
 
 def git(directory: pathlib.Path, *arguments: str) -> str:
@@ -55,6 +64,38 @@ def write_upstream_metadata(path: pathlib.Path, core_commit: str) -> None:
             }
         )
     )
+
+
+def configure_target_pkg_fixture(
+    environment: dict[str, str], directory: pathlib.Path, executable_directory: pathlib.Path
+) -> None:
+    metadata = directory / 'target-pkg.json'
+    record = {
+        'name': 'pkg',
+        'version': '2.3.1_1',
+        'origin': 'ports-mgmt/pkg',
+        'abi': 'FreeBSD:14:amd64',
+        'filename': 'pkg-2.3.1_1.pkg',
+        'sha256': hashlib.sha256(TARGET_ARCHIVE_BYTES).hexdigest(),
+        'pkg_static_sha256': hashlib.sha256(TARGET_STATIC_BYTES).hexdigest(),
+    }
+    metadata.write_text(
+        json.dumps(
+            {
+                'schema': 1,
+                'series': {
+                    '26.1': record,
+                    '26.7': dict(record, abi='FreeBSD:15:amd64'),
+                },
+            }
+        ),
+        encoding='utf-8',
+    )
+    environment['RP_TARGET_PKG_METADATA'] = str(metadata)
+    environment['RP_PKG_STATIC_COMMAND'] = str(executable_directory / 'pkg-static')
+    environment['PKG_STATIC_PATH'] = str(executable_directory / 'pkg-static')
+    environment['PKG_LOCK_MARKER'] = str(directory / 'pkg.locked')
+    environment['PKG_STATIC_CALL_LOG'] = str(directory / 'pkg-static-calls.log')
 
 
 def materialize_build_repository(request) -> pathlib.Path:
@@ -115,6 +156,7 @@ def test_build_wrapper_creates_package_and_metadata_for_26_1(tmp_path, request):
     environment['RP_UPSTREAM_METADATA'] = str(metadata_path)
     package_call_log = tmp_path / 'pkg-calls.log'
     environment['PKG_CALL_LOG'] = str(package_call_log)
+    configure_target_pkg_fixture(environment, tmp_path, build_repository)
 
     assert build_script.is_file(), 'non-publishing build wrapper is missing'
     result = subprocess.run(
@@ -142,12 +184,26 @@ def test_build_wrapper_creates_package_and_metadata_for_26_1(tmp_path, request):
     assert 'tools_tag=26.1.11\n' in metadata
     assert f'freebsd_release={FREEBSD_RELEASE}\n' in metadata
     assert 'source_commit=unknown\n' in metadata
+    assert 'pkg_creator=2.3.1_1\n' in metadata
+    assert f"pkg_creator_sha256={hashlib.sha256(TARGET_ARCHIVE_BYTES).hexdigest()}\n" in metadata
     package_calls = package_call_log.read_text().splitlines()
     assert 'update -f' in package_calls
     assert 'install -y python3' in package_calls
     assert 'install -y git' in package_calls
     assert 'install -y bind920' in package_calls
-    assert not any(call.startswith('fetch ') for call in package_calls)
+    target_fetch = next(call for call in package_calls if call.startswith('fetch '))
+    assert target_fetch.endswith('pkg-2.3.1_1')
+    target_add_index = next(
+        index for index, call in enumerate(package_calls)
+        if call.startswith('add -f ') and 'pkg-2.3.1_1.pkg' in call
+    )
+    assert target_add_index < package_calls.index('install -y bind920')
+    assert package_calls.count('lock -l') >= 3
+    static_calls = pathlib.Path(environment['PKG_STATIC_CALL_LOG']).read_text().splitlines()
+    assert any(
+        call.startswith('query -F ') and call.endswith(' %Fp|%Fs')
+        for call in static_calls
+    )
     safe_directories = subprocess.run(
         ['git', 'config', '--global', '--get-all', 'safe.directory'],
         text=True,
@@ -176,6 +232,7 @@ def test_build_wrapper_requests_resolver_fallback_for_an_ineligible_opnsense_bin
     metadata_path = tmp_path / 'upstream.json'
     write_upstream_metadata(metadata_path, core_commit)
     environment['RP_UPSTREAM_METADATA'] = str(metadata_path)
+    configure_target_pkg_fixture(environment, tmp_path, build_repository)
 
     result = subprocess.run(
         [build_script, '26.1', str(tmp_path / 'artifacts')],

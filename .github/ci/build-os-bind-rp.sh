@@ -24,6 +24,8 @@ python_command=${PYTHON_COMMAND:-python3}
 plugin_devel=${RP_PLUGIN_DEVEL:-}
 bind_fallback=${RP_BIND920_FALLBACK:-}
 compatibility_policy=${RP_BIND_COMPATIBILITY_POLICY:-$repository_root/.resolver-plugins/bind-compatibility.json}
+target_pkg_metadata=${RP_TARGET_PKG_METADATA:-$repository_root/.resolver-plugins/target-pkg.json}
+pkg_static=${RP_PKG_STATIC_COMMAND:-/usr/local/sbin/pkg-static}
 
 if ! command -v "$python_command" >/dev/null 2>&1
 then
@@ -52,6 +54,14 @@ expected_bind_tools=$("$python_command" "$script_directory/bind_compatibility.py
 "$pkg_command" install -y git
 git config --global --add safe.directory "$repository_root"
 opnsense_core_commit=$("$script_directory/setup-opnsense-repository.sh" "$series")
+pkg_creator_record=$("$python_command" "$script_directory/target_pkg.py" install \
+    "$target_pkg_metadata" "$series" --pkg-command "$pkg_command" \
+    --pkg-static "$pkg_static") || fail 'cannot select target package creator'
+pkg_creator=$("$python_command" "$script_directory/target_pkg.py" field \
+    "$target_pkg_metadata" "$series" version) || fail 'invalid target pkg metadata'
+pkg_creator_sha256=$("$python_command" "$script_directory/target_pkg.py" field \
+    "$target_pkg_metadata" "$series" sha256) || fail 'invalid target pkg metadata'
+[ -n "$pkg_creator_record" ] || fail 'target package creator record is empty'
 
 package_identity() {
     "$pkg_command" query -e "%n = $1" '%n\t%v\t%o'
@@ -96,6 +106,9 @@ case "$comparison" in
     '='|'>') ;;
     *) fail "OPNsense $opnsense_version is below the required 26.1.11_10" ;;
 esac
+"$python_command" "$script_directory/target_pkg.py" verify \
+    "$target_pkg_metadata" "$series" --pkg-command "$pkg_command" \
+    --pkg-static "$pkg_static"
 
 make_plugin() {
     if [ "$plugin_devel" = yes ]
@@ -107,12 +120,20 @@ make_plugin() {
 }
 
 rm -rf "$repository_root/dns/bind/work"
+"$python_command" "$script_directory/target_pkg.py" verify \
+    "$target_pkg_metadata" "$series" --pkg-command "$pkg_command" \
+    --pkg-static "$pkg_static"
 make_plugin package
+"$python_command" "$script_directory/target_pkg.py" verify \
+    "$target_pkg_metadata" "$series" --pkg-command "$pkg_command" \
+    --pkg-static "$pkg_static"
 
 set -- "$repository_root"/dns/bind/work/pkg/os-bind-rp-*.pkg
 [ -f "$1" ] || fail 'package build did not produce os-bind-rp'
 [ "$#" -eq 1 ] || fail 'package build produced more than one os-bind-rp package'
 package=$1
+"$python_command" "$script_directory/package_checksums.py" \
+    --pkg-command "$pkg_static" "$package"
 
 mkdir -p "$artifact_directory"
 cp "$package" "$artifact_directory/"
@@ -129,4 +150,6 @@ cp "$package" "$artifact_directory/"
     printf 'tools_tag=%s\n' "$tools_tag"
     printf 'freebsd_release=%s\n' "$freebsd_release"
     printf 'source_commit=%s\n' "${SOURCE_COMMIT:-unknown}"
+    printf 'pkg_creator=%s\n' "$pkg_creator"
+    printf 'pkg_creator_sha256=%s\n' "$pkg_creator_sha256"
 } > "$artifact_directory/build-metadata.txt"

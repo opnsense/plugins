@@ -22,25 +22,41 @@ PROFILE = {
     "makefile_sha256": "64199c6f419c49186ee35f37d42219aff33591f0de040429f3ceddb6889d2234",
     "distinfo_sha256": "714ea8f967746994a624a55dd6e2bbdd41d173dcffe8f25242f7aa4053d116b6",
     "distversion": "9.20.26",
-    "portrevision": 1,
+    "portrevision": 2,
+}
+PACKAGE_CREATOR = {
+    "name": "pkg",
+    "version": "2.3.1_1",
+    "origin": "ports-mgmt/pkg",
+    "abi": "FreeBSD:15:amd64",
+    "filename": "pkg-2.3.1_1.pkg",
+    "sha256": "a" * 64,
+    "pkg_static_sha256": "b" * 64,
 }
 
 
 class StageProvenanceTest(unittest.TestCase):
     def test_channel_rejects_provenance_that_does_not_match_the_trusted_profile(self) -> None:
         provenance = {
-            "schema": 1,
+            "schema": 2,
             "fingerprint": "0" * 64,
             "series": "26.1",
             "freebsd_release": "14.3",
             "architecture": "x86_64",
+            "package_creator": dict(PACKAGE_CREATOR, abi="FreeBSD:14:amd64"),
             "packages": {
-                "bind-tools": {"name": "bind-tools", "version": "9.20.26_1", "origin": "dns/bind-tools", "filename": "bind-tools-9.20.26_1.pkg"},
-                "bind920": {"name": "bind920", "version": "9.20.26_1", "origin": "dns/bind920", "filename": "bind920-9.20.26_1.pkg"},
+                "bind-tools": {"name": "bind-tools", "version": "9.20.26_2", "origin": "dns/bind-tools", "filename": "bind-tools-9.20.26_2.pkg"},
+                "bind920": {"name": "bind920", "version": "9.20.26_2", "origin": "dns/bind920", "filename": "bind920-9.20.26_2.pkg"},
             },
         }
         with self.assertRaisesRegex(ValueError, "fingerprint"):
-            release_channel.validate_bind_provenance(provenance, PROFILE, "26.1", "14.3")
+            release_channel.validate_bind_provenance(
+                provenance,
+                PROFILE,
+                "26.1",
+                "14.3",
+                dict(PACKAGE_CREATOR, abi="FreeBSD:14:amd64"),
+            )
 
     def test_channel_selection_uses_the_bind_pair_named_by_provenance(self) -> None:
         """A later pinned BIND revision is selected from provenance, not a hard-coded filename."""
@@ -97,7 +113,9 @@ class StageProvenanceTest(unittest.TestCase):
                 "core_commit=core-commit\n"
                 "tools_tag=26.7.1\n"
                 "freebsd_release=15.1\n"
-                "source_commit=source-commit\n",
+                "source_commit=source-commit\n"
+                "pkg_creator=2.3.1_1\n"
+                "pkg_creator_sha256=" + "a" * 64 + "\n",
                 encoding="utf-8",
             )
             upstream = root / "upstream.json"
@@ -119,14 +137,33 @@ class StageProvenanceTest(unittest.TestCase):
                     {
                         "series": "26.7",
                         "freebsd_release": "15.1",
+                        "package_creator": PACKAGE_CREATOR,
                         "packages": {"bind920": {"version": "9.20.26_1"}},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            target_metadata = root / "target-pkg.json"
+            target_metadata.write_text(
+                json.dumps(
+                    {
+                        "schema": 1,
+                        "series": {
+                            "26.1": dict(PACKAGE_CREATOR, abi="FreeBSD:14:amd64"),
+                            "26.7": PACKAGE_CREATOR,
+                        },
                     }
                 ),
                 encoding="utf-8",
             )
 
             release_channel.validate_build_metadata(
-                metadata, upstream, provenance, "26.7", "source-commit"
+                metadata,
+                upstream,
+                provenance,
+                target_metadata,
+                "26.7",
+                "source-commit",
             )
             metadata.write_text(
                 metadata.read_text(encoding="utf-8").replace(
@@ -136,7 +173,12 @@ class StageProvenanceTest(unittest.TestCase):
             )
             with self.assertRaisesRegex(ValueError, "trusted release metadata"):
                 release_channel.validate_build_metadata(
-                    metadata, upstream, provenance, "26.7", "source-commit"
+                    metadata,
+                    upstream,
+                    provenance,
+                    target_metadata,
+                    "26.7",
+                    "source-commit",
                 )
 
 if __name__ == "__main__":

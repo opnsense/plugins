@@ -269,16 +269,22 @@ jobs:
             output="artifacts/$series"
             RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json .github/ci/setup-opnsense-repository.sh "$series" >/dev/null
             pkg update -f
-            pkg install -y -r OPNsense opnsense
+            python3 .github/ci/target_pkg.py install .resolver-plugins/target-pkg.json "$series"
+            pkg install -y -r OPNsense opnsense os-bind
+            python3 .github/ci/target_pkg.py verify .resolver-plugins/target-pkg.json "$series"
             dependencies=$(
               for package in "$output"/*.pkg; do
-                pkg query -F "$package" '%dn'
+                /usr/local/sbin/pkg-static query -F "$package" '%dn'
               done | awk '$0 != "bind-tools" && $0 != "bind920" && $0 != "os-bind-rp" && !seen[$0]++'
             )
             if [ -n "$dependencies" ]; then
               pkg install -y $dependencies
             fi
-            pkg repo "$output"
+            python3 .github/ci/target_pkg.py verify .resolver-plugins/target-pkg.json "$series"
+            python3 .github/ci/package_checksums.py \
+              --pkg-command /usr/local/sbin/pkg-static \
+              "$output"/bind-tools-*.pkg "$output"/bind920-*.pkg "$output"/os-bind-rp-*.pkg
+            /usr/local/sbin/pkg-static repo "$output"
             cat > /usr/local/etc/pkg/repos/resolver-plugins-development.conf <<EOF
             resolver-plugins-development: {
               url: "file://$PWD/$output",
@@ -287,11 +293,18 @@ jobs:
               enabled: yes
             }
             EOF
-            pkg update -r resolver-plugins-development
-            pkg install -y -r resolver-plugins-development bind-tools bind920 os-bind-rp
+            /usr/local/sbin/pkg-static update -r resolver-plugins-development
+            python3 .github/ci/target_pkg.py verify .resolver-plugins/target-pkg.json "$series"
+            /usr/local/sbin/pkg-static install -y -r resolver-plugins-development bind-tools bind920 os-bind-rp
+            python3 .github/ci/target_pkg.py verify .resolver-plugins/target-pkg.json "$series"
+            [ -z "$(pkg query -e '%n = os-bind' '%n' 2>/dev/null || true)" ]
             for package in bind-tools bind920 os-bind-rp; do
               pkg query -e "%n = $package" '%n-%v'
+              pkg query -e "%n = $package" '%Fp|%Fs' |
+                awk -F '|' 'NF != 2 || $2 == "" || $2 == "(null)" { exit 1 } END { if (NR == 0) exit 1 }'
             done
+            pkg check -s bind-tools bind920 os-bind-rp
+            .github/ci/verify-bind-runtime.sh
 
   publish-development:
     if: needs.select.outputs.mode == 'development'
@@ -390,10 +403,10 @@ jobs:
             printf '%s' "$RP_PKG_SIGNING_KEY" | base64 -d > "$key"
             output="artifacts/${{ needs.select.outputs.series }}"
             grep -Fqx 'source_commit=${{ needs.profile.outputs.source_commit }}' "$output/build-metadata.txt"
-            python3 .github/ci/release_channel.py validate-bind-provenance --provenance "$output/bind920-provenance.json" --profile .resolver-plugins/bind920.json --series '${{ needs.select.outputs.series }}' --freebsd-release '${{ needs.profile.outputs.freebsd_release }}'
-            python3 .github/ci/release_channel.py validate-build-metadata --metadata "$output/build-metadata.txt" --upstream "$output/trusted-upstream.json" --provenance "$output/bind920-provenance.json" --series '${{ needs.select.outputs.series }}' --source-commit '${{ needs.profile.outputs.source_commit }}'
+            python3 .github/ci/release_channel.py validate-bind-provenance --provenance "$output/bind920-provenance.json" --profile .resolver-plugins/bind920.json --series '${{ needs.select.outputs.series }}' --freebsd-release '${{ needs.profile.outputs.freebsd_release }}' --target-pkg-metadata .resolver-plugins/target-pkg.json
+            python3 .github/ci/release_channel.py validate-build-metadata --metadata "$output/build-metadata.txt" --upstream "$output/trusted-upstream.json" --provenance "$output/bind920-provenance.json" --series '${{ needs.select.outputs.series }}' --source-commit '${{ needs.profile.outputs.source_commit }}' --target-pkg-metadata .resolver-plugins/target-pkg.json
             mkdir -p "$output/repository"
-            python3 .github/ci/release_channel.py stage-channel --packages-directory "$output" --output "$output/repository/current" --private-key "$key"
+            python3 .github/ci/release_channel.py stage-channel --packages-directory "$output" --output "$output/repository/current" --private-key "$key" --target-pkg-metadata .resolver-plugins/target-pkg.json
             cp -R "$output/repository/current" "$output/repository/snapshot"
             openssl pkey -in "$key" -pubout -out "$output/resolver-plugins.pub"
             cmp -s docs/package-repository/resolver-plugins.pub "$output/resolver-plugins.pub" || {
@@ -493,19 +506,27 @@ jobs:
             root="artifacts/$series/repository"
             RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json .github/ci/setup-opnsense-repository.sh "$series" >/dev/null
             pkg update -f
-            pkg install -y -r OPNsense opnsense
+            python3 .github/ci/target_pkg.py install .resolver-plugins/target-pkg.json "$series"
+            pkg install -y -r OPNsense opnsense os-bind
+            python3 .github/ci/target_pkg.py verify .resolver-plugins/target-pkg.json "$series"
             dependencies=$(
               for package in \
                 "$root"/current/bind-tools-*.pkg \
                 "$root"/current/bind920-*.pkg \
                 "$root"/current/os-bind-rp-*.pkg
               do
-                pkg query -F "$package" '%dn'
+                /usr/local/sbin/pkg-static query -F "$package" '%dn'
               done | awk '$0 != "bind-tools" && $0 != "bind920" && $0 != "os-bind-rp" && !seen[$0]++'
             )
             if [ -n "$dependencies" ]; then
               pkg install -y $dependencies
             fi
+            python3 .github/ci/target_pkg.py verify .resolver-plugins/target-pkg.json "$series"
+            python3 .github/ci/package_checksums.py \
+              --pkg-command /usr/local/sbin/pkg-static \
+              "$root"/current/bind-tools-*.pkg "$root"/current/bind920-*.pkg \
+              "$root"/current/os-bind-rp-*.pkg "$root"/snapshot/bind-tools-*.pkg \
+              "$root"/snapshot/bind920-*.pkg "$root"/snapshot/os-bind-rp-*.pkg
             install -d -m 0755 /usr/local/etc/pkg/keys /usr/local/etc/pkg/repos
             install -m 0644 "$root/current/resolver-plugins.pub" /usr/local/etc/pkg/keys/resolver-plugins.pub
             cat > /usr/local/etc/pkg/repos/resolver-plugins.conf <<EOF
@@ -521,10 +542,17 @@ jobs:
             for package in bind-tools bind920 os-bind-rp; do
               pkg rquery -r resolver-plugins -e "%n = $package" '%n-%v'
             done
-            pkg install -y -r resolver-plugins bind-tools bind920 os-bind-rp
+            python3 .github/ci/target_pkg.py verify .resolver-plugins/target-pkg.json "$series"
+            /usr/local/sbin/pkg-static install -y -r resolver-plugins bind-tools bind920 os-bind-rp
+            python3 .github/ci/target_pkg.py verify .resolver-plugins/target-pkg.json "$series"
+            [ -z "$(pkg query -e '%n = os-bind' '%n' 2>/dev/null || true)" ]
             for package in bind-tools bind920 os-bind-rp; do
               pkg query -e "%n = $package" '%n-%v'
+              pkg query -e "%n = $package" '%Fp|%Fs' |
+                awk -F '|' 'NF != 2 || $2 == "" || $2 == "(null)" { exit 1 } END { if (NR == 0) exit 1 }'
             done
+            pkg check -s bind-tools bind920 os-bind-rp
+            .github/ci/verify-bind-runtime.sh
             cat > /usr/local/etc/pkg/repos/resolver-plugins-rollback.conf <<EOF
             resolver-plugins-rollback: {
               url: "file://$PWD/$root/snapshot",
@@ -538,7 +566,8 @@ jobs:
             for package in bind-tools bind920 os-bind-rp; do
               pkg rquery -r resolver-plugins-rollback -e "%n = $package" '%n-%v'
             done
-            pkg install -f -y -r resolver-plugins-rollback os-bind-rp
+            /usr/local/sbin/pkg-static install -f -y -r resolver-plugins-rollback os-bind-rp
+            python3 .github/ci/target_pkg.py verify .resolver-plugins/target-pkg.json "$series"
             pkg query -e '%n = os-bind-rp' '%n-%v'
 
   verify-published:
@@ -580,18 +609,23 @@ jobs:
             series='${{ needs.select.outputs.series }}'
             root="artifacts/$series/repository/current"
             channel_url="https://github.com/resolver-plugins/repository/releases/download/pkg-$series"
+            RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json .github/ci/setup-opnsense-repository.sh "$series" >/dev/null
+            pkg update -f
+            python3 .github/ci/target_pkg.py install .resolver-plugins/target-pkg.json "$series"
+            pkg install -y -r OPNsense opnsense os-bind
+            python3 .github/ci/target_pkg.py verify .resolver-plugins/target-pkg.json "$series"
             expected_identities=$(
               for archive in \
                 "$root"/bind-tools-*.pkg \
                 "$root"/bind920-*.pkg \
                 "$root"/os-bind-rp-*.pkg
               do
-                pkg query -F "$archive" '%n|%v|%o'
+                /usr/local/sbin/pkg-static query -F "$archive" '%n|%v|%o'
               done | sort
             )
-            RP_UPSTREAM_METADATA=.resolver-plugins/upstream.json .github/ci/setup-opnsense-repository.sh "$series" >/dev/null
-            pkg update -f
-            pkg install -y -r OPNsense opnsense
+            python3 .github/ci/package_checksums.py \
+              --pkg-command /usr/local/sbin/pkg-static \
+              "$root"/bind-tools-*.pkg "$root"/bind920-*.pkg "$root"/os-bind-rp-*.pkg
             install -d -m 0755 /usr/local/etc/pkg/keys /usr/local/etc/pkg/repos
             install -m 0644 docs/package-repository/resolver-plugins.pub /usr/local/etc/pkg/keys/resolver-plugins.pub
             cat > /usr/local/etc/pkg/repos/resolver-plugins.conf <<EOF
@@ -642,8 +676,7 @@ jobs:
                 pkg install -y "$dependency"
               done
             fi
-            [ -z "$(pkg query -e '%n = bind920' '%n' 2>/dev/null || true)" ]
-            [ -z "$(pkg query -e '%n = bind-tools' '%n' 2>/dev/null || true)" ]
+            python3 .github/ci/target_pkg.py verify .resolver-plugins/target-pkg.json "$series"
             shim="$PWD/.published-channel-bin"
             approval="$PWD/.published-channel-approval"
             install -d -m 0755 "$shim"
@@ -657,7 +690,10 @@ jobs:
             EOF
             chmod 0755 "$shim/opnsense-version"
             printf 'yes\n' > "$approval"
-            PATH="$shim:$PATH" RP_TTY_PATH="$approval" scripts/install-os-bind-rp.sh
+            PATH="$shim:$PATH" RP_TTY_PATH="$approval" \
+              RP_PKG_STATIC_COMMAND=/usr/local/sbin/pkg-static scripts/install-os-bind-rp.sh
+            python3 .github/ci/target_pkg.py verify .resolver-plugins/target-pkg.json "$series"
+            [ -z "$(pkg query -e '%n = os-bind' '%n' 2>/dev/null || true)" ]
             for package in bind-tools bind920 os-bind-rp; do
               case "$package" in
                 bind-tools) expected_origin=dns/bind-tools ;;
@@ -674,7 +710,11 @@ jobs:
               [ "${channel_identity##*|}" = "$expected_origin" ]
               [ "$installed_identity" = "$channel_identity" ]
               printf '%s\n' "$installed_identity"
+              pkg query -e "%n = $package" '%Fp|%Fs' |
+                awk -F '|' 'NF != 2 || $2 == "" || $2 == "(null)" { exit 1 } END { if (NR == 0) exit 1 }'
             done
+            pkg check -s bind-tools bind920 os-bind-rp
+            .github/ci/verify-bind-runtime.sh
 
   source-release:
     if: needs.select.outputs.mode == 'production'
