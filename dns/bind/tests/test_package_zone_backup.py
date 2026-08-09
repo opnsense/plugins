@@ -54,14 +54,14 @@ def _fixture(tmp_path, *, freeze_failure=""):
     zone_dir.mkdir()
     config = tmp_path / "config.xml"
     config.write_text(
-        """<opnsense><bind><domain><domains>
+        """<opnsense><OPNsense><bind><domain><domains>
         <domain uuid="dynamic"><domainname>dynamic.example</domainname><type>primary</type><allowrndcupdate>1</allowrndcupdate></domain>
         <domain uuid="reverse"><domainname>1.168.192.in-addr.arpa</domainname><type>reverse</type><allowrndcupdate>1</allowrndcupdate></domain>
         <domain uuid="watcher"><domainname>watcher.example</domainname><type>primary</type><allowrndcupdate>0</allowrndcupdate></domain>
         <domain uuid="static"><domainname>static.example</domainname><type>primary</type><allowrndcupdate>0</allowrndcupdate></domain>
         </domains></domain><tsig><keys><key uuid="watcher-key"><enabled>1</enabled></key></keys></tsig>
         <watcher><mappings><mapping><enabled>1</enabled><hostname_suffix>watcher</hostname_suffix><reverse_zone>reverse</reverse_zone><tsigkey>watcher-key</tsigkey></mapping></mappings></watcher>
-        </bind></opnsense>"""
+        </bind></OPNsense></opnsense>"""
     )
     for zone in (
         "dynamic.example", "1.168.192.in-addr.arpa", "watcher.example",
