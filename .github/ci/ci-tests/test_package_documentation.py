@@ -42,5 +42,8 @@ def test_package_guides_document_manifest_compatibility_and_recovery_contracts()
     ):
         assert contract in combined
     assert "does not upgrade the host package manager" in repository
-    assert "does not change BIND service configuration" in repository
+    assert "does not enable BIND or change its user configuration" in repository
+    assert "stops BIND" in repository
+    assert "restarts BIND only when it was running" in repository
+    assert "upgrade the backup node first" in repository
     assert "RP_STATE_DIRECTORY" in repository

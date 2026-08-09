@@ -34,7 +34,9 @@ def test_workflow_discovers_release_branches_and_runs_canonical_tests():
     assert "fromJSON(needs.discover.outputs.series)" in workflow
     assert 'git fetch --no-tags origin' in workflow
     assert 'refs/heads/release/bind-rp/$SERIES' in workflow
-    assert 'git checkout "$source_commit" -- dns/bind/src' in workflow
+    assert 'git checkout "$source_commit" -- dns/bind/Makefile dns/bind/src' in workflow
+    assert 'git cat-file -e "$source_commit:dns/bind/$fragment"' in workflow
+    assert 'git show "$source_commit:dns/bind/$fragment" > "dns/bind/$fragment"' in workflow
     assert 'python3 -m pytest -q dns/bind/tests' in workflow
 
 

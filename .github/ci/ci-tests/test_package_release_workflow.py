@@ -235,6 +235,35 @@ def test_development_release_installs_from_a_temporary_freebsd_repository():
     assert publisher.rindex('pr_state=$(gh api') > publisher.index('gh release upload "$TAG"')
 
 
+def test_freebsd_package_installs_have_a_minimal_opnsense_configuration():
+    workflow = workflow_text()
+    fixture = "printf '%s\\n' '<opnsense/>' > /conf/config.xml"
+
+    assert workflow.count('install -d -m 0750 /conf') == 3
+    assert workflow.count('if [ ! -e /conf/config.xml ]; then') == 3
+    assert workflow.count(fixture) == 3
+    assert workflow.count('chmod 0640 /conf/config.xml') == 3
+
+    sections = (
+        (
+            workflow.split('  verify-development:', 1)[1].split('  publish-development:', 1)[0],
+            '/usr/local/sbin/pkg-static install -y -r resolver-plugins-development bind-tools bind920 os-bind-rp',
+        ),
+        (
+            workflow.split('  verify:', 1)[1].split('  verify-published:', 1)[0],
+            '/usr/local/sbin/pkg-static install -y -r resolver-plugins bind-tools bind920 os-bind-rp',
+        ),
+        (
+            workflow.split('  verify-published:', 1)[1].split('  source-release:', 1)[0],
+            'RP_PKG_STATIC_COMMAND=/usr/local/sbin/pkg-static scripts/install-os-bind-rp.sh',
+        ),
+    )
+    for section, package_install in sections:
+        assert section.index('pkg install -y -r OPNsense opnsense os-bind') < section.index(
+            fixture
+        ) < section.index(package_install)
+
+
 def test_source_release_contains_only_plugin_and_build_metadata():
     workflow = workflow_text()
     source_release = workflow.split('  source-release:', 1)[1]
