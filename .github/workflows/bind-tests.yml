@@ -88,7 +88,14 @@ jobs:
             source_ref="refs/heads/release/bind-rp/$SERIES"
             git fetch --no-tags origin "$source_ref:refs/remotes/origin/bind-under-test"
             source_commit=$(git rev-parse refs/remotes/origin/bind-under-test)
-            git checkout "$source_commit" -- dns/bind/src
+            git checkout "$source_commit" -- dns/bind/Makefile dns/bind/src
+            for fragment in +POST_INSTALL.pre +POST_INSTALL.post; do
+              if git cat-file -e "$source_commit:dns/bind/$fragment"; then
+                git show "$source_commit:dns/bind/$fragment" > "dns/bind/$fragment"
+              else
+                rm -f "dns/bind/$fragment"
+              fi
+            done
           fi
           git show "$source_commit:.resolver-plugins/upstream.json" > "$RUNNER_TEMP/upstream.json"
           python3 .github/ci/metadata_profile.py "$RUNNER_TEMP/upstream.json" "$SERIES" freebsd_release > /dev/null

@@ -66,7 +66,16 @@ local isolated repository, and dry-runs the frozen transaction. It locks the
 installed `pkg` package for the transaction, attempts to restore its original
 lock state on every exit, and reports failure if restoration does not succeed.
 The installer does not upgrade the host package manager.
-It does not change BIND service configuration or restart BIND.
+It does not enable BIND or change its user configuration. Beginning with
+`os-bind-rp` 1.36_11, once that version or newer is published for the selected
+OPNsense series, the package lifecycle detects whether BIND is running and, if
+so, freezes each enabled dynamic primary and reverse zone, stops BIND, and
+preserves the effective zone masters before the OPNsense package framework
+regenerates managed templates and zone files. It atomically restores those
+effective masters—including records received through RNDC updates—before
+restarting BIND. It restarts BIND only when it was running before the
+transaction. A package transaction fails if zone preservation or the original
+running state cannot be restored and confirmed.
 
 Immediately before the first package install, the script creates a mode-0700
 state directory below `/var/backups`, preserves a mode-retaining configuration
@@ -81,13 +90,24 @@ diagnosis; on success, it removes only temporary storage that it created.
 If a live transaction fails, the diagnostic names the recovery repository and
 prints an exact dry-run command; stop BIND and review that dry run before an
 approved recovery, then restore `config.xml.bak`, validate configuration, and
-restart BIND.
+restart BIND. If the package lifecycle had stopped a running service, it
+attempts to restore that service before the installer reports the failure;
+confirm the actual service state before taking recovery action.
 
 After replacement, the installer requires the official package to be absent,
 checks exact Resolver package origins, verifies ownership of archive-listed
 paths, rejects null installed-file checksums, and runs a scoped
-`pkg check -s`. Service configuration validation and restart remain explicit
-operator steps after package installation.
+`pkg check -s`. The operator must still validate the generated configuration,
+all managed zones, authoritative answers, and the service state after package
+installation.
+
+On a high-availability pair, upgrade the backup node first. Confirm its CARP
+role, generated configuration, dynamic and reverse zones, authoritative DNS
+answers, and BIND logs before upgrading the master node. Do not advance to the
+master while the backup node has an unloaded zone, a failed service-state
+restoration, or new package/runtime errors. With lifecycle-enabled packages,
+the package-managed stop and restart creates a brief DNS interruption on each
+node, so keep the peer healthy throughout its partner's transaction.
 
 ### Rollback
 

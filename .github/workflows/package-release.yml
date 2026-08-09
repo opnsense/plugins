@@ -271,6 +271,11 @@ jobs:
             pkg update -f
             python3 .github/ci/target_pkg.py install .resolver-plugins/target-pkg.json "$series"
             pkg install -y -r OPNsense opnsense os-bind
+            install -d -m 0750 /conf
+            if [ ! -e /conf/config.xml ]; then
+              printf '%s\n' '<opnsense/>' > /conf/config.xml
+              chmod 0640 /conf/config.xml
+            fi
             python3 .github/ci/target_pkg.py verify .resolver-plugins/target-pkg.json "$series"
             dependencies=$(
               for package in "$output"/*.pkg; do
@@ -508,6 +513,11 @@ jobs:
             pkg update -f
             python3 .github/ci/target_pkg.py install .resolver-plugins/target-pkg.json "$series"
             pkg install -y -r OPNsense opnsense os-bind
+            install -d -m 0750 /conf
+            if [ ! -e /conf/config.xml ]; then
+              printf '%s\n' '<opnsense/>' > /conf/config.xml
+              chmod 0640 /conf/config.xml
+            fi
             python3 .github/ci/target_pkg.py verify .resolver-plugins/target-pkg.json "$series"
             dependencies=$(
               for package in \
@@ -613,6 +623,11 @@ jobs:
             pkg update -f
             python3 .github/ci/target_pkg.py install .resolver-plugins/target-pkg.json "$series"
             pkg install -y -r OPNsense opnsense os-bind
+            install -d -m 0750 /conf
+            if [ ! -e /conf/config.xml ]; then
+              printf '%s\n' '<opnsense/>' > /conf/config.xml
+              chmod 0640 /conf/config.xml
+            fi
             python3 .github/ci/target_pkg.py verify .resolver-plugins/target-pkg.json "$series"
             expected_identities=$(
               for archive in \
