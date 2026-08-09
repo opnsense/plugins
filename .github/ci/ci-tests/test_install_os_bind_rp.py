@@ -43,6 +43,7 @@ def installer_environment(
     mutate_frozen_archive: bool = False,
     dry_run_status: int = 1,
     dry_run_plan: str = "valid",
+    break_dry_run_output: bool = False,
     query_fault: str = "",
 ) -> tuple[dict[str, str], Path, Path]:
     log = tmp_path / "commands.log"
@@ -77,6 +78,7 @@ def installer_environment(
             "RP_TEST_MUTATE_FROZEN_ARCHIVE": "yes" if mutate_frozen_archive else "no",
             "RP_TEST_DRY_RUN_STATUS": str(dry_run_status),
             "RP_TEST_DRY_RUN_PLAN": dry_run_plan,
+            "RP_TEST_BREAK_DRY_RUN_OUTPUT": "yes" if break_dry_run_output else "no",
             "RP_TEST_QUERY_FAULT": query_fault,
             "RP_TEST_UNLOCK_FAILURE": "yes" if unlock_failure else "no",
             "RP_TEST_ARCHIVE_CHECKSUM": archive_checksum,
@@ -273,26 +275,68 @@ elif command == "install":
         plan = os.environ.get("RP_TEST_DRY_RUN_PLAN", "valid")
         if plan == "all_current":
             print("The most recent versions of packages are already installed")
+        elif plan == "repository_warning_noop":
+            print(
+                "pkg-static: Repository resolver-verified has a wrong packagesite, "
+                "need to re-create database"
+            )
+            print("The most recent versions of packages are already installed")
+        elif plan == "outside_identity":
+            print(f"notice: requested archive {args[-1]} was not selected")
+            print("The following package(s) will be affected:")
         else:
             print("The following package(s) will be affected:")
-        if plan not in {"missing", "all_current"}:
+        if plan == "outside_identity":
+            print("New packages to be INSTALLED:")
+            print("\tbind920-9.20.26_2")
+        elif plan == "missing":
+            print("New packages to be INSTALLED:")
+            print("\tbind920-9.20.26_2")
+        elif plan == "wrong_result_version":
+            print("Installed packages to be UPGRADED:")
+            print("\tos-bind-rp: 1.36_9 -> 1.36_100")
+        elif plan == "requested_only_on_old_side":
+            print("Installed packages to be UPGRADED:")
+            print("\tos-bind-rp: 1.36_10 -> 1.36_11")
+        elif plan == "requested_removal":
+            print("Installed packages to be REMOVED:")
+            print("\tos-bind-rp-1.36_10")
+        elif plan not in {"missing", "all_current", "repository_warning_noop"}:
+            if plan == "unknown_section":
+                print("Packages selected for CHANGE:")
+            else:
+                print("New packages to be INSTALLED:")
             for argument in args:
                 if re.search(r"-[0-9]", argument):
                     print(f"\t{argument}")
         if plan == "pkg_colon":
+            print("Installed packages to be UPGRADED:")
             print("\tpkg: 2.3.1_1 -> 2.4.0")
         elif plan == "opnsense_colon":
+            print("Installed packages to be UPGRADED:")
             print("\topnsense: 26.1.11_10 -> 26.1.12")
         elif plan == "pkg_hyphen":
+            print("New packages to be INSTALLED:")
             print("\tpkg-2.4.0")
         elif plan == "unrelated_install":
+            print("New packages to be INSTALLED:")
             print("\tpython311: 3.11.13")
         elif plan == "unrelated_upgrade":
+            print("Installed packages to be UPGRADED:")
             print("\tpython311: 3.11.12 -> 3.11.13")
         elif plan == "unrelated_downgrade":
+            print("Installed packages to be DOWNGRADED:")
             print("\tpython311: 3.11.13 -> 3.11.12")
         elif plan == "unrelated_removal":
+            print("Installed packages to be REMOVED:")
             print("\tpython311-3.11.13")
+        elif plan == "malformed_entry":
+            print("\t???")
+        elif plan == "blank_continuation":
+            print()
+            print("\tpython311: 3.11.13")
+        elif plan == "empty_trailing_section":
+            print("Installed packages to be REMOVED:")
         raise SystemExit(int(os.environ.get("RP_TEST_DRY_RUN_STATUS", "1")))
     else:
         if os.environ.get("RP_TEST_INSTALL_FAILURE") == "yes":
@@ -336,6 +380,10 @@ else:
     raise SystemExit(64)
 ''',
     )
+    write_executable(
+        directory / "dry-run-awk",
+        "#!/bin/sh\nprintf '%s\\n' 'simulated dry-run parser failure' >&2\nexit 2\n",
+    )
 
 
 def run_installer(tmp_path: Path, **kwargs: object) -> tuple[subprocess.CompletedProcess[str], Path, Path]:
@@ -346,6 +394,8 @@ def run_installer(tmp_path: Path, **kwargs: object) -> tuple[subprocess.Complete
         write_command_fixtures(fixtures)
         environment["PATH"] = f"{fixtures}:{environment['PATH']}"
         environment["RP_PKG_STATIC_COMMAND"] = str(fixtures / "pkg")
+        if environment["RP_TEST_BREAK_DRY_RUN_OUTPUT"] == "yes":
+            environment["RP_DRY_RUN_AWK_COMMAND"] = str(fixtures / "dry-run-awk")
         result = subprocess.run(
             ["/bin/sh", INSTALLER], text=True, capture_output=True, check=False, env=environment
         )
@@ -593,6 +643,19 @@ def test_accepts_generic_current_plan_only_for_an_exact_installed_identity(tmp_p
     assert result.returncode == 0, result.stderr
 
 
+def test_ignores_repository_diagnostics_outside_package_change_sections(
+    tmp_path: Path,
+) -> None:
+    result, _, _ = run_installer(
+        tmp_path,
+        os_bind_rp="os-bind-rp|1.36_10|opnsense/os-bind-rp",
+        dry_run_status=0,
+        dry_run_plan="repository_warning_noop",
+    )
+
+    assert result.returncode == 0, result.stderr
+
+
 @pytest.mark.parametrize(
     ("status", "plan", "diagnostic"),
     [
@@ -625,6 +688,68 @@ def test_rejects_unrelated_pkg_dry_run_mutations(tmp_path: Path, plan: str) -> N
 
     assert result.returncode != 0
     assert "unexpected package change: python311" in result.stderr
+    assert " install -y " not in log.read_text(encoding="utf-8")
+
+
+@pytest.mark.parametrize(
+    "plan",
+    ["unknown_section", "malformed_entry", "blank_continuation"],
+)
+def test_rejects_unrecognized_pkg_dry_run_structure(tmp_path: Path, plan: str) -> None:
+    result, log, _ = run_installer(tmp_path, dry_run_plan=plan)
+
+    assert result.returncode != 0
+    assert "unrecognized package mutation plan" in result.stderr
+    assert " install -y " not in log.read_text(encoding="utf-8")
+
+
+def test_rejects_a_dry_run_output_parser_failure(tmp_path: Path) -> None:
+    result, log, _ = run_installer(tmp_path, break_dry_run_output=True)
+
+    assert result.returncode != 0
+    assert "could not validate package dry run" in result.stderr
+    assert " install -y " not in log.read_text(encoding="utf-8")
+
+
+def test_requested_identity_must_be_inside_a_mutation_section(tmp_path: Path) -> None:
+    result, log, _ = run_installer(tmp_path, dry_run_plan="outside_identity")
+
+    assert result.returncode != 0
+    assert "omitted requested identity: os-bind-rp-1.36_10" in result.stderr
+    assert " install -y " not in log.read_text(encoding="utf-8")
+
+
+def test_rejects_an_empty_trailing_mutation_section(tmp_path: Path) -> None:
+    result, log, _ = run_installer(tmp_path, dry_run_plan="empty_trailing_section")
+
+    assert result.returncode != 0
+    assert "unrecognized package mutation plan" in result.stderr
+    assert " install -y " not in log.read_text(encoding="utf-8")
+
+
+@pytest.mark.parametrize(
+    ("plan", "installed_plugin"),
+    [
+        ("wrong_result_version", ""),
+        ("requested_only_on_old_side", ""),
+        ("requested_removal", ""),
+        (
+            "requested_only_on_old_side",
+            "os-bind-rp|1.36_10|opnsense/os-bind-rp",
+        ),
+    ],
+)
+def test_requires_the_exact_requested_result_identity(
+    tmp_path: Path, plan: str, installed_plugin: str
+) -> None:
+    result, log, _ = run_installer(
+        tmp_path,
+        os_bind_rp=installed_plugin,
+        dry_run_plan=plan,
+    )
+
+    assert result.returncode != 0
+    assert "omitted requested identity: os-bind-rp-1.36_10" in result.stderr
     assert " install -y " not in log.read_text(encoding="utf-8")
 
 

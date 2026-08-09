@@ -172,40 +172,144 @@ package_dry_run() {
     esac
     grep -Eq 'will be affected|already installed' "$output" || \
         fail 'package dry run did not produce a recognized transaction plan'
+    requested_identities="$*"
+    exact_installed_identities=
     for identity in "$@"
     do
-        if ! grep -Fq "$identity" "$output" && ! exact_identity_is_installed "$identity"
+        if exact_identity_is_installed "$identity"
         then
-            fail "package dry run omitted requested identity: $identity"
+            exact_installed_identities="${exact_installed_identities:+$exact_installed_identities }$identity"
         fi
     done
     if grep -Eq '(^|[[:space:]])(pkg|opnsense)(-[0-9]|:[[:space:]]*[0-9])' "$output"
     then
         fail 'package dry run attempted to change pkg or OPNsense core'
     fi
-    unexpected_changes=$(awk '
+    set +e
+    # shellcheck disable=SC2016 # The single-quoted text is an awk program.
+    unexpected_change=$("$dry_run_awk_command" \
+        -v "requested_identities=$requested_identities" \
+        -v "exact_installed_identities=$exact_installed_identities" '
+        BEGIN {
+            requested_count = split(requested_identities, requested, " ")
+            for (item = 1; item <= requested_count; item++) {
+                requested_name[item] = requested[item]
+                sub(/-[0-9].*/, "", requested_name[item])
+            }
+            if (exact_installed_identities != "") {
+                exact_count = split(exact_installed_identities, exact, " ")
+                for (item = 1; item <= exact_count; item++) {
+                    may_be_omitted[exact[item]] = 1
+                }
+            }
+        }
         function allowed(name) {
             return name == "bind-tools" || name == "bind920" || \
                 name == "os-bind" || name == "os-bind-rp"
         }
+        function mutation_action(line) {
+            if (line == "New packages to be INSTALLED:") return "install"
+            if (line == "Installed packages to be UPGRADED:") return "upgrade"
+            if (line == "Installed packages to be REINSTALLED:") return "reinstall"
+            if (line == "Installed packages to be DOWNGRADED:") return "downgrade"
+            if (line == "Installed packages to be REMOVED:") return "remove"
+            return ""
+        }
+        function invalid_plan() {
+            structural_error = 1
+            exit 3
+        }
         {
+            raw = $0
             line = $0
             sub(/^[[:space:]]*/, "", line)
+            if (line ~ /will be affected/) changes_reported = 1
+            action = mutation_action(line)
+            if (action != "") {
+                if (in_mutation_section && !section_has_entry) invalid_plan()
+                saw_mutation_section = 1
+                in_mutation_section = 1
+                section_has_entry = 0
+                section_action = action
+                next
+            }
+            if (line == "") {
+                if (in_mutation_section && !section_has_entry) invalid_plan()
+                in_mutation_section = 0
+                next
+            }
+            if (in_mutation_section && raw !~ /^[[:space:]]/) {
+                if (!section_has_entry) invalid_plan()
+                in_mutation_section = 0
+            }
             name = ""
+            entry_identity = ""
             if (line ~ /^[A-Za-z0-9][A-Za-z0-9+_.-]*:[[:space:]]/) {
                 name = line
                 sub(/:.*/, "", name)
+                if (section_action != "remove") {
+                    result_version = line
+                    sub(/^[^:]*:[[:space:]]*/, "", result_version)
+                    if (result_version ~ /[[:space:]]->[[:space:]]/) {
+                        sub(/^.*[[:space:]]->[[:space:]]*/, "", result_version)
+                    }
+                    sub(/[[:space:]].*/, "", result_version)
+                    entry_identity = name "-" result_version
+                }
             } else if (line ~ /^[A-Za-z0-9][A-Za-z0-9+_.-]*-[0-9][^[:space:]]*([[:space:]]|$)/) {
-                name = line
-                sub(/[[:space:]].*/, "", name)
+                entry_identity = line
+                sub(/[[:space:]].*/, "", entry_identity)
+                name = entry_identity
                 sub(/-[0-9].*/, "", name)
+                if (section_action == "remove") entry_identity = ""
             }
-            if (name != "" && !allowed(name)) print name
+            if (in_mutation_section) {
+                if (name == "") invalid_plan()
+                saw_mutation_entry = 1
+                section_has_entry = 1
+                for (item = 1; item <= requested_count; item++) {
+                    if (name == requested_name[item]) {
+                        requested_appeared[item] = 1
+                        if (entry_identity == requested[item]) {
+                            requested_satisfied[item] = 1
+                        }
+                    }
+                }
+                if (!allowed(name)) {
+                    print name
+                    unexpected_package = 1
+                    exit
+                }
+                next
+            }
+            if (raw ~ /^[[:space:]]/ && name != "") invalid_plan()
         }
-    ' "$output" | sort -u)
-    if [ -n "$unexpected_changes" ]
+        END {
+            if (!structural_error && !unexpected_package && \
+                in_mutation_section && !section_has_entry) exit 3
+            if (!structural_error && !unexpected_package && changes_reported && \
+                (!saw_mutation_section || !saw_mutation_entry)) exit 3
+            if (!structural_error && !unexpected_package) {
+                for (item = 1; item <= requested_count; item++) {
+                    if (!requested_satisfied[item] && \
+                        (!may_be_omitted[requested[item]] || requested_appeared[item])) {
+                        print requested[item]
+                        exit 4
+                    }
+                }
+            }
+        }
+    ' "$output")
+    validation_status=$?
+    set -e
+    case "$validation_status" in
+        0) ;;
+        3) fail 'package dry run produced an unrecognized package mutation plan' ;;
+        4) fail "package dry run omitted requested identity: $unexpected_change" ;;
+        *) fail "could not validate package dry run (status $validation_status)" ;;
+    esac
+    if [ -n "$unexpected_change" ]
     then
-        unexpected_change=$(printf '%s\n' "$unexpected_changes" | awk 'NR == 1 { print; exit }')
         fail "package dry run attempted unexpected package change: $unexpected_change"
     fi
 }
@@ -496,6 +600,7 @@ verify_installed_checksums() {
 
 pkg_command=${RP_PKG_COMMAND:-pkg}
 pkg_static_command=${RP_PKG_STATIC_COMMAND:-/usr/local/sbin/pkg-static}
+dry_run_awk_command=${RP_DRY_RUN_AWK_COMMAND:-awk}
 repository_directory=${RP_PKG_REPOSITORY_DIR:-/usr/local/etc/pkg/repos}
 key_directory=${RP_PKG_KEYS_DIR:-/usr/local/etc/pkg/keys}
 mkdir -p "$repository_directory" "$key_directory"
