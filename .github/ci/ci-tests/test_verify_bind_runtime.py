@@ -98,6 +98,10 @@ sysrc() {
 
 service() {
     log_command service "$@"
+    if [ "${1-}" = named ] && [ "${2-}" = onestart ]
+    then
+        : > "$FAKE_STATE/runtime/rndc.key"
+    fi
     if [ "${1-}" = named ] && [ "${2-}" = onestart ] && \
         [ "$PARTIAL_START_FAILURE" = yes ]
     then

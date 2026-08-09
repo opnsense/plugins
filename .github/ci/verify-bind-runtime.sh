@@ -85,7 +85,7 @@ cleanup() {
     if ! rm -f "$runtime_directory/named.conf" \
         "$runtime_directory/canary.invalid.zone" \
         "$runtime_directory/answer.txt" "$runtime_directory/named.pid" \
-        "$runtime_directory/session.key"
+        "$runtime_directory/rndc.key" "$runtime_directory/session.key"
     then
         cleanup_failed=yes
     fi
