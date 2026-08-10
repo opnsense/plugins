@@ -10,7 +10,7 @@
 {% macro generate_copy_headers() %}
     {% if generalSettings.CopyHeaders %}
         {% for header_uuid in generalSettings.CopyHeaders.split(',') %}
-            {% set header = helpers.toList('Pischem.caddy.reverseproxy.header') | selectattr('@uuid', 'equalto', header_uuid) | first %}
+            {% set header = helpers.toList('OPNsense.caddy.reverseproxy.header') | selectattr('@uuid', 'equalto', header_uuid) | first %}
             {% if header and header.HeaderType %}
                 copy_headers {{ header.HeaderType }}
             {% endif %}
