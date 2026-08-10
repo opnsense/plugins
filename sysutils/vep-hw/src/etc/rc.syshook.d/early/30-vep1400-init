@@ -19,14 +19,7 @@ if [ ! -z $board_id ]; then
     sleep 1
     smbmsg -f $ismt_dev -s 0x48 -c 0x1 -o 1 0x0
 
-    if [ x"$board_id" != x"0" ] && [ x"$board_id" != x"1" ]; then
-        # set fan speed. At address 36 is a TC654
-        # set control register to allow SMBus control of duty cycle
-        smbmsg -f $ismt_dev -s 0x36 -c 0x04 -o 1 0x34
-        # set duty cycle, range is 0x00 to 0x0f
-        # 0x0d is 90.67% duty cycle per datasheet
-        smbmsg -f $ismt_dev -s 0x36 -c 0x06 -o 1 0xd
-    fi
+    
 
     if [ x"$board_id" = x"8" ] || [ x"$board_id" = x"a" ] || [ x"$board_id" = x"b" ]; then
         logger -t "vep-hw" "VEP1400-X detected, doing init"

@@ -11,7 +11,7 @@
             </enabled>
             <FanControl type="BooleanField">
                 <Default>0</Default>
-                <Required>N</Required>
+                <Required>Y</Required>
             </FanControl>
             <FanDutyCycle type="OptionField">
                 <Default>0x0b</Default>
@@ -58,7 +58,6 @@
                 <MinimumValue>0</MinimumValue>
                 <MaximumValue>255</MaximumValue>
             </blue>
-
         </led>
     </items>
 </model>
