@@ -31,7 +31,7 @@ if [ ! -z "$board_id" ]; then
         # set control register to allow SMBus control of duty cycle
         if [ "$FANCONTROL" == "0" ]; then
             smbmsg -f $ismt_dev -s 0x36 -c 0x04 -o 1 0x14
-        elif [ $FANCONTROL" == "1" ]; then
+        elif [ "$FANCONTROL" == "1" ]; then
             smbmsg -f $ismt_dev -s 0x36 -c 0x04 -o 1 0x34
             # set duty cycle, range is 0x00 to 0x0f
             # 0x0d is 90.67% duty cycle per datasheet

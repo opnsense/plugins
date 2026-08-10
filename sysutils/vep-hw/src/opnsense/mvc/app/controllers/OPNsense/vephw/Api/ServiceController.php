@@ -43,31 +43,15 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceName = 'vephw';
     
     
-    public function startAction()
-    {
-        if ($this->request->isPost()) {
-            $mdl = $this->getModel();
-            $boardtype = trim((new Backend())->configdRun('vephw getid'));
-            $boardnibble = substr($boardtype, -1);
-            if ($boardnibble != "0" && $boardnibble != "1"){
-                $fanc_enabled = $mdl->general->FanControl;
-                $fan_dc = $mdl->general->FanDutyCycle;
-                $fanresult = trim((new Backend())->configdRun(sprintf("vephw setfan %s %s", $fanc_enabled, $fan_dc)));
-            }
-            else {
-                $fanresult = "OK"; //we can't set fan settings on boards without them so fake an OK
-            }
-            $ledr = $mdl->led->red; $ledg = $mdl->led->green; $ledb = $mdl->led->blue;
-            $ledresult = trim((new Backend())->configdRun(sprintf("vephw setled %s %s %s", $ledr, $ledg, $ledb)));
-        }
-    }
-
     /**
      * reconfigure vephw
      */
     public function reloadAction()
     {
-        $status = "success";
+        $status = "failed";
+        if ($this->request->isPost()) {
+            $status = strtolower(trim((new Backend())->configdRun('template reload OPNsense/vephw')));
+        }
         return ["status" => $status];
     }//*/
 
