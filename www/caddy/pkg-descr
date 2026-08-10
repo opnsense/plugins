@@ -9,6 +9,7 @@ Plugin Changelog
 2.2.0
 
 * Cleanup: Move model mount to OPNsense/caddy. Existing configuration is migrated automatically.
+* Cleanup: Adjust load balancing and health check labels and add subheaders
 
 2.1.0
 
