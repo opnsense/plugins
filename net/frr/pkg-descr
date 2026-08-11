@@ -11,6 +11,11 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.54
+
+* Add manual config mode
+* OSPF: Fix validation issue in PrefixLists, select_multiple for action is now dropdown, id always required
+
 1.53
 
 * BGP: improve visibility in ModelRelationFields and enable internalModelUseSafeDelete
