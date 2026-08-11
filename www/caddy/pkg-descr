@@ -12,6 +12,7 @@ Plugin Changelog
 * Cleanup: Adjust load balancing and health check labels and add subheaders
 * Cleanup: Allow selecting 3 rows as pagination value to mitigate space issue when page has two grids
 * Fix: Ensure Caddyfile template is only reloaded when caddy fmt can fix formatting
+* Fix: Redirect stdout/stderr to syslog to display startup errors
 
 2.1.0
 
