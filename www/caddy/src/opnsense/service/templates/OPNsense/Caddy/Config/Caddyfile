@@ -114,7 +114,7 @@
                 layer4 {
                     import /usr/local/etc/caddy/caddy.d/*.layer4listener
                     {% set context_var = "listener_wrappers" %}
-                    {% include "OPNsense/Caddy/includeLayer4" %}
+                    {% include "OPNsense/Caddy/Config/includeLayer4" %}
                 }
                 {# Route all other traffic to HTTP App #}
                 tls
@@ -126,7 +126,7 @@
         layer4 {
             import /usr/local/etc/caddy/caddy.d/*.layer4global
             {% set context_var = "global" %}
-            {% include "OPNsense/Caddy/includeLayer4" %}
+            {% include "OPNsense/Caddy/Config/includeLayer4" %}
         }
     {% endif %}
 
@@ -398,7 +398,7 @@ http://{{ domain }} {
         {{ render_basic_auth(handle.basicauth) }}
         {# All IPs not matched by accesslist will continue processing #}
         {% if handle.ForwardAuth|default("0") == "1" %}
-            {% include "OPNsense/Caddy/includeAuthProvider" %}
+            {% include "OPNsense/Caddy/Config/includeAuthProvider" %}
         {% endif %}
         {% if handle.HandleDirective == "reverse_proxy" and handle.ToPath|default("") != "" %}
             rewrite * {{ handle.ToPath }}{uri}
