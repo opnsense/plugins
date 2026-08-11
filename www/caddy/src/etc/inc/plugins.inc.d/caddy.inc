@@ -51,6 +51,20 @@ function caddy_services()
     return $services;
 }
 
+function caddy_configure()
+{
+    return [
+        'caddy_sync' => ['caddy_configure_do'],
+    ];
+}
+
+function caddy_configure_do($verbose = false)
+{
+    (new \OPNsense\Core\Backend())->configdpRun('template reload', ['OPNsense/Caddy/Config']);
+    mwexecf('/usr/local/bin/caddy fmt --overwrite /usr/local/etc/caddy/Caddyfile');
+    mwexecf('/usr/local/opnsense/scripts/OPNsense/Caddy/caddy_certs.php');
+}
+
 function caddy_xmlrpc_sync()
 {
     $result = array();
