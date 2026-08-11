@@ -11,7 +11,7 @@ Plugin Changelog
 4.17
 
 Added:
-* new automation to upload certificate to JetKVM via SSH (#XXXX)
+* new automation to upload certificate to JetKVM via SSH (#5621)
 
 4.16
 
