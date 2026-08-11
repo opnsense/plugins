@@ -126,6 +126,32 @@ class ActionsController extends ApiMutableModelControllerBase
         return ["status" => "unavailable"];
     }
 
+    public function jetkvmGetIdentityAction()
+    {
+        $result = ["status" => "unavailable"];
+
+        if ($response = $this->callBackend(["show-jetkvm-identity"], ["jetkvm_identity_type", "jetkvm_host"])) {
+            $result["status"] = "ok";
+            $result["identity"] = $response;
+        }
+
+        return $result;
+    }
+
+    public function jetkvmTestConnectionAction()
+    {
+        if (
+            $response = $this->callBackend(
+                ["test-jetkvm-connection"],
+                ["jetkvm_host", "jetkvm_host_key", "jetkvm_port", "jetkvm_user", "jetkvm_identity_type"]
+            )
+        ) {
+            return $response;
+        }
+
+        return ["status" => "unavailable"];
+    }
+
     private function callBackend(array $command, array $arguments = [])
     {
         if ($this->request->isPost()) {

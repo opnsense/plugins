@@ -95,6 +95,7 @@ POSSIBILITY OF SUCH DAMAGE.
         [
             {selector: '#action\\.sftp_identity_type', group: "configd_upload_sftp", action: "sftpGetIdentity"},
             {selector: '#action\\.remote_ssh_identity_type', group: "configd_remote_ssh", action: "sshGetIdentity"},
+            {selector: '#action\\.jetkvm_identity_type', group: "configd_upload_jetkvm", action: "jetkvmGetIdentity"},
         ].forEach(function(config) {
             var $identityType = $(config.selector);
             var identityDiv = makeStatusDiv($identityType);
@@ -126,6 +127,7 @@ POSSIBILITY OF SUCH DAMAGE.
         [
             {selector: '#action\\.sftp_user', group: "configd_upload_sftp", action: "sftpTestConnection", success: "{{ lang._('Connection and upload test succeeded.') }}"},
             {selector: '#action\\.remote_ssh_user', group: "configd_remote_ssh", action: "sshTestConnection", success: "{{ lang._('Connection test succeeded.') }}"},
+            {selector: '#action\\.jetkvm_user', group: "configd_upload_jetkvm", action: "jetkvmTestConnection", success: "{{ lang._('Connection test succeeded.') }}"},
         ].forEach(function(config) {
             var $user = $(config.selector);
 
