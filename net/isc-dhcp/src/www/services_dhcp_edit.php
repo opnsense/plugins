@@ -308,9 +308,7 @@ include("head.inc");
                   <td>
                     <input name="mac" id="mac" type="text" value="<?=$pconfig['mac'];?>" />
 <?php
-                    $ip = getenv('REMOTE_ADDR');
-                    $mac = `/usr/sbin/arp -an | grep {$ip} | /usr/bin/head -n1 | /usr/bin/cut -d" " -f4`;
-                    $mac = str_replace("\n","",$mac);?>
+                    $mac = shell_safe('/usr/sbin/arp -an | /usr/bin/grep %s | /usr/bin/cut -d" " -f4', getenv('REMOTE_ADDR')); ?>
                     <a onclick="$('#mac').val('<?=$mac?>');" href="#"><?=gettext("Copy my MAC address");?></a>
                     <div class="hidden" data-for="help_for_mac">
                       <?=gettext("Enter a MAC address in the following format: "."xx:xx:xx:xx:xx:xx");?>
