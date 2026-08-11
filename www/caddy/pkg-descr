@@ -10,6 +10,7 @@ Plugin Changelog
 
 * Cleanup: Move model mount to OPNsense/caddy. Existing configuration is migrated automatically.
 * Cleanup: Adjust load balancing and health check labels and add subheaders
+* Cleanup: Allow selecting 3 rows as pagination value to mitigate space issue when page has two grids
 
 2.1.0
 
