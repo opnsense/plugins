@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/nrpe/general</mount>
     <description>NRPE configuration</description>
-    <version>0.0.1</version>
+    <version>0.0.2</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -16,10 +16,11 @@
             <Required>Y</Required>
             <AsList>Y</AsList>
         </server_address>
-        <allowed_hosts type="NetworkField">
+        <allowed_hosts type="HostnameField">
             <Default>127.0.0.1,::1</Default>
             <Required>Y</Required>
             <AsList>Y</AsList>
+            <IpAllowed>Y</IpAllowed>
         </allowed_hosts>
         <dont_blame_nrpe type="BooleanField">
             <Default>0</Default>
