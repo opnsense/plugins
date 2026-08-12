@@ -47,6 +47,17 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </carp_depend_on>
+            <static_prefix type="NetworkField">
+                <NetMaskRequired>Y</NetMaskRequired>
+                <AddressFamily>ipv6</AddressFamily>
+                <AsList>Y</AsList>
+                <Strict>Y</Strict>
+            </static_prefix>
+            <static_router type="NetworkField">
+                <NetMaskAllowed>N</NetMaskAllowed>
+                <AddressFamily>ipv6</AddressFamily>
+                <AsList>Y</AsList>
+            </static_router>
         </general>
         <aliases>
             <alias type="ArrayField">
