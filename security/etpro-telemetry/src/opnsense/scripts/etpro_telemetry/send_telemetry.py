@@ -59,7 +59,6 @@ parser.add_argument('-D', '--direct',
 args = parser.parse_args()
 
 
-exit_code = -1
 send_start_time = time.time()
 telemetry_state = telemetry.state.Telemetry(filename=args.state, init_last_days=args.days)
 if not telemetry_state.is_running():
@@ -86,9 +85,7 @@ if not telemetry_state.is_running():
                 # spread traffic to remote host, usual cron interval is 1 minute
                 if not args.direct:
                     time.sleep(random.randint(0, 60))
-                # the eventcollector loop sets exit_code when issues ocure, no data processed doesn't mean
-                # anything is wrong (it's just not of interest to Proofpoint).
-                exit_code = 0
+
                 s = requests.Session()
                 for push_data in event_collector:
                     params = {
@@ -105,25 +102,10 @@ if not telemetry_state.is_running():
                             syslog.LOG_ERR,
                             'unexpected result from %s (http_code %s)' % (args.endpoint, r.status_code)
                         )
-                        exit_code = -1
-                        break
-                    else:
-                        try:
-                            ujson.loads(r.text)
-                        except ValueError:
-                            syslog.syslog(syslog.LOG_ERR, 'telemetry unexpected response %s' % r.text[:256])
-                            exit_code = -1
-                            break
-                if exit_code == 0:
-                    # update timestamp, last record processed
-                    telemetry_state.set_last_update(max_timestamp)
-            else:
-                # no data
-                exit_code = 0
+
+                # update timestamp, last record processed
+                telemetry_state.set_last_update(max_timestamp)
         else:
             syslog.syslog(syslog.LOG_ERR, 'directory %s missing' % args.log)
     else:
         syslog.syslog(syslog.LOG_ERR, 'telemetry token missing in %s' % args.config)
-
-
-sys.exit(exit_code)
