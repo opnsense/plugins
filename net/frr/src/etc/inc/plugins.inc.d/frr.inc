@@ -40,6 +40,22 @@ function frr_carp_enabled()
         (string)$model->enablecarp == '1';
 }
 
+function frr_configure()
+{
+    return [
+        'frr_sync' => ['frr_configure_do'],
+    ];
+}
+
+function frr_configure_do($verbose = false)
+{
+    $model = new \OPNsense\Quagga\General();
+    if (!$model->manual_config->isEmpty()) {
+        return;
+    }
+    (new \OPNsense\Core\Backend())->configdpRun('template reload', ['OPNsense/Quagga/Config']);
+}
+
 function frr_firewall($fw)
 {
     global $config;
