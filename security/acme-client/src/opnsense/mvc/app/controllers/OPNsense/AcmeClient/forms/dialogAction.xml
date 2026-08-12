@@ -183,7 +183,10 @@
         <id>action.jetkvm_host</id>
         <label>JetKVM Host</label>
         <type>text</type>
-        <help>IP address or hostname of the JetKVM device.</help>
+        <help>IP address or hostname of the JetKVM device. Requires the JetKVM device to already have "HTTPS Mode"
+              set to "Custom" in its own web UI (Settings &gt; Network) before this automation is attached -- it
+              only writes the certificate/key files and (optionally) reboots the device; it does not switch HTTPS
+              mode for you. Uploads will not take effect until that mode is selected on the device itself.</help>
     </field>
     <field>
         <id>action.jetkvm_port</id>
@@ -262,10 +265,10 @@
         <help>Optional command executed on the JetKVM device via the same SSH connection after the certificate and key
               have been uploaded. Confirmed against a real device: JetKVM does not hot-reload a "Custom" certificate,
               and its own certificate-apply script performs a full device reboot ("reboot") to pick one up, which
-              will briefly drop any active KVM-over-IP session. This is why the field is left blank by default
-              instead of defaulting to "reboot" automatically; set it to "reboot" explicitly if you want the new
-              certificate applied right after upload, or leave it blank to apply/verify manually at a convenient
-              time.</help>
+              will briefly drop any active KVM-over-IP session. Defaults to "reboot" so a certificate renewed by an
+              unattended ACME cron run (typically overnight, when a session is unlikely to be active) is actually
+              applied without needing a human to follow up — clear the field if you'd rather apply/verify the new
+              certificate manually at a convenient time instead.</help>
         <advanced>true</advanced>
     </field>
     <field>

@@ -1623,6 +1623,7 @@
                 </jetkvm_chmod_key>
                 <jetkvm_restart_command type="TextField">
                     <Required>N</Required>
+                    <Default>reboot</Default>
                     <Mask>/^.{0,1024}$/u</Mask>
                     <ValidationMessage>Should be a shell command up to 1024 characters.</ValidationMessage>
                 </jetkvm_restart_command>
