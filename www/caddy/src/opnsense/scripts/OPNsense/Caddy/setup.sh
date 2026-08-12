@@ -54,8 +54,5 @@ ${CADDY_LOG_CUSTOM_DIR}
 mkdir -p ${CADDY_DIRS}
 chown -R "${CADDY_USER}:${CADDY_GROUP}" ${CADDY_DIRS}
 
-# Format and overwrite the Caddyfile
-( cd "${CADDY_CONF_DIR}" && /usr/local/bin/caddy fmt --overwrite )
-
-# Write custom certs from the OPNsense Trust Store
-/usr/local/opnsense/scripts/OPNsense/Caddy/caddy_certs.php
+# Regenerate template explicitely, since caddy fmt restructures result
+/usr/local/sbin/pluginctl -c caddy_sync

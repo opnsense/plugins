@@ -171,6 +171,10 @@
         <collapse>true</collapse>
     </field>
     <field>
+        <type>subheader</type>
+        <label>Load Balance</label>
+    </field>
+    <field>
         <id>layer4.lb_policy</id>
         <label>Load Balance Policy</label>
         <type>dropdown</type>
@@ -181,23 +185,25 @@
         </grid_view>
     </field>
     <field>
+        <type>subheader</type>
+        <label>Passive Health Check</label>
+    </field>
+    <field>
         <id>layer4.PassiveHealthFailDuration</id>
-        <label>Passive Health Fail Duration (s)</label>
+        <label>Fail Duration (s)</label>
         <type>text</type>
         <hint>off</hint>
         <help>fail_duration enables a passive health check when multiple destinations in "Upstream Domain" are set. It is a value that defines how long to remember a failed request. A duration of 1 or more seconds enables passive health checking. A reasonable starting point might be 30s to balance error rates with responsiveness when bringing an unhealthy upstream back online.</help>
-        <advanced>true</advanced>
         <grid_view>
             <visible>false</visible>
         </grid_view>
     </field>
     <field>
         <id>layer4.PassiveHealthMaxFails</id>
-        <label>Passive Health Max Fails</label>
+        <label>Max Fails</label>
         <type>text</type>
         <hint>1</hint>
         <help>max_fails is the maximum number of failed requests within fail_duration that are needed before considering an upstream to be down.</help>
-        <advanced>true</advanced>
         <grid_view>
             <visible>false</visible>
         </grid_view>

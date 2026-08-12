@@ -12,7 +12,7 @@
 #  This context is for advanced usecases where raw TCP/UDP traffic on custom ports should be proxied or load balanced.
 #}
 
-{% set unsorted_layer4_configs = helpers.toList('Pischem.caddy.reverseproxy.layer4') %}
+{% set unsorted_layer4_configs = helpers.toList('OPNsense.caddy.reverseproxy.layer4') %}
 
 {# Ensure that 'Sequence' is present and converted to an integer in each item #}
 {% for item in unsorted_layer4_configs %}

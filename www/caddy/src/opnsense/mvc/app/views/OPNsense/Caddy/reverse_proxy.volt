@@ -161,7 +161,7 @@
 
                             options: {
                                 responsive: true,
-                                rowCount: [20,50,200,500,1000,-1],
+                                rowCount: [20,3,7,14,50,200,500,1000,-1],
                                 requestHandler: function (request) {
                                     const selectedDomains = $('#reverseFilter').val();
                                     if (selectedDomains && selectedDomains.length > 0) {
