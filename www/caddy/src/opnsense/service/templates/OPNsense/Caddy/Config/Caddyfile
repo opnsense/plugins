@@ -116,6 +116,12 @@
                     {% set context_var = "listener_wrappers" %}
                     {% include "OPNsense/Caddy/Config/includeLayer4" %}
                 }
+                {% if generalSettings.ProxyProtocolAllow %}
+                    proxy_protocol {
+                        allow {{ generalSettings.ProxyProtocolAllow.split(',') | join(' ') }}
+                        fallback_policy ignore
+                    }
+                {% endif %}
                 {# Route all other traffic to HTTP App #}
                 tls
             }

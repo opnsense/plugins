@@ -64,6 +64,12 @@
                 </Model>
                 <Multiple>Y</Multiple>
             </ClientIpHeaders>
+            <ProxyProtocolAllow type="NetworkField">
+                <NetMaskRequired>Y</NetMaskRequired>
+                <Strict>Y</Strict>
+                <AsList>Y</AsList>
+                <ValidationMessage>Please enter valid IP addresses or networks in CIDR notation.</ValidationMessage>
+            </ProxyProtocolAllow>
             <DisableSuperuser type="OptionField">
                 <Required>Y</Required>
                 <Default>0</Default>
