@@ -1,0 +1,23 @@
+Automatic configuration rollback plugin for OPNsense.
+
+Safe Mode snapshots the running configuration before you change it. If
+you do not confirm your changes within a configurable timeout, the
+system reverts to the last known-good configuration.
+
+Features:
+
+* Timer-based auto-revert with configurable timeout (default 120 seconds)
+* Live countdown with confirm, extend, and revert controls on the plugin page
+* CLI confirmation via configctl for SSH users
+* Dashboard widget showing current status
+* Git backup integration when os-git-backup is installed
+* Rollback method: full reboot or service reload
+
+Inspired by Juniper JUNOS "commit confirmed" and MikroTik Safe Mode.
+
+Plugin Changelog
+================
+
+1.0
+
+* Initial release
