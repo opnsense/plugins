@@ -681,14 +681,39 @@
                         <round_robin/>
                     </OptionValues>
                 </lb_policy>
+                <lb_try_duration type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </lb_try_duration>
+                <lb_try_interval type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </lb_try_interval>
+                <ActiveHealthPort type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Please enter a valid port between 1 and 65535 or leave empty for defaults.</ValidationMessage>
+                </ActiveHealthPort>
+                <ActiveHealthInterval type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </ActiveHealthInterval>
+                <ActiveHealthTimeout type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </ActiveHealthTimeout>
                 <PassiveHealthFailDuration type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
                 </PassiveHealthFailDuration>
                 <PassiveHealthMaxFails type="IntegerField">
-                    <MinimumValue>2</MinimumValue>
-                    <ValidationMessage>Please enter a minimum value of 2 or leave empty for defaults.</ValidationMessage>
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
                 </PassiveHealthMaxFails>
+                <PassiveHealthUnhealthyConnectionCount type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthUnhealthyConnectionCount>
                 <RemoteIp type="NetworkField">
                     <AsList>Y</AsList>
                     <Strict>Y</Strict>
