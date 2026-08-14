@@ -1,12 +1,27 @@
 <model>
     <mount>//OPNsense/quagga/general</mount>
     <description>Quagga Routing configuration</description>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
         </enabled>
+        <daemons type=".\EnableDaemonField" volatile="true">
+            <Multiple>Y</Multiple>
+            <OptionValues>
+                <bfd/>
+                <bgp/>
+                <ospf/>
+                <ospf6/>
+                <rip/>
+                <static/>
+            </OptionValues>
+        </daemons>
+        <manual_config type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </manual_config>
         <profile type="OptionField">
             <Required>Y</Required>
             <Default>traditional</Default>

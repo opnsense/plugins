@@ -122,13 +122,13 @@ function process_track6_form($if)
     $dhcpdv6cfg[$if] = $this_server;
     write_config();
     reconfigure_dhcpd();
-    filter_configure();
+    configd_run('filter reload');
     header(url_safe('Location: /services_dhcpv6.php?if=%s', array($if)));
 }
 
 function reconfigure_dhcpd()
 {
-    system_resolver_configure();
+    configd_run('dns reload');
     dhcpd_dhcp6_configure();
     clear_subsystem_dirty('staticmapsv6');
 }
@@ -419,7 +419,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
             reconfigure_dhcpd();
             if ($dhcpdv6_enable_changed) {
-                filter_configure();
+                configd_run('filter reload');
             }
 
             header(url_safe('Location: /services_dhcpv6.php?if=%s', array($if)));

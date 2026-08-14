@@ -31,13 +31,16 @@
                         <DNAME>DNAME</DNAME>
                         <DNSKEY>DNSKEY</DNSKEY>
                         <DS>DS</DS>
+                        <HTTPS>HTTPS</HTTPS>
                         <MX>MX</MX>
+                        <NAPTR>NAPTR</NAPTR>
                         <NS>NS</NS>
                         <PTR>PTR</PTR>
                         <RP>RP</RP>
                         <RRSIG>RRSIG</RRSIG>
                         <SRV>SRV</SRV>
                         <SSHFP>SSHFP</SSHFP>
+                        <SVCB>SVCB</SVCB>
                         <TLSA>TLSA</TLSA>
                         <TXT>TXT</TXT>
                     </OptionValues>

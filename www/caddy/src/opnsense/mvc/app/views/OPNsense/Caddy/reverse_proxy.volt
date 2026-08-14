@@ -151,9 +151,7 @@
                                         ? 'text-warning'
                                         : 'text-success';
 
-                                    const countValue = `<span class="badge chip">${count}</span>`;
-
-                                    return `<i class="fa fa-fw fa-globe ${iconClass}"></i> ${value} ${countValue}`;
+                                    return `<i class="fa fa-fw fa-globe ${iconClass}"></i> ${value}`;
                                 },
                             },
 
@@ -161,7 +159,7 @@
 
                             options: {
                                 responsive: true,
-                                rowCount: [20,50,200,500,1000,-1],
+                                rowCount: [20,3,7,14,50,200,500,1000,-1],
                                 requestHandler: function (request) {
                                     const selectedDomains = $('#reverseFilter').val();
                                     if (selectedDomains && selectedDomains.length > 0) {

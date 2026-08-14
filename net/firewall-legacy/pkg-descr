@@ -1,0 +1,3 @@
+This plugin adds the legacy firewall rules configuration pages.  Note that
+backend code still exists in the core and legacy rules can be migrated without
+this plugin installed.

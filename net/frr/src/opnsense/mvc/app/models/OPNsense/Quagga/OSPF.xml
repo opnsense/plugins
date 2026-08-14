@@ -270,6 +270,7 @@
                     </OptionValues>
                 </action>
                 <id type="IntegerField">
+                    <Required>Y</Required>
                     <MinimumValue>10</MinimumValue>
                     <MaximumValue>99</MaximumValue>
                 </id>

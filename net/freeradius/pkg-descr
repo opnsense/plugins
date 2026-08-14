@@ -9,6 +9,10 @@ security, particularly in the academic community, including eduroam.
 Plugin Changelog
 ================
 
+1.10.2
+
+* Add configurable LDAP group membership mode (contributed by Jerzy Kołosowski)
+
 1.10.1
 
 * Add TLS maximum version setting for EAP (contributed by Kota Shiratsuka)

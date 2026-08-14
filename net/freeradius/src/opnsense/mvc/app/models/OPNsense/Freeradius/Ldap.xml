@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/freeradius/ldap</mount>
     <description>LDAP configuration</description>
-    <version>1.0.1</version>
+    <version>1.0.2</version>
     <items>
         <innertunnel type="BooleanField">
             <Default>0</Default>
@@ -47,5 +47,13 @@
             <Default>(objectClass=posixGroup)</Default>
             <Required>N</Required>
         </group_filter>
+        <group_membership_mode type="OptionField">
+            <Default>attribute</Default>
+            <Required>Y</Required>
+            <OptionValues>
+                <attribute>memberOf attribute (POSIX / flat groups)</attribute>
+                <filter>member filter (Active Directory / Samba 4 nested groups)</filter>
+            </OptionValues>
+        </group_membership_mode>
     </items>
 </model>

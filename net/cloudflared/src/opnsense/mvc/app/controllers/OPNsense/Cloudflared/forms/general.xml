@@ -20,19 +20,29 @@
         <id>cloudflared.general.protocol</id>
         <label>Protocol</label>
         <type>dropdown</type>
+        <advanced>true</advanced>
         <help>Transport protocol. Leave unset unless you have a specific reason to force QUIC or HTTP/2.</help>
     </field>
     <field>
         <id>cloudflared.general.post_quantum</id>
         <label>Post-Quantum Encryption</label>
         <type>checkbox</type>
+        <advanced>true</advanced>
         <help>Enable post-quantum cryptography for the tunnel connection (requires QUIC).</help>
     </field>
     <field>
         <id>cloudflared.general.quic_disable_pmtu_discovery</id>
         <label>Disable QUIC PMTU Discovery</label>
         <type>checkbox</type>
+        <advanced>true</advanced>
         <help>Disable Path MTU Discovery for QUIC connections. May help in environments where ICMP is blocked.</help>
+    </field>
+    <field>
+        <id>cloudflared.general.edge_ip_version</id>
+        <label>Edge IP Version</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Force the IP version used to connect to Cloudflare's edge. Leave on Auto unless you need to restrict to IPv4 or IPv6.</help>
     </field>
     <field>
         <id>cloudflared.general.log_level</id>

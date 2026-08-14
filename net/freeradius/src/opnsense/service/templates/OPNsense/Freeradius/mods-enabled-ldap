@@ -85,7 +85,11 @@ ldap {
 {%     if helpers.exists('OPNsense.freeradius.ldap.group_filter') and OPNsense.freeradius.ldap.group_filter != '' %}
                 filter = "{{ OPNsense.freeradius.ldap.group_filter }}"
 {%     endif %}
+{%     if helpers.exists('OPNsense.freeradius.ldap.group_membership_mode') and OPNsense.freeradius.ldap.group_membership_mode == 'filter' %}
+                membership_filter = "(member:1.2.840.113556.1.4.1941:=%{control:Ldap-UserDn})"
+{%     else %}
                 membership_attribute = 'memberOf'
+{%     endif %}
         }
         profile {
         }

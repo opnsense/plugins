@@ -7,7 +7,7 @@
   min-height: 34px;
   cursor: text;
   color: #111;
-  background-color: #fff;
+  background-color: #333;
   border: 1px solid #ccc;
   border-radius: 3px;
 }
@@ -75,7 +75,7 @@
   margin: 0;
   line-height: 1em;
   border: 1px solid #fff;
-  background: transparent;
+  background: #ccc;
   border-left: none;
   border-right: none;
   outline: none;

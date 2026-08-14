@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             @unlink(rfc2136_cache_file($a_rfc2136[$_POST['id']], 6));
             unset($a_rfc2136[$_POST['id']]);
             write_config();
-            system_cron_configure();
+            configd_run('cron restart');
         }
         exit;
     } elseif (isset($_POST['act']) && $_POST['act'] == "toggle" && isset($_POST['id'])) {
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $a_rfc2136[$_POST['id']]['enable'] = true;
             }
             write_config();
-            system_cron_configure();
+            configd_run('cron restart');
             if (!empty($a_rfc2136[$_POST['id']]['enable'])) {
                 rfc2136_configure_do(false, null, $a_rfc2136[$_POST['id']]['host'], true);
             }
