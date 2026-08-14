@@ -1,9 +1,0 @@
-<acl>
-    <page-user-vephw>
-        <name>System: VEP1400 Hardware Settings</name>
-        <patterns>
-            <pattern>ui/vephw/*</pattern>
-            <pattern>api/vephw/*</pattern>
-        </patterns>
-    </page-user-vephw>
-</acl>

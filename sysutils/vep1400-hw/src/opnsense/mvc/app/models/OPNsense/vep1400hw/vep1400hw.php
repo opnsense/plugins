@@ -32,6 +32,6 @@ namespace OPNsense\vep1400hw;
 
 use OPNsense\Base\BaseModel;
 
-class VepHW extends BaseModel
+class Vep1400HW extends BaseModel
 {
 }
