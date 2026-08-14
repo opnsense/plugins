@@ -151,9 +151,7 @@
                                         ? 'text-warning'
                                         : 'text-success';
 
-                                    const countValue = `<span class="badge chip">${count}</span>`;
-
-                                    return `<i class="fa fa-fw fa-globe ${iconClass}"></i> ${value} ${countValue}`;
+                                    return `<i class="fa fa-fw fa-globe ${iconClass}"></i> ${value}`;
                                 },
                             },
 
