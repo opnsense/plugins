@@ -49,7 +49,10 @@ class ChronyOverrideStatus extends AbstractStatus
     {
         if (
             count(glob('/usr/local/etc/chrony/conf.d/*')) ||
-                count(glob('/usr/local/etc/chrony/sources.d/*'))
+            count(glob('/var/run/chrony/conf.d/*')) ||
+            count(glob('/usr/local/etc/chrony/sources.d/*')) ||
+            count(glob('/var/run/chrony/sources.d/*'))
+
         ) {
             $this->internalMessage = gettext(
                 'The configuration contains manual overwrites, these may interfere with the settings configured here.'
