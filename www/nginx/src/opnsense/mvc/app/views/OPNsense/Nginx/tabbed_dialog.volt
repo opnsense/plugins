@@ -1,6 +1,6 @@
 {#
  # Copyright (c) 2021 Manuel Faux
- # OPNsense® is Copyright © 2014-2026 by Deciso B.V.
+ # Copyright (c) 2014-2026 Deciso B.V.
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,

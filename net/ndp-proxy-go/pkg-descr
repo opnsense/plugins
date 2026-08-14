@@ -7,6 +7,7 @@ Plugin Changelog
 ================
 
 1.4
+
 * Add static-prefix and static-router flags
 
 1.3
