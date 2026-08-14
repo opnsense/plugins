@@ -22,7 +22,7 @@ if [ ! -z $board_id ]; then
     
 
     if [ x"$board_id" = x"8" ] || [ x"$board_id" = x"a" ] || [ x"$board_id" = x"b" ]; then
-        logger -t "vep-hw" "VEP1400-X detected, doing init"
+        logger -t "vep1400-hw" "VEP1400-X detected, doing init"
         # VEP1400-X stuff
         # fetch board type
         # smbmsg -f $ismt_dev -s 0x62 -c 0x00 -i 1 | cut -c 4-5
@@ -41,15 +41,18 @@ if [ ! -z $board_id ]; then
     fi
 
     if [ x"$board_id" = x"0" ]; then
-        logger -t "vep-hw" "VEP1400 detected, doing init"
+        logger -t "vep1400-hw" "VEP1400 detected, doing init"
         #Communicate with CPLD/FPGA to turn off SFP TX disable (DAC cables aren't affected by this)
         # for ix3
         smbmsg -f $ismt_dev -s 0x62 -c 0x10 -o 1 0
         # for ix2
         smbmsg -f $ismt_dev -s 0x62 -c 0x11 -o 1 0
-
-        etherswitchcfg config vlan_mode dot1q
-        etherswitchcfg port1 pvid 2 port2 pvid 2 port3 pvid 2 port4 pvid 2 port5 pvid 2 port6 pvid 3 vlangroup0 vlan 2 members 1,2,3,4,5,10t vlangroup1 vlan 3 members 6,9t
+        if [ -e /dev/etherswitch0 ]; then
+            etherswitchcfg config vlan_mode dot1q
+            etherswitchcfg port1 pvid 2 port2 pvid 2 port3 pvid 2 port4 pvid 2 port5 pvid 2 port6 pvid 3 vlangroup0 vlan 2 members 1,2,3,4,5,10t vlangroup1 vlan 3 members 6,9t
+        else
+            logger -t "vep1400-hw" "VEP1400 detected, but no etherswitch dev found. Is patched kernel installed?"
+        fi
     fi
 fi
 
