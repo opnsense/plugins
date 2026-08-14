@@ -1,0 +1,2 @@
+/usr/local/etc/rc.syshook.d/early/30-vep-init
+/usr/local/etc/rc.syshook.d/start/99-vep-init-complete
