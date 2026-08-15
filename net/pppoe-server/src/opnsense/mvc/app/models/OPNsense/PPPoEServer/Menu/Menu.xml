@@ -1,0 +1,8 @@
+<menu>
+    <Services>
+        <PPPoEServer VisibleName="PPPoE Server" cssClass="fa fa-plug fa-fw" url="/ui/pppoeserver/">
+            <Settings VisibleName="Settings" order="10" url="/ui/pppoeserver/"/>
+            <Log VisibleName="Log File" order="20" url="/ui/diagnostics/log/core/pppoe"/>
+        </PPPoEServer>
+    </Services>
+</menu>
