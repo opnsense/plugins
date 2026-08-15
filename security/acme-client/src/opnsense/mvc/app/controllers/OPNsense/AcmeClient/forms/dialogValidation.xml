@@ -675,6 +675,31 @@
         <type>text</type>
     </field>
     <field>
+        <label>HostUp</label>
+        <type>header</type>
+        <style>table_dns table_dns_hostup</style>
+    </field>
+    <field>
+        <id>validation.dns_hostup_api_key</id>
+        <label>API Key</label>
+        <type>password</type>
+    </field>
+    <field>
+        <id>validation.dns_hostup_api_base</id>
+        <label>API Base</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_hostup_ttl</id>
+        <label>TTL</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_hostup_zone_id</id>
+        <label>Zone ID</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Hurricane Electric</label>
         <type>header</type>
         <style>table_dns table_dns_he</style>
