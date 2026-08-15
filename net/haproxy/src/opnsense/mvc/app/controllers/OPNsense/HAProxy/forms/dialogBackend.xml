@@ -409,6 +409,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>backend.tuning_timeoutTunnel</id>
+        <label>Tunnel Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum inactivity time for tunnel (and WebSocket) connections to this backend, overriding the client/server timeouts once the tunnel is established. Use this to keep idle WebSockets alive longer than the server timeout. Overrides the global Default Parameters tunnel timeout. Leave empty to inherit. Defaults to milliseconds; unit may be "d", "h", "m", "s", "ms" or "us" (e.g. 24h).]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <id>backend.tuning_retries</id>
         <label>Retries</label>
         <type>text</type>

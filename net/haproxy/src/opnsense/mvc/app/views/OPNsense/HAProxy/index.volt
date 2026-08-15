@@ -119,6 +119,18 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         );
 
+        $("#grid-sniroutes").UIBootgrid(
+            {   search:'/api/haproxy/settings/search_sni_routes',
+                get:'/api/haproxy/settings/get_sni_route/',
+                set:'/api/haproxy/settings/set_sni_route/',
+                add:'/api/haproxy/settings/add_sni_route/',
+                del:'/api/haproxy/settings/del_sni_route/',
+                toggle:'/api/haproxy/settings/toggle_sni_route/',
+                options: {
+                }
+            }
+        );
+
         $("#grid-users").UIBootgrid(
             {   search:'/api/haproxy/settings/search_users',
                 get:'/api/haproxy/settings/get_user/',
@@ -585,6 +597,7 @@ POSSIBILITY OF SUCH DAMAGE.
             <li><a data-toggle="tab" id="healthchecks-tab" href="#healthchecks">{{ lang._('Health Monitors') }}</a></li>
             <li><a data-toggle="tab" href="#acls">{{ lang._('Conditions') }}</a></li>
             <li><a data-toggle="tab" href="#actions">{{ lang._('Rules') }}</a></li>
+            <li><a data-toggle="tab" href="#sniroutes">{{ lang._('SNI Routes') }}</a></li>
         </ul>
     </li>
 
@@ -894,6 +907,32 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
                 <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                 <th data-column-id="uuid" data-type="string" data-identifier="true"  data-visible="false">{{ lang._('ID') }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td></td>
+                <td>
+                    <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                    <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div id="sniroutes" class="tab-pane fade">
+        <table id="grid-sniroutes" class="table table-condensed table-hover table-striped table-responsive" data-editDialog="DialogSniRoute" data-editAlert="haproxyChangeMessage">
+            <thead>
+            <tr>
+                <th data-column-id="enabled" data-type="string" data-formatter="boolean" data-width="4em">{{ lang._('Enabled') }}</th>
+                <th data-column-id="name" data-type="string">{{ lang._('Name') }}</th>
+                <th data-column-id="domains" data-type="string">{{ lang._('Domains (SNI)') }}</th>
+                <th data-column-id="matchType" data-type="string" data-width="8em">{{ lang._('Match') }}</th>
+                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -1243,6 +1282,7 @@ POSSIBILITY OF SUCH DAMAGE.
 {{ partial("layout_partials/base_dialog",['fields':formDialogHealthcheck,'id':'DialogHealthcheck','label':lang._('Edit Health Monitor')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogAction,'id':'DialogAction','label':lang._('Edit Rule')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogAcl,'id':'DialogAcl','label':lang._('Edit Condition')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogSniRoute,'id':'DialogSniRoute','label':lang._('Edit SNI Route')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogUser,'id':'DialogUser','label':lang._('Edit User')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogGroup,'id':'DialogGroup','label':lang._('Edit Group')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogLua,'id':'DialogLua','label':lang._('Edit Lua Script')])}}

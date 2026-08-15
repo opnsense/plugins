@@ -1,0 +1,52 @@
+<form>
+    <field>
+        <id>sniroute.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this SNI route.</help>
+    </field>
+    <field>
+        <id>sniroute.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name to identify this SNI route.</help>
+    </field>
+    <field>
+        <id>sniroute.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optional description for this SNI route.</help>
+    </field>
+    <field>
+        <label>TLS Passthrough / SNI routing</label>
+        <type>header</type>
+    </field>
+    <field>
+        <id>sniroute.frontend</id>
+        <label>Frontend</label>
+        <type>dropdown</type>
+        <help><![CDATA[The public frontend that serves these domains. Two modes are supported automatically:<br/>
+<b>TCP / SSL (passthrough)</b> — the raw TLS handshake is forwarded and routing is by SNI (<code>req.ssl_sni</code>); the passthrough boilerplate (<code>tcp-request inspect-delay</code> / accept on <code>ssl_hello_type</code>) is added for you.<br/>
+<b>HTTP (TLS terminated here)</b> — the frontend decrypts and routing is by Host header (<code>hdr(host)</code>). Use this when HAProxy holds the certificate; it avoids the HTTP/2 connection-coalescing misrouting that happens with passthrough + a shared wildcard cert.]]></help>
+    </field>
+    <field>
+        <id>sniroute.domains</id>
+        <label>Domains (SNI)</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[One or more domain names to match against the TLS SNI. Type a name and press enter to add it. For <b>Exact host</b> matching enter the full hostname (e.g. <code>www.example.com</code>); for <b>Subdomains</b> matching enter the parent domain (e.g. <code>example.com</code>) to match any <code>*.example.com</code>.]]></help>
+    </field>
+    <field>
+        <id>sniroute.matchType</id>
+        <label>Match type</label>
+        <type>dropdown</type>
+        <help><![CDATA[<b>Exact host</b> matches the SNI verbatim (<code>req.ssl_sni -i</code>). <b>Subdomains</b> matches any host ending in the given domain (<code>req.ssl_sni -m end -i .domain</code>); note it does not match the bare parent domain itself.]]></help>
+    </field>
+    <field>
+        <id>sniroute.backend</id>
+        <label>Target backend</label>
+        <type>dropdown</type>
+        <help><![CDATA[The backend that connections for the matched domains are forwarded to. Create the backend in advance as a <b>TCP</b>-mode pool with the destination server(s); this route only wires the SNI match to it via <code>use_backend</code>.]]></help>
+    </field>
+</form>

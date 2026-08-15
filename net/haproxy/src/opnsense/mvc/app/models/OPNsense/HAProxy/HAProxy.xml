@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/HAProxy</mount>
-    <version>5.0.0</version>
+    <version>5.1.0</version>
     <description>the HAProxy load balancer</description>
     <items>
         <general>
@@ -282,6 +282,11 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </timeoutServer>
+                <timeoutTunnel type="TextField">
+                    <Mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</Mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </timeoutTunnel>
                 <retries type="IntegerField">
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>100</MaximumValue>
@@ -696,6 +701,11 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </tuning_timeoutClient>
+                <tuning_timeoutTunnel type="TextField">
+                    <Mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</Mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </tuning_timeoutTunnel>
                 <tuning_timeoutHttpReq type="TextField">
                     <Mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</Mask>
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
@@ -1387,6 +1397,11 @@
                     <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
                     <Required>N</Required>
                 </tuning_timeoutServer>
+                <tuning_timeoutTunnel type="TextField">
+                    <Mask>/^([0-9]{1,8}(?:us|ms|s|m|h|d)?)/u</Mask>
+                    <ValidationMessage>Should be a number between 1 and 8 characters, optionally followed by either "d", "h", "m", "s", "ms" or "us".</ValidationMessage>
+                    <Required>N</Required>
+                </tuning_timeoutTunnel>
                 <tuning_retries type="IntegerField">
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>100</MaximumValue>
@@ -4743,6 +4758,66 @@
                 </hostname>
             </mailer>
         </mailers>
+        <sniroutes>
+            <sniroute type="ArrayField">
+                <id type="UniqueIdField">
+                    <Required>Y</Required>
+                </id>
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Mask>/^[^\t^,^;^\.^\[^\]^\{^\}]{1,255}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                    <Required>Y</Required>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,255}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 255 characters.</ValidationMessage>
+                </description>
+                <frontend type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>frontends.frontend</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related frontend item not found. The frontend must be in "SSL / TLS offloading (disabled)" or "TCP" mode for SNI passthrough.</ValidationMessage>
+                    <Required>Y</Required>
+                </frontend>
+                <backend type="ModelRelationField">
+                    <Model>
+                        <template>
+                            <source>OPNsense.HAProxy.HAProxy</source>
+                            <items>backends.backend</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                    <ValidationMessage>Related backend item not found. Create a TCP-mode backend first.</ValidationMessage>
+                    <Required>Y</Required>
+                </backend>
+                <domains type="CSVListField">
+                    <Required>Y</Required>
+                    <Sorted>N</Sorted>
+                    <Multiple>Y</Multiple>
+                    <Mask>/^(([0-9a-zA-Z._\-\*]+)([,]){0,1})*$/u</Mask>
+                    <ChangeCase>lower</ChangeCase>
+                    <ValidationMessage>Please provide one or more domain names, e.g. www.example.com.</ValidationMessage>
+                </domains>
+                <matchType type="OptionField">
+                    <Required>Y</Required>
+                    <Default>exact</Default>
+                    <OptionValues>
+                        <exact>Exact host (matches www.example.com only)</exact>
+                        <sub>Subdomains (matches *.example.com)</sub>
+                    </OptionValues>
+                    <ValidationMessage>Please select a match type.</ValidationMessage>
+                </matchType>
+            </sniroute>
+        </sniroutes>
         <maintenance>
             <cronjobs>
                 <syncCerts type="BooleanField">

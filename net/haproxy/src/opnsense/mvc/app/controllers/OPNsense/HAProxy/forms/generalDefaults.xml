@@ -40,6 +40,12 @@
         <help><![CDATA[Set the maximum inactivity time on the server side. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
     </field>
     <field>
+        <id>haproxy.general.defaults.timeoutTunnel</id>
+        <label>Tunnel Timeout</label>
+        <type>text</type>
+        <help><![CDATA[Set the maximum inactivity time for tunnel (and WebSocket) connections, once established. This overrides the client and server timeouts for tunnels, so idle WebSockets are not closed at the (much shorter) client/server timeout. Leave empty to fall back to the client/server timeouts. Defaults to milliseconds; the unit may be specified as "d", "h", "m", "s", "ms" or "us" (e.g. 24h).]]></help>
+    </field>
+    <field>
         <id>haproxy.general.defaults.retries</id>
         <label>Retries</label>
         <type>text</type>

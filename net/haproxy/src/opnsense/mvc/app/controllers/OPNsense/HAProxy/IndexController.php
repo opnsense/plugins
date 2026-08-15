@@ -45,6 +45,7 @@ class IndexController extends \OPNsense\Base\IndexController
     {
         // include form definitions
         $this->view->formDialogAcl = $this->getForm("dialogAcl");
+        $this->view->formDialogSniRoute = $this->getForm("dialogSniRoute");
         $this->view->formDialogAction = $this->getForm("dialogAction");
         $this->view->formDialogBackend = $this->getForm("dialogBackend");
         $this->view->formDialogCpu = $this->getForm("dialogCpu");

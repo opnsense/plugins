@@ -6,6 +6,12 @@ very high loads while needing persistence or Layer7 processing.
 Plugin Changelog
 ================
 
+5.2
+
+Added:
+* add SNI Routes: manage TLS-passthrough/SNI and Host-based routing (domains -> backend) in one place
+* add configurable Tunnel timeout (timeout tunnel) for WebSocket/tunnel connections
+
 5.1
 
 Added:

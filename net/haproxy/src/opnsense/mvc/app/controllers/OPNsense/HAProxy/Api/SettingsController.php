@@ -470,4 +470,34 @@ class SettingsController extends ApiMutableModelControllerBase
     {
         return $this->searchBase('mailers.mailer', array('enabled', 'name', 'mailservers', 'sender', 'recipient'), 'name');
     }
+
+    public function getSniRouteAction($uuid = null)
+    {
+        return $this->getBase('sniroute', 'sniroutes.sniroute', $uuid);
+    }
+
+    public function setSniRouteAction($uuid)
+    {
+        return $this->setBase('sniroute', 'sniroutes.sniroute', $uuid);
+    }
+
+    public function addSniRouteAction()
+    {
+        return $this->addBase('sniroute', 'sniroutes.sniroute');
+    }
+
+    public function delSniRouteAction($uuid)
+    {
+        return $this->delBase('sniroutes.sniroute', $uuid);
+    }
+
+    public function toggleSniRouteAction($uuid, $enabled = null)
+    {
+        return $this->toggleBase('sniroutes.sniroute', $uuid);
+    }
+
+    public function searchSniRoutesAction()
+    {
+        return $this->searchBase('sniroutes.sniroute', array('enabled', 'name', 'domains', 'matchType'), 'name');
+    }
 }
