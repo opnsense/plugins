@@ -1,0 +1,3 @@
+/usr/local/etc/rc.syshook.d/early/30-vep1400-init
+/usr/local/etc/rc.syshook.d/start/99-vep1400-init-complete
+/usr/local/etc/rc.configure_plugins POST_INSTALL
