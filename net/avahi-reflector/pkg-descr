@@ -1,0 +1,16 @@
+Avahi mDNS/DNS-SD Reflector
+
+Runs avahi-daemon in reflector mode, proxying multicast DNS and
+DNS Service Discovery traffic across VLANs. Unlike mdns-repeater,
+Avahi handles full mDNS A/AAAA record queries and DNS-SD browsing,
+enabling reliable hostname resolution and Bonjour service discovery
+across network segments.
+
+WWW: https://avahi.org/
+
+Plugin Changelog
+================
+
+1.0
+
+* Initial release
