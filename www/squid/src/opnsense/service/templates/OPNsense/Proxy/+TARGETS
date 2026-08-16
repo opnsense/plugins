@@ -5,6 +5,8 @@ error_directory_in:/usr/local/etc/squid/error_directory.in
 externalACLs.conf:/usr/local/etc/squid/externalACLs.conf
 newsyslog.conf:/etc/newsyslog.conf.d/squid
 nobumpsites.acl:/usr/local/etc/squid/nobumpsites.acl
+ssl_sni_block_sites.acl:/usr/local/etc/squid/ssl_sni_block_sites.acl
+ssl_sni_block_excludeip.acl:/usr/local/etc/squid/ssl_sni_block_excludeip.acl
 parentproxy.conf:/usr/local/etc/squid/pre-auth/parentproxy.conf
 post-auth.conf:/usr/local/etc/squid/post-auth/dummy.conf
 pre-auth.conf:/usr/local/etc/squid/pre-auth/dummy.conf
