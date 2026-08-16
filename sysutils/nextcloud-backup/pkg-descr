@@ -6,6 +6,10 @@ strongly advise to not use a public service to send backups to.
 Plugin Changelog
 ================
 
+1.3
+
+* Add option to disable SSL certificate verification
+
 1.2
 
 * Add option to upload to one file each day instead of syncing the contents of /conf/backup
