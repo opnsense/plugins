@@ -169,11 +169,11 @@
                                 },
                                 headerFormatters: {
                                     enabled: function (column) {
-                                        return '<i class="fa-solid fa-fw fa-check-square" data-toggle="tooltip" title="{{ lang._('Enabled') }}"></i>';;
+                                        return '<i class="fa-solid fa-fw fa-check-square" data-toggle="tooltip" title="{{ lang._('Enabled') }}"></i>';
                                     },
                                     ToDomain: function (column) { return labels.upstream; },
                                     FromDomain: function (column) {
-                                        if (grid_id === "subdomain") {
+                                        if (grid_id === "{{ formGridSubdomain['table_id'] }}") {
                                             return labels.subdomain;
                                         } else {
                                             return labels.domain;
@@ -244,7 +244,7 @@
 
 {% if entrypoint == 'reverse_proxy' %}
 
-        // Safe reload on filter change, ensures all grids are initalized beforehand
+        // Safe reload on filter change, ensures all grids are initialized beforehand
         $('#reverseFilter').change(function () {
             if (suppressFilterReload) return;
             Object.keys(all_grids).forEach(function (grid_id) {
