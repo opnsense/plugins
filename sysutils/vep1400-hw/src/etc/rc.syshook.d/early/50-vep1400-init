@@ -49,7 +49,9 @@ if [ ! -z $board_id ]; then
         smbmsg -f $ismt_dev -s 0x62 -c 0x11 -o 1 0
         if [ -e /dev/etherswitch0 ]; then
             etherswitchcfg config vlan_mode dot1q
-            etherswitchcfg port1 pvid 2 port2 pvid 2 port3 pvid 2 port4 pvid 2 port5 pvid 2 port6 pvid 3 vlangroup0 vlan 2 members 1,2,3,4,5,10t vlangroup1 vlan 3 members 6,9t
+            etherswitchcfg port1 pvid 2 port2 pvid 2 port3 pvid 2 port4 pvid 2 port5 pvid 2 port6 pvid 3 port9 pvid 3 port10 pvid 2 vlangroup0 vlan 2 members 1,2,3,4,5,10 vlangroup1 vlan 3 members 6,9
+            echo "Marvell 88E6190 configured. LAN ports are 1-5 and are connected to ix0. WAN is on port 6 and is connected to ix1."
+            logger -t "vep1400-hw" "Marvell 88E6190 configured. LAN is on ports 1-5 and is connected to ix0. WAN is on port 6 and is connected to ix1."
         else
             logger -t "vep1400-hw" "VEP1400 detected, but no etherswitch dev found. Is patched kernel installed?"
         fi
