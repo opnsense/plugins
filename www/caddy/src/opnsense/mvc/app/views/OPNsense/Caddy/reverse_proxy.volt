@@ -173,7 +173,7 @@
                                     },
                                     ToDomain: function (column) { return labels.upstream; },
                                     FromDomain: function (column) {
-                                        if (grid_id === "{{ formGridSubdomain['table_id'] }}") {
+                                        if (grid_id === "subdomain") {
                                             return labels.subdomain;
                                         } else {
                                             return labels.domain;
