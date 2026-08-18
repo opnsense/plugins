@@ -42,26 +42,40 @@ use OPNsense\Core\Config;
 
 const PRIMARY_DIR = "/usr/local/etc/namedb/primary";
 
-function rpz_action_target($action, $redirect_target)
+// Returns an array of zone-file lines for one entry, or [] to skip it
+// (e.g. a redirect/local-a entry missing its required value — better to
+// silently omit than emit a broken record).
+function rpz_entry_lines($qname, $action, $redirect_target, $ipv4, $ipv6)
 {
     switch ((string)$action) {
+        case 'local-a':
+            $lines = [];
+            $ipv4 = trim((string)$ipv4);
+            if ($ipv4 !== '') {
+                $lines[] = sprintf('%s A %s', $qname, $ipv4);
+            }
+            $ipv6 = trim((string)$ipv6);
+            if ($ipv6 !== '') {
+                $lines[] = sprintf('%s AAAA %s', $qname, $ipv6);
+            }
+            return $lines;
         case 'nodata':
-            return '*.';
+            return [sprintf('%s CNAME *.', $qname)];
         case 'passthru':
-            return 'rpz-passthru.';
+            return [sprintf('%s CNAME rpz-passthru.', $qname)];
         case 'drop':
-            return 'rpz-drop.';
+            return [sprintf('%s CNAME rpz-drop.', $qname)];
         case 'tcp-only':
-            return 'rpz-tcp-only.';
+            return [sprintf('%s CNAME rpz-tcp-only.', $qname)];
         case 'cname':
             $target = trim((string)$redirect_target);
             if ($target === '') {
-                return null; // no target configured, skip this entry
+                return [];
             }
-            return rtrim($target, '.') . '.';
+            return [sprintf('%s CNAME %s.', $qname, rtrim($target, '.'))];
         case 'nxdomain':
         default:
-            return '.';
+            return [sprintf('%s CNAME .', $qname)];
     }
 }
 
@@ -97,15 +111,20 @@ if ($rpzentry !== null && !empty($rpzentry->entries) && !empty($rpzentry->entrie
         if (!isset($entries_by_zone[$zone_uuid])) {
             continue; // entry belongs to a zone that's disabled, feed-type, or deleted
         }
-        $target = rpz_action_target((string)$entry->action, (string)$entry->redirect_target);
-        if ($target === null) {
-            continue; // cname action with no redirect_target set — skip rather than emit a broken record
-        }
         $qname = trim((string)$entry->qname);
         if ($qname === '') {
             continue;
         }
-        $entries_by_zone[$zone_uuid][] = sprintf('%s CNAME %s', $qname, $target);
+        $lines = rpz_entry_lines(
+            $qname,
+            (string)$entry->action,
+            (string)$entry->redirect_target,
+            (string)($entry->ipv4 ?? ''),
+            (string)($entry->ipv6 ?? '')
+        );
+        foreach ($lines as $line) {
+            $entries_by_zone[$zone_uuid][] = $line;
+        }
     }
 }
 

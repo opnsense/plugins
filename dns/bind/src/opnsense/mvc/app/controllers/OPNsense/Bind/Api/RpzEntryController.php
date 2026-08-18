@@ -21,7 +21,7 @@ class RpzEntryController extends ApiMutableModelControllerBase
 
         return $this->searchBase(
             'entries.entry',
-            array("enabled", "zone", "qname", "action", "redirect_target"),
+            array("enabled", "zone", "qname", "action", "redirect_target", "ipv4", "ipv6"),
             null,
             $filter_funct
         );

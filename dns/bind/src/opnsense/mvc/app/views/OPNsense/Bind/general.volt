@@ -106,6 +106,8 @@
                         <th data-column-id="qname" data-type="string" data-visible="true">{{ lang._('Domain') }}</th>
                         <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
                         <th data-column-id="redirect_target" data-type="string" data-visible="true">{{ lang._('Redirect target') }}</th>
+                        <th data-column-id="ipv4" data-type="string" data-visible="true">{{ lang._('IPv4') }}</th>
+                        <th data-column-id="ipv6" data-type="string" data-visible="true">{{ lang._('IPv6') }}</th>
                         <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                         <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
                     </tr>
@@ -114,7 +116,7 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="6"></td>
+                        <td colspan="8"></td>
                         <td>
                             <button id="rpzEntryAddBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
                             <button id="rpzEntryDelBtn" data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>

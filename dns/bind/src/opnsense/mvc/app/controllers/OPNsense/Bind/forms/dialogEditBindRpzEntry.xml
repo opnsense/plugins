@@ -21,12 +21,24 @@
         <id>entry.action</id>
         <label>Action</label>
         <type>dropdown</type>
-        <help>What to do when this name matches. Redirect requires a target hostname below.</help>
+        <help>What to do when this name matches. Redirect requires a target hostname below; Local A/AAAA record requires an IP below.</help>
     </field>
     <field>
         <id>entry.redirect_target</id>
         <label>Redirect target</label>
         <type>text</type>
         <help>Hostname to redirect to. Only used when Action is Redirect.</help>
+    </field>
+    <field>
+        <id>entry.ipv4</id>
+        <label>IPv4 address</label>
+        <type>text</type>
+        <help>Only used when Action is Local A/AAAA record. Answer this name's A query with this address.</help>
+    </field>
+    <field>
+        <id>entry.ipv6</id>
+        <label>IPv6 address</label>
+        <type>text</type>
+        <help>Only used when Action is Local A/AAAA record. Answer this name's AAAA query with this address (optional — leave empty for IPv4-only).</help>
     </field>
 </form>
