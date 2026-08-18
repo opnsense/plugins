@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/chrony/general</mount>
     <description>Chrony configuration</description>
-    <version>0.0.3</version>
+    <version>0.0.4</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -20,7 +20,7 @@
             <Required>Y</Required>
         </ntsnocert>
         <peers type="HostnameField">
-            <Default>0.opnsense.pool.ntp.org</Default>
+            <Default>0.opnsense.pool.ntp.org,1.opnsense.pool.ntp.org,2.opnsense.pool.ntp.org,3.opnsense.pool.ntp.org</Default>
             <Required>N</Required>
             <FieldSeparator>,</FieldSeparator>
             <AsList>Y</AsList>
