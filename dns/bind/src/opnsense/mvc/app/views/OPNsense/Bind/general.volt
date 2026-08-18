@@ -61,6 +61,76 @@
                 <button class="btn btn-primary" id="saveAct_rpz" type="button"><b>{{ lang._('Save') }}</b> <i id="saveAct_rpz_progress"></i></button>
             </div>
         </div>
+        <div class="col-md-12">
+            <h2>{{ lang._('Zones') }}</h2>
+            <p>{{ lang._('Evaluated in the order listed — the first zone with a matching trigger wins.') }}</p>
+        </div>
+        <div id="rpz-zones-area" class="table-responsive">
+            <table id="grid-rpz-zones" class="table table-condensed table-hover table-striped" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindRpzZone">
+                <thead>
+                    <tr>
+                        <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                        <th data-column-id="name" data-type="string" data-visible="true">{{ lang._('Name') }}</th>
+                        <th data-column-id="type" data-type="string" data-visible="true">{{ lang._('Type') }}</th>
+                        <th data-column-id="policy" data-type="string" data-visible="true">{{ lang._('Policy') }}</th>
+                        <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                        <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6"></td>
+                        <td>
+                            <button data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                            <button data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="col-md-12">
+            <p><em>{{ lang._('Zone order here determines response-policy precedence — reordering isn\'t supported by this grid; delete and re-add zones in the order you want.') }}</em></p>
+        </div>
+        <hr/>
+        <div class="col-md-12">
+            <h2>{{ lang._('Entries') }}</h2>
+            <p>{{ lang._('Select a local-type zone above to edit its entries. Feed-type zones are downloaded externally — use "View zone content" instead.') }}</p>
+        </div>
+        <div id="rpz-entries-area" class="table-responsive">
+            <table id="grid-rpz-entries" class="table table-condensed table-hover table-striped" data-editAlert="ChangeMessage" data-editDialog="dialogEditBindRpzEntry">
+                <thead>
+                    <tr>
+                        <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
+                        <th data-column-id="qname" data-type="string" data-visible="true">{{ lang._('Domain') }}</th>
+                        <th data-column-id="action" data-type="string" data-visible="true">{{ lang._('Action') }}</th>
+                        <th data-column-id="redirect_target" data-type="string" data-visible="true">{{ lang._('Redirect target') }}</th>
+                        <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
+                        <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6"></td>
+                        <td>
+                            <button id="rpzEntryAddBtn" data-action="add" type="button" class="btn btn-xs btn-default"><span class="fa fa-plus"></span></button>
+                            <button id="rpzEntryDelBtn" data-action="deleteSelected" type="button" class="btn btn-xs btn-default"><span class="fa fa-trash-o"></span></button>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="col-md-12">
+            <div id="RpzEntryChangeMessage" class="alert alert-info" style="display: none" role="alert">
+                {{ lang._('After changing entries, please remember to apply them with the button below') }}
+            </div>
+            <hr />
+            <button class="btn btn-primary" id="saveAct_rpz_entries" type="button"><b>{{ lang._('Apply') }}</b> <i id="saveAct_rpz_entries_progress"></i></button>
+            <br /><br />
+        </div>
     </div>
     <div id="acls" class="tab-pane fade in">
         <div id="acls-area" class="table-responsive">
@@ -238,6 +308,8 @@
 </div>
 
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindAcl,'id':'dialogEditBindAcl','label':lang._('Edit ACL')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindRpzZone,'id':'dialogEditBindRpzZone','label':lang._('Edit RPZ Zone')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditBindRpzEntry,'id':'dialogEditBindRpzEntry','label':lang._('Edit RPZ Entry')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindPrimaryDomain,'id':'dialogEditBindPrimaryDomain','label':lang._('Edit Primary Zone')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindSecondaryDomain,'id':'dialogEditBindSecondaryDomain','label':lang._('Edit Secondary Zone')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditBindForwardDomain,'id':'dialogEditBindForwardDomain','label':lang._('Edit Forward Zone')])}}
@@ -415,6 +487,83 @@ $(document).ready(function() {
         'add': '/api/bind/acl/add_acl/',
         'del': '/api/bind/acl/del_acl/',
         'toggle': '/api/bind/acl/toggle_acl/'
+    });
+
+    function rpz_zone_type_ui(type) {
+        if (type === 'local') {
+            $("#rpzEntryAddBtn, #rpzEntryDelBtn").show();
+        } else {
+            $("#rpzEntryAddBtn, #rpzEntryDelBtn").hide();
+        }
+    }
+
+    $("#grid-rpz-zones").UIBootgrid({
+        'search': '/api/bind/rpz/search_zone',
+        'get': '/api/bind/rpz/get_zone/',
+        'set': '/api/bind/rpz/set_zone/',
+        'add': '/api/bind/rpz/add_zone/',
+        'del': '/api/bind/rpz/del_zone/',
+        'toggle': '/api/bind/rpz/toggle_zone/',
+        commands: {
+            'bind-checkzone': {
+                'title': "Check & preview",
+                'classname': "fa fa-fw fa-stethoscope",
+                'sequence': 300,
+            },
+        },
+        options: {
+            selection: true,
+            multiSelect: false,
+            rowSelect: true,
+            rowCount: [3, 7, 14, 20, 50, 100, -1]
+        }
+    }).on("selected.rs.jquery.bootgrid", function(e, rows) {
+        $("#grid-rpz-entries").bootgrid('reload');
+        rpz_zone_type_ui(rows[0].type);
+    }).on("deselected.rs.jquery.bootgrid", function(e, rows) {
+        $("#grid-rpz-entries").bootgrid('reload');
+        rpz_zone_type_ui(null);
+    }).on("loaded.rs.jquery.bootgrid", function(e) {
+        $("#grid-rpz-zones").find(".command-bind-checkzone").off("click").on("click", function(ev) {
+            let zonename = $(this).closest(".tabulator-row").find("[tabulator-field='name']").text();
+            zone_test(zonename);
+        });
+
+        let ids = $("#grid-rpz-zones").bootgrid("getCurrentRows");
+        if (ids.length > 0) {
+            $("#grid-rpz-zones").bootgrid('select', [ids[0].uuid]);
+        } else {
+            rpz_zone_type_ui(null);
+        }
+    });
+
+    $("#grid-rpz-entries").UIBootgrid({
+        'search': '/api/bind/rpz_entry/search_entry',
+        'get': '/api/bind/rpz_entry/get_entry/',
+        'set': '/api/bind/rpz_entry/set_entry/',
+        'add': '/api/bind/rpz_entry/add_entry/',
+        'del': '/api/bind/rpz_entry/del_entry/',
+        'toggle': '/api/bind/rpz_entry/toggle_entry/',
+        options: {
+            useRequestHandlerOnGet: true,
+            requestHandler: function(request) {
+                let ids = $("#grid-rpz-zones").bootgrid("getSelectedRows");
+                if (ids.length > 0) {
+                    request['zone'] = ids[0];
+                } else {
+                    request['zone'] = 'not_found';
+                }
+                return request;
+            }
+        }
+    });
+
+    $("#saveAct_rpz_entries").click(function() {
+        $("#saveAct_rpz_entries_progress").addClass("fa fa-spinner fa-pulse");
+        ajaxCall(url = "/api/bind/service/reconfigure", sendData = {}, callback = function(data, status) {
+            updateServiceControlUI('bind');
+            $("#saveAct_rpz_entries_progress").removeClass("fa fa-spinner fa-pulse");
+        });
     });
 
     $("#grid-primary-domains").UIBootgrid({

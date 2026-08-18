@@ -1,30 +1,53 @@
 <model>
     <mount>//OPNsense/bind/rpz</mount>
     <description>Response Policy Zone configuration</description>
-    <version>1.0.0</version>
+    <version>3.0.0</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
         </enabled>
-        <zone type="TextField">
-            <Required>N</Required>
-            <Mask>/^([a-zA-Z0-9_\-\.]{0,253})$/</Mask>
-            <ValidationMessage>Zone name may only contain letters, digits, hyphens, dots, and underscores.</ValidationMessage>
-        </zone>
-        <policy type="OptionField">
-            <Required>N</Required>
-            <OptionValues>
-                <nxdomain>NXDOMAIN (block — return non-existent domain)</nxdomain>
-                <nodata>NODATA (block — return empty answer)</nodata>
-                <passthru>Passthru (disable policy for matching names)</passthru>
-                <drop>Drop (do not answer)</drop>
-                <tcp-only>TCP only (force TCP retry)</tcp-only>
-            </OptionValues>
-        </policy>
+        <!-- break-dnssec is a response-policy-block-level option in BIND's
+             grammar, not per-zone, so it stays a single top-level field even
+             with multiple zones. -->
         <break_dnssec type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
         </break_dnssec>
+        <zones>
+            <zone type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^([a-zA-Z0-9_\-\.]{1,253})$/</Mask>
+                    <ValidationMessage>Zone name may only contain letters, digits, hyphens, dots, and underscores.</ValidationMessage>
+                </name>
+                <!-- feed: file is downloaded/managed externally (Ansible script), read-only
+                     from the GUI's perspective. local: file is generated from this zone's
+                     RpzEntry rows on every BIND restart/reconfigure (see rpzLocalGenerate.php),
+                     fully editable here. -->
+                <type type="OptionField">
+                    <Default>feed</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <feed>Feed (downloaded externally, read-only here)</feed>
+                        <local>Local (managed in this GUI)</local>
+                    </OptionValues>
+                </type>
+                <policy type="OptionField">
+                    <Required>N</Required>
+                    <OptionValues>
+                        <nxdomain>NXDOMAIN (block — return non-existent domain)</nxdomain>
+                        <nodata>NODATA (block — return empty answer)</nodata>
+                        <passthru>Passthru (disable policy for matching names)</passthru>
+                        <drop>Drop (do not answer)</drop>
+                        <tcp-only>TCP only (force TCP retry)</tcp-only>
+                    </OptionValues>
+                </policy>
+            </zone>
+        </zones>
     </items>
 </model>

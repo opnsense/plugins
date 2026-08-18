@@ -1,0 +1,49 @@
+<model>
+    <mount>//OPNsense/bind/rpzentry</mount>
+    <description>RPZ zone entries (for local-type zones only)</description>
+    <version>1.0.0</version>
+    <items>
+        <entries>
+            <entry type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <zone type="ModelRelationField">
+                    <Required>Y</Required>
+                    <Model>
+                        <template>
+                            <source>OPNsense.Bind.Rpz</source>
+                            <items>zones.zone</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                </zone>
+                <qname type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^(\*\.)?([a-zA-Z0-9_\-]{1,63}\.)*[a-zA-Z0-9_\-]{1,63}$/</Mask>
+                    <ValidationMessage>Enter a domain name (wildcards like *.example.com are allowed).</ValidationMessage>
+                </qname>
+                <!-- Standard BIND RPZ well-known action encodings — not
+                     invented syntax. See rpzLocalGenerate.php for the
+                     action -> CNAME target mapping. -->
+                <action type="OptionField">
+                    <Default>nxdomain</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <nxdomain>NXDOMAIN (block — CNAME .)</nxdomain>
+                        <nodata>NODATA (block — CNAME *.)</nodata>
+                        <passthru>Passthru (allow — CNAME rpz-passthru.)</passthru>
+                        <drop>Drop (no answer — CNAME rpz-drop.)</drop>
+                        <tcp-only>TCP only (CNAME rpz-tcp-only.)</tcp-only>
+                        <cname>Redirect (CNAME to a specific hostname)</cname>
+                    </OptionValues>
+                </action>
+                <redirect_target type="TextField">
+                    <Required>N</Required>
+                    <ValidationMessage>Required when action is Redirect — the hostname to CNAME to.</ValidationMessage>
+                </redirect_target>
+            </entry>
+        </entries>
+    </items>
+</model>

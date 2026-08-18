@@ -34,4 +34,39 @@ class RpzController extends ApiMutableModelControllerBase
 {
     protected static $internalModelClass = '\OPNsense\Bind\Rpz';
     protected static $internalModelName = 'rpz';
+
+    // Grid CRUD for the zones ArrayField — mirrors AclController's pattern
+    // exactly (acls.acl -> zones.zone). The inherited getAction/setAction
+    // (whole-model get/set, used by Ansible to bulk-configure all zones in
+    // one call) are unaffected by these — same coexistence as Acl's bulk
+    // set vs. its per-row grid actions.
+    public function searchZoneAction()
+    {
+        return $this->searchBase('zones.zone', ['enabled', 'name', 'policy']);
+    }
+
+    public function getZoneAction($uuid = null)
+    {
+        return $this->getBase('zone', 'zones.zone', $uuid);
+    }
+
+    public function addZoneAction()
+    {
+        return $this->addBase('zone', 'zones.zone');
+    }
+
+    public function delZoneAction($uuid)
+    {
+        return $this->delBase('zones.zone', $uuid);
+    }
+
+    public function setZoneAction($uuid)
+    {
+        return $this->setBase('zone', 'zones.zone', $uuid);
+    }
+
+    public function toggleZoneAction($uuid)
+    {
+        return $this->toggleBase('zones.zone', $uuid);
+    }
 }

@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>entry.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the entry.</help>
+    </field>
+    <field>
+        <id>entry.zone</id>
+        <label>Zone</label>
+        <type>dropdown</type>
+        <help>The local zone this entry belongs to.</help>
+    </field>
+    <field>
+        <id>entry.qname</id>
+        <label>Domain</label>
+        <type>text</type>
+        <help>Domain name to match (wildcards like *.example.com are allowed).</help>
+    </field>
+    <field>
+        <id>entry.action</id>
+        <label>Action</label>
+        <type>dropdown</type>
+        <help>What to do when this name matches. Redirect requires a target hostname below.</help>
+    </field>
+    <field>
+        <id>entry.redirect_target</id>
+        <label>Redirect target</label>
+        <type>text</type>
+        <help>Hostname to redirect to. Only used when Action is Redirect.</help>
+    </field>
+</form>
