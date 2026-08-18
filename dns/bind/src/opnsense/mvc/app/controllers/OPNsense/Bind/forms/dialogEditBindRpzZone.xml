@@ -1,0 +1,26 @@
+<form>
+    <field>
+        <id>zone.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>This will enable or disable the zone.</help>
+    </field>
+    <field>
+        <id>zone.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Name of the RPZ zone (e.g. rpz.local). The zone file is expected at /usr/local/etc/namedb/primary/&lt;name&gt;.db.</help>
+    </field>
+    <field>
+        <id>zone.type</id>
+        <label>Type</label>
+        <type>dropdown</type>
+        <help>Feed zones are downloaded externally and are read-only here. Local zones are fully managed in this GUI via the Entries grid below.</help>
+    </field>
+    <field>
+        <id>zone.policy</id>
+        <label>Policy</label>
+        <type>dropdown</type>
+        <help>Override policy applied to names matching this zone. Leave empty to use the zone's own CNAME records (given).</help>
+    </field>
+</form>
