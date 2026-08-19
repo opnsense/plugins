@@ -7,5 +7,9 @@
             <Required>Y</Required>
             <Multiple>N</Multiple>
         </interface>
+        <prefer_port_5201 type="BooleanField">
+            <Default>1</Default>
+            <Required>N</Required>
+        </prefer_port_5201>
     </items>
 </model>
