@@ -1,0 +1,5 @@
+{% if helpers.exists('OPNsense.DnsmasqToUnbound.enabled') and OPNsense.DnsmasqToUnbound.enabled == '1' %}
+dnsmasq_watcher_enable="YES"
+{% else %}
+dnsmasq_watcher_enable="NO"
+{% endif %}
