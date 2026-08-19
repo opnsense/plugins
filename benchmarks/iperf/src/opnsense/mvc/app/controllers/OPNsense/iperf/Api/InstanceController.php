@@ -55,9 +55,11 @@ class InstanceController extends ApiMutableModelControllerBase
                     'error' => 'interface parameter is missing');
         }
         $interface_name = $_POST['instance']['interface'];
+        $prefer_port_5201 = isset($_POST['instance']['prefer_port_5201']) &&
+            $_POST['instance']['prefer_port_5201'] === '1';
         if ($interface = $this->get_real_interface_name($interface_name)) {
             // start iperf
-            return $this->send_command("start $interface", $backend);
+            return $this->send_command("start $interface " . ($prefer_port_5201 ? '1' : '0'), $backend);
         } else {
             return array('status' => 'error',
                       'error' => 'interface is unknown');
