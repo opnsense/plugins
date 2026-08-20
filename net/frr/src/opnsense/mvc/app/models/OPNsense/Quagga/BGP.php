@@ -3,6 +3,41 @@
 namespace OPNsense\Quagga;
 
 use OPNsense\Base\BaseModel;
+use Phalcon\Messages\Message;
+
+class BGP extends BaseModel
+{
+    public function performValidation($validateFullModel = false)
+    {
+        // Run standard XML field validations first
+        $messages = parent::performValidation($validateFullModel);
+
+        // Fetch values
+        $asn = trim((string)$this->confed_asn);
+        $peers = trim((string)$this->confed_peers);
+
+        $has_asn = !empty($asn);
+        $has_peers = !empty($peers);
+
+        // 1. ASN is set, but Peers are empty
+        if ($has_asn && !$has_peers) {
+            $messages->appendMessage(new Message(
+                "BGP Confederation Peers are required when a Confederation ASN is defined.",
+                "confed_peers"
+            ));
+        }
+
+        // 2. Peers are set, but ASN is empty
+        if (!$has_asn && $has_peers) {
+            $messages->appendMessage(new Message(
+                "BGP Confederation ASN is required when Confederation Peers are defined.",
+                "confed_asn"
+            ));
+        }
+
+        return $messages;
+    }
+}
 
 /*
     Copyright (C) 2017 Fabian Franz
@@ -26,6 +61,3 @@ use OPNsense\Base\BaseModel;
     ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
     POSSIBILITY OF SUCH DAMAGE.
 */
-class BGP extends BaseModel
-{
-}
