@@ -30,6 +30,7 @@ namespace OPNsense\Nginx\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\Core\Config;
 
 class SettingsController extends ApiMutableModelControllerBase
 {
@@ -643,7 +644,12 @@ class SettingsController extends ApiMutableModelControllerBase
     public function addsnifwdAction()
     {
         if ($this->request->isPost()) {
-            $this->regenerate_hostname_map(null);
+            $result = $this->regenerate_hostname_map(null);
+
+            if ($result['result'] === 'failed') {
+                return $result;
+            }
+
             return $this->addBase('snihostname', 'sni_hostname_upstream_map');
         }
         return [];
@@ -666,7 +672,12 @@ class SettingsController extends ApiMutableModelControllerBase
     public function setsnifwdAction($uuid)
     {
         if ($this->request->isPost()) {
-            $this->regenerate_hostname_map($uuid);
+            $result = $this->regenerate_hostname_map($uuid);
+
+            if ($result['result'] === 'failed') {
+                return $result;
+            }
+
             return $this->setBase('snihostname', 'sni_hostname_upstream_map', $uuid);
         }
         return [];
@@ -687,9 +698,15 @@ class SettingsController extends ApiMutableModelControllerBase
     public function addipaclAction()
     {
         if ($this->request->isPost()) {
-            $this->regenerate_ipacl(null);
+            $result = $this->regenerate_ipacl(null);
+
+            if ($result['result'] === 'failed') {
+                return $result;
+            }
+
             return $this->addBase('ipacl', 'ip_acl');
         }
+
         return [];
     }
 
@@ -710,9 +727,15 @@ class SettingsController extends ApiMutableModelControllerBase
     public function setipaclAction($uuid)
     {
         if ($this->request->isPost()) {
-            $this->regenerate_ipacl($uuid);
+            $result = $this->regenerate_ipacl($uuid);
+
+            if ($result['result'] === 'failed') {
+                return $result;
+            }
+
             return $this->setBase('ipacl', 'ip_acl', $uuid);
         }
+
         return [];
     }
     /*
@@ -763,25 +786,91 @@ class SettingsController extends ApiMutableModelControllerBase
     private function regenerate_hostname_map($uuid = null)
     {
         $nginx = $this->getModel();
-        if ($this->request->hasPost('snihostname') && is_array($_POST['snihostname']['data'])) {
-            if ($uuid != null) {
-                // for an update, we have to clear it.
-                $this->delete_uuids(
-                    $nginx->find_sni_hostname_upstream_map_entry_uuids($uuid),
-                    'sni_hostname_upstream_map_item'
-                );
-            }
-            $ids = [];
-            $postdata = $_POST['snihostname']['data'];
-            foreach ($postdata as $post_item) {
-                $item = $nginx->sni_hostname_upstream_map_item->Add();
-                $ids[] = $item->getAttributes()['uuid'];
-                $item->hostname = $post_item['hostname'];
-                $item->upstream = $post_item['upstream'];
-            }
-            $nginx->serializeToConfig();
-            $_POST['snihostname']['data'] = implode(',', $ids);
+        if (!$this->request->hasPost('snihostname')
+            || !is_array($_POST['snihostname']['data'])) {
+            return ['result' => 'continue'];
         }
+        $postdata = $_POST['snihostname']['data'];
+        /*
+         * An empty map is invalid. Let the GUI report the validation error
+         * without modifying the existing configuration.
+         */
+        if (empty($postdata)) {
+            return [
+                'result' => 'failed',
+                'validations' => [
+                    'snihostname.data' => gettext('A value is required.')
+                ]
+            ];
+        }
+        /*
+         * Create the new map items in memory.
+         */
+        $ids = [];
+        foreach ($postdata as $post_item) {
+            $item = $nginx->sni_hostname_upstream_map_item->Add();
+            $ids[] = $item->getAttributes()['uuid'];
+            $item->hostname = $post_item['hostname'];
+            $item->upstream = $post_item['upstream'];
+        }
+        /*
+         * Validate the new map items before modifying the existing map.
+         */
+        $validation = $nginx->performValidation(true);
+        $validation_messages = [];
+        foreach ($validation as $msg) {
+            foreach ($ids as $rowIndex => $id) {
+                if (strpos(
+                    $msg->getField(),
+                    'sni_hostname_upstream_map_item.' . $id . '.'
+                ) === 0) {
+                    $msgText = $msg->getMessage();
+                    $rawValue = (string)($postdata[$rowIndex]['hostname'] ?? '');
+                    if ($rawValue !== '' && strpos($msgText, $rawValue) === false) {
+                        $msgText = sprintf('[%s] %s', $rawValue, $msgText);
+                    }
+                    if (!in_array($msgText, $validation_messages)) {
+                        $validation_messages[] = $msgText;
+                    }
+                    break;
+                }
+            }
+        }
+        if (!empty($validation_messages)) {
+            return [
+                'result' => 'failed',
+                'validations' => [
+                    'snihostname.data' => count($validation_messages) === 1
+                        ? $validation_messages[0]
+                        : $validation_messages
+                ]
+            ];
+        }
+        /*
+         * The new items are valid. For an existing map, remove the old
+         * items. The parent's reference must be cleared and saved first,
+         * otherwise safe-delete considers the old items still in use.
+         */
+        if ($uuid != null) {
+            $old_uuids = $nginx->find_sni_hostname_upstream_map_entry_uuids($uuid);
+            $parent = $nginx->getNodeByReference(
+                'sni_hostname_upstream_map.' . $uuid
+            );
+            if ($parent != null) {
+                $parent->data = '';
+                $nginx->serializeToConfig(false, true);
+                Config::getInstance()->save();
+            }
+            $this->delete_uuids(
+                $old_uuids,
+                'sni_hostname_upstream_map_item'
+            );
+        }
+        /*
+         * Pass the new item UUIDs to addBase()/setBase().
+         */
+        $_POST['snihostname']['data'] = implode(',', $ids);
+        return ['result' => 'continue'];
     }
 
     /**
@@ -791,25 +880,94 @@ class SettingsController extends ApiMutableModelControllerBase
     private function regenerate_ipacl($uuid = null)
     {
         $nginx = $this->getModel();
-        if ($this->request->hasPost('ipacl') && is_array($_POST['ipacl']['data'])) {
-            if ($uuid != null) {
-                // for an update, we have to clear it.
-                $this->delete_uuids(
-                    $nginx->find_ip_acl_uuids($uuid),
-                    'ip_acl_item'
-                );
-            }
-            $ids = [];
-            $postdata = $_POST['ipacl']['data'];
-            foreach ($postdata as $post_item) {
-                $item = $nginx->ip_acl_item->Add();
-                $ids[] = $item->getAttributes()['uuid'];
-                $item->network = $post_item['network'];
-                $item->action = $post_item['action'];
-            }
-            $nginx->serializeToConfig();
-            $_POST['ipacl']['data'] = implode(',', $ids);
+        if (!$this->request->hasPost('ipacl')
+            || !is_array($_POST['ipacl']['data'])) {
+            return ['result' => 'continue'];
         }
+        $postdata = $_POST['ipacl']['data'];
+        /*
+         * An empty ACL is invalid. Do not modify the existing configuration
+         * and let the GUI report the validation error
+         */
+        if (empty($postdata)) {
+            return [
+                'result' => 'failed',
+                'validations' => [
+                    'ipacl.data' => gettext('A value is required.')
+                ]
+            ];
+        }
+        /*
+         * Create the new ACL items in memory.
+         */
+        $ids = [];
+        foreach ($postdata as $post_item) {
+            $item = $nginx->ip_acl_item->Add();
+            $ids[] = $item->getAttributes()['uuid'];
+            $item->network = $post_item['network'];
+            $item->action = $post_item['action'];
+        }
+        /*
+         * Validate the new ACL items before modifying the existing ACL.
+         */
+        $validation = $nginx->performValidation(true);
+        $validation_messages = [];
+        foreach ($validation as $msg) {
+            foreach ($ids as $rowIndex => $id) {
+                if (strpos(
+                    $msg->getField(),
+                    'ip_acl_item.' . $id . '.'
+                ) === 0) {
+                    $msgText = $msg->getMessage();
+                    $rawValue = (string)($postdata[$rowIndex]['network'] ?? '');
+                    if ($rawValue !== '' && strpos($msgText, $rawValue) === false) {
+                        $msgText = sprintf('[%s] %s', $rawValue, $msgText);
+                    }
+                    if (!in_array($msgText, $validation_messages)) {
+                        $validation_messages[] = $msgText;
+                    }
+                    break;
+                }
+            }
+        }
+        /*
+         * Validation failed. Leave the existing ACL untouched.
+         */
+        if (!empty($validation_messages)) {
+            return [
+                'result' => 'failed',
+                'validations' => [
+                    'ipacl.data' => count($validation_messages) === 1
+                        ? $validation_messages[0]
+                        : $validation_messages
+                ]
+            ];
+        }
+        /*
+         * The new ACL items are valid.
+         *
+         * For an existing ACL, clear the parent's reference to the old
+         * items and persist that intermediate state. This is required
+         * by safe-delete before removing the old items.
+         */
+        if ($uuid != null) {
+            $old_uuids = $nginx->find_ip_acl_uuids($uuid);
+            $parent = $nginx->getNodeByReference('ip_acl.' . $uuid);
+            if ($parent != null) {
+                $parent->data = '';
+                $nginx->serializeToConfig(false, true);
+                Config::getInstance()->save();
+            }
+            $this->delete_uuids(
+                $old_uuids,
+                'ip_acl_item'
+            );
+        }
+        /*
+         * Pass the new item UUIDs to addBase()/setBase().
+         */
+        $_POST['ipacl']['data'] = implode(',', $ids);
+        return ['result' => 'continue'];
     }
 
     /**
