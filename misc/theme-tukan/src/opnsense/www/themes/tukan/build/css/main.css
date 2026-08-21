@@ -2040,7 +2040,7 @@ th {
     padding: 10px 0px 10px 20px;
     line-height: 1.428571429;
     vertical-align: top;
-    border-top: 1px solid #f0f0f0; }
+    border-top: 1px solid #cdcdcd; }
   .table > thead > tr > th {
     vertical-align: bottom;  }
   .table > caption + thead > tr:first-child > th,
@@ -2052,11 +2052,11 @@ th {
     border-top: 0;
     font-family: 'SourceSansProSemibold';
     font-weight: normal;
-    border-bottom: 1px solid #5e5e5e;
+    border-bottom: 1px solid #dcdbdb;
     background-color: #fff;
     color: #000;}
   .table > tbody + tbody {
-    border-top: 2px solid #5e5e5e; }
+    border-top: 1px solid #5e5e5e; }
   .table .table {
     background-color: none; }
 
