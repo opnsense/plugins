@@ -6,6 +6,12 @@
     <help>Enter a short description like a name for this redirect.</help>
   </field>
   <field>
+    <id>snihostname.enable_hostnames</id>
+    <label>Enable hostname wildcards</label>
+    <type>checkbox</type>
+    <help>Indicates that map values are hostnames with prefix or suffix mask instead of regex, e.g. "*.example.com", "www.example.*" or ".example.com".</help>
+  </field>
+  <field>
     <id>snihostname.data</id>
     <style>json-data</style>
     <label>Hostname Upstream Map</label>
