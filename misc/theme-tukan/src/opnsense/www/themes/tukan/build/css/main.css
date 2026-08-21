@@ -6199,12 +6199,14 @@ button.toggle-sidebar {
 .active-menu-title, .active-menu a {
   text-decoration: none;
   position: relative;
-  background-color: #24323a; }
+  background-color: #172c38;
+  }
+  
   .active-menu-title:before, .active-menu a:before {
     width: 3px; }
   .active-menu-title.active, .active-menu a.active {
 	background-color: #fff;
-	color: #000; }
+	color: #dd630d; }
 
 .active-menu a:before {
   background: #FF8B00; }
