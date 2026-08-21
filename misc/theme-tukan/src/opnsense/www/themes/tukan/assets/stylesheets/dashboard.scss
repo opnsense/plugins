@@ -229,7 +229,7 @@ div {
 	display: flex;
 	flex-flow: row wrap;
 	padding: 0.5em 0.5em;
-	border-top: solid 1px rgba(192, 62, 20, 0.15);
+	border-top: solid 1px rgb(238, 238, 238);
 	align-items: center;
 	&:hover {
 		background: #F7F7F7 !important;
@@ -255,7 +255,7 @@ div {
 			background: #F7F7F7;
 		}
 		&:not(:last-child) {
-			border-bottom: solid 1px rgba(192, 62, 20, 0.15);
+			border-bottom: solid 1px rgb(238, 238, 238);
 		}
 	}
 }
