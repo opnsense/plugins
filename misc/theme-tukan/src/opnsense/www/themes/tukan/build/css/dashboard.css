@@ -50,7 +50,7 @@
 .grid-stack-item-content {
   text-align: center;
   border-style: solid;
-  border-color: rgba(221, 99, 13, 0.45);
+  border-color: rgb(174, 174, 174);
   border-width: 1px;
   background-color: #FFF;
 }
