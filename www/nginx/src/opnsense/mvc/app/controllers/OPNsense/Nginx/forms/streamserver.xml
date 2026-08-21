@@ -106,6 +106,13 @@
     <help>Select an upstream map to choose the host based on the name given by the client.</help>
   </field>
   <field>
+    <id>streamserver.map_proxy_protocol</id>
+    <label>PROXY Protocol to Backend</label>
+    <type>checkbox</type>
+    <advanced>true</advanced>
+    <help>Enables PROXY Protocol to the upstream server so nginx sends the client's real address to the backend chosen by the SNI map.</help>
+  </field>
+  <field>
     <id>streamserver.ip_acl</id>
     <label>IP ACL</label>
     <type>dropdown</type>
