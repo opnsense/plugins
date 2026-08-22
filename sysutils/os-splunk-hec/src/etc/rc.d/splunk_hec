@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# OPNsense Splunk HEC Exporter — rc.d service script
+#
+# PROVIDE: splunk_hec
+# REQUIRE: NETWORKING configd
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name="splunk_hec"
+rcvar="splunk_hec_enable"
+pidfile="/var/run/${name}.pid"
+
+# Use FreeBSD's daemon utility to properly detach the process.
+# We set procname so rc.subr correctly maps the PID file to the PHP process.
+command="/usr/sbin/daemon"
+procname="/usr/local/bin/php"
+command_args="-f -p ${pidfile} /usr/local/bin/php /usr/local/opnsense/scripts/OPNsense/SplunkHEC/Exporter.php"
+
+load_rc_config $name
+
+# Force YES because Exporter.php has its own internal check for $cfg['enabled']
+# and exits gracefully if disabled. This bypasses the need for OPNsense rc.conf.d templates.
+splunk_hec_enable="YES"
+
+splunk_hec_stop()
+{
+    if [ -f "${pidfile}" ]; then
+        kill $(cat "${pidfile}") >/dev/null 2>&1 || true
+        rm -f "${pidfile}"
+    fi
+    pkill -f "Exporter.php" >/dev/null 2>&1 || true
+}
+stop_cmd="splunk_hec_stop"
+
+run_rc_command "$1"
