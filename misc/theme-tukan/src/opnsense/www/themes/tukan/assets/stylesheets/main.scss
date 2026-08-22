@@ -840,8 +840,8 @@ select {
 		background-image: none;
 		white-space: nowrap;
 		padding: 6px 12px;
-		font-size: 14px;
-		line-height: 1.428571429;
+		font-size: 12px;
+		line-height: 1.4;
 		border-radius: 3px;
 		-webkit-user-select: none;
 		-moz-user-select: none;
@@ -849,7 +849,7 @@ select {
 		user-select: none;
 		color: #000;
 		background-color: none;
-		border: 1px solid #1b4257;
+		border: 1px solid #c2c2c2;
 		outline: 0;
 		&.btn-fixed {
 			max-width: 174px;
@@ -3290,7 +3290,7 @@ input[type="color"] {
 	color: #000;
 	background-color: #FFF;
 	background-image: none;
-	border: 1px solid #1b4257;
+	border: 1px solid #c2c2c2;
 	border-radius: 3px;
 	text-overflow: ellipsis;
 	max-width: 348px;
@@ -3885,7 +3885,7 @@ select[multiple].input-lg,
 	background-color: #dbdbdb;
 	color: #000;
 	border-radius: 3px;
-	border: 1px solid #1b4257;
+	border: 1px solid #c2c2c2;
 	text-decoration: none;
 }
 .btn.disabled, .btn.disabled:hover, .btn.disabled:focus, .btn.disabled:active, .btn.disabled.active, .btn[disabled], .btn[disabled]:hover, .btn[disabled]:focus, .btn[disabled]:active, .btn[disabled].active, fieldset[disabled] .btn, fieldset[disabled] .btn:hover, fieldset[disabled] .btn:focus, fieldset[disabled] .btn:active, fieldset[disabled] .btn.active {
@@ -3951,7 +3951,7 @@ select[multiple].input-lg,
 .btn-primary {
 	color: #fff !important;
 	background-color: #FF6E05;
-	border: 1px solid #1b4257;
+	border: 1px solid #c2c2c2;
 	outline: 0;
 	.badge {
 		color: #FF8B00;
@@ -3961,7 +3961,7 @@ select[multiple].input-lg,
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
 	color: #fff;
 	background-color: #EC7726;
-	border-color: 1px solid #1b4257;
+	border-color: 1px solid #c2c2c2;
 	outline: 0;
 }
 .btn-primary:active, .btn-primary.active, .open > .btn-primary.dropdown-toggle {
@@ -4197,9 +4197,9 @@ tbody {
 	text-align: left;
 	background-color: #f0f0f0;
 	color: #000;
-	border-left: 1px solid #1b4257;
-	border-right: 1px solid #1b4257;
-	border-bottom: 1px solid #1b4257;
+	border-left: 1px solid #c2c2c2;
+	border-right: 1px solid #c2c2c2;
+	border-bottom: 1px solid #c2c2c2;
 	border-radius: 3px;
 	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
 	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
