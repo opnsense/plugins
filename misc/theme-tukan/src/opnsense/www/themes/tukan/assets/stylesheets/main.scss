@@ -5704,6 +5704,10 @@ to {
 			margin-right: 5px;
 		}
 	}
+	&.active-menu-title {
+		background-color: #FFF;
+		color: #000;
+	}
 	&.collapsed {
 		.caret {
 			border-bottom: 4px solid green;
