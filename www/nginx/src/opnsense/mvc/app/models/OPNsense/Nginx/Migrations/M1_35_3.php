@@ -58,10 +58,16 @@ class M1_35_3 extends BaseModelMigration
         }
         $items = $model->getNodeByReference($item_path);
         if ($items != null) {
+            // Collect the orphan uuids first -- do not mutate the collection
+            // while iterating it.
+            $orphans = [];
             foreach ($items->iterateItems() as $uuid => $item) {
                 if (!isset($referenced[$uuid])) {
-                    $items->del($uuid);
+                    $orphans[] = $uuid;
                 }
+            }
+            foreach ($orphans as $uuid) {
+                $items->del($uuid);
             }
         }
     }
