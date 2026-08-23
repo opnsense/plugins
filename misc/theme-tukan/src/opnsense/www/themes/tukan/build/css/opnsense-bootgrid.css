@@ -44,7 +44,7 @@
 }
 
 .tabulator-row.tabulator-row-odd {
-  background-color: #eee;
+  background-color: #fff;
 }
 
 .tabulator-row.tabulator-row-odd.tabulator-selectable:hover:not(.tabulator-selected) {
