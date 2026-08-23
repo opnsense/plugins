@@ -91,7 +91,11 @@
         }
 
         function getPeerConnectionStatus(status) {
-            if (!status) return 'No status available.';
+            // the API answers with an empty result when the daemon cannot be
+            // reached at all, which is not the same as a daemon reporting nothing
+            if (!status || Object.keys(status).length === 0) {
+                return 'No status available. The NetBird daemon may not be running.';
+            }
 
             const fmtConn = ({
                     connected,
