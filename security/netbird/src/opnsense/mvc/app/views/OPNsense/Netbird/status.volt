@@ -232,33 +232,31 @@
             const $packages = $("#packages");
 
             ajaxGet('/api/core/firmware/info', {}, (data) => {
+                // the endpoint reports every known package, remote ones included,
+                // so entries that are merely available have to be filtered out
                 const pkgs = data.package?.filter(pkg =>
-                    pkg.name?.toLowerCase().includes("netbird")
+                    pkg.installed === '1' && pkg.name?.toLowerCase().includes("netbird")
                 ) || [];
 
-                const rows = pkgs.map(pkg => `
-                <tr>
-                    <td>${pkg.name}</td>
-                    <td>${pkg.version}</td>
-                    <td>${pkg.comment}</td>
-                </tr>
-            `).join("");
+                const $head = $('<tr/>');
+                for (const label of ['Name', 'Version', 'Comment']) {
+                    $head.append($('<th/>').text(label));
+                }
 
-                const table = `
-                <table class="table table-hover table-striped table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Version</th>
-                            <th>Comment</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${rows}
-                    </tbody>
-                </table>
-            `;
-                $packages.html(table);
+                const $body = $('<tbody/>');
+                for (const pkg of pkgs) {
+                    $body.append($('<tr/>').append(
+                        $('<td/>').text(pkg.name || ''),
+                        $('<td/>').text(pkg.version || ''),
+                        $('<td/>').text(pkg.comment || '')
+                    ));
+                }
+
+                $packages.empty().append(
+                    $('<table/>')
+                        .addClass('table table-hover table-striped table-condensed')
+                        .append($('<thead/>').append($head), $body)
+                );
             });
         }
 
