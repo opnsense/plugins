@@ -204,20 +204,20 @@
                 const isConnected = data.management?.connected === true;
                 $peersDetailContainer.toggleClass("hidden", !isConnected);
                 const renderPreTable = (content, maxHeight = null) => {
-                    const style = `padding: 10px;${maxHeight ? ` max-height: ${maxHeight}; overflow-y: auto;` : ''}`;
-                    return `
-                      <table class="table table-hover table-striped table-condensed">
-                        <tbody>
-                          <tr>
-                            <td><pre style="${style}">${content}</pre></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    `;
+                    // content carries peer names, relay URIs and daemon error
+                    // messages, so it is set as text and never as markup
+                    const $pre = $('<pre/>').css('padding', '10px').text(content);
+                    if (maxHeight) {
+                        $pre.css({'max-height': maxHeight, 'overflow-y': 'auto'});
+                    }
+
+                    return $('<table/>')
+                        .addClass('table table-hover table-striped table-condensed')
+                        .append($('<tbody/>').append($('<tr/>').append($('<td/>').append($pre))));
                 };
 
-                $connStatus.html(renderPreTable(status));
-                $peersDetails.html(renderPreTable(details, '500px'));
+                $connStatus.empty().append(renderPreTable(status));
+                $peersDetails.empty().append(renderPreTable(details, '500px'));
             });
         }
 
