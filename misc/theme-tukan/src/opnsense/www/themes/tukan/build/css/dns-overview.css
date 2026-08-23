@@ -142,12 +142,12 @@
 }
 
 .query-danger {
-    background-color: #A22626;
+    background-color: #B81515;
     color: #FFF;
 }
 
 .query-warning {
-    background-color: rgba(255, 131, 0, 0.3);
+    background-color: rgb(197, 73, 24);
     color: #FFF;
 }
 
