@@ -106,7 +106,7 @@
             const managementStr = fmtConn(status.management || {});
             const signalStr = fmtConn(status.signal || {});
 
-            const interfaceType = status.kernelInterface ? "Kernel" : status.netbirdIp ? "Userspace" : "N/A";
+            const interfaceType = status.usesKernelInterface ? "Kernel" : status.netbirdIp ? "Userspace" : "N/A";
             const interfaceIp = status.netbirdIp || "N/A";
 
             const relaysStr = fmtList(
