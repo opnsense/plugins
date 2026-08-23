@@ -30,7 +30,9 @@
 <script>
     $(document).ready(() =>{
         function getElapsedTime(date) {
-            if (!(date instanceof Date) || isNaN(date) || date.getMonth() === 0) return "-";
+            // the daemon reports "never" as the zero time (0001-01-01), and missing
+            // values fall back to the epoch below, so both are treated as unknown
+            if (!(date instanceof Date) || isNaN(date) || date.getTime() <= 0) return "-";
 
             const now = new Date();
             const diff = now - date;
