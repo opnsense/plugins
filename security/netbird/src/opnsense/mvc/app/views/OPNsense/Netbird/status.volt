@@ -144,7 +144,8 @@
             const details = status?.peers?.details || [];
 
             return details.map(peer => {
-                const getOrDefault = (val, def = '-') => val ?? def;
+                // the daemon reports unknown values as empty strings, not as null
+                const getOrDefault = (val, def = '-') => (val === null || val === undefined || val === '') ? def : val;
                 const localIce = getOrDefault(peer.iceCandidateType?.local);
                 const remoteIce = getOrDefault(peer.iceCandidateType?.remote);
                 const localIceEndpoint = getOrDefault(peer.iceCandidateEndpoint?.local);
@@ -165,7 +166,9 @@
                 const lastUpdate = new Date(peer.lastStatusUpdate || 0);
                 const handshake = new Date(peer.lastWireguardHandshake || 0);
 
-                const latency = typeof peer.latency === 'number' ?
+                // a peer that was never reached reports a latency of 0, which is
+                // not a measurement and must not be printed as one
+                const latency = typeof peer.latency === 'number' && peer.latency > 0 ?
                     `${(peer.latency / 1_000_000).toFixed(2)} ms` :
                     '-';
 
