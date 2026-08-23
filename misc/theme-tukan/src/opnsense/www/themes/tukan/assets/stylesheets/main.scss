@@ -476,6 +476,7 @@ th {
       border-radius: 0;
 				.navbar-toggle {
       display: none;
+				.navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand { margin-left: -20px;
 				.navbar-text {
       float: left;
 				margin-left: 20px;
@@ -874,8 +875,13 @@ select {
 			display: none;
 		}
 	}
-	.navbar-header {
-		padding-top: 12px;
+	.navbar-collapse {
+		overflow-x: visible;
+		padding-right: 20px;
+		padding-left: 20px;
+		border-top: 1px solid transparent;
+		box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+		-webkit-overflow-scrolling: touch;
 	}
 	.navbar-static-top {
 		z-index: 1000;
@@ -886,6 +892,10 @@ select {
 		border-width: 0 0 1px;
 	}
 	.navbar-brand {
+		float: left;
+		padding: 10px 20px;
+		font-size: 18px;
+		height: 50px;
 		img {
 			&.brand-logo {
 				height: 30px;
@@ -912,9 +922,11 @@ select {
 			}
 		}
 	}
+	.navbar-text {
+		margin-top: 15px;
+		margin-bottom: 15px;
+	}
 	.navbar-default {
-		background-color: transparent;
-		border-color: none;
 		.navbar-link {
 			color: #F7F7F7;
 		}
@@ -4890,13 +4902,11 @@ tbody {
 		clear: both;
 	}
 }
+.navbar-collapse:before, .navbar-collapse:after {
+	content: " ";
+	display: table;
+}
 .navbar-collapse {
-	overflow-x: visible;
-	padding-right: 20px;
-	padding-left: 20px;
-	border-top: 1px solid transparent;
-	box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
-	-webkit-overflow-scrolling: touch;
 	&:after {
 		clear: both;
 	}
@@ -4910,10 +4920,6 @@ tbody {
 		padding-bottom: 0;
 		overflow: visible !important;
 	}
-}
-.navbar-collapse:before, .navbar-collapse:after {
-	content: " ";
-	display: table;
 }
 .navbar-fixed-top .navbar-collapse, .navbar-static-top .navbar-collapse, .navbar-fixed-bottom .navbar-collapse {
 	padding-left: 0;
@@ -5040,15 +5046,18 @@ tbody {
 	margin-bottom: 14px;
 }
 .navbar-text {
-	margin-top: 15px;
-	margin-bottom: 15px;
 	&.navbar-right {
 		&:last-child {
 			margin-right: 0;
 		}
 	}
 }
+.navbar-brand:hover, .navbar-brand:focus {
+	text-decoration: none;
+}
 .navbar-default {
+	background-color: transparent;
+	border-color: none;
 	.navbar-brand {
 		color: #F7F7F7;
 	}
