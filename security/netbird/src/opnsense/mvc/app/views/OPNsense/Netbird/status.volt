@@ -145,6 +145,8 @@
                 const getOrDefault = (val, def = '-') => val ?? def;
                 const localIce = getOrDefault(peer.iceCandidateType?.local);
                 const remoteIce = getOrDefault(peer.iceCandidateType?.remote);
+                const localIceEndpoint = getOrDefault(peer.iceCandidateEndpoint?.local);
+                const remoteIceEndpoint = getOrDefault(peer.iceCandidateEndpoint?.remote);
 
                 const quantumStatus = peer.quantumResistance ?
                     (status.quantumResistance ? 'true' : 'false (connection might not work without a remote permissive mode)') :
@@ -175,7 +177,7 @@
                     indent(`-- detail --`),
                     indent(`Connection type: ${getOrDefault(peer.connectionType)}`),
                     indent(`ICE candidate (Local/Remote): ${localIce}/${remoteIce}`),
-                    indent(`ICE candidate endpoints (Local/Remote): ${localIce}/${remoteIce}`),
+                    indent(`ICE candidate endpoints (Local/Remote): ${localIceEndpoint}/${remoteIceEndpoint}`),
                     indent(`Relay server address: ${getOrDefault(peer.relayAddress)}`),
                     indent(`Last connection update: ${getElapsedTime(lastUpdate)}`),
                     indent(`Last WireGuard handshake: ${getElapsedTime(handshake)}`),
