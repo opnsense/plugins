@@ -70,7 +70,7 @@
     #            Credential logging is useful for troubleshooting basic auth.
     #}
     {% if generalSettings.accesslist %}
-        {% set accessList = helpers.toList('OPNsense.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', generalSettings.accesslist) | first %}
+        {% set accessList = helpers.getUUID(generalSettings.accesslist) %}
     {% endif %}
 
     servers {
@@ -80,7 +80,7 @@
         {% endif %}
         {% if generalSettings.ClientIpHeaders %}
             {% for header_uuid in generalSettings.ClientIpHeaders.split(',') %}
-                {% set header = helpers.toList('OPNsense.caddy.reverseproxy.header') | selectattr('@uuid', 'equalto', header_uuid) | first %}
+                {% set header = helpers.getUUID(header_uuid) %}
                 {% if header and header.HeaderType %}
                     client_ip_headers {{ header.HeaderType }}
                 {% endif %}
@@ -116,6 +116,12 @@
                     {% set context_var = "listener_wrappers" %}
                     {% include "OPNsense/Caddy/Config/includeLayer4" %}
                 }
+                {% if generalSettings.ProxyProtocolAllow %}
+                    proxy_protocol {
+                        allow {{ generalSettings.ProxyProtocolAllow.split(',') | join(' ') }}
+                        fallback_policy ignore
+                    }
+                {% endif %}
                 {# Route all other traffic to HTTP App #}
                 tls
             }
@@ -359,7 +365,7 @@ http://{{ domain }} {
 {% macro header_manipulation(handle) %}
     {% if handle.header %}
         {% for header_uuid in handle.header.split(',') %}
-            {% set header = helpers.toList('OPNsense.caddy.reverseproxy.header') | selectattr('@uuid', 'equalto', header_uuid) | first %}
+            {% set header = helpers.getUUID(header_uuid) %}
             {# Generate directive only if HeaderUpDown and HeaderType are present #}
             {% if header.HeaderUpDown and header.HeaderType %}
                 {# Prepare variables, making HeaderValue and HeaderReplace optional #}
@@ -530,7 +536,7 @@ http://{{ domain }} {
         {% set sanitized_suffix = unique_suffix | regex_replace('[^a-zA-Z0-9]', '') %}
         {% set unique_identifier = '@' + accesslist + ('_' + sanitized_suffix if sanitized_suffix else '') %}
 
-        {% set accesslist_obj = helpers.toList('OPNsense.caddy.reverseproxy.accesslist') | selectattr('@uuid', 'equalto', accesslist) | first %}
+        {% set accesslist_obj = helpers.getUUID(accesslist) %}
         {% if accesslist_obj %}
             {% set client_ips = accesslist_obj.clientIps.split(',') | join(' ') %}
             {{ unique_identifier }} {
@@ -559,7 +565,7 @@ http://{{ domain }} {
     {% if basicauth_uuids %}
     basic_auth {
         {% for uuid in basicauth_uuids.split(',') %}
-            {% set basicauth = helpers.toList('OPNsense.caddy.reverseproxy.basicauth') | selectattr('@uuid', 'equalto', uuid) | first %}
+            {% set basicauth = helpers.getUUID(uuid) %}
             {% if basicauth %}
                 {{ basicauth.basicauthuser }} {{ basicauth.basicauthpass }}
             {% endif %}
@@ -637,7 +643,7 @@ http://{{ domain }} {
 
 {% for subdomain in helpers.toList('OPNsense.caddy.reverseproxy.subdomain') %}
     {% if subdomain.enabled|default("0") == "1" %}
-        {% set reverse = helpers.toList('OPNsense.caddy.reverseproxy.reverse') | selectattr('@uuid', 'equalto', subdomain.reverse) | first %}
+        {% set reverse = helpers.getUUID(subdomain.reverse) %}
         {% if reverse and reverse.enabled|default("0") == "1" %}
             {% if reverse.DisableTls|default("0") == "1" %}http://{% endif %}{{ subdomain.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
                 {% if reverse.AccessLog|default("0") == "1" %}

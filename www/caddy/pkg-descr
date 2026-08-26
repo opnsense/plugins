@@ -6,6 +6,15 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+2.2.1
+
+* Add: Proxy protocol sources can be selected in general settings
+* Add: Provide the same load balancing, passive and active health checks to layer 4 module as in handlers
+* Cleanup: Set model OptionValues with self closing tags, remove wrong option from lb_policy in layer4
+* Cleanup: Use helpers.getUUID instead of custom solution in Caddyfile template
+* Cleanup: Hide the count badge in GroupBy
+* Cleanup: Fix some typos in reverse_proxy.volt
+
 2.2.0
 
 * Cleanup: Move model mount to OPNsense/caddy. Existing configuration is migrated automatically.

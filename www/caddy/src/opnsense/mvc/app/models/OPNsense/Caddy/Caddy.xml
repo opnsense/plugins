@@ -64,6 +64,12 @@
                 </Model>
                 <Multiple>Y</Multiple>
             </ClientIpHeaders>
+            <ProxyProtocolAllow type="NetworkField">
+                <NetMaskRequired>Y</NetMaskRequired>
+                <Strict>Y</Strict>
+                <AsList>Y</AsList>
+                <ValidationMessage>Please enter valid IP addresses or networks in CIDR notation.</ValidationMessage>
+            </ProxyProtocolAllow>
             <DisableSuperuser type="OptionField">
                 <Required>Y</Required>
                 <Default>0</Default>
@@ -116,11 +122,11 @@
             <LogLevel type="OptionField">
                 <BlankDesc>INFO</BlankDesc>
                 <OptionValues>
-                    <DEBUG>DEBUG</DEBUG>
-                    <WARN>WARN</WARN>
-                    <ERROR>ERROR</ERROR>
-                    <PANIC>PANIC</PANIC>
-                    <FATAL>FATAL</FATAL>
+                    <DEBUG/>
+                    <WARN/>
+                    <ERROR/>
+                    <PANIC/>
+                    <FATAL/>
                 </OptionValues>
             </LogLevel>
             <DynDnsSimpleHttp type="UrlField"/>
@@ -233,9 +239,9 @@
                 <ClientAuthMode type="OptionField">
                     <BlankDesc>require_and_verify</BlankDesc>
                     <OptionValues>
-                        <request>request</request>
-                        <require>require</require>
-                        <verify_if_given>verify_if_given</verify_if_given>
+                        <request/>
+                        <require/>
+                        <verify_if_given/>
                     </OptionValues>
                 </ClientAuthMode>
                 <ClientAuthTrustPool type="CertificateField">
@@ -294,9 +300,9 @@
                 <ClientAuthMode type="OptionField">
                     <BlankDesc>require_and_verify</BlankDesc>
                     <OptionValues>
-                        <request>request</request>
-                        <require>require</require>
-                        <verify_if_given>verify_if_given</verify_if_given>
+                        <request/>
+                        <require/>
+                        <verify_if_given/>
                     </OptionValues>
                 </ClientAuthMode>
                 <ClientAuthTrustPool type="CertificateField">
@@ -334,8 +340,8 @@
                     <Required>Y</Required>
                     <Default>handle</Default>
                     <OptionValues>
-                        <handle>handle</handle>
-                        <handle_path>handle_path</handle_path>
+                        <handle/>
+                        <handle_path/>
                     </OptionValues>
                 </HandleType>
                 <HandlePath type="TextField">
@@ -378,8 +384,8 @@
                     <Required>Y</Required>
                     <Default>reverse_proxy</Default>
                     <OptionValues>
-                        <reverse_proxy>reverse_proxy</reverse_proxy>
-                        <redir>redir</redir>
+                        <reverse_proxy/>
+                        <redir/>
                     </OptionValues>
                 </HandleDirective>
                 <ToDomain type="HostnameField">
@@ -422,12 +428,12 @@
                 <lb_policy type="OptionField">
                     <BlankDesc>random</BlankDesc>
                     <OptionValues>
-                        <first>first</first>
-                        <round_robin>round_robin</round_robin>
-                        <least_conn>least_conn</least_conn>
-                        <ip_hash>ip_hash</ip_hash>
-                        <client_ip_hash>client_ip_hash</client_ip_hash>
-                        <uri_hash>uri_hash</uri_hash>
+                        <first/>
+                        <round_robin/>
+                        <least_conn/>
+                        <ip_hash/>
+                        <client_ip_hash/>
+                        <uri_hash/>
                     </OptionValues>
                 </lb_policy>
                 <lb_retries type="IntegerField">
@@ -514,8 +520,8 @@
                     <Required>Y</Required>
                     <Default>client_ip</Default>
                     <OptionValues>
-                        <client_ip>client_ip</client_ip>
-                        <remote_ip>remote_ip</remote_ip>
+                        <client_ip/>
+                        <remote_ip/>
                     </OptionValues>
                 </RequestMatcher>
                 <description type="DescriptionField"/>
@@ -535,8 +541,8 @@
                 <HeaderUpDown type="OptionField">
                     <Default>header_up</Default>
                     <OptionValues>
-                        <header_up>header_up</header_up>
-                        <header_down>header_down</header_down>
+                        <header_up/>
+                        <header_down/>
                     </OptionValues>
                     <Required>Y</Required>
                 </HeaderUpDown>
@@ -598,13 +604,13 @@
                 <FromOpenvpnModes type="OptionField">
                     <BlankDesc>Any</BlankDesc>
                     <OptionValues>
-                        <auth_sha256_normal>tls-auth_sha256_normal</auth_sha256_normal>
-                        <auth_sha256_inverse>tls-auth_sha256_inverse</auth_sha256_inverse>
-                        <auth_sha512_normal>tls-auth_sha512_normal</auth_sha512_normal>
-                        <auth_sha512_inverse>tls-auth_sha512_inverse</auth_sha512_inverse>
-                        <crypt>tls-crypt</crypt>
-                        <crypt2_client>tls-crypt2_client</crypt2_client>
-                        <crypt2_server>tls-crypt2_server</crypt2_server>
+                        <auth_sha256_normal/>
+                        <auth_sha256_inverse/>
+                        <auth_sha512_normal/>
+                        <auth_sha512_inverse/>
+                        <crypt/>
+                        <crypt2_client/>
+                        <crypt2_server/>
                     </OptionValues>
                 </FromOpenvpnModes>
                 <FromOpenvpnStaticKey type="ModelRelationField">
@@ -668,22 +674,46 @@
                 <lb_policy type="OptionField">
                     <BlankDesc>random</BlankDesc>
                     <OptionValues>
-                        <first>first</first>
-                        <round_robin>round_robin</round_robin>
-                        <least_conn>least_conn</least_conn>
-                        <ip_hash>ip_hash</ip_hash>
-                        <client_ip_hash>client_ip_hash</client_ip_hash>
-                        <uri_hash>uri_hash</uri_hash>
+                        <first/>
+                        <ip_hash/>
+                        <least_conn/>
+                        <random_choose/>
+                        <round_robin/>
                     </OptionValues>
                 </lb_policy>
+                <lb_try_duration type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </lb_try_duration>
+                <lb_try_interval type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </lb_try_interval>
+                <ActiveHealthPort type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Please enter a valid port between 1 and 65535 or leave empty for defaults.</ValidationMessage>
+                </ActiveHealthPort>
+                <ActiveHealthInterval type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </ActiveHealthInterval>
+                <ActiveHealthTimeout type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </ActiveHealthTimeout>
                 <PassiveHealthFailDuration type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
                 </PassiveHealthFailDuration>
                 <PassiveHealthMaxFails type="IntegerField">
-                    <MinimumValue>2</MinimumValue>
-                    <ValidationMessage>Please enter a minimum value of 2 or leave empty for defaults.</ValidationMessage>
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
                 </PassiveHealthMaxFails>
+                <PassiveHealthUnhealthyConnectionCount type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <ValidationMessage>Please enter a minimum value of 1 or leave empty for defaults.</ValidationMessage>
+                </PassiveHealthUnhealthyConnectionCount>
                 <RemoteIp type="NetworkField">
                     <AsList>Y</AsList>
                     <Strict>Y</Strict>
