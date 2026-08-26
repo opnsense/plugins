@@ -88,7 +88,17 @@
                     <MinimumValue>0</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
                 </weight>
-                <localip type="NetworkField"/>
+                <localip type="NetworkField">
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>A value is required when a password is set.</ValidationMessage>
+                            <type>DependConstraint</type>
+                            <addFields>
+                                <field1>password</field1>
+                            </addFields>
+                        </check001>
+                    </Constraints>
+                </localip>
                 <updatesource type="InterfaceField">
                     <AllowDynamic>Y</AllowDynamic>
                     <filters>
