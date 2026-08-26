@@ -107,6 +107,27 @@ class ConfigFile
     }
 
     /**
+     * A comma-separated field as the daemon's list of strings.
+     *
+     * An empty field is an empty list, not null and not a list holding one
+     * empty string: to a Go []string those are three different things, and
+     * only the first one means "no entries".
+     */
+    public static function listOf(string $value): array
+    {
+        $items = [];
+
+        foreach (explode(',', $value) as $item) {
+            $item = trim($item);
+            if ($item !== '') {
+                $items[] = $item;
+            }
+        }
+
+        return $items;
+    }
+
+    /**
      * The target's own mode, so a private key never widens on the way through.
      */
     private static function modeOf(string $target): int

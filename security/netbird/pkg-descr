@@ -26,3 +26,4 @@ Plugin Changelog
 * Fix quantum peer state display (contributed by Konstantinos Spartalis)
 * Fix setupKey usage after UpdateOnlyTextField introduction
 * Replace the daemon configuration atomically so a failed write cannot lose the peer identity
+* Write external IP mappings to NATExternalIPs, the key the daemon actually reads
