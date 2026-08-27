@@ -3,7 +3,7 @@
 #ichsmb has to load first, so that ismt is at /dev/smb1 (or adjust the script)
 needed_klds="ichsmb ismt smb"
 
-kldload $needed_klds &> /dev/null
+kldload $needed_klds > /dev/null 2>&1
 sleep 1
 
 ismt_dev=/dev/smb1
@@ -48,10 +48,18 @@ if [ ! -z $board_id ]; then
         # for ix2
         smbmsg -f $ismt_dev -s 0x62 -c 0x11 -o 1 0
         if [ -e /dev/etherswitch0 ]; then
-            etherswitchcfg config vlan_mode dot1q
-            etherswitchcfg port1 pvid 2 port2 pvid 2 port3 pvid 2 port4 pvid 2 port5 pvid 2 port6 pvid 3 port9 pvid 3 port10 pvid 2 vlangroup0 vlan 2 members 1,2,3,4,5,10 vlangroup1 vlan 3 members 6,9
-            echo "Marvell 88E6190 configured. LAN ports are 1-5 and are connected to ix0. WAN is on port 6 and is connected to ix1."
-            logger -t "vep1400-hw" "Marvell 88E6190 configured. LAN is on ports 1-5 and is connected to ix0. WAN is on port 6 and is connected to ix1."
+            echo "Configuring switch..."
+            etherswitchcfg config vlan_mode dot1q > /tmp/etherswitch.log
+            etherswitchcfg port1 pvid 2 port2 pvid 2 port3 pvid 2 port4 pvid 2 port5 pvid 2 port6 pvid 3 port9 pvid 3 port10 pvid 2 vlangroup0 vlan 2 members 1,2,3,4,5,10 vlangroup1 vlan 3 members 6,9 >> /tmp/etherswitch.log
+            if [ "$?" -eq "0" ]; then
+                echo "Marvell 88E6190 configured. LAN ports are 1-5 and are connected to ix0. WAN is on port 6 and is connected to ix1."
+                logger -t "vep1400-hw" "Marvell 88E6190 configured. LAN is on ports 1-5 and is connected to ix0. WAN is on port 6 and is connected to ix1."
+            else
+                echo "Error while configuring Marvell switch! Network may not be usable."
+                echo "Output of etherswitchcfg command:"
+                cat /tmp/etherswitch.log
+                logger -t "vep1400-hw" "Error while configuring Marvell switch! Network may not be usable. See /tmp/etherswitch.log for details."
+            fi
         else
             logger -t "vep1400-hw" "VEP1400 detected, but no etherswitch dev found. Is patched kernel installed?"
         fi
