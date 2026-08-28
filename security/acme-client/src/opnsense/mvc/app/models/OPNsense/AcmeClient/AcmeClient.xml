@@ -468,7 +468,7 @@
                         <dns_exoscale>Exoscale</dns_exoscale>
                         <dns_fornex>Fornex</dns_fornex>
                         <dns_freedns>FreeDNS</dns_freedns>
-                        <dns_freemyip>FreeMyIp</dns_freemyip>
+                        <dns_freemyip>FreeMyIP</dns_freemyip>
                         <dns_gandi_livedns>Gandi LiveDNS</dns_gandi_livedns>
                         <dns_gd>GoDaddy.com</dns_gd>
                         <dns_gcloud>Google Cloud DNS</dns_gcloud>
