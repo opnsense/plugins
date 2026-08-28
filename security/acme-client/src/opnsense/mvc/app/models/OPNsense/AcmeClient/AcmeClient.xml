@@ -468,6 +468,7 @@
                         <dns_exoscale>Exoscale</dns_exoscale>
                         <dns_fornex>Fornex</dns_fornex>
                         <dns_freedns>FreeDNS</dns_freedns>
+                        <dns_freemyip>FreeMyIp</dns_freemyip>
                         <dns_gandi_livedns>Gandi LiveDNS</dns_gandi_livedns>
                         <dns_gd>GoDaddy.com</dns_gd>
                         <dns_gcloud>Google Cloud DNS</dns_gcloud>
@@ -722,6 +723,9 @@
                 <dns_freedns_password type="TextField">
                     <Required>N</Required>
                 </dns_freedns_password>
+                <dns_freemyip_token type="TextField">
+                    <Required>N</Required>
+                </dns_freemyip_token>
                 <dns_fornex_api_key type="TextField">
                     <Required>N</Required>
                 </dns_fornex_api_key>
