@@ -46,6 +46,16 @@
     </grid_view>
   </field>
   <field>
+    <id>neighbor.localasoptions</id>
+    <label>Local AS Options</label>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <help>Optional modifiers for the neighbor local-as command. "No-Prepend" prevents prepending the Local AS to received AS-Paths. "Replace-AS" causes only the Local AS to be prepended to outbound updates.</help>
+    <grid_view>
+      <visible>false</visible>
+    </grid_view>
+  </field>
+  <field>
     <id>neighbor.password</id>
     <label>BGP MD5 Password</label>
     <type>text</type>

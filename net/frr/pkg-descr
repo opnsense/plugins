@@ -11,6 +11,10 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.56
+
+* BGP: Add per-neighbor local-as no-prepend/replace-as options (contributed by clarkchentw)
+
 1.55
 
 * BGP: Write neighbor remote-as only when set (contributed by juan-ferrer-toribio)

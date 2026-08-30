@@ -82,7 +82,22 @@
                 <localas type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>4294967295</MaximumValue>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>A Local AS is required when Local AS Options are set.</ValidationMessage>
+                            <type>DependConstraint</type>
+                            <addFields>
+                                <field1>localasoptions</field1>
+                            </addFields>
+                        </check001>
+                    </Constraints>
                 </localas>
+                <localasoptions type="OptionField">
+                    <OptionValues>
+                        <noprepend value="no-prepend">No-Prepend</noprepend>
+                        <replaceas value="no-prepend replace-as">No-Prepend Replace-AS</replaceas>
+                    </OptionValues>
+                </localasoptions>
                 <password type="TextField"/>
                 <weight type="IntegerField">
                     <MinimumValue>0</MinimumValue>
