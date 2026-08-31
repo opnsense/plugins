@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ruleset documentation_url="https://github.com/julioliraup/Antiphishing">
-  <location url="https://raw.githubusercontent.com/julioliraup/Antiphishing/main/antiphishing.tar.gz"/>
+  <location
+    url="https://github.com/julioliraup/Antiphishing/raw/refs/heads/main/antiphishing-opnsense.tar.gz"
+    prefix="julioliraup"/>
   <files>
-    <file url="inline::antiphishing.rules" description="julioliraup/Antiphishing">antiphishing.rules</file>
+    <file url="inline::antiphishing-opnsense.rules" description="antiphishing">antiphishing-opnsense.rules</file>
+    <file url="inline::phishing.lst" required="true">phishing.lst</file>
+    <file url="inline::phishing_ips.lst" required="true">phishing_ips.lst</file>
   </files>
 </ruleset>
