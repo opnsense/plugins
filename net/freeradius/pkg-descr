@@ -9,6 +9,11 @@ security, particularly in the academic community, including eduroam.
 Plugin Changelog
 ================
 
+1.10.3
+
+* Make the EAP method inside the EAP-TTLS tunnel configurable, restoring EAP-TTLS-GTC support (#2421) (contributed by Clanto007)
+* Fix EAP-GTC failing when the LDAP directory does not expose passwords (contributed by Clanto007)
+
 1.10.2
 
 * Add configurable LDAP group membership mode (contributed by Jerzy Kołosowski)
