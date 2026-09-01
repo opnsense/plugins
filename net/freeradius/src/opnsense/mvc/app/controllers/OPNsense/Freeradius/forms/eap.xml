@@ -6,6 +6,13 @@
         <help>Set the default EAP type.</help>
     </field>
     <field>
+        <id>eap.default_eap_ttls_type</id>
+        <label>Default EAP Type inside TTLS</label>
+        <type>dropdown</type>
+        <help>EAP method used inside the EAP-TTLS tunnel, applied only when the client starts an EAP conversation inside the tunnel. Non-EAP inner methods such as PAP or MSCHAPv2 are handled by the inner-tunnel virtual server and are not affected by this setting. Choose GTC for EAP-TTLS-GTC against an LDAP backend.</help>
+        <style>ttls_inner</style>
+    </field>
+    <field>
         <id>eap.elliptic_curve</id>
         <label>Elliptic Curve</label>
         <type>dropdown</type>
