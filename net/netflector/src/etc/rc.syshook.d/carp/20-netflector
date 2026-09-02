@@ -1,0 +1,106 @@
+#!/usr/local/bin/php
+<?php
+
+/*
+ * Copyright (C) 2026 Sergii Bogomolov
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ * Both nodes of a pair reflecting would put two copies of every relayed packet on the segment, and two
+ * DIAL proxies would rewrite the same device's LOCATION to different authorities.
+ *
+ * devd passes the transitioning group as "<vhid>@<interface>" (see /usr/local/etc/devd/carp.conf). A
+ * node can hold one group and not another, so the vhid is matched too, not the state alone.
+ */
+
+require_once('script/load_phalcon.php');
+
+use OPNsense\Netflector\Netflector;
+use OPNsense\Interfaces\Vip;
+
+$subsystem = $argv[1] ?? '';
+$type = $argv[2] ?? '';
+
+/* INIT is not only the transient on the way to MASTER or BACKUP: it is also where a group ends up
+ * when its virtual IP is deleted, which is the moment reflection has to stop. It means "not MASTER"
+ * either way, so it is paired with BACKUP here. */
+if (!in_array($type, ['MASTER', 'BACKUP', 'INIT'], true) || strpos($subsystem, '@') === false) {
+    exit(0);
+}
+
+$model = new Netflector();
+$depends_on = (string)$model->general->carp_depend_on;
+if ((string)$model->general->enabled !== '1' || $depends_on === '') {
+    exit(0);
+}
+
+/* Deferred until something is actually configured: every vhid on the box lands here on every
+ * transition, and these are the expensive includes. get_real_interface() needs them. */
+require_once('config.inc');
+require_once('util.inc');
+require_once('interfaces.inc');
+
+/* Stopping a service that is not running reports a failure, which reads as a fault of ours.
+ * BACKUP and INIT both arrive routinely while it is already stopped. */
+function netflector_running()
+{
+    return mwexecf('/usr/local/etc/rc.d/netflector %s', ['status'], true) === 0;
+}
+
+/* carp_depend_on holds the VIP's uuid; the event carries "<vhid>@<interface>", so resolve one to the
+ * other. Both halves are compared: the same vhid can run on several interfaces as unrelated groups. */
+$group = null;
+foreach ((new Vip())->vip->iterateItems() as $uuid => $vip) {
+    if ($uuid === $depends_on && (string)$vip->mode === 'carp') {
+        $group = sprintf('%s@%s', (string)$vip->vhid, get_real_interface((string)$vip->interface));
+        break;
+    }
+}
+
+/* The VIP was deleted or is no longer carp, so this node's role is unknowable. Stop rather than
+ * leave it reflecting, which on a pair is what the dependency exists to prevent. */
+if ($group === null) {
+    $running = netflector_running();
+    log_msg(sprintf(
+        'carp_depend_on names no CARP virtual IP; %s',
+        $running ? 'stopping netflector' : 'netflector is not running'
+    ), LOG_ERR);
+    if ($running) {
+        mwexecf('/usr/local/etc/rc.d/netflector %s', ['stop']);
+    }
+    exit(0);
+}
+
+if ($group !== $subsystem) {
+    exit(0);
+}
+
+$action = $type === 'MASTER' ? 'start' : 'stop';
+if ($action === 'stop' && !netflector_running()) {
+    exit(0);
+}
+
+log_msg(sprintf('CARP %s is %s, running netflector %s', $subsystem, $type, $action));
+mwexecf('/usr/local/etc/rc.d/netflector %s', [$action]);

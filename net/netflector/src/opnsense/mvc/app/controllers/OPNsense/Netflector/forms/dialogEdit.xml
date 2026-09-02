@@ -1,0 +1,90 @@
+<form>
+    <field>
+        <id>reflector.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>reflector.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help><![CDATA[Identifies this reflector in the log and in the generated configuration. Letters, digits, dashes and underscores.]]></help>
+    </field>
+    <field>
+        <id>reflector.source_if</id>
+        <label>Source interface</label>
+        <type>dropdown</type>
+        <help><![CDATA[The interface to listen on. This is the side the device you are looking for is <b>not</b> on: an mDNS query from a phone on the LAN is picked up here.]]></help>
+    </field>
+    <field>
+        <id>reflector.target_if</id>
+        <label>Target interface</label>
+        <type>dropdown</type>
+        <help><![CDATA[The interface to re-emit on, with the addressing rewritten. This is the side the device you are looking for is on.]]></help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Protocols</label>
+    </field>
+    <field>
+        <id>reflector.mdns</id>
+        <label>mDNS</label>
+        <type>checkbox</type>
+        <help><![CDATA[Bonjour, AirPlay, Chromecast, printers, HomeKit.]]></help>
+    </field>
+    <field>
+        <id>reflector.ssdp</id>
+        <label>SSDP</label>
+        <type>checkbox</type>
+        <help><![CDATA[UPnP discovery: DLNA servers, Sonos, smart TVs.]]></help>
+    </field>
+    <field>
+        <id>reflector.dial</id>
+        <label>DIAL proxy</label>
+        <type>checkbox</type>
+        <help><![CDATA[Casting to a TV ("Discovery And Launch"). Needs SSDP, and is IPv4-only, so it cannot be used on an IPv6-only reflector.]]></help>
+    </field>
+    <field>
+        <id>reflector.wsd</id>
+        <label>WS-Discovery</label>
+        <type>checkbox</type>
+        <help><![CDATA[ONVIF cameras and NVRs, Windows network devices and printers.]]></help>
+    </field>
+    <field>
+        <id>reflector.wol</id>
+        <label>Wake-on-LAN</label>
+        <type>checkbox</type>
+        <help><![CDATA[Forward magic packets, so a machine on the other interface can be woken.]]></help>
+    </field>
+    <field>
+        <id>reflector.wol_ports</id>
+        <label>Wake-on-LAN ports</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[UDP ports magic packets arrive on. Leave empty for the daemon's defaults, 7 and 9.]]></help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Scope</label>
+    </field>
+    <field>
+        <id>reflector.macs</id>
+        <label>Devices</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[MAC addresses to scope this reflector to. Leave empty to reflect for the whole network.]]></help>
+    </field>
+    <field>
+        <id>reflector.address_family</id>
+        <label>Address family</label>
+        <type>dropdown</type>
+        <help><![CDATA[Which IP versions to reflect. <b>Default</b> requires IPv4 and adds IPv6 when the interfaces have it, so it will not start on an IPv6-only interface. <b>Dual</b> requires both. A required family that is missing fails startup; a best-effort one is simply skipped, and starts reflecting as soon as the address appears.]]></help>
+    </field>
+    <field>
+        <id>reflector.description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+</form>

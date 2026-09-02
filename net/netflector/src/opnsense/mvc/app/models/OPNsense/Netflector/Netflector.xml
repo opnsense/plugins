@@ -1,0 +1,99 @@
+<model>
+    <mount>//OPNsense/Netflector</mount>
+    <version>0.1.1</version>
+    <description>Netflector settings</description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <log_level type="OptionField">
+                <Default>info</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <off>Off</off>
+                    <error>Error</error>
+                    <warn>Warning</warn>
+                    <info>Info</info>
+                    <debug>Debug</debug>
+                </OptionValues>
+            </log_level>
+            <carp_depend_on type="VirtualIPField">
+                <type>carp</type>
+                <key>mvc</key>
+            </carp_depend_on>
+            <counters_interval_secs type="IntegerField">
+                <Default>0</Default>
+                <Required>Y</Required>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>86400</MaximumValue>
+                <ValidationMessage>The counter interval must be between 0 and 86400 seconds, where 0 disables the summary.</ValidationMessage>
+            </counters_interval_secs>
+        </general>
+        <reflectors>
+            <reflector type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^[0-9a-zA-Z_-]{1,32}$/u</Mask>
+                    <ValidationMessage>The name identifies the reflector in the log and in the generated configuration. Use 1 to 32 letters, digits, dashes or underscores.</ValidationMessage>
+                </name>
+                <source_if type="InterfaceField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Select the interface to listen on.</ValidationMessage>
+                </source_if>
+                <target_if type="InterfaceField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Select the interface to re-emit on.</ValidationMessage>
+                </target_if>
+                <wol type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </wol>
+                <mdns type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </mdns>
+                <ssdp type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </ssdp>
+                <dial type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </dial>
+                <wsd type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </wsd>
+                <macs type="MacAddressField">
+                    <AsList>Y</AsList>
+                    <ValidationMessage>Enter one or more MAC addresses to scope this reflector to specific devices. Leave empty to reflect for the whole network.</ValidationMessage>
+                </macs>
+                <!-- Not a PortField: that one enumerates all 65535 ports as selectable options, which is
+                     right for a firewall rule and absurd here. It made the edit dialog fetch 2.5 MB and
+                     hang. CSVListField validates each item against the mask and stores a plain list. -->
+                <wol_ports type="CSVListField">
+                    <MaskPerItem>Y</MaskPerItem>
+                    <Mask>/^([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/u</Mask>
+                    <ValidationMessage>Enter the UDP ports magic packets arrive on, as numbers between 1 and 65535. The daemon defaults to 7 and 9.</ValidationMessage>
+                </wol_ports>
+                <address_family type="OptionField">
+                    <Default>default</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <option value="default">Default (IPv4 required, IPv6 best-effort)</option>
+                        <dual>Dual (IPv4 and IPv6, both required)</dual>
+                        <ipv4>IPv4 only</ipv4>
+                        <ipv6>IPv6 only</ipv6>
+                    </OptionValues>
+                </address_family>
+                <description type="DescriptionField"/>
+            </reflector>
+        </reflectors>
+    </items>
+</model>

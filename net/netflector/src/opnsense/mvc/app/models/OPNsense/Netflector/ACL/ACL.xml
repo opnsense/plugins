@@ -1,0 +1,9 @@
+<acl>
+    <page-services-netflector>
+        <name>Services: Netflector</name>
+        <patterns>
+            <pattern>ui/netflector/*</pattern>
+            <pattern>api/netflector/*</pattern>
+        </patterns>
+    </page-services-netflector>
+</acl>
