@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/Netflector</mount>
-    <version>0.1.1</version>
+    <version>1.0.0</version>
     <description>Netflector settings</description>
     <items>
         <general>
@@ -41,6 +41,13 @@
                     <Required>Y</Required>
                     <Mask>/^[0-9a-zA-Z_-]{1,32}$/u</Mask>
                     <ValidationMessage>The name identifies the reflector in the log and in the generated configuration. Use 1 to 32 letters, digits, dashes or underscores.</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <type>UniqueConstraint</type>
+                            <caseInsensitive>Y</caseInsensitive>
+                            <ValidationMessage>This name is already used. Names are compared case-insensitive.</ValidationMessage>
+                        </check001>
+                    </Constraints>
                 </name>
                 <source_if type="InterfaceField">
                     <Required>Y</Required>
@@ -53,6 +60,15 @@
                 <wol type="BooleanField">
                     <Default>0</Default>
                     <Required>Y</Required>
+                    <Constraints>
+                        <check001>
+                            <type>DependConstraint</type>
+                            <addFields>
+                                <field1>wol_ports</field1>
+                            </addFields>
+                            <ValidationMessage>Wake-on-LAN ports only apply when Wake-on-LAN is enabled.</ValidationMessage>
+                        </check001>
+                    </Constraints>
                 </wol>
                 <mdns type="BooleanField">
                     <Default>0</Default>
@@ -61,6 +77,15 @@
                 <ssdp type="BooleanField">
                     <Default>0</Default>
                     <Required>Y</Required>
+                    <Constraints>
+                        <check001>
+                            <type>DependConstraint</type>
+                            <addFields>
+                                <field1>dial</field1>
+                            </addFields>
+                            <ValidationMessage>The DIAL proxy needs SSDP enabled.</ValidationMessage>
+                        </check001>
+                    </Constraints>
                 </ssdp>
                 <dial type="BooleanField">
                     <Default>0</Default>
@@ -70,9 +95,10 @@
                     <Default>0</Default>
                     <Required>Y</Required>
                 </wsd>
-                <macs type="MacAddressField">
-                    <AsList>Y</AsList>
-                    <ValidationMessage>Enter one or more MAC addresses to scope this reflector to specific devices. Leave empty to reflect for the whole network.</ValidationMessage>
+                <macs type="CSVListField">
+                    <MaskPerItem>Y</MaskPerItem>
+                    <Mask>/^[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}$/u</Mask>
+                    <ValidationMessage>Enter one or more MAC addresses as six colon-separated hex octets, to scope this reflector to specific devices. Leave empty to reflect for the whole network.</ValidationMessage>
                 </macs>
                 <!-- Not a PortField: that one enumerates all 65535 ports as selectable options, which is
                      right for a firewall rule and absurd here. It made the edit dialog fetch 2.5 MB and

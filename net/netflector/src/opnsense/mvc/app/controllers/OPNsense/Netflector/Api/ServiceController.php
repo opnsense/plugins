@@ -50,11 +50,11 @@ class ServiceController extends ApiMutableServiceControllerBase
     {
         $model = new Netflector();
 
-        if ((string)$model->general->enabled !== '1') {
+        if (!$model->general->enabled->isEqual('1')) {
             return false;
         }
         foreach ($model->reflectors->reflector->iterateItems() as $entry) {
-            if ((string)$entry->enabled === '1') {
+            if ($entry->enabled->isEqual('1')) {
                 return true;
             }
         }
@@ -73,23 +73,25 @@ class ServiceController extends ApiMutableServiceControllerBase
             return ['status' => 'failed', 'message' => gettext('This endpoint expects a POST.')];
         }
 
-        // The action renders the configuration into a throwaway root and validates that, so it reports on
-        // what would be applied without rewriting the file a restart would load. Regenerating the live
-        // file here instead would mean a failed validation left the daemon unable to come back up.
+        // Stage the configuration the model would produce into a cache root, then validate that. The
+        // live file stays as it is, so a rejected configuration never leaves the daemon unable to
+        // restart on the one it already had.
         //
-        // It answers as JSON with three states, because "valid", "invalid" and "nothing is enabled" are
-        // genuinely different answers and only the middle one is a problem.
+        // The action answers with the verdict on the first line and the daemon's words after it:
+        // configd returns stdout alone, so the status cannot ride on an exit code.
         $backend = new Backend();
+        $backend->configdpRun('netflector stage', ['OPNsense/Netflector']);
         $output = trim($backend->configdRun('netflector check'));
 
-        $result = json_decode($output, true);
-        if (!is_array($result) || !isset($result['status'])) {
+        $parts = explode("\n", $output, 2);
+        $status = trim($parts[0] ?? '');
+        if (!in_array($status, ['ok', 'failed', 'idle'], true)) {
             return [
                 'status' => 'failed',
                 'message' => $output !== '' ? $output : gettext('The validation returned nothing.'),
             ];
         }
 
-        return $result;
+        return ['status' => $status, 'message' => trim($parts[1] ?? '')];
     }
 }

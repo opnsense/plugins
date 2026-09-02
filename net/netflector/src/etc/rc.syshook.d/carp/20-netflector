@@ -35,7 +35,11 @@
  * node can hold one group and not another, so the vhid is matched too, not the state alone.
  */
 
-require_once('script/load_phalcon.php');
+/* config.inc is load-bearing twice: get_real_interface() silently returns its argument unresolved
+ * without it, and it registers the autoloader the models need, so load_phalcon is not required. */
+require_once('config.inc');
+require_once('interfaces.inc');
+require_once('util.inc');
 
 use OPNsense\Netflector\Netflector;
 use OPNsense\Interfaces\Vip;
@@ -43,38 +47,24 @@ use OPNsense\Interfaces\Vip;
 $subsystem = $argv[1] ?? '';
 $type = $argv[2] ?? '';
 
-/* INIT is not only the transient on the way to MASTER or BACKUP: it is also where a group ends up
- * when its virtual IP is deleted, which is the moment reflection has to stop. It means "not MASTER"
- * either way, so it is paired with BACKUP here. */
+/* A link failure parks the group in INIT with the election timers stopped, so it stays there for
+ * the whole outage and no BACKUP follows: INIT is the only notice that we stopped being MASTER. */
 if (!in_array($type, ['MASTER', 'BACKUP', 'INIT'], true) || strpos($subsystem, '@') === false) {
     exit(0);
 }
 
 $model = new Netflector();
-$depends_on = (string)$model->general->carp_depend_on;
-if ((string)$model->general->enabled !== '1' || $depends_on === '') {
+if (!$model->general->enabled->isEqual('1') || !$model->general->carp_depend_on->isSet()) {
     exit(0);
 }
-
-/* Deferred until something is actually configured: every vhid on the box lands here on every
- * transition, and these are the expensive includes. get_real_interface() needs them. */
-require_once('config.inc');
-require_once('util.inc');
-require_once('interfaces.inc');
-
-/* Stopping a service that is not running reports a failure, which reads as a fault of ours.
- * BACKUP and INIT both arrive routinely while it is already stopped. */
-function netflector_running()
-{
-    return mwexecf('/usr/local/etc/rc.d/netflector %s', ['status'], true) === 0;
-}
+$depends_on = $model->general->carp_depend_on->getValue();
 
 /* carp_depend_on holds the VIP's uuid; the event carries "<vhid>@<interface>", so resolve one to the
  * other. Both halves are compared: the same vhid can run on several interfaces as unrelated groups. */
 $group = null;
 foreach ((new Vip())->vip->iterateItems() as $uuid => $vip) {
-    if ($uuid === $depends_on && (string)$vip->mode === 'carp') {
-        $group = sprintf('%s@%s', (string)$vip->vhid, get_real_interface((string)$vip->interface));
+    if ($uuid === $depends_on && $vip->mode->isEqual('carp')) {
+        $group = sprintf('%s@%s', $vip->vhid->getValue(), get_real_interface($vip->interface->getValue()));
         break;
     }
 }
@@ -82,14 +72,8 @@ foreach ((new Vip())->vip->iterateItems() as $uuid => $vip) {
 /* The VIP was deleted or is no longer carp, so this node's role is unknowable. Stop rather than
  * leave it reflecting, which on a pair is what the dependency exists to prevent. */
 if ($group === null) {
-    $running = netflector_running();
-    log_msg(sprintf(
-        'carp_depend_on names no CARP virtual IP; %s',
-        $running ? 'stopping netflector' : 'netflector is not running'
-    ), LOG_ERR);
-    if ($running) {
-        mwexecf('/usr/local/etc/rc.d/netflector %s', ['stop']);
-    }
+    log_msg('carp_depend_on names no CARP virtual IP; stopping netflector', LOG_ERR);
+    mwexecf('/usr/local/etc/rc.d/netflector %s', ['stop'], true);
     exit(0);
 }
 
@@ -98,9 +82,8 @@ if ($group !== $subsystem) {
 }
 
 $action = $type === 'MASTER' ? 'start' : 'stop';
-if ($action === 'stop' && !netflector_running()) {
-    exit(0);
-}
-
 log_msg(sprintf('CARP %s is %s, running netflector %s', $subsystem, $type, $action));
-mwexecf('/usr/local/etc/rc.d/netflector %s', [$action]);
+
+/* Stopping what is already stopped is the normal case on a backup node, so that failure is muted;
+ * a start that fails is worth the log line. */
+mwexecf('/usr/local/etc/rc.d/netflector %s', [$action], $action === 'stop');

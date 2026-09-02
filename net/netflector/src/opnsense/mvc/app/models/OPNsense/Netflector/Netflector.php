@@ -68,7 +68,7 @@ class Netflector extends BaseModel
         // the entry that creates it is often not the one being saved.
         $active = [];
         foreach ($this->reflectors->reflector->iterateItems() as $entry) {
-            if ((string)$entry->enabled === '1') {
+            if ($entry->enabled->isEqual('1')) {
                 $active[] = $entry;
             }
         }
@@ -80,7 +80,7 @@ class Netflector extends BaseModel
 
         // Checked even when the field was not edited: what invalidates it is deleting the virtual IP
         // on another page, so it goes stale without anyone touching this form.
-        $depends_on = (string)$this->general->carp_depend_on;
+        $depends_on = $this->general->carp_depend_on->getValue();
         if ($depends_on !== '' && !$this->carpVipExists($depends_on)) {
             $messages->appendMessage(new Message(
                 gettext('The selected CARP virtual IP no longer exists.'),
@@ -99,10 +99,8 @@ class Netflector extends BaseModel
     {
         $ref = $entry->__reference;
 
-        // Reflecting onto the interface a packet arrived on would echo it straight back. Both fields
-        // are Required in the model, so emptiness is already reported; the non-empty guard is what
-        // stops two blank interfaces ('' === '') from also collecting a bogus "must differ" on top.
-        if ((string)$entry->source_if !== '' && (string)$entry->source_if === (string)$entry->target_if) {
+        // Reflecting onto the interface a packet arrived on would echo it straight back.
+        if ($entry->source_if->isSet() && $entry->source_if->isEqual($entry->target_if->getValue())) {
             $messages->appendMessage(new Message(
                 gettext('The source and target interfaces must differ.'),
                 $ref . '.target_if'
@@ -111,7 +109,7 @@ class Netflector extends BaseModel
 
         $enabled = false;
         foreach (self::PROTOCOLS as $protocol) {
-            if ((string)$entry->$protocol === '1') {
+            if ($entry->$protocol->isEqual('1')) {
                 $enabled = true;
                 break;
             }
@@ -123,47 +121,17 @@ class Netflector extends BaseModel
             ));
         }
 
-        // DIAL is carried by SSDP's discovery exchange; it cannot stand on its own.
-        if ((string)$entry->dial === '1' && (string)$entry->ssdp !== '1') {
-            $messages->appendMessage(new Message(
-                gettext('The DIAL proxy needs SSDP enabled.'),
-                $ref . '.dial'
-            ));
-        }
-
         // DIAL proxies HTTP over IPv4 literals only, so an IPv6-only entry can never carry it.
-        if ((string)$entry->dial === '1' && !self::usesIpv4((string)$entry->address_family)) {
+        if ($entry->dial->isEqual('1') && !self::usesIpv4($entry->address_family->getValue())) {
             $messages->appendMessage(new Message(
                 gettext('The DIAL proxy is IPv4-only and cannot run on an IPv6-only reflector.'),
                 $ref . '.dial'
             ));
         }
 
-        // Ports without the protocol they belong to are a misconfiguration the daemon rejects.
-        if ((string)$entry->wol !== '1' && (string)$entry->wol_ports !== '') {
-            $messages->appendMessage(new Message(
-                gettext('Wake-on-LAN ports only apply when Wake-on-LAN is enabled.'),
-                $ref . '.wol_ports'
-            ));
-        }
-
-        // MacAddressField validates with FILTER_VALIDATE_MAC, which also takes hyphen- and
-        // dot-separated forms; the daemon's parser takes colons only.
-        foreach (self::toSet((string)$entry->macs) as $mac) {
-            if (preg_match('/^[0-9a-f]{2}(:[0-9a-f]{2}){5}$/', $mac) !== 1) {
-                $messages->appendMessage(new Message(
-                    sprintf(
-                        gettext('%s must be written as six colon-separated hex octets.'),
-                        $mac
-                    ),
-                    $ref . '.macs'
-                ));
-            }
-        }
-
         // Per-item validation cannot see this: the tokenizer drops only byte-identical strings, so
         // aa:bb:cc:dd:ee:ff beside AA:BB:CC:DD:EE:FF reaches a daemon that rejects both lists.
-        $duplicate = self::firstDuplicate((string)$entry->macs);
+        $duplicate = self::firstDuplicate($entry->macs->getValue());
         if ($duplicate !== null) {
             $messages->appendMessage(new Message(
                 sprintf(
@@ -174,7 +142,7 @@ class Netflector extends BaseModel
             ));
         }
 
-        $duplicate = self::firstDuplicate((string)$entry->wol_ports);
+        $duplicate = self::firstDuplicate($entry->wol_ports->getValue());
         if ($duplicate !== null) {
             $messages->appendMessage(new Message(
                 sprintf(gettext('Port %s is listed twice.'), $duplicate),
@@ -189,7 +157,7 @@ class Netflector extends BaseModel
      */
     private static function describe($entry)
     {
-        $name = trim((string)$entry->name);
+        $name = trim($entry->name->getValue());
 
         return $name !== '' ? sprintf(gettext('"%s"'), $name) : gettext('This entry');
     }
@@ -201,7 +169,7 @@ class Netflector extends BaseModel
     private function carpVipExists($uuid)
     {
         foreach ((new \OPNsense\Interfaces\Vip())->vip->iterateItems() as $key => $vip) {
-            if ($key === $uuid && (string)$vip->mode === 'carp') {
+            if ($key === $uuid && $vip->mode->isEqual('carp')) {
                 return true;
             }
         }
@@ -215,17 +183,6 @@ class Netflector extends BaseModel
      */
     private function validatePair($a, $b, $messages)
     {
-        // The non-empty guard is not tolerance of a blank name: name is Required, so a blank one is
-        // already reported. It stops two blank names ('' === '') from also collecting "already used",
-        // which would point at the wrong problem.
-        $name = self::canonicalName($a);
-        if ($name !== '' && $name === self::canonicalName($b)) {
-            $messages->appendMessage(new Message(
-                gettext('This name is already used. Names are compared case-insensitive and with surrounding spaces trimmed.'),
-                $b->__reference . '.name'
-            ));
-        }
-
         $protocol = self::conflictingProtocol($a, $b);
         if ($protocol !== null) {
             // Both entries are named rather than one being "this entry": enabling several at once
@@ -247,31 +204,31 @@ class Netflector extends BaseModel
     private static function conflictingProtocol($a, $b)
     {
         if (
-            (string)$a->source_if !== (string)$b->source_if ||
-            (string)$a->target_if !== (string)$b->target_if
+            !$a->source_if->isEqual($b->source_if->getValue()) ||
+            !$a->target_if->isEqual($b->target_if->getValue())
         ) {
             return null;
         }
-        if (!self::macsOverlap((string)$a->macs, (string)$b->macs)) {
+        if (!self::macsOverlap($a->macs->getValue(), $b->macs->getValue())) {
             return null;
         }
-        if (!self::familiesOverlap((string)$a->address_family, (string)$b->address_family)) {
+        if (!self::familiesOverlap($a->address_family->getValue(), $b->address_family->getValue())) {
             return null;
         }
 
         if (
-            (string)$a->wol === '1' && (string)$b->wol === '1' &&
-            self::portsOverlap((string)$a->wol_ports, (string)$b->wol_ports)
+            $a->wol->isEqual('1') && $b->wol->isEqual('1') &&
+            self::portsOverlap($a->wol_ports->getValue(), $b->wol_ports->getValue())
         ) {
             return gettext('Wake-on-LAN');
         }
-        if ((string)$a->mdns === '1' && (string)$b->mdns === '1') {
+        if ($a->mdns->isEqual('1') && $b->mdns->isEqual('1')) {
             return gettext('mDNS');
         }
-        if ((string)$a->ssdp === '1' && (string)$b->ssdp === '1') {
+        if ($a->ssdp->isEqual('1') && $b->ssdp->isEqual('1')) {
             return gettext('SSDP');
         }
-        if ((string)$a->wsd === '1' && (string)$b->wsd === '1') {
+        if ($a->wsd->isEqual('1') && $b->wsd->isEqual('1')) {
             return gettext('WS-Discovery');
         }
 
@@ -315,11 +272,6 @@ class Netflector extends BaseModel
     private static function usesIpv6($family)
     {
         return in_array($family, self::IPV6_FAMILIES, true);
-    }
-
-    private static function canonicalName($entry)
-    {
-        return strtolower(trim((string)$entry->name));
     }
 
     /**

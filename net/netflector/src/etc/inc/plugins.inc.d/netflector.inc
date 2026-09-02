@@ -35,14 +35,14 @@ function netflector_enabled()
 {
     $model = new \OPNsense\Netflector\Netflector();
 
-    if ((string)$model->general->enabled !== '1') {
+    if (!$model->general->enabled->isEqual('1')) {
         return false;
     }
 
     // The daemon refuses to start with no reflector to run, so the service is only "on" once an entry
     // is enabled too. Otherwise the GUI would report a service that cannot come up.
     foreach ($model->reflectors->reflector->iterateItems() as $entry) {
-        if ((string)$entry->enabled === '1') {
+        if ($entry->enabled->isEqual('1')) {
             return true;
         }
     }

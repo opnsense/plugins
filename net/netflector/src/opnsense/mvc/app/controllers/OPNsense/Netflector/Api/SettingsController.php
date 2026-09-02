@@ -29,8 +29,6 @@
 namespace OPNsense\Netflector\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
-use OPNsense\Base\UserException;
-use OPNsense\Core\Config;
 
 /**
  * The grid's CRUD. The *Base helpers carry the model's own validation through, so an entry the model
@@ -73,69 +71,8 @@ class SettingsController extends ApiMutableModelControllerBase
         return $this->delBase('reflectors.reflector', $uuid);
     }
 
-    /**
-     * Toggle an entry, validating before the save.
-     *
-     * toggleBase() saves with validation disabled, which is fine for most models but not for ours:
-     * enabling an entry can collide with an already-active one (same interface pair, overlapping
-     * protocols or devices), and that pair rule lives in the model's validation.
-     */
     public function toggleReflectorAction($uuids, $enabled = null)
     {
-        if (!$this->request->isPost()) {
-            return ['result' => 'failed'];
-        }
-
-        Config::getInstance()->lock();
-        $model = $this->getModel();
-
-        // The grid's "Enable selected" sends every checked row as one comma-joined request, so this
-        // takes a list like toggleBase does. Flipping is only defined for a single entry: a list has
-        // no shared previous state to flip from, which is why the grid always sends 0 or 1 with one.
-        $uuids = !empty($uuids) ? explode(',', $uuids) : [];
-        if (count($uuids) > 1 && $enabled === null) {
-            throw new UserException(
-                gettext('Toggling a list of entries needs an explicit enabled state.'),
-                gettext('Netflector')
-            );
-        }
-
-        $changed = false;
-        $result = 'failed';
-        foreach ($uuids as $uuid) {
-            $node = $model->getNodeByReference('reflectors.reflector.' . $uuid);
-            if ($node === null) {
-                continue;
-            }
-
-            // Three cases, as toggleBase has them: an explicit 0 or 1 sets that value, no value at all
-            // flips, and anything else is a malformed request that must not touch the entry.
-            $was = (string)$node->enabled;
-            if ($enabled === '0' || $enabled === '1') {
-                $node->enabled = (string)$enabled;
-            } elseif ($enabled === null) {
-                $node->enabled = $was === '1' ? '0' : '1';
-            } else {
-                return ['result' => 'failed', 'changed' => false];
-            }
-
-            $changed = $changed || (string)$node->enabled !== $was;
-            $result = (string)$node->enabled === '1' ? 'Enabled' : 'Disabled';
-        }
-
-        // A UserException, not a 'failed' result: the grid has no field to hang a validation message on,
-        // so a plain failure would bounce the checkbox back with no word of why. This surfaces as a dialog.
-        $messages = $model->performValidation();
-        if (count($messages) > 0) {
-            $texts = [];
-            foreach ($messages as $message) {
-                $texts[] = $message->getMessage();
-            }
-            throw new UserException(implode(' ', array_unique($texts)), gettext('Netflector'));
-        }
-
-        $this->save();
-
-        return ['result' => $result, 'changed' => $changed];
+        return $this->toggleBase('reflectors.reflector', $uuids, $enabled);
     }
 }
