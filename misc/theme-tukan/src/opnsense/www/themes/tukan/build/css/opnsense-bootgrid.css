@@ -5,19 +5,19 @@
   font-size: 15px;
   background-color: transparent;
   border: none;
-  border-top: 1px solid #191919;
+  border-top: 1px solid #c2c2c2;
 }
 
 /* theme: header */
 .tabulator .tabulator-header {
   background-color: transparent;
   border-bottom: none;
-  border-left: 1px solid #191919;
+  border-left: 1px solid #c2c2c2;
 
 }
 
 .tabulator .tabulator-header .tabulator-col {
-  border-right: 1px solid #191919;
+  border-right: 1px solid #c2c2c2;
   background-color: #fff;
   color: #000;
 }
@@ -28,14 +28,14 @@
 
 .tabulator .tabulator-headers {
   height: 100% !important; /* make sure the border below appears */
-  border-bottom: 1px solid #191919;
+  border-bottom: 1px solid #c2c2c2;
 }
 
 /*------------*/
 /* theme: body */
 .tabulator .tabulator-tableholder .tabulator-table {
   background-color: transparent;
-  border-left: 1px solid #191919;
+  border-left: 1px solid #c2c2c2;
 }
 
 .tabulator-row {
@@ -44,7 +44,7 @@
 }
 
 .tabulator-row.tabulator-row-odd {
-  background-color: #eee;
+  background-color: #fff;
 }
 
 .tabulator-row.tabulator-row-odd.tabulator-selectable:hover:not(.tabulator-selected) {
@@ -85,15 +85,15 @@
 
 /* Checkbox column styles */
 .tabulator .tabulator-header .tabulator-frozen.tabulator-frozen-left {
-  border-right: 1px solid #191919; /* separates checkbox column from table rows */
-  border-left: 1px solid #191919;
+  border-right: 1px solid #c2c2c2; /* separates checkbox column from table rows */
+  border-left: 1px solid #c2c2c2;
 }
 
 .tabulator-row .tabulator-cell.tabulator-frozen.tabulator-frozen-left {
-  border-right: 1px solid #191919;
-  border-top: 1px solid #191919;
-  border-bottom: 1px solid #191919;
-  border-left: 1px solid #191919;
+  border-right: 1px solid #c2c2c2;
+  border-top: 1px solid #c2c2c2;
+  border-bottom: 1px solid #c2c2c2;
+  border-left: 1px solid #c2c2c2;
 }
 
 .tabulator-col.tabulator-row-header.tabulator-frozen.tabulator-frozen-left {
@@ -109,8 +109,8 @@
   white-space: nowrap;
   line-height: 1.2;
   vertical-align: top;
-  border-bottom: 1px solid #191919;
-  border-right: 1px solid #191919;
+  border-bottom: 1px solid #c2c2c2;
+  border-right: 1px solid #c2c2c2;
 }
 
 /*-------------*/
@@ -127,7 +127,7 @@
 
 .tabulator .tabulator-footer .tabulator-page.active {
   background-color: #dd630d;
-  border-color: #191919;
+  border-color: #c2c2c2;;
   cursor: default;
   color: #101218;
 }
@@ -135,12 +135,12 @@
 .tabulator .tabulator-footer .tabulator-page:not(disabled):hover {
   color: #101218;
   background-color: #dd630d;
-  border-color: #191919;
+  border-color: #c2c2c2;;
 }
 
 .tabulator .tabulator-footer .tabulator-page:not(disabled).active:hover {
   background-color: #dd630d;
-  border-color: #191919;
+  border-color: #c2c2c2;;
   color: #101218;
   cursor: default;
 }
@@ -157,7 +157,7 @@
   border-radius: 0px;
   margin: 0px;
   padding: 6px 12px;
-  border: 1px solid #1b4257;
+  border: 1px solid #c2c2c2;;
 }
 
 /*----------*/
