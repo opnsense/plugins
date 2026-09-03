@@ -32,19 +32,12 @@ use OPNsense\Base\BaseModel;
 use Phalcon\Messages\Message;
 
 /**
- * The model's rules, mirroring what the daemon refuses to start with, so the GUI rejects a bad entry
- * against the offending field instead of writing a netflector.toml that fails at startup.
- *
- * This mirroring is a convenience, not the guarantee: it can drift when the daemon's rules change. The
- * authority is the daemon itself, via `configctl netflector check` (netflector --check-config) on the
- * generated file before the service is restarted. Keep both. A rule added here without a matching rule
- * there only annoys the user; a rule there without one here is caught, just later and less precisely.
+ * Two rules the model XML cannot express: the pair collision needs every enabled entry at once, and
+ * the CARP virtual IP never reaches the daemon, rc.conf.d gates on it. The daemon refuses everything
+ * else itself, at start, with the reason in the log.
  */
 class Netflector extends BaseModel
 {
-    /** The protocols an entry may enable. One of them must be on, or the entry reflects nothing. */
-    private const PROTOCOLS = ['wol', 'mdns', 'ssdp', 'wsd'];
-
     /** Families that carry IPv4, and those that carry IPv6. Mirrors AddressFamily::uses_ipv4 / uses_ipv6. */
     private const IPV4_FAMILIES = ['default', 'dual', 'ipv4'];
     private const IPV6_FAMILIES = ['default', 'dual', 'ipv6'];
@@ -56,16 +49,8 @@ class Netflector extends BaseModel
     {
         $messages = parent::performValidation($validateFullModel);
 
-        foreach ($this->reflectors->reflector->iterateItems() as $entry) {
-            if (!$validateFullModel && !$entry->isFieldChanged()) {
-                continue;
-            }
-            $this->validateEntry($entry, $messages);
-        }
-
-        // Only enabled entries reach the generated file, so only they can collide there. Checked over
-        // every pair regardless of which entry was edited: a collision is a property of the pair, and
-        // the entry that creates it is often not the one being saved.
+        // Every pair, not only the edited entry: the one that creates a collision is often not the one
+        // being saved.
         $active = [];
         foreach ($this->reflectors->reflector->iterateItems() as $entry) {
             if ($entry->enabled->isEqual('1')) {
@@ -78,8 +63,8 @@ class Netflector extends BaseModel
             }
         }
 
-        // Checked even when the field was not edited: what invalidates it is deleting the virtual IP
-        // on another page, so it goes stale without anyone touching this form.
+        // Checked even when the field was not edited: deleting the virtual IP on another page is what
+        // invalidates it.
         $depends_on = $this->general->carp_depend_on->getValue();
         if ($depends_on !== '' && !$this->carpVipExists($depends_on)) {
             $messages->appendMessage(new Message(
@@ -88,73 +73,12 @@ class Netflector extends BaseModel
             ));
         }
 
-        // Nothing enabled is a legal configuration, not an error: the rc.conf.d template arms the
-        // service only when the switch is on AND an entry is on, so Apply stops the daemon and the
-        // status widget reads "disabled". Rejecting it here instead would mean the last reflector
-        // could not be removed without switching the whole service off first.
+        // No "at least one entry" rule: rc.conf.d arms the service only with an entry on, so the last
+        // reflector can be removed without switching the service off first.
         return $messages;
     }
 
-    private function validateEntry($entry, $messages)
-    {
-        $ref = $entry->__reference;
-
-        // Reflecting onto the interface a packet arrived on would echo it straight back.
-        if ($entry->source_if->isSet() && $entry->source_if->isEqual($entry->target_if->getValue())) {
-            $messages->appendMessage(new Message(
-                gettext('The source and target interfaces must differ.'),
-                $ref . '.target_if'
-            ));
-        }
-
-        $enabled = false;
-        foreach (self::PROTOCOLS as $protocol) {
-            if ($entry->$protocol->isEqual('1')) {
-                $enabled = true;
-                break;
-            }
-        }
-        if (!$enabled) {
-            $messages->appendMessage(new Message(
-                gettext('Enable at least one protocol.'),
-                $ref . '.mdns'
-            ));
-        }
-
-        // DIAL proxies HTTP over IPv4 literals only, so an IPv6-only entry can never carry it.
-        if ($entry->dial->isEqual('1') && !self::usesIpv4($entry->address_family->getValue())) {
-            $messages->appendMessage(new Message(
-                gettext('The DIAL proxy is IPv4-only and cannot run on an IPv6-only reflector.'),
-                $ref . '.dial'
-            ));
-        }
-
-        // Per-item validation cannot see this: the tokenizer drops only byte-identical strings, so
-        // aa:bb:cc:dd:ee:ff beside AA:BB:CC:DD:EE:FF reaches a daemon that rejects both lists.
-        $duplicate = self::firstDuplicate($entry->macs->getValue());
-        if ($duplicate !== null) {
-            $messages->appendMessage(new Message(
-                sprintf(
-                    gettext('%s is listed twice. Addresses are compared case-insensitive.'),
-                    $duplicate
-                ),
-                $ref . '.macs'
-            ));
-        }
-
-        $duplicate = self::firstDuplicate($entry->wol_ports->getValue());
-        if ($duplicate !== null) {
-            $messages->appendMessage(new Message(
-                sprintf(gettext('Port %s is listed twice.'), $duplicate),
-                $ref . '.wol_ports'
-            ));
-        }
-    }
-
-    /**
-     * An entry by name, for a message that has to stand on its own. Falls back for the entry being
-     * added, which has no name until it is saved.
-     */
+    /** An entry by name; the entry being added has none until it is saved. */
     private static function describe($entry)
     {
         $name = trim($entry->name->getValue());
@@ -163,8 +87,8 @@ class Netflector extends BaseModel
     }
 
     /**
-     * Whether `$uuid` still names a CARP virtual IP. VirtualIPField offers only the ones that exist
-     * when the form is drawn, but the value it stored outlives the virtual IP itself.
+     * VirtualIPField offers only the virtual IPs that exist when the form is drawn; the stored value
+     * outlives them.
      */
     private function carpVipExists($uuid)
     {
@@ -177,16 +101,12 @@ class Netflector extends BaseModel
         return false;
     }
 
-    /**
-     * Two enabled entries must not share a name, nor reflect the same protocol's packets twice.
-     * Mirrors the daemon's check_conflicts / Reflector::conflicts_with.
-     */
+    /** Mirrors the daemon's check_conflicts / Reflector::conflicts_with. */
     private function validatePair($a, $b, $messages)
     {
         $protocol = self::conflictingProtocol($a, $b);
         if ($protocol !== null) {
-            // Both entries are named rather than one being "this entry": enabling several at once
-            // reports through a dialog that carries the text alone, with no field to point at.
+            // Both entries named: toggling several at once reports the text alone, with no field.
             $messages->appendMessage(new Message(
                 sprintf(
                     gettext('%s would reflect %s between the same interfaces as %s, for overlapping ' .
@@ -200,7 +120,6 @@ class Netflector extends BaseModel
         }
     }
 
-    /** The protocol both entries would reflect for the same traffic, or null. */
     private static function conflictingProtocol($a, $b)
     {
         if (
@@ -235,11 +154,7 @@ class Netflector extends BaseModel
         return null;
     }
 
-    /**
-     * An empty port list is not "no ports": the daemon falls back to 7 and 9, so two entries that both
-     * leave it blank do overlap. The opposite of macsOverlap, where empty widens the selection rather
-     * than defaulting it.
-     */
+    /** An empty port list means the daemon's defaults, so two blank lists overlap. */
     private static function portsOverlap($a, $b)
     {
         $set_a = self::toSet($a) ?: self::DEFAULT_WOL_PORTS;
@@ -258,7 +173,6 @@ class Netflector extends BaseModel
         return count(array_intersect($set_a, $set_b)) > 0;
     }
 
-    /** Families overlap when they both carry the same IP version. */
     private static function familiesOverlap($a, $b)
     {
         return (self::usesIpv4($a) && self::usesIpv4($b)) || (self::usesIpv6($a) && self::usesIpv6($b));
@@ -274,23 +188,6 @@ class Netflector extends BaseModel
         return in_array($family, self::IPV6_FAMILIES, true);
     }
 
-    /**
-     * The first value a comma-separated field repeats, or null. Lowercased comparison matches the
-     * daemon: a MAC's hex case is not part of its identity, and the port mask forbids a leading zero.
-     */
-    private static function firstDuplicate($csv)
-    {
-        $seen = [];
-        foreach (self::toSet($csv) as $value) {
-            if (isset($seen[$value])) {
-                return $value;
-            }
-            $seen[$value] = true;
-        }
-        return null;
-    }
-
-    /** A comma-separated field as a set of trimmed, lowercased values, empties dropped. */
     private static function toSet($csv)
     {
         $out = [];

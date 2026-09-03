@@ -95,17 +95,12 @@
                     <Default>0</Default>
                     <Required>Y</Required>
                 </wsd>
-                <macs type="CSVListField">
-                    <MaskPerItem>Y</MaskPerItem>
-                    <Mask>/^[0-9a-fA-F]{2}(:[0-9a-fA-F]{2}){5}$/u</Mask>
-                    <ValidationMessage>Enter one or more MAC addresses as six colon-separated hex octets, to scope this reflector to specific devices. Leave empty to reflect for the whole network.</ValidationMessage>
+                <macs type="MacAddressField">
+                    <AsList>Y</AsList>
+                    <ValidationMessage>Enter one or more MAC addresses to scope this reflector to specific devices. Leave empty to reflect for the whole network.</ValidationMessage>
                 </macs>
-                <!-- Not a PortField: that one enumerates all 65535 ports as selectable options, which is
-                     right for a firewall rule and absurd here. It made the edit dialog fetch 2.5 MB and
-                     hang. CSVListField validates each item against the mask and stores a plain list. -->
-                <wol_ports type="CSVListField">
-                    <MaskPerItem>Y</MaskPerItem>
-                    <Mask>/^([1-9][0-9]{0,3}|[1-5][0-9]{4}|6[0-4][0-9]{3}|65[0-4][0-9]{2}|655[0-2][0-9]|6553[0-5])$/u</Mask>
+                <wol_ports type=".\PortListField">
+                    <AsList>Y</AsList>
                     <ValidationMessage>Enter the UDP ports magic packets arrive on, as numbers between 1 and 65535. The daemon defaults to 7 and 9.</ValidationMessage>
                 </wol_ports>
                 <address_family type="OptionField">

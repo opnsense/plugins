@@ -34,6 +34,7 @@ class IndexController extends \OPNsense\Base\IndexController
     {
         $this->view->generalForm = $this->getForm('general');
         $this->view->formDialogEdit = $this->getForm('dialogEdit');
+        $this->view->formGridEdit = $this->getFormGrid('dialogEdit');
         $this->view->pick('OPNsense/Netflector/index');
     }
 }

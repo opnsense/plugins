@@ -1,7 +1,4 @@
 <form>
-    <!-- No <type>header</type> field: base_form renders one as a collapsible section (the thead gets a
-         click handler and the tbody the "collapsible" class), and there is no flag to turn that off. The
-         page titles the section with an h2 instead, so it matches the Reflectors grid below it. -->
     <field>
         <id>netflector.general.enabled</id>
         <label>Enable</label>

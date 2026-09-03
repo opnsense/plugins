@@ -26,11 +26,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/**
- * Registers the daemon with OPNsense's service machinery, so it appears under Services and can be
- * started, stopped and reported on from the GUI.
- */
-
 function netflector_enabled()
 {
     $model = new \OPNsense\Netflector\Netflector();
@@ -39,8 +34,7 @@ function netflector_enabled()
         return false;
     }
 
-    // The daemon refuses to start with no reflector to run, so the service is only "on" once an entry
-    // is enabled too. Otherwise the GUI would report a service that cannot come up.
+    // The daemon refuses to start with no reflector, so the service is on only once an entry is on too.
     foreach ($model->reflectors->reflector->iterateItems() as $entry) {
         if ($entry->enabled->isEqual('1')) {
             return true;
@@ -50,12 +44,7 @@ function netflector_enabled()
     return false;
 }
 
-/**
- * Registers the daemon's syslog tag as an application, so remote syslog destinations (System >
- * Settings > Logging) can forward exactly its lines. The rc script starts the daemon under
- * `daemon -S -T netflector`, so every line carries this tag; the name here must match that -T,
- * as must the Syslog/local template filter that routes the tag into /var/log/netflector/.
- */
+/* Must match the -T tag the rc script starts the daemon under, and the Syslog/local filter. */
 function netflector_syslog()
 {
     return ['netflector' => ['facility' => ['netflector']]];

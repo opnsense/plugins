@@ -6,11 +6,8 @@ counters_interval_secs = {{ OPNsense.Netflector.general.counters_interval_secs|d
 {%   for entry in helpers.toList('OPNsense.Netflector.reflectors.reflector') %}
 {%     if entry.enabled|default('0') == '1' %}
 
-{#     The GUI stores OPNsense's logical names (lan, opt1); the daemon needs the device (vtnet0). #}
-{#     Every switch is written out, false and "default" included: the file states what the GUI
-       showed, so a later change to a daemon default cannot silently flip a plugin user. Only
-       wol_ports and macs may be absent (their absence is itself the setting: the daemon's
-       default ports; all devices). #}
+{#     Every switch is written out, false and "default" included, so a later change to a daemon
+       default cannot silently flip a plugin user. #}
 [reflectors.{{ entry.name }}]
 source_if = "{{ physical_interface(entry.source_if) }}"
 target_if = "{{ physical_interface(entry.target_if) }}"
@@ -23,7 +20,8 @@ ssdp = {{ 'true' if entry.ssdp|default('0') == '1' else 'false' }}
 dial = {{ 'true' if entry.dial|default('0') == '1' else 'false' }}
 wsd = {{ 'true' if entry.wsd|default('0') == '1' else 'false' }}
 {%       if entry.macs %}
-macs = [{% for mac in entry.macs.split(',') %}"{{ mac }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+{#       The field keeps the spelling as typed; the daemon parses the colon form only. #}
+macs = [{% for mac in entry.macs.split(',') %}{% set hex = mac|lower|replace(':', '')|replace('-', '')|replace('.', '') %}"{{ hex[0:2] }}:{{ hex[2:4] }}:{{ hex[4:6] }}:{{ hex[6:8] }}:{{ hex[8:10] }}:{{ hex[10:12] }}"{% if not loop.last %}, {% endif %}{% endfor %}]
 {%       endif %}
 address_family = "{{ entry.address_family|default('default') }}"
 {%     endif %}

@@ -3,6 +3,9 @@
         <id>reflector.enabled</id>
         <label>Enabled</label>
         <type>checkbox</type>
+        <grid_view>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
     </field>
     <field>
         <id>reflector.name</id>
@@ -15,12 +18,18 @@
         <label>Source interface</label>
         <type>dropdown</type>
         <help><![CDATA[The interface to listen on. This is the side the device you are looking for is <b>not</b> on: an mDNS query from a phone on the LAN is picked up here.]]></help>
+        <grid_view>
+            <label>Source</label>
+        </grid_view>
     </field>
     <field>
         <id>reflector.target_if</id>
         <label>Target interface</label>
         <type>dropdown</type>
         <help><![CDATA[The interface to re-emit on, with the addressing rewritten. This is the side the device you are looking for is on.]]></help>
+        <grid_view>
+            <label>Target</label>
+        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -31,30 +40,55 @@
         <label>mDNS</label>
         <type>checkbox</type>
         <help><![CDATA[Bonjour, AirPlay, Chromecast, printers, HomeKit.]]></help>
+        <grid_view>
+            <label>mDNS</label>
+            <formatter>boolean</formatter>
+            <width>5em</width>
+        </grid_view>
     </field>
     <field>
         <id>reflector.ssdp</id>
         <label>SSDP</label>
         <type>checkbox</type>
         <help><![CDATA[UPnP discovery: DLNA servers, Sonos, smart TVs.]]></help>
+        <grid_view>
+            <label>SSDP</label>
+            <formatter>boolean</formatter>
+            <width>5em</width>
+        </grid_view>
     </field>
     <field>
         <id>reflector.dial</id>
         <label>DIAL proxy</label>
         <type>checkbox</type>
         <help><![CDATA[Casting to a TV ("Discovery And Launch"). Needs SSDP, and is IPv4-only, so it cannot be used on an IPv6-only reflector.]]></help>
+        <grid_view>
+            <label>DIAL</label>
+            <formatter>boolean</formatter>
+            <width>5em</width>
+        </grid_view>
     </field>
     <field>
         <id>reflector.wsd</id>
         <label>WS-Discovery</label>
         <type>checkbox</type>
         <help><![CDATA[ONVIF cameras and NVRs, Windows network devices and printers.]]></help>
+        <grid_view>
+            <label>WSD</label>
+            <formatter>boolean</formatter>
+            <width>5em</width>
+        </grid_view>
     </field>
     <field>
         <id>reflector.wol</id>
         <label>Wake-on-LAN</label>
         <type>checkbox</type>
         <help><![CDATA[Forward magic packets, so a machine on the other interface can be woken.]]></help>
+        <grid_view>
+            <label>WoL</label>
+            <formatter>boolean</formatter>
+            <width>5em</width>
+        </grid_view>
     </field>
     <field>
         <id>reflector.wol_ports</id>
@@ -63,6 +97,9 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <help><![CDATA[UDP ports magic packets arrive on. Leave empty for the daemon's defaults, 7 and 9.]]></help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
     </field>
     <field>
         <type>header</type>
@@ -75,12 +112,19 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <help><![CDATA[MAC addresses to scope this reflector to. Leave empty to reflect for the whole network.]]></help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
     </field>
     <field>
         <id>reflector.address_family</id>
         <label>Address family</label>
         <type>dropdown</type>
         <help><![CDATA[Which IP versions to reflect. <b>Default</b> requires IPv4 and adds IPv6 when the interfaces have it, so it will not start on an IPv6-only interface. <b>Dual</b> requires both. A required family that is missing fails startup; a best-effort one is simply skipped, and starts reflecting as soon as the address appears.]]></help>
+        <grid_view>
+            <label>IP family</label>
+            <width>8em</width>
+        </grid_view>
     </field>
     <field>
         <id>reflector.description</id>

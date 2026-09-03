@@ -30,11 +30,6 @@ namespace OPNsense\Netflector\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 
-/**
- * The grid's CRUD. The *Base helpers carry the model's own validation through, so an entry the model
- * rejects (see Netflector::performValidation) comes back as a field error in the dialog rather than
- * being written and blowing up later at startup.
- */
 class SettingsController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'netflector';

@@ -26,35 +26,41 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\Netflector\Api;
+namespace OPNsense\Netflector\FieldTypes;
 
-use OPNsense\Base\ApiMutableServiceControllerBase;
-use OPNsense\Netflector\Netflector;
+use OPNsense\Base\FieldTypes\BaseSetField;
+use OPNsense\Base\Validators\CallbackValidator;
 
-class ServiceController extends ApiMutableServiceControllerBase
+/**
+ * A list of UDP ports, each 1-65535. Not a PortField: that holds one port and, with Multiple set to
+ * hold several, sends the client all 65535 options. Digits only and no leading zero.
+ */
+class PortListField extends BaseSetField
 {
-    protected static $internalServiceClass = '\OPNsense\Netflector\Netflector';
-    protected static $internalServiceTemplate = 'OPNsense/Netflector';
-    protected static $internalServiceEnabled = 'general.enabled';
-    protected static $internalServiceName = 'netflector';
-
-    /**
-     * The daemon refuses to start with no reflector, so enabled means the switch and at least one
-     * entry, as in netflector_enabled() and the rc.conf.d template.
-     */
-    protected function serviceEnabled()
+    public function setValue($value)
     {
-        $model = new Netflector();
+        $items = array_map('trim', explode($this->internalFieldSeparator, (string)$value));
+        parent::setValue(implode($this->internalFieldSeparator, array_unique($items)));
+    }
 
-        if (!$model->general->enabled->isEqual('1')) {
-            return false;
-        }
-        foreach ($model->reflectors->reflector->iterateItems() as $entry) {
-            if ($entry->enabled->isEqual('1')) {
-                return true;
-            }
-        }
+    protected function defaultValidationMessage()
+    {
+        return gettext('Please specify valid port numbers (1-65535).');
+    }
 
-        return false;
+    public function getValidators()
+    {
+        $validators = parent::getValidators();
+        if ($this->isSet()) {
+            $validators[] = new CallbackValidator(["callback" => function ($data) {
+                foreach ($this->iterateInput($data) as $port) {
+                    if (!ctype_digit($port) || str_starts_with($port, '0') || (int)$port > 65535) {
+                        return [$this->getValidationMessage()];
+                    }
+                }
+                return [];
+            }]);
+        }
+        return $validators;
     }
 }
