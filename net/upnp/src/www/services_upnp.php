@@ -154,7 +154,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     /* user permissions validation */
     foreach (miniupnpd_permuser_list() as $i => $permuser) {
         if (!empty($pconfig[$permuser])) {
-            $perm = explode(' ', $pconfig[$permuser]);
+            $perm = preg_split('/\s+/', trim($pconfig[$permuser]));
             /* should explode to 4 args */
             if (count($perm) != 4) {
                 $input_errors[] = sprintf(gettext("You must follow the specified format in the 'User specified permissions %s' field"), $i);
@@ -191,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $upnp[$fieldname] = $pconfig[$fieldname];
         }
         foreach (miniupnpd_permuser_list() as $fieldname) {
-            $upnp[$fieldname] = $pconfig[$fieldname];
+            $upnp[$fieldname] = implode(' ', preg_split('/\s+/', trim($pconfig[$fieldname])));
         }
         // array types
         $upnp['iface_array'] = implode(',', $pconfig['iface_array']);
@@ -252,7 +252,7 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable PCP/NAT-PMP protocols");?></td>
+                      <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable PCP and NAT-PMP protocols");?></td>
                       <td>
                        <input name="enable_natpmp" type="checkbox" value="yes" <?=!empty($pconfig['enable_natpmp']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable_natpmp">
@@ -361,12 +361,6 @@ include("head.inc");
                         </div>
                       </td>
                     </tr>
-                    <tr>
-                      <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('Disable IPv6 mapping') ?></td>
-                      <td>
-                        <input name="ipv6_disable" type="checkbox" value="yes" <?= !empty($pconfig['ipv6_disable']) ? "checked=\"checked\"" : ""; ?> />
-                      </td>
-                    </tr>
                     <!-- <tr>
                       <td><a id="help_for_sysuptime" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Report system uptime");?></td>
                       <td>
@@ -469,6 +463,12 @@ include("head.inc");
                        <div class="hidden" data-for="help_for_permdefault">
                          <?=gettext("Deny access to service by default.");?>
                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('Disable IPv6 mapping') ?></td>
+                      <td>
+                        <input name="ipv6_disable" type="checkbox" value="yes" <?= !empty($pconfig['ipv6_disable']) ? "checked=\"checked\"" : ""; ?> />
                       </td>
                     </tr>
                     <tr>
