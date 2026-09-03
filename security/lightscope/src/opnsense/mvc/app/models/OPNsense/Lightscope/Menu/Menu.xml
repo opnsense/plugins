@@ -1,0 +1,5 @@
+<menu>
+    <Services>
+        <Lightscope VisibleName="LightScope" cssClass="fa fa-shield fa-fw" url="/ui/lightscope" />
+    </Services>
+</menu>
