@@ -1,0 +1,24 @@
+<form>
+    <field>
+        <type>header</type>
+        <label>Failover Settings</label>
+    </field>
+    <field>
+        <id>hclouddns.general.failoverEnabled</id>
+        <label>Enable Failover</label>
+        <type>checkbox</type>
+        <help>Automatically switch DNS to backup gateway when primary fails (detected by OPNsense dpinger)</help>
+    </field>
+    <field>
+        <id>hclouddns.general.failbackEnabled</id>
+        <label>Enable Failback</label>
+        <type>checkbox</type>
+        <help>Automatically switch back to primary gateway when it becomes available again</help>
+    </field>
+    <field>
+        <id>hclouddns.general.failbackDelay</id>
+        <label>Failback Delay (seconds)</label>
+        <type>text</type>
+        <help>Wait time before failback after primary gateway becomes available. Default: 60. Range: 0-600</help>
+    </field>
+</form>

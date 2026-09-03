@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>account.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable this API token</help>
+    </field>
+    <field>
+        <id>account.name</id>
+        <label>Name</label>
+        <type>text</type>
+        <help>Short name for this token (e.g. "Production", "Project A")</help>
+    </field>
+    <field>
+        <id>account.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Optional description</help>
+    </field>
+    <field>
+        <id>account.apiType</id>
+        <label>API Type</label>
+        <type>dropdown</type>
+        <help>Cloud API for new zones, Legacy API for zones not yet migrated</help>
+    </field>
+    <field>
+        <id>account.apiToken</id>
+        <label>API Token</label>
+        <type>password</type>
+        <help>Hetzner API Token</help>
+    </field>
+</form>
