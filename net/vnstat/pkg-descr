@@ -8,6 +8,10 @@ ensures light use of system resources.
 Plugin Changelog
 ================
 
+1.5
+
+* Add Sort Option to dashboard widget options (contributed by Greg Pfountz)
+
 1.4
 
 * Add Month Rotate option to UI (contributed by Greg Pfountz)
