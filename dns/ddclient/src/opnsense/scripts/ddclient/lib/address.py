@@ -127,18 +127,22 @@ def checkip(service, proto='https', timeout='10', interface=None, dynipv6host=No
             # invalid address
             return ""
     elif service in ['if', 'if6'] and interface is not None:
-        # return first non private IPv[4|6] interface address
+        # return first non private IPv[4|6] interface address. In case IPv6 address is deprecated return last 
+        address = ''
         ifcfg = subprocess.run(['/sbin/ifconfig', interface], capture_output=True, text=True).stdout
         for line in ifcfg.split('\n'):
             if line.startswith('\tinet'):
                 parts = line.split()
                 if (parts[0] == 'inet' and service == 'if') or (parts[0] == 'inet6' and service == 'if6'):
                     try:
-                        address = transform_ip(parts[1], dynipv6host)
-                        if address.is_global:
-                            return str(address)
+                        currentAddress = transform_ip(parts[1], dynipv6host)
+                        if currentAddress.is_global:
+                            address = currentAddress
+                            if (service == 'if') or (service == 'if6' and 'deprecated' not in line):
+                                break
                     except ValueError:
                         continue
+        return str(address)
     elif service.lstrip('dns_') in checkip_dns_list:
         svc_info = checkip_dns_list[service.lstrip('dns_')]
         resolve_params = svc_info['resolve_params']
