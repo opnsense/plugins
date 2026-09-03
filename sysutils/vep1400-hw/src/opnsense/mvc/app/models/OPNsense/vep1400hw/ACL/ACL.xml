@@ -1,0 +1,9 @@
+<acl>
+    <page-user-vep1400hw>
+        <name>System: VEP1400 Hardware Settings</name>
+        <patterns>
+            <pattern>ui/vep1400hw/*</pattern>
+            <pattern>api/vep1400hw/*</pattern>
+        </patterns>
+    </page-user-vep1400hw>
+</acl>
