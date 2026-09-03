@@ -1,0 +1,31 @@
+#!/bin/sh
+
+BINDHOME="/usr/local/etc/namedb"
+
+log()
+{
+	[ ${#} -gt 0 ] || return 0
+	logger -is -t "bind-cleanup" "${@}"
+}
+
+#
+# First, do things the easy way (only possible if BIND9 is running!)
+#
+if service named status 1>/dev/null 2>&1 ; then
+	log "Clearing out pending BIND9 journal files..."
+	OUT="$(rndc sync -clean 2>&1)" || log "RNDC SYNC failed (rc=${?}): ${OUT}"
+
+	log "Stopping BIND ..."
+	OUT="$(service named stop 2>&1)" || log "Could not stop BIND (rc=${?}): ${OUT}"
+fi
+
+#
+# If the easy way didn't work, we do things the hard way because these
+# journal files can cause a LOT of issues when BIND9 next tries to start
+#
+if OUT="$(cd "${BINDHOME}/primary" && find * -type f -name '*.jnl' | fgrep '.jnl')" ; then
+	log "WARNING: BIND9 journal files still exist - [${OUT}]"
+	find "${BINDHOME}/primary" -type f -name '*.jnl' -delete -print
+fi
+
+exit 0
