@@ -2093,4 +2093,14 @@
         <type>text</type>
         <help><![CDATA[The full server URL, for example https://technitium:5380. The port number is optional.<br/><div class="text-info"><b>NOTE: </b>Remove the trailing / if it is present.</div>]]></help>
     </field>
+    <field>
+        <label>GCore Managed DNS</label>
+        <type>header</type>
+        <style>table_dns table_dns_gcore</style>
+      </field>
+      <field>
+        <id>validation.dns_gcore_token</id>
+        <label>API Token</label>
+        <type>text</type>
+      </field>
 </form>
