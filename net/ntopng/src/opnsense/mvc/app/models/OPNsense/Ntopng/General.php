@@ -29,7 +29,61 @@
 namespace OPNsense\Ntopng;
 
 use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
 
 class General extends BaseModel
 {
+    public function performValidation($validateFullModel = false)
+    {
+        $messages = parent::performValidation($validateFullModel);
+
+
+        $http = (string)$this->addresseshttp;
+        $https = (string)$this->addresseshttps;
+
+        if ($http === '' && $https === '') {
+            $msg = gettext('Please input at least an HTTP or HTTPS port.');
+
+            $messages->appendMessage(new Message(
+                $msg,
+                'addresseshttp'
+            ));
+
+            $messages->appendMessage(new Message(
+                $msg,
+                'addresseshttps'
+            ));
+        }
+
+
+        $redis_conn = (string)$this->redisconnection;
+
+        if (trim($redis_conn) === '' && $redis_conn !== '') {
+            $messages->appendMessage(new Message(
+                gettext(
+                    "Can't be all whitespace"
+                ),
+                'redisconnection'
+            ));
+        } else {
+            if ($redis_conn !== ltrim($redis_conn)) {
+                $messages->appendMessage(new Message(
+                    gettext(
+                        "Can't have leading whitespace"
+                    ),
+                    'redisconnection'
+                ));
+            }
+            if ($redis_conn !== rtrim($redis_conn)) {
+                $messages->appendMessage(new Message(
+                    gettext(
+                        "Can't have trailing whitespace"
+                    ),
+                    'redisconnection'
+                ));
+            }
+        }
+
+        return $messages;
+    }
 }
