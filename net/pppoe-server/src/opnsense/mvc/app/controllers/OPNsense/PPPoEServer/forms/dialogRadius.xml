@@ -1,0 +1,42 @@
+<form>
+    <field>
+        <id>server.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>server.description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>server.host</id>
+        <label>Server address</label>
+        <type>text</type>
+        <help>IPv4 address of the RADIUS server.</help>
+    </field>
+    <field>
+        <id>server.secret</id>
+        <label>Shared secret</label>
+        <type>password</type>
+        <help>Stored secrets are never shown. Leave empty when editing to keep the current secret.</help>
+    </field>
+    <field>
+        <id>server.authport</id>
+        <label>Authentication port</label>
+        <type>text</type>
+        <help>UDP port for Access-Request (0 disables authentication against this server).</help>
+    </field>
+    <field>
+        <id>server.acctport</id>
+        <label>Accounting port</label>
+        <type>text</type>
+        <help>UDP port for Accounting-Request (0 disables accounting against this server).</help>
+    </field>
+    <field>
+        <id>server.priority</id>
+        <label>Priority</label>
+        <type>text</type>
+        <help>0 is queried first; higher values act as fallback servers.</help>
+    </field>
+</form>
