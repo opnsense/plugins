@@ -28,6 +28,8 @@
 
 namespace OPNsense\AcmeClient\LeValidation;
 
+require_once('util.inc');
+
 use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\AcmeClient\LeUtils;
 use OPNsense\Core\Config;
@@ -77,21 +79,38 @@ class HttpOpnsense extends Base implements LeValidationInterface
             $backend = new \OPNsense\Core\Backend();
             $interface = (string)$this->config->http_opn_interface;
             $response = json_decode($backend->configdpRun('interface address', [$interface]));
-            // XXX Returns both IPv4 and IPv6 now. While "[0]" and
-            // "[1]" should remain in this order it would make sense
-            // to ensure "family" matches "inet" or "inet6" and/or
-            // pull both addresses for missing IPv6 support depending
-            // on how this should work.
-            if (!empty($response->$interface[0]->address)) {
-                $iplist[] = $response->$interface[0]->address;
-            }
+            foreach ($response->$interface as $if) {
+                if (!empty($if->address)) {
+                    $iplist[] = $if->address;
+                }
+	    }
         }
 
-        // Check if IPv6 support is enabled
-        if (isset($configObj->system->ipv6allow) && ($configObj->system->ipv6allow == '1')) {
-            $_ipv6_enabled = true;
-        } else {
-            $_ipv6_enabled = false;
+        // Find redirect target for IPv6
+        //
+        // Needed because redirecting to ::1 isn't allowed [1].
+        //
+        // [1]: https://bugs.freebsd.org/bugzilla/show_bug.cgi?id=193568
+        $ipv6_redirect_addr = null;
+        if (is_ipv6_allowed()) {
+            $backend = new \OPNsense\Core\Backend();
+            $interface = "wan";
+            $response = json_decode($backend->configdpRun('interface address', [$interface]));
+
+            if (isset($response->$interface)) {
+                foreach ($response->$interface as $if) {
+                    if (!empty($if->address) && $if->family == "inet6") {
+                        $ipv6_redirect_addr = $if->address;
+                        break;
+                    }
+                }
+            }
+
+            if ($ipv6_redirect_addr != null) {
+                LeUtils::log("found IPv6 on WAN interface, will redirect traffic there ({$ipv6_redirect_addr})");
+            } else {
+                LeUtils::log("failed to find IPv6 on WAN interface ($interface), will not rewrite target address");
+            }
         }
 
         // Generate rules for all IP addresses
@@ -105,9 +124,9 @@ class HttpOpnsense extends Base implements LeValidationInterface
                     $_dst = '127.0.0.1';
                     $_family = 'inet';
                     LeUtils::log("using IPv4 address: {$ip}");
-                } elseif (($_ipv6_enabled == true) && (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
+                } elseif (is_ipv6_allowed() && (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6))) {
                     // IPv6
-                    $_dst = '::1';
+                    $_dst = $ipv6_redirect_addr != null ? $ipv6_redirect_addr : $ip;
                     $_family = 'inet6';
                     LeUtils::log("using IPv6 address: {$ip}");
                 } else {
