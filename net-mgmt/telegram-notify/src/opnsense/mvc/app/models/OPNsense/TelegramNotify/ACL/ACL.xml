@@ -1,0 +1,9 @@
+<acl>
+    <page-user-telegramnotify>
+        <name>Services: Telegram Notify</name>
+        <patterns>
+            <pattern>ui/telegramnotify/*</pattern>
+            <pattern>api/telegramnotify/*</pattern>
+        </patterns>
+    </page-user-telegramnotify>
+</acl>
