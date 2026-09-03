@@ -53,4 +53,11 @@
 <div class="content-box">
     {{ partial("layout_partials/base_form",['fields':settingsForm,'id':'frmSettings']) }}
 </div>
-{{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/netbird/service/reconfigure', 'data_service_widget': 'netbird'}) }}
+{{ partial(
+    'layout_partials/base_apply_button',
+    {
+        'data_endpoint': '/api/netbird/service/reconfigure',
+        'data_service_widget': 'netbird',
+        'data_change_message_content': lang._('Apply restarts the NetBird service: the tunnel goes down and comes back up. If you are reaching this firewall through NetBird, you will lose access for a moment, so make sure you have another way in before applying.')
+    }
+) }}
