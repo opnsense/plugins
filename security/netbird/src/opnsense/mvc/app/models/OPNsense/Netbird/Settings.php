@@ -37,16 +37,18 @@ class Settings extends BaseModel
 {
     public function syncConfig($target = '/var/db/netbird/config.json')
     {
-        $config = json_decode(file_get_contents($target), true);
-        if (!is_array($config)) {
-            $jsonError = json_last_error_msg();
-            syslog(LOG_ERR, "netbird: failed to decode configuration: $jsonError");
+        try {
+            $config = ConfigFile::read($target);
+        } catch (\RuntimeException $e) {
+            syslog(LOG_ERR, 'netbird: ' . $e->getMessage() . '; the settings were not applied');
             return;
         }
 
         $config["WgPort"] = (int)$this->general->wireguardPort->__toString();
         $config["ServerSSHAllowed"] = $this->ssh->enable->__toString() == 1;
-        $config["IpMapping"] = $this->general->ipmapping->__toString();
+        /* the daemon has never had an IpMapping key; the field this describes is NATExternalIPs */
+        $config["NATExternalIPs"] = ConfigFile::listOf($this->general->ipmapping->__toString());
+        unset($config["IpMapping"]);
         $config["EnableSSHRoot"] = $this->ssh->enableRoot->__toString() == 1;
         $config["EnableSSHSFTP"] = $this->ssh->enableSFTP->__toString() == 1;
         $config["EnableSSHLocalPortForwarding"] = $this->ssh->enableLocalPortForwarding->__toString() == 1;
@@ -61,10 +63,10 @@ class Settings extends BaseModel
         $config["RosenpassEnabled"] = $this->postquantum->enableRosenpass->__toString() == 1;
         $config["RosenpassPermissive"] = $this->postquantum->rosenpassPermissive->__toString() == 1;
 
-
-        $result = file_put_contents($target, json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
-        if ($result === false) {
-            syslog(LOG_ERR, "netbird: failed to write updated configuration to $target");
+        try {
+            ConfigFile::write($target, $config);
+        } catch (\RuntimeException $e) {
+            syslog(LOG_ERR, 'netbird: ' . $e->getMessage() . '; the previous configuration is unchanged');
         }
     }
 }
