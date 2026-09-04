@@ -41,7 +41,18 @@ POSSIBILITY OF SUCH DAMAGE.
         mapDataToFormUI(data_get_map).done(function (data) {
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
+            toggleTtlsInner();
         });
+
+        // the inner EAP type only applies to TTLS
+        function toggleTtlsInner() {
+            if ($("#eap\\.default_eap_type").val() === 'ttls') {
+                $(".ttls_inner").closest('tr').show();
+            } else {
+                $(".ttls_inner").closest('tr').hide();
+            }
+        }
+        $("#eap\\.default_eap_type").change(toggleTtlsInner);
         updateServiceControlUI('freeradius');
 
         // link save button to API set action
