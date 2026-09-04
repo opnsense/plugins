@@ -564,6 +564,16 @@
         <type>password</type>
     </field>
     <field>
+        <label>FreeMyIP</label>
+        <type>header</type>
+        <style>table_dns table_dns_freemyip</style>
+    </field>
+    <field>
+        <id>validation.dns_freemyip_token</id>
+        <label>Token</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>Fornex</label>
         <type>header</type>
         <style>table_dns table_dns_fornex</style>
