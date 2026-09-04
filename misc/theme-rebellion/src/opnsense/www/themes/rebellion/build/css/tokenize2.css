@@ -71,15 +71,14 @@
   color: #ccc;
 }
 .tokenize > .tokens-container > .token-search > input {
-  padding: 0;
-  margin: 0;
-  line-height: 1em;
-  border: 1px solid #fff;
-  background: #ccc;
-  border-left: none;
-  border-right: none;
-  outline: none;
-  width: 100%;
+    padding: 0px;
+    margin: 0px;
+    line-height: 1em;
+    border: none !important; /* Remove borders */
+    background: transparent !important; /* Remove gray background */
+    color: white !important; /* Ensure text is white */
+    outline: none;
+    width: 100%;
 }
 .tokenize > .tokens-container > .token-search > input::-ms-clear {
   display: none;
@@ -140,4 +139,9 @@
 }
 .tokenize-dropdown > .dropdown-menu li:not(.active) a:hover, .tokenize-dropdown > .dropdown-menu li:not(.active) a:focus {
   background-color: transparent;
+}
+ul.tokens-container > li.token-search {
+    border: 0px none transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
 }
