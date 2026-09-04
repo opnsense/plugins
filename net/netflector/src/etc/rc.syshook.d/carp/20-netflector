@@ -1,0 +1,89 @@
+#!/usr/local/bin/php
+<?php
+
+/*
+ * Copyright (C) 2026 Sergii Bogomolov
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ * Both nodes of a pair reflecting would put two copies of every relayed packet on the segment, and two
+ * DIAL proxies would rewrite the same device's LOCATION to different authorities.
+ *
+ * devd passes the transitioning group as "<vhid>@<interface>" (see /usr/local/etc/devd/carp.conf). A
+ * node can hold one group and not another, so the vhid is matched too, not the state alone.
+ */
+
+/* config.inc is load-bearing twice: get_real_interface() silently returns its argument unresolved
+ * without it, and it registers the autoloader the models need, so load_phalcon is not required. */
+require_once('config.inc');
+require_once('interfaces.inc');
+require_once('util.inc');
+
+use OPNsense\Netflector\Netflector;
+use OPNsense\Interfaces\Vip;
+
+$subsystem = $argv[1] ?? '';
+$type = $argv[2] ?? '';
+
+/* A link failure parks the group in INIT with the election timers stopped, so it stays there for
+ * the whole outage and no BACKUP follows: INIT is the only notice that we stopped being MASTER. */
+if (!in_array($type, ['MASTER', 'BACKUP', 'INIT'], true) || strpos($subsystem, '@') === false) {
+    exit(0);
+}
+
+$model = new Netflector();
+if (!$model->general->enabled->isEqual('1') || !$model->general->carp_depend_on->isSet()) {
+    exit(0);
+}
+$depends_on = $model->general->carp_depend_on->getValue();
+
+/* carp_depend_on holds the VIP's uuid; the event carries "<vhid>@<interface>", so resolve one to the
+ * other. Both halves are compared: the same vhid can run on several interfaces as unrelated groups. */
+$group = null;
+foreach ((new Vip())->vip->iterateItems() as $uuid => $vip) {
+    if ($uuid === $depends_on && $vip->mode->isEqual('carp')) {
+        $group = sprintf('%s@%s', $vip->vhid->getValue(), get_real_interface($vip->interface->getValue()));
+        break;
+    }
+}
+
+/* The VIP was deleted or is no longer carp, so this node's role is unknowable. Stop rather than
+ * leave it reflecting, which on a pair is what the dependency exists to prevent. */
+if ($group === null) {
+    log_msg('carp_depend_on names no CARP virtual IP; stopping netflector', LOG_ERR);
+    mwexecf('/usr/local/etc/rc.d/netflector %s', ['stop'], true);
+    exit(0);
+}
+
+if ($group !== $subsystem) {
+    exit(0);
+}
+
+$action = $type === 'MASTER' ? 'start' : 'stop';
+log_msg(sprintf('CARP %s is %s, running netflector %s', $subsystem, $type, $action));
+
+/* Stopping what is already stopped is the normal case on a backup node, so that failure is muted;
+ * a start that fails is worth the log line. */
+mwexecf('/usr/local/etc/rc.d/netflector %s', [$action], $action === 'stop');

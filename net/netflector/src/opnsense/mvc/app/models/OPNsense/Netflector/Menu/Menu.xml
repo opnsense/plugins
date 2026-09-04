@@ -1,0 +1,8 @@
+<menu>
+    <Services>
+        <Netflector VisibleName="Netflector" cssClass="fa fa-exchange fa-fw">
+            <Settings VisibleName="Settings" order="10" url="/ui/netflector"/>
+            <Log VisibleName="Log File" order="20" url="/ui/diagnostics/log/core/netflector"/>
+        </Netflector>
+    </Services>
+</menu>
