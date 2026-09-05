@@ -177,6 +177,103 @@
     <field>
         <label>Required Parameters</label>
         <type>header</type>
+        <style>method_table method_table_configd_upload_jetkvm</style>
+    </field>
+    <field>
+        <id>action.jetkvm_host</id>
+        <label>JetKVM Host</label>
+        <type>text</type>
+        <help>IP address or hostname of the JetKVM device. Requires the JetKVM device to already have "HTTPS Mode"
+              set to "Custom" in its own web UI (Settings &gt; Network) before this automation is attached -- it
+              only writes the certificate/key files and (optionally) reboots the device; it does not switch HTTPS
+              mode for you. Uploads will not take effect until that mode is selected on the device itself.</help>
+    </field>
+    <field>
+        <id>action.jetkvm_port</id>
+        <label>SSH Port</label>
+        <type>text</type>
+        <help>SSH server port on the JetKVM device. Leave blank to use default "22".</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>action.jetkvm_host_key</id>
+        <label>Host Key</label>
+        <type>text</type>
+        <help>JetKVM SSH host key, formatted as in 'known_hosts'.
+              Leave blank to auto accept the host key on first connect (not as secure as specifying it).</help>
+    </field>
+    <field>
+        <id>action.jetkvm_user</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>The username to login to the JetKVM device via SSH. JetKVM only supports the "root" account for SSH access. Leave blank to use default "root".</help>
+    </field>
+    <field>
+        <id>action.jetkvm_identity_type</id>
+        <label>Identity Type</label>
+        <type>dropdown</type>
+        <help>The type of identity to present to the JetKVM device for authorization. Select 'none' to use default "ECDSA".
+              JetKVM only supports key-based SSH authentication (password logins are disabled), so the public key shown by
+              "Show Identity" must be added to the device's "Developer Mode" SSH key field (Settings &gt; Advanced) before this
+              automation can connect.</help>
+    </field>
+    <field>
+        <id>action.jetkvm_remote_path</id>
+        <label>Remote Path</label>
+        <type>text</type>
+        <help>Directory on the JetKVM device that the certificate and private key are copied into. Leave blank to use
+              default "/userdata/jetkvm/tls", confirmed as the storage location used by JetKVM's "Custom" TLS mode.
+              This is not part of JetKVM's stable/documented API and may change in a future firmware version, so
+              re-verify it if uploads stop being picked up after a JetKVM update.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>action.jetkvm_filename_cert</id>
+        <label>Naming "user-defined.crt"</label>
+        <type>text</type>
+        <help>Filename used for the uploaded certificate (fullchain). Leave blank to use default "user-defined.crt",
+              confirmed as the filename JetKVM's "Custom" TLS mode reads from the remote path above (other filenames
+              such as "jetkvm.crt" back JetKVM's other, non-custom TLS modes and are not read by "Custom" mode).</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>action.jetkvm_filename_key</id>
+        <label>Naming "user-defined.key"</label>
+        <type>text</type>
+        <help>Filename used for the uploaded private key. Leave blank to use default "user-defined.key", confirmed
+              as the filename JetKVM's "Custom" TLS mode reads from the remote path above.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>action.jetkvm_chmod_cert</id>
+        <label>Permission (Certificate)</label>
+        <type>text</type>
+        <help>Unix permission to apply to the uploaded certificate file. Leave blank to use default "0644".</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>action.jetkvm_chmod_key</id>
+        <label>Permission (Private Key)</label>
+        <type>text</type>
+        <help>Unix permission to apply to the uploaded private key file. Leave blank to use default "0600".</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>action.jetkvm_restart_command</id>
+        <label>Post-Upload Command</label>
+        <type>text</type>
+        <help>Optional command executed on the JetKVM device via the same SSH connection after the certificate and key
+              have been uploaded. Confirmed against a real device: JetKVM does not hot-reload a "Custom" certificate,
+              and its own certificate-apply script performs a full device reboot ("reboot") to pick one up, which
+              will briefly drop any active KVM-over-IP session. Defaults to "reboot" so a certificate renewed by an
+              unattended ACME cron run (typically overnight, when a session is unlikely to be active) is actually
+              applied without needing a human to follow up — clear the field if you'd rather apply/verify the new
+              certificate manually at a convenient time instead.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
         <style>method_table method_table_configd_generic</style>
     </field>
     <field>
