@@ -3,6 +3,12 @@ netbird_enable="YES"
 netbird_setup="/usr/local/sbin/pluginctl -c netbird_sync_config"
 netbird_logfile="syslog"
 netbird_loglevel="{{ OPNsense.netbird.settings.syslog.logLevel }}"
+{% if OPNsense.netbird.settings.general.enablecarp == '1' %}
+# rc.subr(8) evaluates $start_postcmd from sourced rc.conf.d files as the
+# port rc script does not define one itself; this guards CARP BACKUP nodes
+# against reconnecting NetBird after any service start (boot, HA sync, GUI).
+start_postcmd="/usr/local/opnsense/scripts/netbird/carp_guard.php"
+{% endif %}
 {% else %}
 netbird_enable="NO"
 {% endif %}
