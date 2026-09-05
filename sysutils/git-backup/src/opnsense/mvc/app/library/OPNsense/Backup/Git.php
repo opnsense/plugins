@@ -164,12 +164,15 @@ class Git extends Base implements IBackupProvider
         $url = (string)$mdl->url;
         $pos = strpos($url, '//');
 
-        // inject credentials in url (either username or username:password, depending on transport)
-        if (stripos(trim((string)$mdl->url), 'http') === 0) {
-            $cred = urlencode((string)$mdl->user) . ":" . urlencode((string)$mdl->password);
-            $url = substr($url, 0, $pos + 2) . "{$cred}@" . substr($url, $pos + 2);
-        } else {
-            $url = substr($url, 0, $pos + 2) . urlencode((string)$mdl->user) . "@" . substr($url, $pos + 2);
+        // inject credentials in url (either username or username:password, depending on transport),
+        // skip when the url has no scheme separator or already carries a user of its own.
+        if ($pos !== false && empty(parse_url($url, PHP_URL_USER))) {
+            if (stripos(trim((string)$mdl->url), 'http') === 0) {
+                $cred = urlencode((string)$mdl->user) . ":" . urlencode((string)$mdl->password);
+                $url = substr($url, 0, $pos + 2) . "{$cred}@" . substr($url, $pos + 2);
+            } elseif (!empty((string)$mdl->user)) {
+                $url = substr($url, 0, $pos + 2) . urlencode((string)$mdl->user) . "@" . substr($url, $pos + 2);
+            }
         }
 
         Shell::run_safe('/usr/local/bin/git -C %s remote remove origin', $targetdir);
