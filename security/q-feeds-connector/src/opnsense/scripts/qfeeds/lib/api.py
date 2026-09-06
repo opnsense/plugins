@@ -1,5 +1,5 @@
 """
-    Copyright (c) 2025 Deciso B.V.
+    Copyright (c) 2025-2026 Deciso B.V.
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -66,14 +66,14 @@ class Api:
     def fetch(self, feed):
         r = requests.get(
             url='https://api.qfeeds.com/api.php',
-            params={'feed_type': feed},
+            params={'feed_type': feed, 'type': 'opnsense'},
             auth=('api_token', self.api_key),
             headers={'User-Agent': 'Q-Feeds_OPNsense'},
             stream=True,
             timeout=60
         )
         r.raise_for_status()
-        for line in r.raw:
-            entry = line.decode().strip()
+        for block in r.raw:
+            entry = block.decode().strip()
             if entry:
                 yield entry

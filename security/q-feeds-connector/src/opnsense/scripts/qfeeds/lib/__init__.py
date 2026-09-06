@@ -69,7 +69,7 @@ class QFeedsActions:
             data = {}
         if type(data) is dict:
             for feed in data.get('feeds', []):
-                feed['local_filename'] = "%s/%s.txt" % (self._target_dir, feed['feed_type'])
+                feed['local_filename'] = "%s/%s.json" % (self._target_dir, feed['feed_type'])
                 feed['updated_at_dt'] = datetime.fromisoformat(feed['updated_at']).timestamp()
                 feed['next_update_dt'] = datetime.fromisoformat(feed['next_update']).timestamp()
                 feed['local_updated'] = datetime.fromtimestamp(
@@ -98,28 +98,36 @@ class QFeedsActions:
     def fetch(self):
         for feed in self.index.get('feeds', []):
             if feed['licensed'] and feed['updated_at_dt'] != self._file_stat(feed['local_filename']):
+                entries = 0
                 with LockedFile(feed['local_filename']) as f:
-                    counter = 0
-                    for entry in Api().fetch(feed['feed_type']):
-                        if counter == 0:
-                            f.truncate()
-                        f.write("%s\n" % entry)
-                        counter += 1
+                    f.truncate()
+                    for block in Api().fetch(feed['feed_type']):
+                        f.write("%s" % block)
+                    f.seek(0)
+                    # we expect a valid json file after processing, collect total number of iocs for logging
+                    data = ujson.load(f.handle())
+                    entries = len(data['iocs']) if type(data) is dict and data.get('iocs') else 0
+
                 os.utime(feed['local_filename'], (feed['updated_at_dt'], feed['updated_at_dt']))
-                yield "downloaded %d entries into %s [%s]" % (counter, feed['local_filename'], feed['updated_at'])
+                yield "downloaded %d entries into %s [%s]" % (entries, feed['local_filename'], feed['updated_at'])
             elif feed['licensed']:
                 yield "skipped %s [%s]" % (feed['local_filename'], feed['updated_at'])
 
     def firewall_load(self):
         for feed in self.index.get('feeds', []):
             if feed['licensed'] and os.path.exists(feed['local_filename']) and feed['type'] == 'ip':
-                table_name = '__qfeeds_%s' % feed['feed_type']
-                sp = subprocess.run(
-                    ['/sbin/pfctl', '-t', table_name, '-T', 'replace', '-f', feed['local_filename']],
-                    capture_output=True,
-                    text=True
-                )
-                yield 'load feed %s [%s]' % (feed['feed_type'], sp.stderr.strip().replace("\n", " "))
+                with open(feed['local_filename'], 'r') as f_in:
+                    data = ujson.load(f_in)
+                    if type(data) is dict and data.get('iocs'):
+                        payload = "\n".join(data['iocs'].keys())
+                        table_name = '__qfeeds_%s' % feed['feed_type']
+                        sp = subprocess.run(
+                            ['/sbin/pfctl', '-t', table_name, '-T', 'replace', '-f', '/dev/stdin'],
+                            input=payload,
+                            capture_output=True,
+                            text=True
+                        )
+                        yield 'load feed %s [%s]' % (feed['feed_type'], sp.stderr.strip().replace("\n", " "))
 
     def unbound_load(self):
         bl_conf = '/usr/local/etc/unbound/qfeeds-blocklists.conf'
