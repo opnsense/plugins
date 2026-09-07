@@ -29,6 +29,7 @@ import time
 import ujson
 from datetime import datetime, UTC
 from lib.api import Api
+from lib.db import DB
 from lib.log import PFLogCrawler
 from lib.file import LockedFile
 
@@ -47,6 +48,7 @@ class QFeedsActions:
             'firewall_load',
             'unbound_load',
             'dnscryptproxy_load',
+            'db_update',
             'update',
             'stats',
             'logs'
@@ -70,6 +72,7 @@ class QFeedsActions:
         if type(data) is dict:
             for feed in data.get('feeds', []):
                 feed['local_filename'] = "%s/%s.json" % (self._target_dir, feed['feed_type'])
+                feed['meta_filename'] = "%s/%s.meta.json" % (self._target_dir, feed['feed_type'])
                 feed['updated_at_dt'] = datetime.fromisoformat(feed['updated_at']).timestamp()
                 feed['next_update_dt'] = datetime.fromisoformat(feed['next_update']).timestamp()
                 feed['local_updated'] = datetime.fromtimestamp(
@@ -106,7 +109,8 @@ class QFeedsActions:
                     f.seek(0)
                     # we expect a valid json file after processing, collect total number of iocs for logging
                     data = ujson.load(f.handle())
-                    entries = len(data['iocs']) if type(data) is dict and data.get('iocs') else 0
+                    data = data if type(data) is dict else {}
+                    entries = len(data['iocs']) if data.get('iocs') else 0
 
                 os.utime(feed['local_filename'], (feed['updated_at_dt'], feed['updated_at_dt']))
                 yield "downloaded %d entries into %s [%s]" % (entries, feed['local_filename'], feed['updated_at'])
@@ -161,6 +165,19 @@ class QFeedsActions:
         else:
             yield 'dnscrypt-proxy blocklist script not found'
 
+    def db_update(self):
+        last_updated = 0
+        for feed in self.index.get('feeds', []):
+            if feed['licensed']:
+                last_updated = max(self._file_stat(feed['local_filename']), last_updated)
+
+        db = DB(self._target_dir, False)
+        if int(last_updated) != int(db.last_updated()):
+            db.load()
+            yield 'database sync executed'
+        else:
+            yield 'database sync skipped, no new data'
+
     def update(self):
         update_sleep = 99999
         try:
@@ -176,7 +193,9 @@ class QFeedsActions:
         if do_update:
                 if 0 < update_sleep <= 300:
                     time.sleep(update_sleep)
-                for action in ['fetch_index', 'fetch', 'firewall_load', 'unbound_load', 'dnscryptproxy_load']:
+                for action in [
+                    'fetch_index', 'fetch', 'db_update', 'firewall_load', 'unbound_load', 'dnscryptproxy_load'
+                ]:
                     yield from getattr(self, action)()
 
     def stats(self):

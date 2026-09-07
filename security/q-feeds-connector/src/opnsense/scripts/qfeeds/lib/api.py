@@ -73,7 +73,5 @@ class Api:
             timeout=60
         )
         r.raise_for_status()
-        for block in r.raw:
-            entry = block.decode().strip()
-            if entry:
-                yield entry
+        for block in r.iter_content(1024):
+            yield block.decode(errors='ignore')
