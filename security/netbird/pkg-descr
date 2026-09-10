@@ -21,6 +21,7 @@ Plugin Changelog
 
 1.3
 
+* Added automatic HA CARP failover support with VIP tracking (contributed by Myah Mitchell)
 * Added netbird_devices() so that wt0 is a volatile interface (contributed by Myah Mitchell)
 * Added IP Mapping option and authentication banner (contributed by Konstantinos Spartalis)
 * Fix quantum peer state display (contributed by Konstantinos Spartalis)
