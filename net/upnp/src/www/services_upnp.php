@@ -154,7 +154,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     /* user permissions validation */
     foreach (miniupnpd_permuser_list() as $i => $permuser) {
         if (!empty($pconfig[$permuser])) {
-            $perm = explode(' ', $pconfig[$permuser]);
+            $perm = preg_split('/\s+/', trim($pconfig[$permuser]));
+            $pconfig[$permuser] = implode(' ', $perm);
             /* should explode to 4 args */
             if (count($perm) != 4) {
                 $input_errors[] = sprintf(gettext("You must follow the specified format in the 'User specified permissions %s' field"), $i);
@@ -252,7 +253,7 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable PCP/NAT-PMP protocols");?></td>
+                      <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable PCP and NAT-PMP protocols");?></td>
                       <td>
                        <input name="enable_natpmp" type="checkbox" value="yes" <?=!empty($pconfig['enable_natpmp']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable_natpmp">
@@ -359,12 +360,6 @@ include("head.inc");
                         <div class="hidden" data-for="help_for_allow_third_party_mapping">
                           <?=gettext("Allow adding port maps for non-requesting IP addresses; use with care.");?>
                         </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('Disable IPv6 mapping') ?></td>
-                      <td>
-                        <input name="ipv6_disable" type="checkbox" value="yes" <?= !empty($pconfig['ipv6_disable']) ? "checked=\"checked\"" : ""; ?> />
                       </td>
                     </tr>
                     <!-- <tr>
@@ -498,7 +493,13 @@ include("head.inc");
                       </td>
                     </tr>
 <?php endforeach ?>
-                    <tr><td colspan="2"><?=gettext("The access control list (ACL) specifies which IP addresses and ports can be mapped. IPv6 is currently always accepted unless disabled.");?></td></tr>
+                    <tr>
+                      <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('Disable IPv6 mapping') ?></td>
+                      <td>
+                        <input name="ipv6_disable" type="checkbox" value="yes" <?= !empty($pconfig['ipv6_disable']) ? "checked=\"checked\"" : ""; ?> />
+                      </td>
+                    </tr>
+                    <tr><td colspan="2"><?=gettext("The access control list (ACL) specifies which IPv4 addresses and ports can be mapped. IPv6 is currently always accepted unless disabled.");?></td></tr>
                   </tbody>
                 </table>
               </div>
