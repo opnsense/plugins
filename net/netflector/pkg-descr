@@ -1,0 +1,12 @@
+Reflects link-local service discovery traffic between two interfaces, so clients
+on one VLAN can discover and reach devices on another: Wake-on-LAN, mDNS
+(Bonjour, AirPlay), SSDP (UPnP), WS-Discovery (ONVIF cameras, Windows printers),
+and an optional DIAL proxy for casting.
+
+Traffic that discovery depends on is link-local by design and does not cross a
+router, which is why a phone on the LAN cannot see a TV on the IoT VLAN.
+Netflector re-emits it on the other interface with the addressing rewritten, so
+clients on the source side discover the target side's devices without the VLANs
+being bridged.
+
+WWW: https://github.com/netflector/netflector

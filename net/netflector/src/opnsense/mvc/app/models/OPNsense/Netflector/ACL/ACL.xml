@@ -1,0 +1,16 @@
+<acl>
+    <page-services-netflector>
+        <name>Services: Netflector</name>
+        <patterns>
+            <pattern>ui/netflector/*</pattern>
+            <pattern>api/netflector/*</pattern>
+        </patterns>
+    </page-services-netflector>
+    <page-services-netflector-log>
+        <name>Services: Netflector: Log File</name>
+        <patterns>
+            <pattern>ui/diagnostics/log/core/netflector/*</pattern>
+            <pattern>api/diagnostics/log/core/netflector/*</pattern>
+        </patterns>
+    </page-services-netflector-log>
+</acl>
