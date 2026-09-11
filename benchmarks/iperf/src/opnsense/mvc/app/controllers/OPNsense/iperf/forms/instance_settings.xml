@@ -5,4 +5,10 @@
       <type>dropdown</type>
       <help>Choose the interface on which the port should be opened.</help>
    </field>
+   <field>
+      <id>instance.prefer_port_5201</id>
+      <label>Use port 5201 when available</label>
+      <type>checkbox</type>
+      <help>Use the standard iPerf port 5201 when it is available; otherwise, use a random available port.</help>
+   </field>
 </form>
