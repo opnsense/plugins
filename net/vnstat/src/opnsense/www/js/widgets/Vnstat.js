@@ -32,6 +32,7 @@ export default class Vnstat extends BaseTableWidget {
         this.configurable = true;
         this.excludedInterfaces = [];
         this.showAvgRate = false;
+        this.sortOrder = 'ascending';
     }
 
     getGridOptions() {
@@ -75,6 +76,16 @@ export default class Vnstat extends BaseTableWidget {
                     { value: 'yes', label: 'Yes' },
                 ],
                 default: 'no'
+            },
+            sort_order: {
+                id: 'vnstat-sort-order',
+                title: this.translations.sort_order,
+                type: 'select',
+                options: [
+                    { value: 'ascending', label: this.translations.sort_ascending },
+                    { value: 'descending', label: this.translations.sort_descending },
+                ],
+                default: 'ascending'
             }
         };
     }
@@ -84,6 +95,7 @@ export default class Vnstat extends BaseTableWidget {
         this.excludedInterfaces = config.excluded_interfaces ?? [];
         this.tickTimeout = Number(config.refresh_interval) || 300;
         this.showAvgRate = config.show_avg_rate === 'yes';
+        this.sortOrder = config.sort_order === 'descending' ? 'descending' : 'ascending';
         await this._populateInterfaceDropdown();
         await this._fetchAndUpdateTable();
     }
@@ -116,6 +128,7 @@ export default class Vnstat extends BaseTableWidget {
         this.excludedInterfaces = config.excluded_interfaces ?? [];
         this.tickTimeout = Number(config.refresh_interval) || 300;
         this.showAvgRate = config.show_avg_rate === 'yes';
+        this.sortOrder = config.sort_order === 'descending' ? 'descending' : 'ascending';
 
         $(document).on('change.vnstat-widget', '#vnstat-period-select', async (e) => {
             this.currentPeriod = e.target.value;
@@ -214,7 +227,9 @@ export default class Vnstat extends BaseTableWidget {
         if (limits[this.currentPeriod]) {
             entries = entries.slice(0, limits[this.currentPeriod]);
         }
-        entries.reverse();
+        if (this.sortOrder === 'ascending') {
+            entries.reverse();
+        }
 
         for (const entry of entries) {
             const totalBytes = entry.rx + entry.tx;
