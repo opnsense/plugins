@@ -100,11 +100,23 @@ class ServiceController extends ApiMutableServiceControllerBase
         $vnstatIfaces = array_values(array_filter(array_map('trim', explode("\n", $response))));
 
         $opnsenseIfaces = [];
-        foreach (Config::getInstance()->object()->interfaces->children() as $node) {
-            $opnsenseIfaces[] = (string)$node->if;
+        foreach (Config::getInstance()->object()->interfaces->children() as $key => $node) {
+            $opnsenseIfaces[(string)$node->if] = [
+                'identifier' => (string)$key,
+                'description' => !empty((string)$node->descr) ? (string)$node->descr : strtoupper((string)$key),
+            ];
         }
 
-        $interfaces = array_values(array_intersect($vnstatIfaces, $opnsenseIfaces));
+        $interfaces = [];
+        foreach ($vnstatIfaces as $device) {
+            if (isset($opnsenseIfaces[$device])) {
+                $interfaces[] = [
+                    'device' => $device,
+                    'identifier' => $opnsenseIfaces[$device]['identifier'],
+                    'description' => $opnsenseIfaces[$device]['description'],
+                ];
+            }
+        }
         return ["interfaces" => $interfaces];
     }
 
