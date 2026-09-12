@@ -25,3 +25,10 @@ Plugin Changelog
 * Added IP Mapping option and authentication banner (contributed by Konstantinos Spartalis)
 * Fix quantum peer state display (contributed by Konstantinos Spartalis)
 * Fix setupKey usage after UpdateOnlyTextField introduction
+* Fix ICE candidate endpoints being shown as candidate types on the status page
+* Fix elapsed timestamps reading "-" for every peer during January
+* Render status output as text so peer names cannot inject markup
+* Fix the interface type always being reported as userspace
+* Fix idle peers showing a latency of 0.00 ms and empty ICE candidates
+* Report a stopped daemon instead of a status table full of "undefined"
+* Only list installed packages in the status page version table
