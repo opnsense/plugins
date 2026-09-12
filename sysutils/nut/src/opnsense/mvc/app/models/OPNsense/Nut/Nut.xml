@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/Nut</mount>
     <description>Network UPS Tools</description>
-    <version>1.0.4</version>
+    <version>2.0.0</version>
     <items>
         <general>
             <enable type="BooleanField">
@@ -16,12 +16,6 @@
                     <netclient>netclient</netclient>
                 </OptionValues>
             </mode>
-            <name type="TextField">
-                <Default>UPSName</Default>
-                <Required>Y</Required>
-                <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
-                <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
-            </name>
             <listen type="CSVListField">
                 <Default>127.0.0.1,::1</Default>
                 <Required>Y</Required>
@@ -37,74 +31,16 @@
                 <Default>Password</Default>
             </mon_password>
         </account>
-        <usbhid>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>port=auto</Default>
-                <Required>N</Required>
-            </args>
-        </usbhid>
-        <apcsmart>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>port=auto</Default>
-                <Required>N</Required>
-            </args>
-        </apcsmart>
-        <apcupsd>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <hostname type="HostnameField">
-                <Required>Y</Required>
-                <Default>localhost</Default>
-            </hostname>
-            <port type="PortField">
-                <Required>N</Required>
-            </port>
-        </apcupsd>
-        <bcmxcpusb>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>port=auto</Default>
-                <Required>N</Required>
-            </args>
-        </bcmxcpusb>
-        <blazerusb>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>port=auto</Default>
-                <Required>N</Required>
-            </args>
-        </blazerusb>
-        <blazerser>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>port=auto</Default>
-                <Required>N</Required>
-            </args>
-        </blazerser>
         <netclient>
             <enable type="BooleanField">
                 <Required>Y</Required>
                 <Default>0</Default>
             </enable>
+            <name type="TextField">
+                <Required>Y</Required>
+                <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
+                <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
+            </name>
             <address type="HostnameField"/>
             <port type="PortField">
                 <Default>3493</Default>
@@ -117,35 +53,32 @@
                 <Required>N</Required>
             </password>
         </netclient>
-        <qx>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>port=auto</Default>
-                <Required>N</Required>
-            </args>
-        </qx>
-        <riello>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>port=auto</Default>
-                <Required>N</Required>
-            </args>
-        </riello>
-        <snmp>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>community=public</Default>
-                <Required>N</Required>
-            </args>
-        </snmp>
+        <drivers>
+            <extra_global_options type="CSVListField">
+                <FieldSeparator>;</FieldSeparator>
+            </extra_global_options>
+            <ups type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Default>main</Default>
+                    <Required>Y</Required>
+                    <mask>/^([0-9a-zA-Z._\-]){1,128}$/u</mask>
+                    <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
+                </name>
+                <driver type="TextField">
+                    <Required>Y</Required>
+                </driver>
+                <port type="TextField">
+                    <Default>auto</Default>
+                    <Required>Y</Required>
+                </port>
+                <options type="CSVListField">
+                    <FieldSeparator>;</FieldSeparator>
+                </options>
+            </ups>
+        </drivers>
     </items>
 </model>
