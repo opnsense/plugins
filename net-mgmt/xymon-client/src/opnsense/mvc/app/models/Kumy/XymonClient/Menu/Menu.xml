@@ -1,0 +1,5 @@
+<menu>
+    <Services>
+        <XymonClient VisibleName="Xymon Client" cssClass="fa fa-heartbeat fa-fw" url="/ui/xymonclient"></XymonClient>
+    </Services>
+</menu>
