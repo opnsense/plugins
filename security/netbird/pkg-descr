@@ -25,3 +25,5 @@ Plugin Changelog
 * Added IP Mapping option and authentication banner (contributed by Konstantinos Spartalis)
 * Fix quantum peer state display (contributed by Konstantinos Spartalis)
 * Fix setupKey usage after UpdateOnlyTextField introduction
+* Say on the settings page that Apply restarts the daemon and drops the tunnel
+* Ask for confirmation before disconnecting NetBird
