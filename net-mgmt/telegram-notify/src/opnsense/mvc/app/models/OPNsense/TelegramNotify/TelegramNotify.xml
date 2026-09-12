@@ -1,0 +1,72 @@
+<model>
+    <mount>//OPNsense/TelegramNotify</mount>
+    <version>1.0.0</version>
+    <description>Telegram notification settings</description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enabled>
+            <botToken type="TextField">
+                <Required>N</Required>
+            </botToken>
+            <chatId type="TextField">
+                <Required>N</Required>
+            </chatId>
+            <threadId type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <Required>N</Required>
+            </threadId>
+            <parseMode type="OptionField">
+                <Default>None</Default>
+                <OptionValues>
+                    <None>None</None>
+                    <MarkdownV2>MarkdownV2</MarkdownV2>
+                    <HTML>HTML</HTML>
+                </OptionValues>
+            </parseMode>
+            <disableWebPagePreview type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </disableWebPagePreview>
+            <disableNotification type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </disableNotification>
+            <dnsServer type="TextField">
+                <Required>N</Required>
+            </dnsServer>
+            <idsPollCron type="TextField">
+                <Required>N</Required>
+            </idsPollCron>
+            <monitPollCron type="TextField">
+                <Required>N</Required>
+            </monitPollCron>
+            <eventSystem type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </eventSystem>
+            <eventGateway type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </eventGateway>
+            <eventService type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </eventService>
+            <eventVpn type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </eventVpn>
+            <eventSecurity type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </eventSecurity>
+            <eventUpdates type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </eventUpdates>
+        </general>
+    </items>
+</model>

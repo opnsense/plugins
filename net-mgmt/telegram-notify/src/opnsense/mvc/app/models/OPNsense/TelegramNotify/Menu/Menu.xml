@@ -1,0 +1,7 @@
+<menu>
+    <Services>
+        <TelegramNotify VisibleName="Telegram Notify" cssClass="fa fa-paper-plane">
+            <Settings url="/ui/telegramnotify"/>
+        </TelegramNotify>
+    </Services>
+</menu>
