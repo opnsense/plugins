@@ -1,18 +1,18 @@
 <model>
     <mount>//OPNsense/bind/acl</mount>
     <description>BIND ACL configuration</description>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <items>
         <acls>
-            <acl type="ArrayField">
+            <acl type=".\AclField">
                 <enabled type="BooleanField">
                     <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
                 <name type="TextField">
                     <Required>Y</Required>
-                    <Mask>/^(?!any$|localhost$|localnets$|none$)[0-9a-zA-Z_\-]{1,32}$/u</Mask>
-                    <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9, a-z, A-Z, _ and -. Built-in ACL names must not be used: any, localhost, localnets, none.</ValidationMessage>
+                    <Mask>/^[0-9a-zA-Z_\-]{1,32}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 32 characters. Allowed characters are 0-9, a-z, A-Z, _ and -.</ValidationMessage>
                     <Constraints>
                         <check001>
                             <ValidationMessage>An ACL with this name already exists.</ValidationMessage>
@@ -20,7 +20,7 @@
                         </check001>
                     </Constraints>
                 </name>
-                <networks type="NetworkField">
+                <networks type=".\AclNetField">
                     <Required>Y</Required>
                     <AsList>Y</AsList>
                 </networks>
