@@ -57,8 +57,8 @@ POSSIBILITY OF SUCH DAMAGE.
               updateServiceControlUI('dyndns');
           }
         });
-        $("#account\\.service").change(function(){
-            let service = $(this).val();
+        function updateAccountServiceControls() {
+            let service = $("#account\\.service").val();
             $("#frm_DialogAccount .optional_setting").each(function(){
                 let this_item = $(this);
                 if (this_item.hasClass("service_"+service)) {
@@ -69,6 +69,22 @@ POSSIBILITY OF SUCH DAMAGE.
                     this_item.prop( "disabled", true );
                 }
             });
+            let is_desec = ['desec-v4', 'desec-v6'].includes(service);
+            // deSEC's dynDNS "username" was never an account login; the only
+            // useful value was a duplicate of Hostname(s), so migration clears
+            // it. Use Hostname(s) plus Token secret and keep legacy Password
+            // hidden for rollback without exposing or rewriting it.
+            $("#account\\.username, #account\\.password")
+                .prop("disabled", is_desec)
+                .closest("tr")
+                .toggle(!is_desec);
+        }
+
+        $("#account\\.service").change(updateAccountServiceControls);
+        $(document).ajaxComplete(function(event, xhr, settings) {
+            if (settings.url && settings.url.indexOf('/api/dyndns/accounts/get_item/') !== -1) {
+                updateAccountServiceControls();
+            }
         });
         $('#DialogAccount').on('shown.bs.modal', function (e) {
             $("#account\\.service").change();
