@@ -39,6 +39,17 @@
 
         updateServiceControlUI('nut');
 
+        $("#{{formGridUps['table_id']}}").UIBootgrid({
+            'search': '/api/nut/settings/search_ups',
+            'get': '/api/nut/settings/get_ups/',
+            'set': '/api/nut/settings/set_ups/',
+            'add': '/api/nut/settings/add_ups/',
+            'del': '/api/nut/settings/del_ups/',
+            'toggle': '/api/nut/settings/toggle_ups/'
+        });
+
+        $("#reconfigureAct").SimpleActionButton();
+
         // update history on tab state and implement navigation
         if(window.location.hash != "") {
             $('a[href="' + window.location.hash + '"]').click()
@@ -72,8 +83,15 @@
 
 <ul class="nav nav-tabs" role="tablist"  id="maintabs">
     {{ partial("layout_partials/base_tabs_header",['formData':settings]) }}
+    <li><a data-toggle="tab" href="#upses">{{ lang._('UPS Devices') }}</a></li>
 </ul>
 
 <div class="content-box tab-content">
     {{ partial("layout_partials/base_tabs_content",['formData':settings]) }}
+    <div id="upses" class="tab-pane fade in">
+        {{ partial('layout_partials/base_bootgrid_table', formGridUps) }}
+        {{ partial('layout_partials/base_apply_button', {'data_endpoint': '/api/nut/service/reconfigure', 'data_service_widget': 'nut'}) }}
+    </div>
 </div>
+
+{{ partial("layout_partials/base_dialog",['fields':formDialogUps,'id':formGridUps['edit_dialog_id'],'label':lang._('Edit UPS')]) }}

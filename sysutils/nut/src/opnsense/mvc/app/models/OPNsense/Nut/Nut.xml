@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/Nut</mount>
     <description>Network UPS Tools</description>
-    <version>1.0.4</version>
+    <version>1.1.0</version>
     <items>
         <general>
             <enable type="BooleanField">
@@ -16,12 +16,6 @@
                     <netclient>netclient</netclient>
                 </OptionValues>
             </mode>
-            <name type="TextField">
-                <Default>UPSName</Default>
-                <Required>Y</Required>
-                <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
-                <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
-            </name>
             <listen type="CSVListField">
                 <Default>127.0.0.1,::1</Default>
                 <Required>Y</Required>
@@ -37,74 +31,65 @@
                 <Default>Password</Default>
             </mon_password>
         </account>
-        <usbhid>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>port=auto</Default>
-                <Required>N</Required>
-            </args>
-        </usbhid>
-        <apcsmart>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>port=auto</Default>
-                <Required>N</Required>
-            </args>
-        </apcsmart>
-        <apcupsd>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <hostname type="HostnameField">
-                <Required>Y</Required>
-                <Default>localhost</Default>
-            </hostname>
-            <port type="PortField">
-                <Required>N</Required>
-            </port>
-        </apcupsd>
-        <bcmxcpusb>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>port=auto</Default>
-                <Required>N</Required>
-            </args>
-        </bcmxcpusb>
-        <blazerusb>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>port=auto</Default>
-                <Required>N</Required>
-            </args>
-        </blazerusb>
-        <blazerser>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>port=auto</Default>
-                <Required>N</Required>
-            </args>
-        </blazerser>
+        <upses>
+            <ups type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
+                    <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <ValidationMessage>A UPS with this name already exists.</ValidationMessage>
+                            <type>UniqueConstraint</type>
+                        </check001>
+                    </Constraints>
+                </name>
+                <driver type="OptionField">
+                    <Default>usbhid-ups</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <usbhid-ups>usbhid-ups (USB HID devices)</usbhid-ups>
+                        <apcsmart>apcsmart (APC smart protocol, serial)</apcsmart>
+                        <apcupsd-ups>apcupsd-ups (apcupsd network server)</apcupsd-ups>
+                        <bcmxcp_usb>bcmxcp_usb (PowerWare BCMXCP, USB)</bcmxcp_usb>
+                        <blazer_usb>blazer_usb (Megatec/Q1 protocol, USB)</blazer_usb>
+                        <blazer_ser>blazer_ser (Megatec/Q1 protocol, serial)</blazer_ser>
+                        <nutdrv_qx>nutdrv_qx (Megatec/Voltronic Q* protocol)</nutdrv_qx>
+                        <riello_usb>riello_usb (Riello, USB)</riello_usb>
+                        <snmp-ups>snmp-ups (SNMP)</snmp-ups>
+                    </OptionValues>
+                </driver>
+                <powervalue type="IntegerField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>16</MaximumValue>
+                    <ValidationMessage>The power value needs to be an integer value between 0 and 16.</ValidationMessage>
+                </powervalue>
+                <args type="CSVListField">
+                    <Default>port=auto</Default>
+                    <Required>Y</Required>
+                    <Mask>/^[0-9a-zA-Z._\-]+(=[^,]*)?$/u</Mask>
+                    <MaskPerItem>Y</MaskPerItem>
+                    <ValidationMessage>Arguments should be a list of key=value pairs or driver flags.</ValidationMessage>
+                </args>
+            </ups>
+        </upses>
         <netclient>
             <enable type="BooleanField">
                 <Required>Y</Required>
                 <Default>0</Default>
             </enable>
+            <name type="TextField">
+                <Default>UPSName</Default>
+                <Required>Y</Required>
+                <Mask>/^([0-9a-zA-Z._\-]){1,128}$/u</Mask>
+                <ValidationMessage>The name should only contain alphanumeric characters, dashes, underscores or a dot.</ValidationMessage>
+            </name>
             <address type="HostnameField"/>
             <port type="PortField">
                 <Default>3493</Default>
@@ -117,35 +102,5 @@
                 <Required>N</Required>
             </password>
         </netclient>
-        <qx>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>port=auto</Default>
-                <Required>N</Required>
-            </args>
-        </qx>
-        <riello>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>port=auto</Default>
-                <Required>N</Required>
-            </args>
-        </riello>
-        <snmp>
-            <enable type="BooleanField">
-                <Required>Y</Required>
-                <Default>0</Default>
-            </enable>
-            <args type="CSVListField">
-                <Default>community=public</Default>
-                <Required>N</Required>
-            </args>
-        </snmp>
     </items>
 </model>
