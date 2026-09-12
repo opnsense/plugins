@@ -1,0 +1,13 @@
+PPPoE Access Concentrator (BRAS/BNG) for OPNsense based on mpd5.
+
+Runs PPPoE server instances on physical or VLAN interfaces with PAP, CHAP
+and MS-CHAPv2 authentication against a local user database or RADIUS,
+IPv4 address pools and per-user static addresses, RADIUS accounting, a
+live session table with disconnect, and service diagnostics.
+
+Also supports per-session rate limiting (via the RADIUS mpd-limit VSA or a
+local shaping backend), RADIUS CoA / RFC 5176 Disconnect, dual-stack IPv6
+(IPv6CP link-local, SLAAC via Router Advertisements, and static routed IPv6
+prefixes per subscriber), and CARP high-availability interlock.
+
+Maintained by VEQNORA.
