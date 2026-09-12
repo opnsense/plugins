@@ -48,6 +48,10 @@
         <forwarders type="NetworkField">
             <AsList>Y</AsList>
         </forwarders>
+        <forwardertls type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </forwardertls>
         <filteraaaav4 type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
