@@ -1,0 +1,75 @@
+<form>
+    <field>
+        <id>peer.pool</id>
+        <label>pool</label>
+        <type>checkbox</type>
+        <help>Address refers to a pool of NTP servers</help>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>peer.address</id>
+        <label>Address</label>
+        <type>text</type>
+        <help>The address/hostname of the NTP server or pool.</help>
+    </field>
+    <field>
+        <id>peer.prefer</id>
+        <label>prefer</label>
+        <type>checkbox</type>
+        <help>Prefer this source over sources without the prefer option.</help>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>peer.iburst</id>
+        <label>iburst</label>
+        <type>checkbox</type>
+        <help>Enable iburst for this source.</help>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>peer.xleave</id>
+        <label>xleave</label>
+        <type>checkbox</type>
+        <help>Enable interleaved mode for this source.</help>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>peer.minpoll</id>
+        <label>minpoll</label>
+        <type>text</type>
+        <help>The minimum interval between requests sent to the server as a power of 2 in seconds.</help>
+    </field>
+    <field>
+        <id>peer.maxpoll</id>
+        <label>maxpoll</label>
+        <type>text</type>
+        <help>The maximum interval between requests sent to the server as a power of 2 in seconds.</help>
+    </field>
+    <field>
+        <id>peer.nts</id>
+        <label>NTS</label>
+        <type>checkbox</type>
+        <help>Enable NTS authentication.</help>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
+    </field>
+</form>
