@@ -1,0 +1,11 @@
+<metadata>
+    <AutoRollback>
+        <filename>AutoRollback.js</filename>
+        <endpoints>
+            <endpoint>/api/autorollback/service/status</endpoint>
+        </endpoints>
+        <translations>
+            <title>Auto Rollback</title>
+        </translations>
+    </AutoRollback>
+</metadata>
