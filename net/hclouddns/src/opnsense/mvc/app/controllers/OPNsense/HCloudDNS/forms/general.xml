@@ -1,0 +1,48 @@
+<form>
+    <field>
+        <id>hclouddns.general.enabled</id>
+        <label>Enable Service</label>
+        <type>checkbox</type>
+        <help>Enable Hetzner Cloud Dynamic DNS Service</help>
+    </field>
+    <field>
+        <id>hclouddns.general.verbose</id>
+        <label>Verbose Logging</label>
+        <type>checkbox</type>
+        <help>Write detailed log entries to syslog</help>
+    </field>
+    <field>
+        <id>hclouddns.general.forceInterval</id>
+        <label>Force Update Interval (days)</label>
+        <type>text</type>
+        <help>Force DNS update even if IP unchanged after this many days. 0 = disabled (default: 0)</help>
+    </field>
+    <field>
+        <id>hclouddns.general.historyRetentionDays</id>
+        <label>History Retention (days)</label>
+        <type>text</type>
+        <help>Number of days to keep DNS change history for undo functionality (1-365, default: 7)</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>DNS Propagation Check</label>
+    </field>
+    <field>
+        <id>hclouddns.general.propagationCheck</id>
+        <label>Enable Propagation Check</label>
+        <type>checkbox</type>
+        <help>After updating DNS, verify the record propagated to Hetzner's authoritative nameservers</help>
+    </field>
+    <field>
+        <id>hclouddns.general.propagationRetries</id>
+        <label>Propagation Retries</label>
+        <type>text</type>
+        <help>Number of attempts to verify DNS propagation (1-10, default: 3)</help>
+    </field>
+    <field>
+        <id>hclouddns.general.propagationDelay</id>
+        <label>Propagation Delay (seconds)</label>
+        <type>text</type>
+        <help>Seconds between propagation check retries (1-30, default: 2)</help>
+    </field>
+</form>

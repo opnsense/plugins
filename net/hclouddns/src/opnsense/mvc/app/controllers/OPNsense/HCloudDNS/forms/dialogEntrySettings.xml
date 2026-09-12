@@ -1,0 +1,12 @@
+<form>
+    <field>
+        <type>header</type>
+        <label>DynDNS Settings</label>
+    </field>
+    <field>
+        <id>hclouddns.general.defaultTtl</id>
+        <label>Default TTL</label>
+        <type>dropdown</type>
+        <help>Default Time-To-Live for new DynDNS entries. 60s recommended for dynamic IPs.</help>
+    </field>
+</form>
