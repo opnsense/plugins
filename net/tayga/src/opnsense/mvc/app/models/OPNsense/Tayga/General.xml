@@ -11,19 +11,27 @@
             <Default>192.168.255.1</Default>
             <Required>Y</Required>
             <AddressFamily>ipv4</AddressFamily>
+            <NetMaskAllowed>N</NetMaskAllowed>
+            <ValidationMessage>Please provide a valid IP address.</ValidationMessage>
         </v4address>
         <v4destination type="NetworkField">
             <Default>192.168.254.1</Default>
             <Required>Y</Required>
             <AddressFamily>ipv4</AddressFamily>
+            <NetMaskAllowed>N</NetMaskAllowed>
+            <ValidationMessage>Please provide a valid IP address.</ValidationMessage>
         </v4destination>
         <v6address type="NetworkField">
             <AddressFamily>ipv6</AddressFamily>
+            <NetMaskAllowed>N</NetMaskAllowed>
+            <ValidationMessage>Please provide a valid IP address.</ValidationMessage>
         </v6address>
         <v6destination type="NetworkField">
             <Default>2001:db8:1:ffff::1</Default>
             <AddressFamily>ipv6</AddressFamily>
             <Required>Y</Required>
+            <NetMaskAllowed>N</NetMaskAllowed>
+            <ValidationMessage>Please provide a valid IP address.</ValidationMessage>
         </v6destination>
         <v6prefix type="NetworkField">
             <Default>64:ff9b::/96</Default>
