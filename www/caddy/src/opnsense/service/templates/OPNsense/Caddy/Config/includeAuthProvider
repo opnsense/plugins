@@ -30,14 +30,13 @@
     }
 {% elif generalSettings.AuthProvider == 'authentik' %}
     reverse_proxy /outpost.goauthentik.io/* {{ auth_url }} {
-    {% if generalSettings.AuthToTls|default("0") == "1" %}
-        header_up Host {http.reverse_proxy.upstream.hostport}
-    {% endif %}
+        header_up Host {http.request.host}
     }
     forward_auth {{ auth_url }} {
     {% if generalSettings.AuthToUri %}
         uri {{ generalSettings.AuthToUri|default("") }}
     {% endif %}
+        header_up Host {http.request.host}
         copy_headers X-Authentik-Username
         copy_headers X-Authentik-Groups
         copy_headers X-Authentik-Email
