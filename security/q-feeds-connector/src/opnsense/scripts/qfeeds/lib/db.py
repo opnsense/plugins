@@ -51,6 +51,8 @@ class DB:
             self._connection = sqlite3.connect(self.filename)
             self.init()
 
+        self._connection.row_factory = sqlite3.Row
+
     def init(self):
         init_scriptfilename = '%s/../sql/setup.sql' % os.path.dirname(os.path.abspath(__file__))
         self._connection.executescript(open(init_scriptfilename, 'r').read())
@@ -143,6 +145,7 @@ class DB:
                             ((key,) for key in known_keys)
                         )
                         self._connection.execute('delete from iocs where md5 in (select md5 from tmp_iocs_drop)')
+                        self._connection.execute('delete from iocs_meta where ioc_id not in (select id from iocs)')
 
                     self._connection.execute("""
                         insert into delivery(id, feed, generated_at, updated_at, kind)
@@ -181,3 +184,19 @@ class DB:
 
     def last_updated(self):
         return self._connection.execute('select max(updated_at) from delivery').fetchone()[0] or 0
+
+    def get_meta(self):
+        result = {}
+        for row in self._connection.execute('select code, category, payload from meta'):
+            if row['category'] not in result:
+                result[row['category']] = {}
+
+            try:
+                payload = ujson.decode(row['payload'])
+            except:
+                payload = {}
+
+            result[row['category']][row['code']] = {
+                'name': payload.get('name', '')
+            }
+        return result
