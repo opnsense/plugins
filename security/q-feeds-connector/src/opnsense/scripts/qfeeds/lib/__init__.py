@@ -51,7 +51,8 @@ class QFeedsActions:
             'db_update',
             'update',
             'stats',
-            'logs'
+            'logs',
+            'get_meta'
         ]
 
     @property
@@ -236,6 +237,9 @@ class QFeedsActions:
         }
 
         yield  ujson.dumps(result)
+
+    def get_meta(self):
+        yield ujson.dumps(DB(self._target_dir).get_meta())
 
     def logs(self):
         feeds = []
