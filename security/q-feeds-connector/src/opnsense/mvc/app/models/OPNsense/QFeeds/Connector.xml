@@ -23,5 +23,11 @@
             </address>
             <nxdomain type="BooleanField"/>
         </unbound>
+        <firewall>
+            <alias type="ArrayField">
+                <include type="TextField">
+                </include>
+            </alias>
+        </firewall>
     </items>
 </model>
