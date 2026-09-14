@@ -88,8 +88,8 @@ class DB:
                             })
 
                 self._connection.executemany("""
-                    insert into meta(id, code, category, payload)
-                    values(:id,:code,:category,:payload)
+                    insert into meta(id, code, main_code, category, payload)
+                    values(:id,:code,:main_code,:category,:payload)
                     on conflict(id) do update
                         set category = excluded.category,
                             payload = excluded.payload
