@@ -70,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     $copy_fields = [
         'allow_third_party_mapping',
+        'default_min_port',
         'download',
         'enable',
         'enable_natpmp',
@@ -150,11 +151,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!empty($pconfig['num_permuser'] && (!is_numeric($pconfig['num_permuser']) || $pconfig['num_permuser'] < 1))) {
         $input_errors[] = gettext('Number of permissions must be an integer greater than 0');
     }
+    if (!empty($pconfig['default_min_port'] && !miniupnpd_validate_port($pconfig['default_min_port']))) {
+        $input_errors[] = gettext('Default minimum port must contain a valid port number');
+    }
 
     /* user permissions validation */
     foreach (miniupnpd_permuser_list() as $i => $permuser) {
         if (!empty($pconfig[$permuser])) {
-            $perm = explode(' ', $pconfig[$permuser]);
+            $perm = preg_split('/\s+/', trim($pconfig[$permuser]));
+            $pconfig[$permuser] = implode(' ', $perm);
             /* should explode to 4 args */
             if (count($perm) != 4) {
                 $input_errors[] = sprintf(gettext("You must follow the specified format in the 'User specified permissions %s' field"), $i);
@@ -187,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             $upnp['num_permuser'] = $pconfig['num_permuser'];
         }
         // text field types
-        foreach (['allow_third_party_mapping', 'download', 'ext_iface', 'friendly_name', 'log_level', 'overridesubnet', 'overridewanip', 'stun_host', 'stun_port', 'upload', 'upnp_igd_compat'] as $fieldname) {
+        foreach (['allow_third_party_mapping', 'default_min_port', 'download', 'ext_iface', 'friendly_name', 'log_level', 'overridesubnet', 'overridewanip', 'stun_host', 'stun_port', 'upload', 'upnp_igd_compat'] as $fieldname) {
             $upnp[$fieldname] = $pconfig[$fieldname];
         }
         foreach (miniupnpd_permuser_list() as $fieldname) {
@@ -252,7 +257,7 @@ include("head.inc");
                       </td>
                     </tr>
                     <tr>
-                      <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable PCP/NAT-PMP protocols");?></td>
+                      <td><a id="help_for_enable_natpmp" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Enable PCP and NAT-PMP protocols");?></td>
                       <td>
                        <input name="enable_natpmp" type="checkbox" value="yes" <?=!empty($pconfig['enable_natpmp']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_enable_natpmp">
@@ -361,12 +366,6 @@ include("head.inc");
                         </div>
                       </td>
                     </tr>
-                    <tr>
-                      <td><i class="fa fa-info-circle text-muted"></i> <?= gettext('Disable IPv6 mapping') ?></td>
-                      <td>
-                        <input name="ipv6_disable" type="checkbox" value="yes" <?= !empty($pconfig['ipv6_disable']) ? "checked=\"checked\"" : ""; ?> />
-                      </td>
-                    </tr>
                     <!-- <tr>
                       <td><a id="help_for_sysuptime" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Report system uptime");?></td>
                       <td>
@@ -467,10 +466,29 @@ include("head.inc");
                       <td>
                        <input name="permdefault" type="checkbox" value="yes" <?=!empty($pconfig['permdefault']) ? "checked=\"checked\"" : ""; ?> />
                        <div class="hidden" data-for="help_for_permdefault">
-                         <?=gettext("Deny access to service by default.");?>
+                         <?=gettext("Deny access to IPv4 service by default.");?>
                        </div>
                       </td>
                     </tr>
+                    <tr>
+                      <td><a id="help_for_default_min_port" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Default minimum port");?></td>
+                      <td>
+                        <input name="default_min_port" type="text" placeholder="1" value="<?= $pconfig['default_min_port'] ?? '' ?>" />
+                        <div class="hidden" data-for="help_for_default_min_port">
+                          <?=gettext("Specify the minimum accepted port with IPv6, with IPv4 only if default deny is unchecked.");?>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td><a id="help_for_ipv6_disable" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?= gettext('Disable IPv6 mapping') ?></td>
+                      <td>
+                        <input name="ipv6_disable" type="checkbox" value="yes" <?= !empty($pconfig['ipv6_disable']) ? "checked=\"checked\"" : ""; ?> />
+                        <div class="hidden" data-for="help_for_ipv6_disable">
+                          <?=gettext("Disable IPv6 mapping entirely.");?>
+                        </div>
+                      </td>
+                    </tr>
+
                     <tr>
                       <td><a id="help_for_num_permuser" href="#" class="showhelp"><i class="fa fa-info-circle"></i></a> <?=gettext("Number of entries");?></td>
                       <td>
@@ -498,7 +516,7 @@ include("head.inc");
                       </td>
                     </tr>
 <?php endforeach ?>
-                    <tr><td colspan="2"><?=gettext("The access control list (ACL) specifies which IP addresses and ports can be mapped. IPv6 is currently always accepted unless disabled.");?></td></tr>
+                    <tr><td colspan="2"><?=gettext("The access control list (ACL) specifies which IPv4 addresses and ports can be mapped.");?></td></tr>
                   </tbody>
                 </table>
               </div>
