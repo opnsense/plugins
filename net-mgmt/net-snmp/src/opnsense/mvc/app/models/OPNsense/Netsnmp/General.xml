@@ -1,15 +1,15 @@
 <model>
     <mount>//OPNsense/netsnmp/general</mount>
     <description>Netsnmp configuration</description>
-    <version>1.0.5</version>
+    <version>1.0.6</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
         </enabled>
-        <community type="TextField"/>
-        <syslocation type="TextField"/>
-        <syscontact type="TextField"/>
+        <community type="StrictTextField"/>
+        <syslocation type="StrictTextField"/>
+        <syscontact type="StrictTextField"/>
         <l3visibility type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
