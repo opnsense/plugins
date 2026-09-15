@@ -14,6 +14,7 @@ Plugin Changelog
 * Cleanup: Use helpers.getUUID instead of custom solution in Caddyfile template
 * Cleanup: Hide the count badge in GroupBy
 * Cleanup: Fix some typos in reverse_proxy.volt
+* Fix: adjust authentik forward-auth Host header (contributed by Richard Rosalion)
 
 2.2.0
 
