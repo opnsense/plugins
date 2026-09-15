@@ -1,8 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2026 Konstantinos Spartalis <cspartalis@potatonetworks.com>
- * Copyright (C) 2023 Jan Winkler
+ * Copyright (C) 2026 Ivan Schaller
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -27,22 +26,19 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-namespace OPNsense\AcmeClient\LeAutomation;
+namespace OPNsense\AcmeClient\LeValidation;
 
-use OPNsense\AcmeClient\LeAutomationInterface;
+use OPNsense\AcmeClient\LeValidationInterface;
+use OPNsense\Core\Config;
 
 /**
- * Run acme.sh deploy hook truenas_ws
+ * GCore Managed DNS API
  * @package OPNsense\AcmeClient
  */
-class AcmeTruenasWs extends Base implements LeAutomationInterface
+class DnsGcore extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $this->acme_env['DEPLOY_TRUENAS_APIKEY'] = (string)$this->config->acme_truenas_ws_apikey;
-        $this->acme_env['DEPLOY_TRUENAS_HOSTNAME'] = (string)$this->config->acme_truenas_ws_hostname;
-        $this->acme_env['DEPLOY_TRUENAS_PROTOCOL'] = (string)$this->config->acme_truenas_ws_protocol;
-        $this->acme_args[] = '--deploy-hook truenas_ws --insecure';
-        return true;
+        $this->acme_env['GCORE_Key'] = (string)$this->config->dns_gcore_token;
     }
 }

@@ -8,6 +8,20 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.17
+
+Added:
+* add support for GCore DNS API (#5544)
+* add support for FreeMyIP DNS API (#5682)
+* add support for Hostinger DNS API (#5693)
+
+Fixed:
+* fix incomplete permissions for non-root users (#5458)
+* fix using incorrect truenas_ws config keys (#5498)
+
+Deprecated:
+* deprecate deploy hook "truenas_ws" (see #5498 and #5660)
+
 4.16
 
 Added:
