@@ -56,6 +56,8 @@ if (isset($configObj->OPNsense->turnserver->settings->TlsCertificate) and !empty
             file_put_contents($cert_filename, $cert_content);
             file_put_contents($pkey_filename, $pkey_content);
             chmod($pkey_filename, 0600);
+            chown($pkey_filename, '_turnserver');
+            chown($cert_filename, '_turnserver');
         }
     }
 }
