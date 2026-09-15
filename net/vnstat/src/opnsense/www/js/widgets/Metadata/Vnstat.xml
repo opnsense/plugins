@@ -19,6 +19,9 @@
             <excluded_interfaces>Excluded Interfaces</excluded_interfaces>
             <refresh_interval>Refresh Interval (minutes)</refresh_interval>
             <show_avg_rate>Show Average Rate</show_avg_rate>
+            <sort_order>Sort Order</sort_order>
+            <sort_ascending>Ascending</sort_ascending>
+            <sort_descending>Descending</sort_descending>
         </translations>
     </vnstat>
 </metadata>
