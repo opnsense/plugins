@@ -1,0 +1,10 @@
+LightScope is a network security monitoring tool that detects unwanted
+network traffic and provides honeypot functionality.
+
+Features:
+- Captures and analyzes blocked TCP SYN packets via pflog
+- Configurable honeypot ports with PROXY protocol forwarding
+- Uploads security telemetry to thelightscope.com for analysis
+- Privacy-preserving IP randomization
+
+WWW: https://thelightscope.com
