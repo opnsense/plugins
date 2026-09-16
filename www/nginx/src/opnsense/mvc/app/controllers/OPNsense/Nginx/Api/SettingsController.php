@@ -643,7 +643,12 @@ class SettingsController extends ApiMutableModelControllerBase
     public function addsnifwdAction()
     {
         if ($this->request->isPost()) {
-            $this->regenerate_hostname_map(null);
+            $result = $this->regenerate_hostname_map(null);
+
+            if ($result['result'] === 'failed') {
+                return $result;
+            }
+
             return $this->addBase('snihostname', 'sni_hostname_upstream_map');
         }
         return [];
@@ -666,7 +671,12 @@ class SettingsController extends ApiMutableModelControllerBase
     public function setsnifwdAction($uuid)
     {
         if ($this->request->isPost()) {
-            $this->regenerate_hostname_map($uuid);
+            $result = $this->regenerate_hostname_map($uuid);
+
+            if ($result['result'] === 'failed') {
+                return $result;
+            }
+
             return $this->setBase('snihostname', 'sni_hostname_upstream_map', $uuid);
         }
         return [];
@@ -687,9 +697,15 @@ class SettingsController extends ApiMutableModelControllerBase
     public function addipaclAction()
     {
         if ($this->request->isPost()) {
-            $this->regenerate_ipacl(null);
+            $result = $this->regenerate_ipacl(null);
+
+            if ($result['result'] === 'failed') {
+                return $result;
+            }
+
             return $this->addBase('ipacl', 'ip_acl');
         }
+
         return [];
     }
 
@@ -710,9 +726,15 @@ class SettingsController extends ApiMutableModelControllerBase
     public function setipaclAction($uuid)
     {
         if ($this->request->isPost()) {
-            $this->regenerate_ipacl($uuid);
+            $result = $this->regenerate_ipacl($uuid);
+
+            if ($result['result'] === 'failed') {
+                return $result;
+            }
+
             return $this->setBase('ipacl', 'ip_acl', $uuid);
         }
+
         return [];
     }
     /*
@@ -762,26 +784,15 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     private function regenerate_hostname_map($uuid = null)
     {
-        $nginx = $this->getModel();
-        if ($this->request->hasPost('snihostname') && is_array($_POST['snihostname']['data'])) {
-            if ($uuid != null) {
-                // for an update, we have to clear it.
-                $this->delete_uuids(
-                    $nginx->find_sni_hostname_upstream_map_entry_uuids($uuid),
-                    'sni_hostname_upstream_map_item'
-                );
-            }
-            $ids = [];
-            $postdata = $_POST['snihostname']['data'];
-            foreach ($postdata as $post_item) {
-                $item = $nginx->sni_hostname_upstream_map_item->Add();
-                $ids[] = $item->getAttributes()['uuid'];
-                $item->hostname = $post_item['hostname'];
-                $item->upstream = $post_item['upstream'];
-            }
-            $nginx->serializeToConfig();
-            $_POST['snihostname']['data'] = implode(',', $ids);
-        }
+        $old_uuids = $uuid != null
+            ? $this->getModel()->find_sni_hostname_upstream_map_entry_uuids($uuid)
+            : null;
+        return $this->regenerate_map_items(
+            'snihostname',
+            'sni_hostname_upstream_map_item',
+            ['hostname', 'upstream'],
+            $old_uuids
+        );
     }
 
     /**
@@ -790,42 +801,111 @@ class SettingsController extends ApiMutableModelControllerBase
      */
     private function regenerate_ipacl($uuid = null)
     {
-        $nginx = $this->getModel();
-        if ($this->request->hasPost('ipacl') && is_array($_POST['ipacl']['data'])) {
-            if ($uuid != null) {
-                // for an update, we have to clear it.
-                $this->delete_uuids(
-                    $nginx->find_ip_acl_uuids($uuid),
-                    'ip_acl_item'
-                );
-            }
-            $ids = [];
-            $postdata = $_POST['ipacl']['data'];
-            foreach ($postdata as $post_item) {
-                $item = $nginx->ip_acl_item->Add();
-                $ids[] = $item->getAttributes()['uuid'];
-                $item->network = $post_item['network'];
-                $item->action = $post_item['action'];
-            }
-            $nginx->serializeToConfig();
-            $_POST['ipacl']['data'] = implode(',', $ids);
-        }
+        $old_uuids = $uuid != null
+            ? $this->getModel()->find_ip_acl_uuids($uuid)
+            : null;
+        return $this->regenerate_map_items(
+            'ipacl',
+            'ip_acl_item',
+            ['network', 'action'],
+            $old_uuids
+        );
     }
 
     /**
-     * @param $uuids array list of UUIDs
-     * @param $path string the model prefix from the element to delete
+     * Build and validate the rows of a map/ACL-style array field entirely in
+     * memory, and only wire the old items for removal once the new ones are
+     * known to be valid. Nothing is persisted here -- the caller's
+     * addBase()/setBase() performs the single, atomic, validated save.
+     *
+     * @param string $post_field   top-level POST key (e.g. 'snihostname')
+     * @param string $item_path    child ArrayField reference (e.g. 'sni_hostname_upstream_map_item')
+     * @param array  $row_fields   field names to copy from each posted row
+     * @param array|null $old_uuids uuids of the previously saved rows to drop, or null on add
+     * @return array result/validations, or ['result' => 'continue']
      */
-    private function delete_uuids($uuids, $path): void
+    private function regenerate_map_items($post_field, $item_path, $row_fields, $old_uuids)
     {
-        foreach ($uuids as $item_uuid) {
-            try {
-                $this->delBase($path, $item_uuid);
-            } catch (\Exception $e) {
-                // we don't care about then.
+        $nginx = $this->getModel();
+        if (!$this->request->hasPost($post_field)
+            || !is_array($_POST[$post_field]['data'])) {
+            return ['result' => 'continue'];
+        }
+        $postdata = $_POST[$post_field]['data'];
+        /*
+         * An empty map/ACL is invalid. Let the GUI report the validation
+         * error without modifying the existing configuration.
+         */
+        if (empty($postdata)) {
+            return [
+                'result' => 'failed',
+                'validations' => [
+                    $post_field . '.data' => gettext('A value is required.')
+                ]
+            ];
+        }
+        /*
+         * Build the new rows in memory only.
+         */
+        $collection = $nginx->getNodeByReference($item_path);
+        $ids = [];
+        foreach ($postdata as $post_item) {
+            $item = $collection->Add();
+            $ids[] = $item->getAttributes()['uuid'];
+            foreach ($row_fields as $field) {
+                $item->$field = $post_item[$field];
             }
         }
+        /*
+         * Validate the new rows before touching anything else.
+         */
+        $validation = $nginx->performValidation(true);
+        $validation_messages = [];
+        foreach ($validation as $msg) {
+            foreach ($ids as $rowIndex => $id) {
+                if (strpos($msg->getField(), $item_path . '.' . $id . '.') === 0) {
+                    $msgText = $msg->getMessage();
+                    $rawValue = (string)($postdata[$rowIndex][$row_fields[0]] ?? '');
+                    // some field types already embed the failing value in
+                    // their message, others don't -- avoid duplicating it
+                    // either way.
+                    if ($rawValue !== '' && strpos($msgText, $rawValue) === false) {
+                        $msgText = sprintf('[%s] %s', $rawValue, $msgText);
+                    }
+                    if (!in_array($msgText, $validation_messages)) {
+                        $validation_messages[] = $msgText;
+                    }
+                    break;
+                }
+            }
+        }
+        if (!empty($validation_messages)) {
+            // Nothing was persisted -- the new (invalid) in-memory rows are
+            // simply discarded when this request ends.
+            return [
+                'result' => 'failed',
+                'validations' => [
+                    $post_field . '.data' => count($validation_messages) === 1
+                        ? $validation_messages[0]
+                        : $validation_messages
+                ]
+            ];
+        }
+        /*
+         * The new rows are valid. Drop the old ones -- purely in memory,
+         * no safe-delete involved, no early disk write. The caller's
+         * addBase()/setBase() persists everything (new rows, removed rows,
+         * and the parent's "data" reference) in a single validated save.
+         */
+        if ($old_uuids !== null) {
+            foreach ($old_uuids as $old_uuid) {
+                $collection->del($old_uuid);
+            }
+        }
+        $_POST[$post_field]['data'] = implode(',', $ids);
+        return ['result' => 'continue'];
     }
+
     // SYSLOG targets
     public function searchsyslogTargetAction()
     {
