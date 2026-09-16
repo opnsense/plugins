@@ -30,7 +30,9 @@
 <script>
     $(document).ready(() =>{
         function getElapsedTime(date) {
-            if (!(date instanceof Date) || isNaN(date) || date.getMonth() === 0) return "-";
+            // the daemon reports "never" as the zero time (0001-01-01), and missing
+            // values fall back to the epoch below, so both are treated as unknown
+            if (!(date instanceof Date) || isNaN(date) || date.getTime() <= 0) return "-";
 
             const now = new Date();
             const diff = now - date;
@@ -89,7 +91,11 @@
         }
 
         function getPeerConnectionStatus(status) {
-            if (!status) return 'No status available.';
+            // the API answers with an empty result when the daemon cannot be
+            // reached at all, which is not the same as a daemon reporting nothing
+            if (!status || Object.keys(status).length === 0) {
+                return 'No status available. The NetBird daemon may not be running.';
+            }
 
             const fmtConn = ({
                     connected,
@@ -104,7 +110,7 @@
             const managementStr = fmtConn(status.management || {});
             const signalStr = fmtConn(status.signal || {});
 
-            const interfaceType = status.kernelInterface ? "Kernel" : status.netbirdIp ? "Userspace" : "N/A";
+            const interfaceType = status.usesKernelInterface ? "Kernel" : status.netbirdIp ? "Userspace" : "N/A";
             const interfaceIp = status.netbirdIp || "N/A";
 
             const relaysStr = fmtList(
@@ -142,9 +148,12 @@
             const details = status?.peers?.details || [];
 
             return details.map(peer => {
-                const getOrDefault = (val, def = '-') => val ?? def;
+                // the daemon reports unknown values as empty strings, not as null
+                const getOrDefault = (val, def = '-') => (val === null || val === undefined || val === '') ? def : val;
                 const localIce = getOrDefault(peer.iceCandidateType?.local);
                 const remoteIce = getOrDefault(peer.iceCandidateType?.remote);
+                const localIceEndpoint = getOrDefault(peer.iceCandidateEndpoint?.local);
+                const remoteIceEndpoint = getOrDefault(peer.iceCandidateEndpoint?.remote);
 
                 const quantumStatus = peer.quantumResistance ?
                     (status.quantumResistance ? 'true' : 'false (connection might not work without a remote permissive mode)') :
@@ -161,7 +170,9 @@
                 const lastUpdate = new Date(peer.lastStatusUpdate || 0);
                 const handshake = new Date(peer.lastWireguardHandshake || 0);
 
-                const latency = typeof peer.latency === 'number' ?
+                // a peer that was never reached reports a latency of 0, which is
+                // not a measurement and must not be printed as one
+                const latency = typeof peer.latency === 'number' && peer.latency > 0 ?
                     `${(peer.latency / 1_000_000).toFixed(2)} ms` :
                     '-';
 
@@ -175,7 +186,7 @@
                     indent(`-- detail --`),
                     indent(`Connection type: ${getOrDefault(peer.connectionType)}`),
                     indent(`ICE candidate (Local/Remote): ${localIce}/${remoteIce}`),
-                    indent(`ICE candidate endpoints (Local/Remote): ${localIce}/${remoteIce}`),
+                    indent(`ICE candidate endpoints (Local/Remote): ${localIceEndpoint}/${remoteIceEndpoint}`),
                     indent(`Relay server address: ${getOrDefault(peer.relayAddress)}`),
                     indent(`Last connection update: ${getElapsedTime(lastUpdate)}`),
                     indent(`Last WireGuard handshake: ${getElapsedTime(handshake)}`),
@@ -200,20 +211,20 @@
                 const isConnected = data.management?.connected === true;
                 $peersDetailContainer.toggleClass("hidden", !isConnected);
                 const renderPreTable = (content, maxHeight = null) => {
-                    const style = `padding: 10px;${maxHeight ? ` max-height: ${maxHeight}; overflow-y: auto;` : ''}`;
-                    return `
-                      <table class="table table-hover table-striped table-condensed">
-                        <tbody>
-                          <tr>
-                            <td><pre style="${style}">${content}</pre></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    `;
+                    // content carries peer names, relay URIs and daemon error
+                    // messages, so it is set as text and never as markup
+                    const $pre = $('<pre/>').css('padding', '10px').text(content);
+                    if (maxHeight) {
+                        $pre.css({'max-height': maxHeight, 'overflow-y': 'auto'});
+                    }
+
+                    return $('<table/>')
+                        .addClass('table table-hover table-striped table-condensed')
+                        .append($('<tbody/>').append($('<tr/>').append($('<td/>').append($pre))));
                 };
 
-                $connStatus.html(renderPreTable(status));
-                $peersDetails.html(renderPreTable(details, '500px'));
+                $connStatus.empty().append(renderPreTable(status));
+                $peersDetails.empty().append(renderPreTable(details, '500px'));
             });
         }
 
@@ -221,33 +232,31 @@
             const $packages = $("#packages");
 
             ajaxGet('/api/core/firmware/info', {}, (data) => {
+                // the endpoint reports every known package, remote ones included,
+                // so entries that are merely available have to be filtered out
                 const pkgs = data.package?.filter(pkg =>
-                    pkg.name?.toLowerCase().includes("netbird")
+                    pkg.installed === '1' && pkg.name?.toLowerCase().includes("netbird")
                 ) || [];
 
-                const rows = pkgs.map(pkg => `
-                <tr>
-                    <td>${pkg.name}</td>
-                    <td>${pkg.version}</td>
-                    <td>${pkg.comment}</td>
-                </tr>
-            `).join("");
+                const $head = $('<tr/>');
+                for (const label of ['Name', 'Version', 'Comment']) {
+                    $head.append($('<th/>').text(label));
+                }
 
-                const table = `
-                <table class="table table-hover table-striped table-condensed">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Version</th>
-                            <th>Comment</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${rows}
-                    </tbody>
-                </table>
-            `;
-                $packages.html(table);
+                const $body = $('<tbody/>');
+                for (const pkg of pkgs) {
+                    $body.append($('<tr/>').append(
+                        $('<td/>').text(pkg.name || ''),
+                        $('<td/>').text(pkg.version || ''),
+                        $('<td/>').text(pkg.comment || '')
+                    ));
+                }
+
+                $packages.empty().append(
+                    $('<table/>')
+                        .addClass('table table-hover table-striped table-condensed')
+                        .append($('<thead/>').append($head), $body)
+                );
             });
         }
 
