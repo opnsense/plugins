@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/domain</mount>
     <description>BIND domain configuration</description>
-    <version>1.1.2</version>
+    <version>1.1.3</version>
     <items>
         <domains>
             <domain type="ArrayField">
@@ -21,6 +21,10 @@
                 <primaryip type="NetworkField">
                     <AsList>Y</AsList>
                 </primaryip>
+                <forwardonly type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </forwardonly>
                 <forwardserver type="NetworkField">
                     <AsList>Y</AsList>
                 </forwardserver>
