@@ -54,4 +54,23 @@
         <type>checkbox</type>
         <help>Allow IP fragmentation on the outbound UDP socket.</help>
     </field>
+
+    <field>
+        <id>general.outbound_blocklist_enabled</id>
+        <label>Enable outbound destination blocklist</label>
+        <type>checkbox</type>
+        <help>Generate a Shadowsocks server ACL using [outbound_block_list]. This blocks destinations after sslocal has proxied traffic into this server. Add only the destinations you want to block below.</help>
+    </field>
+    <field>
+        <id>general.outbound_blocklist_ipv4</id>
+        <label>Blocked IPv4 destinations</label>
+        <type>text</type>
+        <help>Comma separated IPv4 addresses or CIDR networks to block, for example 172.28.0.0/16,10.1.0.0/16,10.152.183.0/24.</help>
+    </field>
+    <field>
+        <id>general.outbound_blocklist_ipv6</id>
+        <label>Blocked IPv6 destinations</label>
+        <type>text</type>
+        <help>Comma separated IPv6 addresses or CIDR networks to block, for example fd01::/108,fd98::/108,2a02:8010:6538::/48.</help>
+    </field>
 </form>
