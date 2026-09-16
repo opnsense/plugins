@@ -37,6 +37,10 @@
             <MinimumValue>0</MinimumValue>
             <MaximumValue>1000</MaximumValue>
         </startagentpollers>
+        <startsnmppollers type="IntegerField">
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+        </startsnmppollers>
         <maxconcurrentchecksperpoller type="IntegerField">
             <MinimumValue>1</MinimumValue>
             <MaximumValue>1000</MaximumValue>
