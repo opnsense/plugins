@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable RTSP Helper</help>
+    </field>
+    <field>
+        <id>general.ext_iface</id>
+        <label>External Interface</label>
+        <type>dropdown</type>
+        <help>Select your primary WAN interface.</help>
+    </field>
+</form>
