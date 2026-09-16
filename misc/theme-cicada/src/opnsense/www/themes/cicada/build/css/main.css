@@ -6396,7 +6396,6 @@ textarea#update_status, textarea#update_status:hover {
 }
 .fa-info-circle::before,.fa-question-circle::before {
   content: "\f059";
-  cursor: pointer;
 }
 
 div.container-fluid > .fa-search::before, div.container-fluid  > .fa-refresh::before {
@@ -6446,6 +6445,10 @@ h3:hover, h3:focus {
 
 .glyphicon.glyphicon-play.text-muted, .glyphicon.glyphicon-remove.text-muted, .glyphicon.glyphicon-remove-sign.text-muted, .glyphicon.glyphicon-info-sign.text-muted,.fa.fa-exclamation.fa-fw.text-muted,.fa.fa-arrows-h.fa-fw.text-muted,.fa.fa-long-arrow-left,.fa.fa-info-circle.text-muted,.fa.fa-times-circle.text-muted,.fa.fa-times-circle.text-muted::before,.fa.fa-times.text-muted,.fa.fa-times.text-muted::before,.fa.fa-play.text-muted::before {
   color: #eac80a !important;
+}
+
+.fa.fa-info-circle.text-primary {
+  color: #dd630d !important;
 }
 .fa-long-arrow-left::before {
   color: #fff !important;

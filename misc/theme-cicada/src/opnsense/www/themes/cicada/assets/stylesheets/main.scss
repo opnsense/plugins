@@ -10352,7 +10352,6 @@ textarea#update_status {
 
 .fa-info-circle::before, .fa-question-circle::before {
   content: "\f059";
-  cursor: pointer;
 }
 
 div.container-fluid > {
@@ -10414,6 +10413,10 @@ h3 {
 .fa {
   &.fa-exclamation.fa-fw.text-muted, &.fa-arrows-h.fa-fw.text-muted, &.fa-long-arrow-left, &.fa-info-circle.text-muted {
     color: #eac80a !important;
+  }
+
+  &.fa-info-circle.text-primary {
+    color: #dd630d !important;
   }
 
   &.fa-times-circle.text-muted, &.fa-times.text-muted {
