@@ -1,0 +1,33 @@
+<metadata>
+    <AvahiReflector>
+        <filename>AvahiReflector.js</filename>
+        <endpoints>
+            <endpoint>/api/avahireflector/service/diagnostics</endpoint>
+        </endpoints>
+        <translations>
+            <title>Avahi mDNS Reflector</title>
+            <status>Status</status>
+            <running>Running</running>
+            <stopped>Stopped</stopped>
+            <pid>PID</pid>
+            <uptime>Uptime</uptime>
+            <memory>Memory</memory>
+            <domain>Domain</domain>
+            <interfaces>Interfaces</interfaces>
+            <reflector>Reflector</reflector>
+            <enabled>Enabled</enabled>
+            <disabled>Disabled</disabled>
+            <conflict>Conflict</conflict>
+            <conflict_detail>mdns-repeater is also running - disable it to avoid interference.</conflict_detail>
+            <reflect_filters>Reflect Filters</reflect_filters>
+            <health>Health</health>
+            <healthy>Healthy</healthy>
+            <degraded>Degraded</degraded>
+            <warning>Warning</warning>
+            <slot_errors_today>Slot Errors Today</slot_errors_today>
+            <last_slot_error>Last Slot Error</last_slot_error>
+            <last_restart>Last Restart</last_restart>
+            <unconfigured>Service not configured</unconfigured>
+        </translations>
+    </AvahiReflector>
+</metadata>
