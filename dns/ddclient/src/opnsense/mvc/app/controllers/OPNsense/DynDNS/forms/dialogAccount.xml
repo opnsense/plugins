@@ -81,15 +81,22 @@
         <help>Time to Live for the DNS entry</help>
     </field>
     <field>
-        <id>account.checkip</id>
-        <label>Check ip method</label>
-        <type>dropdown</type>
-        <help>How to determine the address to use for this host</help>
+        <id>account.includevirtualips</id>
+        <label>Include Virtual IPs</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Include configured CARP Virtual IPs in the Interface to monitor list.</help>
     </field>
     <field>
         <id>account.interface</id>
         <label>Interface to monitor</label>
         <type>dropdown</type>
+    </field>
+    <field>
+        <id>account.checkip</id>
+        <label>Check ip method</label>
+        <type>dropdown</type>
+        <help>How to determine the address to use for this host</help>
     </field>
     <field>
         <id>account.dynipv6host</id>

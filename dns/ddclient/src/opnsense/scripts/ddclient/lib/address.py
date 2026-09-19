@@ -26,6 +26,7 @@
 import subprocess
 import re
 import ipaddress
+import xml.etree.ElementTree as ET
 import dns.resolver
 import dns.rdataclass
 from urllib.parse import urlparse
@@ -101,6 +102,28 @@ def transform_ip(ip, ipv6host=None):
         return ipaddress.ip_address(ip)
 
 
+def find_virtual_ip(uuid, address_family=4, config_filename='/conf/config.xml'):
+    """ Find the current address of a CARP virtual IP by UUID and address family.
+        :param uuid: virtual IP UUID
+        :param address_family: IP version (4 or 6)
+        :param config_filename: OPNsense configuration file
+        :return: str
+    """
+    try:
+        config = ET.parse(config_filename).getroot()
+    except (OSError, ET.ParseError):
+        return ""
+
+    for virtual_ip in config.findall('./virtualip/vip'):
+        if virtual_ip.get('uuid') == uuid and virtual_ip.findtext('mode') == 'carp':
+            try:
+                address = ipaddress.ip_address(virtual_ip.findtext('subnet', ''))
+                return str(address) if address.version == address_family else ""
+            except ValueError:
+                return ""
+    return ""
+
+
 def checkip(service, proto='https', timeout='10', interface=None, dynipv6host=None):
     """ find ip address using external web services defined in checkip_service_list
         or dns services defined in checkip_dns_list
@@ -110,6 +133,8 @@ def checkip(service, proto='https', timeout='10', interface=None, dynipv6host=No
         :param dynipv6host: optional partial ipv6 address
         :return: str
     """
+    if interface is not None and interface.startswith('vip:') and service not in ['if', 'if6']:
+        return ""
     if service.lstrip('web_') in checkip_service_list:
         # configuration name, strip web_ part
         service = service.lstrip('web_')
@@ -127,6 +152,12 @@ def checkip(service, proto='https', timeout='10', interface=None, dynipv6host=No
             # invalid address
             return ""
     elif service in ['if', 'if6'] and interface is not None:
+        if interface.startswith('vip:'):
+            source = interface.split(':', 2)
+            address_family = 6 if service == 'if6' else 4
+            if len(source) != 3 or source[1] != str(address_family) or not source[2]:
+                return ""
+            return find_virtual_ip(source[2], address_family)
         # return first non private IPv[4|6] interface address
         ifcfg = subprocess.run(['/sbin/ifconfig', interface], capture_output=True, text=True).stdout
         for line in ifcfg.split('\n'):

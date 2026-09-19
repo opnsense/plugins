@@ -190,7 +190,11 @@
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>604800</MaximumValue>
                 </ttl>
-                <interface type="InterfaceField">
+                <includevirtualips type="BooleanField" volatile="true">
+                    <Default>0</Default>
+                    <Required>N</Required>
+                </includevirtualips>
+                <interface type=".\DynDNSInterfaceField">
                     <Required>N</Required>
                     <Constraints>
                         <check001>

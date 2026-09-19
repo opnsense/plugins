@@ -45,6 +45,41 @@ POSSIBILITY OF SUCH DAMAGE.
             updateServiceControlUI('dyndns');
         });
 
+        let virtual_ip_sources = $("#account\\.interface option[value^='vip:']");
+        let check_ip_methods = $("#account\\.checkip option");
+
+        function restoreAccountSourceOptions() {
+            virtual_ip_sources.appendTo("#account\\.interface");
+            check_ip_methods.appendTo("#account\\.checkip");
+        }
+
+        function updateAccountSourceOptions() {
+            let source_field = $("#account\\.interface");
+            let method_field = $("#account\\.checkip");
+            let include_virtual_ips = $("#account\\.includevirtualips");
+            let selected_source = source_field.val() || "";
+            let selected_method = method_field.val();
+            let is_virtual_ip = selected_source.startsWith("vip:");
+
+            restoreAccountSourceOptions();
+            if (include_virtual_ips.prop("checked") || is_virtual_ip) {
+                include_virtual_ips.prop("checked", true);
+                source_field.val(selected_source);
+            } else {
+                virtual_ip_sources.detach();
+            }
+
+            if (is_virtual_ip) {
+                let has_ipv6_method = method_field.find("option[value='if6']").length > 0;
+                let compatible_method = selected_source.startsWith("vip:6:") && has_ipv6_method ? "if6" : "if";
+                method_field.find("option:not([value='" + compatible_method + "'])").detach();
+                selected_method = compatible_method;
+            }
+            method_field.val(selected_method);
+            source_field.selectpicker("refresh");
+            method_field.selectpicker("refresh");
+        }
+
         $("#reconfigureAct").SimpleActionButton({
           onPreAction: function() {
               const dfObj = new $.Deferred();
@@ -70,8 +105,15 @@ POSSIBILITY OF SUCH DAMAGE.
                 }
             });
         });
+        $("#account\\.includevirtualips").change(updateAccountSourceOptions);
+        $("#account\\.interface").change(updateAccountSourceOptions);
         $('#DialogAccount').on('shown.bs.modal', function (e) {
             $("#account\\.service").change();
+            updateAccountSourceOptions();
+        });
+        $('#DialogAccount').on('hidden.bs.modal', function (e) {
+            restoreAccountSourceOptions();
+            $("#account\\.includevirtualips").prop("checked", false);
         });
 
         $("#ddclient\\.general\\.checkip").change(function(){

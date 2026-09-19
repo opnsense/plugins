@@ -21,7 +21,7 @@
             "wildcard": {{ "true" if account.wildcard == '1' else "false"}},
             "zone": "{{ account.zone }}",
             "checkip": "{{ account.checkip }}",
-            "interface": "{% if account.interface %}{{physical_interface(account.interface)}}{% endif %}",
+            "interface": "{% if account.interface.startswith('vip:') %}{{account.interface}}{% elif account.interface %}{{physical_interface(account.interface)}}{% endif %}",
             "dynipv6host": "{{ account.dynipv6host }}",
             "checkip_timeout": {{ account.checkip_timeout }},
             "force_ssl": {{ "true" if account.force_ssl == '1' else "false"}},
