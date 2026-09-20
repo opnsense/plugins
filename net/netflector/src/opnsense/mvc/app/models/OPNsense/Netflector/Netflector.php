@@ -101,7 +101,10 @@ class Netflector extends BaseModel
         return false;
     }
 
-    /** Mirrors the daemon's check_conflicts / Reflector::conflicts_with. */
+    /**
+     * Mirrors the daemon's Reflector::shared_protocol. What the UDP relay overlaps is left to the
+     * daemon: it depends on each protocol's ports and groups.
+     */
     private function validatePair($a, $b, $messages)
     {
         $protocol = self::conflictingProtocol($a, $b);
@@ -122,10 +125,7 @@ class Netflector extends BaseModel
 
     private static function conflictingProtocol($a, $b)
     {
-        if (
-            !$a->source_if->isEqual($b->source_if->getValue()) ||
-            !$a->target_if->isEqual($b->target_if->getValue())
-        ) {
+        if (count(array_intersect(self::directions($a), self::directions($b))) === 0) {
             return null;
         }
         if (!self::macsOverlap($a->macs->getValue(), $b->macs->getValue())) {
@@ -152,6 +152,18 @@ class Netflector extends BaseModel
         }
 
         return null;
+    }
+
+    private static function directions($entry)
+    {
+        $source = $entry->source_if->getValue();
+        $target = $entry->target_if->getValue();
+        $directions = [$source . '>' . $target];
+        if ($entry->bidirectional->isEqual('1')) {
+            $directions[] = $target . '>' . $source;
+        }
+
+        return $directions;
     }
 
     /** An empty port list means the daemon's defaults, so two blank lists overlap. */

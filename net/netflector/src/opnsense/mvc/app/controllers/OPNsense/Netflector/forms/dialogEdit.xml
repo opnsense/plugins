@@ -32,6 +32,17 @@
         </grid_view>
     </field>
     <field>
+        <id>reflector.bidirectional</id>
+        <label>Both directions</label>
+        <type>checkbox</type>
+        <help><![CDATA[Relay every enabled protocol from the target interface to the source as well, for two networks that both hold clients and devices.]]></help>
+        <grid_view>
+            <label>Both ways</label>
+            <formatter>boolean</formatter>
+            <width>6em</width>
+        </grid_view>
+    </field>
+    <field>
         <type>header</type>
         <label>Protocols</label>
     </field>
@@ -103,6 +114,68 @@
     </field>
     <field>
         <type>header</type>
+        <label>UDP relay</label>
+    </field>
+    <field>
+        <id>reflector.udp_ports</id>
+        <label>Ports</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[UDP ports to relay unchanged, for a discovery protocol not listed above, such as Roon on 9003. Needs at least one multicast group or broadcasts.]]></help>
+        <grid_view>
+            <label>UDP relay</label>
+            <width>7em</width>
+        </grid_view>
+    </field>
+    <field>
+        <id>reflector.udp_groups</id>
+        <label>Multicast groups</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Groups to join and relay on those ports, such as 239.255.90.90 for Roon.]]></help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>reflector.udp_broadcast</id>
+        <label>Broadcasts</label>
+        <type>checkbox</type>
+        <help><![CDATA[Also relay broadcasts on those ports. IPv4 only.]]></help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Peers</label>
+    </field>
+    <field>
+        <id>reflector.source_peers</id>
+        <label>Source peers</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[Hosts behind the source interface, for a link where a multicast or a broadcast reaches nobody, such as a WireGuard tunnel. Each host gets a unicast copy instead. Leave empty on Ethernet and VLANs.]]></help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>reflector.target_peers</id>
+        <label>Target peers</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help><![CDATA[The same for the target interface.]]></help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <type>header</type>
         <label>Scope</label>
     </field>
     <field>
@@ -111,7 +184,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help><![CDATA[MAC addresses to scope this reflector to. Leave empty to reflect for the whole network.]]></help>
+        <help><![CDATA[MAC addresses to scope this reflector to. Leave empty to reflect for the whole network. The UDP relay ignores them.]]></help>
         <grid_view>
             <ignore>true</ignore>
         </grid_view>

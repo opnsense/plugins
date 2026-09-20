@@ -7,10 +7,17 @@ counters_interval_secs = {{ OPNsense.Netflector.general.counters_interval_secs|d
 {%     if entry.enabled|default('0') == '1' %}
 
 {#     Every switch is written out, false and "default" included, so a later change to a daemon
-       default cannot silently flip a plugin user. #}
+       default cannot silently flip a plugin user. udp_broadcast goes with udp_ports. #}
 [reflectors.{{ entry.name }}]
 source_if = "{{ physical_interface(entry.source_if) }}"
 target_if = "{{ physical_interface(entry.target_if) }}"
+bidirectional = {{ 'true' if entry.bidirectional|default('0') == '1' else 'false' }}
+{%       if entry.source_peers %}
+source_peers = [{% for peer in entry.source_peers.split(',') %}"{{ peer }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+{%       endif %}
+{%       if entry.target_peers %}
+target_peers = [{% for peer in entry.target_peers.split(',') %}"{{ peer }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+{%       endif %}
 wol = {{ 'true' if entry.wol|default('0') == '1' else 'false' }}
 {%       if entry.wol|default('0') == '1' and entry.wol_ports %}
 wol_ports = [{{ entry.wol_ports.split(',') | join(', ') }}]
@@ -24,6 +31,13 @@ wsd = {{ 'true' if entry.wsd|default('0') == '1' else 'false' }}
 macs = [{% for mac in entry.macs.split(',') %}{% set hex = mac|lower|replace(':', '')|replace('-', '')|replace('.', '') %}"{{ hex[0:2] }}:{{ hex[2:4] }}:{{ hex[4:6] }}:{{ hex[6:8] }}:{{ hex[8:10] }}:{{ hex[10:12] }}"{% if not loop.last %}, {% endif %}{% endfor %}]
 {%       endif %}
 address_family = "{{ entry.address_family|default('default') }}"
+{%       if entry.udp_ports %}
+udp_ports = [{{ entry.udp_ports.split(',') | join(', ') }}]
+{%         if entry.udp_groups %}
+udp_groups = [{% for group in entry.udp_groups.split(',') %}"{{ group }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+{%         endif %}
+udp_broadcast = {{ 'true' if entry.udp_broadcast|default('0') == '1' else 'false' }}
+{%       endif %}
 {%     endif %}
 {%   endfor %}
 {% endif %}

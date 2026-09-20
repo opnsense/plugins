@@ -57,6 +57,10 @@
                     <Required>Y</Required>
                     <ValidationMessage>Select the interface to re-emit on.</ValidationMessage>
                 </target_if>
+                <bidirectional type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </bidirectional>
                 <wol type="BooleanField">
                     <Default>0</Default>
                     <Required>Y</Required>
@@ -103,6 +107,42 @@
                     <AsList>Y</AsList>
                     <ValidationMessage>Enter the UDP ports magic packets arrive on, as numbers between 1 and 65535. The daemon defaults to 7 and 9.</ValidationMessage>
                 </wol_ports>
+                <udp_ports type=".\PortListField">
+                    <AsList>Y</AsList>
+                    <ValidationMessage>Enter the UDP ports to relay, as numbers between 1 and 65535.</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <type>DependConstraint</type>
+                            <addFields>
+                                <field1>udp_groups</field1>
+                                <field2>udp_broadcast</field2>
+                            </addFields>
+                            <ValidationMessage>Groups and broadcasts only apply when relay ports are set.</ValidationMessage>
+                        </check001>
+                    </Constraints>
+                </udp_ports>
+                <udp_groups type="NetworkField">
+                    <AsList>Y</AsList>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <WildcardEnabled>N</WildcardEnabled>
+                    <ValidationMessage>Enter the multicast groups to relay, as IPv4 or IPv6 addresses.</ValidationMessage>
+                </udp_groups>
+                <udp_broadcast type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </udp_broadcast>
+                <source_peers type="NetworkField">
+                    <AsList>Y</AsList>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <WildcardEnabled>N</WildcardEnabled>
+                    <ValidationMessage>Enter the hosts behind the source interface, as IPv4 or IPv6 addresses without a prefix length.</ValidationMessage>
+                </source_peers>
+                <target_peers type="NetworkField">
+                    <AsList>Y</AsList>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <WildcardEnabled>N</WildcardEnabled>
+                    <ValidationMessage>Enter the hosts behind the target interface, as IPv4 or IPv6 addresses without a prefix length.</ValidationMessage>
+                </target_peers>
                 <address_family type="OptionField">
                     <Default>default</Default>
                     <Required>Y</Required>
