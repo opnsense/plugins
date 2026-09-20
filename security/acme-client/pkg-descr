@@ -12,7 +12,7 @@ Plugin Changelog
 
 Added:
 * new automation to upload certificate to JetKVM via SSH, using the
-  acme.sh "jetkvm" deploy hook (#XXXX)
+  acme.sh "jetkvm" deploy hook (#5726)
 
 4.17
 
