@@ -1,7 +1,7 @@
 {#
 
     Copyright (C) 2017 Fabian Franz
-    Copyright (C) 2025 txr13
+    Copyright (C) 2026 txr13
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
