@@ -62,12 +62,19 @@
         <help>Specify the IPv6 address used as a source for zone transfers.</help>
     </field>
     <field>
+        <id>general.forwardonly</id>
+        <label>Forward Only</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Disables recursion if forwarding fails. The default is to attempt resolution via forwarders first and only perform recursive lookups if forwarding fails. This setting is only meaningful if the list of forwarders is not empty.</help>
+    </field>
+    <field>
         <id>general.forwarders</id>
-        <label>DNS Forwarders</label>
+        <label>Forwarders</label>
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>Set one or more hosts to send your DNS queries if the request is unknown.</help>
+        <help>Set any combination of IPv4 and IPv6 addresses to forward queries to when the answer is unknown.</help>
     </field>
     <field>
         <id>general.filteraaaav4</id>
