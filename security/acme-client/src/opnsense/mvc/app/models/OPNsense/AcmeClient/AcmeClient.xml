@@ -452,6 +452,7 @@
                         <dns_dnsexit>DNSExit</dns_dnsexit>
                         <dns_dnshome>dnsHome</dns_dnshome>
                         <dns_dnsimple>DNSimple</dns_dnsimple>
+                        <dns_dnsmint>DNSMint</dns_dnsmint>
                         <dns_dnsservices>DNS.Services</dns_dnsservices>
                         <dns_domeneshop>Domeneshop</dns_domeneshop>
                         <dns_me>DNSMadeEasy.com</dns_me>
@@ -1284,6 +1285,9 @@
                         <sha1>SHA1 (deprecated in December 2022)</sha1>
                     </OptionValues>
                 </dns_kas_authtype>
+                <dns_dnsmint_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_dnsmint_api_key>
                 <dns_desec_token type="TextField">
                     <Required>N</Required>
                 </dns_desec_token>
