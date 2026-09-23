@@ -118,7 +118,9 @@ class WolController extends ApiMutableModelControllerBase
             return $result;
         }
         $broadcast_ip = escapeshellarg($this->calculateSubnetBroadcast($ipaddr, $cidr));
-        $result['status'] = trim($backend->configdRun("wol wake {$broadcast_ip} " . escapeshellarg((string)$wolent->mac)));
+        $port = escapeshellarg((string)$wolent->port);
+        $mac = escapeshellarg((string)$wolent->mac);
+        $result['status'] = trim($backend->configdRun("wol wake {$port} {$broadcast_ip} {$mac}"));
     }
 
     private function getInterfaceIP($if)
