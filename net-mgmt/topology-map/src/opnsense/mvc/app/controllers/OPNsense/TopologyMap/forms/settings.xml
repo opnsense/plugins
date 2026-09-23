@@ -1,0 +1,38 @@
+<form>
+    <field>
+        <id>topologymap.general.enabled</id>
+        <label>Enable topology mapper</label>
+        <type>checkbox</type>
+        <help>Enable topology discovery and API endpoints.</help>
+    </field>
+    <field>
+        <id>topologymap.general.useLldp</id>
+        <label>Use LLDP discovery</label>
+        <type>checkbox</type>
+        <help>Use LLDP neighbors when lldpd is available.</help>
+    </field>
+    <field>
+        <id>topologymap.general.useArp</id>
+        <label>Use ARP discovery</label>
+        <type>checkbox</type>
+        <help>Discover IPv4 neighbors from ARP table.</help>
+    </field>
+    <field>
+        <id>topologymap.general.useNdp</id>
+        <label>Use NDP discovery</label>
+        <type>checkbox</type>
+        <help>Discover IPv6 neighbors from NDP table.</help>
+    </field>
+    <field>
+        <id>topologymap.general.maxNodes</id>
+        <label>Maximum nodes</label>
+        <type>text</type>
+        <help>Hard limit for returned node count to protect UI performance.</help>
+    </field>
+    <field>
+        <id>topologymap.general.showGeoMap</id>
+        <label>Enable geo map API output</label>
+        <type>checkbox</type>
+        <help>Expose geo map dataset for public/external IPs.</help>
+    </field>
+</form>
