@@ -1,0 +1,20 @@
+<metadata>
+    <Lightscope>
+        <filename>Lightscope.js</filename>
+        <endpoints>
+            <endpoint>/api/lightscope/status/status</endpoint>
+        </endpoints>
+        <translations>
+            <title>LightScope</title>
+            <status>Status</status>
+            <running>Running</running>
+            <stopped>Stopped</stopped>
+            <dashboard>Dashboard</dashboard>
+            <viewReports>View Reports</viewReports>
+            <databaseId>Database ID</databaseId>
+            <honeypotPorts>Honeypot Ports</honeypotPorts>
+            <processes>Processes</processes>
+            <noData>Could not fetch LightScope status</noData>
+        </translations>
+    </Lightscope>
+</metadata>

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+# Stop LightScope service if running
+/usr/local/etc/rc.d/os-lightscope onestop 2>/dev/null || true
+
+# Reload firewall rules to remove LightScope rules
+# This ensures the block+log rule is removed immediately
+/usr/local/sbin/configctl filter reload 2>/dev/null || true
+
+echo "LightScope has been uninstalled."

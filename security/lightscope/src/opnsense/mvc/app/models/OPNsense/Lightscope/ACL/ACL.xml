@@ -1,0 +1,9 @@
+<acl>
+    <page-lightscope>
+        <name>Services: LightScope</name>
+        <patterns>
+            <pattern>ui/lightscope/*</pattern>
+            <pattern>api/lightscope/*</pattern>
+        </patterns>
+    </page-lightscope>
+</acl>
