@@ -1,0 +1,22 @@
+<acl>
+    <!-- firewall_rules.php is tied to page-firewall-rules in core -->
+    <page-firewall-rules-edit>
+        <name>Firewall: Rules: Edit</name>
+        <patterns>
+            <pattern>firewall_rules_edit.php*</pattern>
+        </patterns>
+    </page-firewall-rules-edit>
+    <page-firewall-nat-outbound>
+        <name>Firewall: NAT: Outbound</name>
+        <patterns>
+            <pattern>firewall_nat_out.php*</pattern>
+            <pattern>api/firewall/category/search_item*</pattern>
+        </patterns>
+    </page-firewall-nat-outbound>
+    <page-firewall-nat-outbound-edit>
+        <name>Firewall: NAT: Outbound: Edit</name>
+        <patterns>
+            <pattern>firewall_nat_out_edit.php*</pattern>
+        </patterns>
+    </page-firewall-nat-outbound-edit>
+</acl>
