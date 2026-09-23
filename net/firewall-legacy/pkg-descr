@@ -1,3 +1,15 @@
 This plugin adds the legacy firewall rules configuration pages.  Note that
 backend code still exists in the core and legacy rules can be migrated without
 this plugin installed.
+
+
+Plugin Changelog
+================
+
+1.1
+
+* Added outbound NAT page to the plugin
+
+1.0
+
+* Initial version with firewall rules page
