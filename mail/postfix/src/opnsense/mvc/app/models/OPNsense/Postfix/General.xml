@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/postfix/general</mount>
     <description>Postfix configuration</description>
-    <version>1.2.7</version>
+    <version>1.2.8</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -68,6 +68,11 @@
             <Default>0</Default>
             <Required>Y</Required>
         </tlswrappermode>
+        <submission_enabled type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </submission_enabled>
+        <submission_sasl_local_domain type="TextField"/>
         <certificate type="CertificateField">
             <Type>cert</Type>
         </certificate>
