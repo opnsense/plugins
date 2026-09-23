@@ -1,0 +1,624 @@
+<?php
+
+/**
+ *    Copyright (c) 2025 Arcan Consulting (www.arcan-it.de)
+ *    All rights reserved.
+ *
+ *    Redistribution and use in source and binary forms, with or without
+ *    modification, are permitted provided that the following conditions are met:
+ *
+ *    1. Redistributions of source code must retain the above copyright notice,
+ *       this list of conditions and the following disclaimer.
+ *
+ *    2. Redistributions in binary form must reproduce the above copyright
+ *       notice, this list of conditions and the following disclaimer in the
+ *       documentation and/or other materials provided with the distribution.
+ *
+ *    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ *    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ *    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ *    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ *    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ *    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ *    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *    POSSIBILITY OF SUCH DAMAGE.
+ */
+
+namespace OPNsense\HCloudDNS\Api;
+
+use OPNsense\Base\ApiMutableModelControllerBase;
+
+/**
+ * Class SettingsController
+ * @package OPNsense\HCloudDNS\Api
+ */
+class SettingsController extends ApiMutableModelControllerBase
+{
+    protected static $internalModelClass = '\OPNsense\HCloudDNS\HCloudDNS';
+    protected static $internalModelName = 'hclouddns';
+
+    /**
+     * Ensure notifications section exists in config with defaults
+     */
+    private function ensureNotificationsExist()
+    {
+        $config = \OPNsense\Core\Config::getInstance()->object();
+
+        // Make sure HCloudDNS exists
+        if (!isset($config->OPNsense)) {
+            return;
+        }
+        if (!isset($config->OPNsense->HCloudDNS)) {
+            return;
+        }
+
+        $hcloud = $config->OPNsense->HCloudDNS;
+
+        // Add notifications section if missing
+        if (!isset($hcloud->notifications)) {
+            $hcloud->addChild('notifications');
+            $hcloud->notifications->addChild('enabled', '0');
+            $hcloud->notifications->addChild('notifyOnUpdate', '1');
+            $hcloud->notifications->addChild('notifyOnFailover', '1');
+            $hcloud->notifications->addChild('notifyOnFailback', '1');
+            $hcloud->notifications->addChild('notifyOnError', '1');
+            $hcloud->notifications->addChild('emailEnabled', '0');
+            $hcloud->notifications->addChild('emailTo', '');
+            $hcloud->notifications->addChild('emailFrom', '');
+            $hcloud->notifications->addChild('smtpServer', '');
+            $hcloud->notifications->addChild('smtpPort', '587');
+            $hcloud->notifications->addChild('smtpTls', 'starttls');
+            $hcloud->notifications->addChild('smtpUser', '');
+            $hcloud->notifications->addChild('smtpPassword', '');
+            $hcloud->notifications->addChild('webhookEnabled', '0');
+            $hcloud->notifications->addChild('webhookUrl', '');
+            $hcloud->notifications->addChild('webhookMethod', 'POST');
+            $hcloud->notifications->addChild('webhookSecret', '');
+            $hcloud->notifications->addChild('ntfyEnabled', '0');
+            $hcloud->notifications->addChild('ntfyServer', 'https://ntfy.sh');
+            $hcloud->notifications->addChild('ntfyTopic', '');
+            $hcloud->notifications->addChild('ntfyPriority', 'default');
+            \OPNsense\Core\Config::getInstance()->save();
+        }
+    }
+
+    /**
+     * Get full settings including all dropdown options
+     * @return array
+     */
+    public function getAction()
+    {
+        $this->ensureNotificationsExist();
+        $result = [];
+        $mdl = $this->getModel();
+        $result['hclouddns'] = $mdl->getNodes();
+        return $result;
+    }
+
+    /**
+     * Parse flat bracket-notation keys into nested array
+     * e.g. "hclouddns[notifications][enabled]" => ['hclouddns']['notifications']['enabled']
+     */
+    private function parseBracketNotation($flatData)
+    {
+        $result = [];
+        foreach ($flatData as $key => $value) {
+            // Parse keys like "hclouddns[notifications][enabled]"
+            if (preg_match('/^([^\[]+)(.*)$/', $key, $matches)) {
+                $baseKey = $matches[1];
+                $rest = $matches[2];
+
+                if (empty($rest)) {
+                    $result[$baseKey] = $value;
+                } else {
+                    // Parse [notifications][enabled] etc.
+                    preg_match_all('/\[([^\]]*)\]/', $rest, $subMatches);
+                    $keys = $subMatches[1];
+
+                    $current = &$result;
+                    $current[$baseKey] = $current[$baseKey] ?? [];
+                    $current = &$current[$baseKey];
+
+                    foreach ($keys as $i => $subKey) {
+                        if ($i === count($keys) - 1) {
+                            $current[$subKey] = $value;
+                        } else {
+                            $current[$subKey] = $current[$subKey] ?? [];
+                            $current = &$current[$subKey];
+                        }
+                    }
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Set settings
+     * @return array
+     */
+    public function setAction()
+    {
+        $result = ['status' => 'error', 'message' => 'Invalid request'];
+        if ($this->request->isPost()) {
+            $this->ensureNotificationsExist();
+            $mdl = $this->getModel();
+
+            // Get raw POST data and parse bracket notation
+            $allPost = $this->request->getPost();
+            $parsed = $this->parseBracketNotation($allPost);
+            $postData = $parsed['hclouddns'] ?? [];
+
+            // Handle notifications separately
+            if (isset($postData['notifications'])) {
+                $notif = $postData['notifications'];
+                foreach ($notif as $key => $value) {
+                    if (isset($mdl->notifications->$key)) {
+                        $mdl->notifications->$key = $value;
+                    }
+                }
+                unset($postData['notifications']);
+            }
+
+            // Handle remaining settings
+            if (!empty($postData)) {
+                $mdl->setNodes($postData);
+            }
+
+            $valMsgs = $mdl->performValidation();
+            if ($valMsgs->count() == 0) {
+                $mdl->serializeToConfig();
+                \OPNsense\Core\Config::getInstance()->save();
+                $result['status'] = 'ok';
+            } else {
+                $result = ['status' => 'error', 'validations' => []];
+                foreach ($valMsgs as $msg) {
+                    $result['validations'][$msg->getField()] = $msg->getMessage();
+                }
+            }
+        }
+        return $result;
+    }
+
+    /**
+     * Get general settings
+     * @return array
+     */
+    public function getGeneralAction()
+    {
+        return $this->getBase('general', 'general');
+    }
+
+    /**
+     * Set general settings
+     * @return array
+     */
+    public function setGeneralAction()
+    {
+        return $this->setBase('general', 'general');
+    }
+
+    /**
+     * Export configuration as JSON
+     * @param string $include_tokens Pass '1' to include API tokens
+     * @return array
+     */
+    public function exportAction($include_tokens = '0')
+    {
+        $mdl = $this->getModel();
+        $includeTokens = $include_tokens === '1';
+
+        $export = [
+            'version' => '2.0.0',
+            'exported' => date('c'),
+            'general' => [],
+            'notifications' => [],
+            'gateways' => [],
+            'accounts' => [],
+            'entries' => []
+        ];
+
+        // Export general settings
+        $general = $mdl->general;
+        $export['general'] = [
+            'enabled' => (string)$general->enabled,
+            'checkInterval' => (string)$general->checkInterval,
+            'forceInterval' => (string)$general->forceInterval,
+            'verbose' => (string)$general->verbose,
+            'failoverEnabled' => (string)$general->failoverEnabled,
+            'failbackEnabled' => (string)$general->failbackEnabled,
+            'failbackDelay' => (string)$general->failbackDelay,
+            'cronEnabled' => (string)$general->cronEnabled,
+            'cronInterval' => (string)$general->cronInterval,
+            'historyRetentionDays' => (string)$general->historyRetentionDays,
+            'carpAware' => (string)$general->carpAware,
+            'carpVhid' => (string)$general->carpVhid
+        ];
+
+        // Export notification settings
+        $notifications = $mdl->notifications;
+        $export['notifications'] = [
+            'enabled' => (string)$notifications->enabled,
+            'notifyOnUpdate' => (string)$notifications->notifyOnUpdate,
+            'notifyOnFailover' => (string)$notifications->notifyOnFailover,
+            'notifyOnFailback' => (string)$notifications->notifyOnFailback,
+            'notifyOnError' => (string)$notifications->notifyOnError,
+            'emailEnabled' => (string)$notifications->emailEnabled,
+            'emailTo' => (string)$notifications->emailTo,
+            'emailFrom' => (string)$notifications->emailFrom,
+            'smtpServer' => (string)$notifications->smtpServer,
+            'smtpPort' => (string)$notifications->smtpPort,
+            'smtpTls' => (string)$notifications->smtpTls,
+            'smtpUser' => (string)$notifications->smtpUser,
+            'webhookEnabled' => (string)$notifications->webhookEnabled,
+            'webhookUrl' => (string)$notifications->webhookUrl,
+            'webhookMethod' => (string)$notifications->webhookMethod,
+            'webhookSecret' => (string)$notifications->webhookSecret,
+            'ntfyEnabled' => (string)$notifications->ntfyEnabled,
+            'ntfyServer' => (string)$notifications->ntfyServer,
+            'ntfyTopic' => (string)$notifications->ntfyTopic,
+            'ntfyPriority' => (string)$notifications->ntfyPriority
+        ];
+
+        // Export gateways
+        foreach ($mdl->gateways->gateway->iterateItems() as $uuid => $gw) {
+            $export['gateways'][] = [
+                'uuid' => $uuid,
+                'enabled' => (string)$gw->enabled,
+                'name' => (string)$gw->name,
+                'interface' => (string)$gw->interface,
+                'priority' => (string)$gw->priority,
+                'checkipMethod' => (string)$gw->checkipMethod,
+                'healthCheckTarget' => (string)$gw->healthCheckTarget
+            ];
+        }
+
+        // Export accounts (token only if explicitly requested)
+        foreach ($mdl->accounts->account->iterateItems() as $uuid => $acc) {
+            $accData = [
+                'uuid' => $uuid,
+                'enabled' => (string)$acc->enabled,
+                'name' => (string)$acc->name,
+                'description' => (string)$acc->description,
+                'apiType' => (string)$acc->apiType
+            ];
+            if ($includeTokens) {
+                $accData['apiToken'] = (string)$acc->apiToken;
+            }
+            $export['accounts'][] = $accData;
+        }
+
+        // Export entries
+        foreach ($mdl->entries->entry->iterateItems() as $uuid => $entry) {
+            $export['entries'][] = [
+                'uuid' => $uuid,
+                'enabled' => (string)$entry->enabled,
+                'account' => (string)$entry->account,
+                'zoneId' => (string)$entry->zoneId,
+                'zoneName' => (string)$entry->zoneName,
+                'recordId' => (string)$entry->recordId,
+                'recordName' => (string)$entry->recordName,
+                'recordType' => (string)$entry->recordType,
+                'primaryGateway' => (string)$entry->primaryGateway,
+                'failoverGateway' => (string)$entry->failoverGateway,
+                'ttl' => (string)$entry->ttl
+            ];
+        }
+
+        return [
+            'status' => 'ok',
+            'export' => $export
+        ];
+    }
+
+    /**
+     * Import configuration from JSON
+     * @return array
+     */
+    public function importAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'error', 'message' => 'POST required'];
+        }
+
+        $importData = $this->request->getPost('import');
+        if (empty($importData)) {
+            return ['status' => 'error', 'message' => 'No import data provided'];
+        }
+
+        // Parse JSON if string
+        if (is_string($importData)) {
+            $importData = json_decode($importData, true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                return ['status' => 'error', 'message' => 'Invalid JSON: ' . json_last_error_msg()];
+            }
+        }
+
+        $mdl = $this->getModel();
+        $imported = ['gateways' => 0, 'accounts' => 0, 'entries' => 0];
+        $errors = [];
+
+        // Import general settings
+        if (isset($importData['general'])) {
+            $gen = $importData['general'];
+            if (isset($gen['enabled'])) $mdl->general->enabled = $gen['enabled'];
+            if (isset($gen['checkInterval'])) $mdl->general->checkInterval = $gen['checkInterval'];
+            if (isset($gen['forceInterval'])) $mdl->general->forceInterval = $gen['forceInterval'];
+            if (isset($gen['verbose'])) $mdl->general->verbose = $gen['verbose'];
+            if (isset($gen['failoverEnabled'])) $mdl->general->failoverEnabled = $gen['failoverEnabled'];
+            if (isset($gen['failbackEnabled'])) $mdl->general->failbackEnabled = $gen['failbackEnabled'];
+            if (isset($gen['failbackDelay'])) $mdl->general->failbackDelay = $gen['failbackDelay'];
+            if (isset($gen['cronEnabled'])) $mdl->general->cronEnabled = $gen['cronEnabled'];
+            if (isset($gen['cronInterval'])) $mdl->general->cronInterval = $gen['cronInterval'];
+            if (isset($gen['historyRetentionDays'])) $mdl->general->historyRetentionDays = $gen['historyRetentionDays'];
+            if (isset($gen['carpAware'])) $mdl->general->carpAware = $gen['carpAware'];
+            if (isset($gen['carpVhid'])) $mdl->general->carpVhid = $gen['carpVhid'];
+        }
+
+        // Import notification settings
+        if (isset($importData['notifications'])) {
+            $notif = $importData['notifications'];
+            if (isset($notif['enabled'])) $mdl->notifications->enabled = $notif['enabled'];
+            if (isset($notif['notifyOnUpdate'])) $mdl->notifications->notifyOnUpdate = $notif['notifyOnUpdate'];
+            if (isset($notif['notifyOnFailover'])) $mdl->notifications->notifyOnFailover = $notif['notifyOnFailover'];
+            if (isset($notif['notifyOnFailback'])) $mdl->notifications->notifyOnFailback = $notif['notifyOnFailback'];
+            if (isset($notif['notifyOnError'])) $mdl->notifications->notifyOnError = $notif['notifyOnError'];
+            if (isset($notif['emailEnabled'])) $mdl->notifications->emailEnabled = $notif['emailEnabled'];
+            if (isset($notif['emailTo'])) $mdl->notifications->emailTo = $notif['emailTo'];
+            if (isset($notif['emailFrom'])) $mdl->notifications->emailFrom = $notif['emailFrom'];
+            if (isset($notif['smtpServer'])) $mdl->notifications->smtpServer = $notif['smtpServer'];
+            if (isset($notif['smtpPort'])) $mdl->notifications->smtpPort = $notif['smtpPort'];
+            if (isset($notif['smtpTls'])) $mdl->notifications->smtpTls = $notif['smtpTls'];
+            if (isset($notif['smtpUser'])) $mdl->notifications->smtpUser = $notif['smtpUser'];
+            if (isset($notif['smtpPassword'])) $mdl->notifications->smtpPassword = $notif['smtpPassword'];
+            if (isset($notif['webhookEnabled'])) $mdl->notifications->webhookEnabled = $notif['webhookEnabled'];
+            if (isset($notif['webhookUrl'])) $mdl->notifications->webhookUrl = $notif['webhookUrl'];
+            if (isset($notif['webhookMethod'])) $mdl->notifications->webhookMethod = $notif['webhookMethod'];
+            if (isset($notif['webhookSecret'])) $mdl->notifications->webhookSecret = $notif['webhookSecret'];
+            if (isset($notif['ntfyEnabled'])) $mdl->notifications->ntfyEnabled = $notif['ntfyEnabled'];
+            if (isset($notif['ntfyServer'])) $mdl->notifications->ntfyServer = $notif['ntfyServer'];
+            if (isset($notif['ntfyTopic'])) $mdl->notifications->ntfyTopic = $notif['ntfyTopic'];
+            if (isset($notif['ntfyPriority'])) $mdl->notifications->ntfyPriority = $notif['ntfyPriority'];
+        }
+
+        // Map old UUIDs to new UUIDs for reference updating
+        $gatewayMap = [];
+        $accountMap = [];
+
+        // Import gateways
+        if (isset($importData['gateways']) && is_array($importData['gateways'])) {
+            foreach ($importData['gateways'] as $gwData) {
+                $gw = $mdl->gateways->gateway->Add();
+                $newUuid = $gw->getAttributes()['uuid'];
+                if (isset($gwData['uuid'])) {
+                    $gatewayMap[$gwData['uuid']] = $newUuid;
+                }
+                $gw->enabled = $gwData['enabled'] ?? '1';
+                $gw->name = $gwData['name'] ?? '';
+                $gw->interface = $gwData['interface'] ?? '';
+                $gw->priority = $gwData['priority'] ?? '10';
+                $gw->checkipMethod = $gwData['checkipMethod'] ?? 'web_ipify';
+                $gw->healthCheckTarget = $gwData['healthCheckTarget'] ?? '8.8.8.8';
+                $imported['gateways']++;
+            }
+        }
+
+        // Import accounts
+        if (isset($importData['accounts']) && is_array($importData['accounts'])) {
+            foreach ($importData['accounts'] as $accData) {
+                // Skip accounts without tokens (they can't function)
+                if (empty($accData['apiToken'])) {
+                    $errors[] = "Account '{$accData['name']}' skipped - no API token";
+                    continue;
+                }
+                $acc = $mdl->accounts->account->Add();
+                $newUuid = $acc->getAttributes()['uuid'];
+                if (isset($accData['uuid'])) {
+                    $accountMap[$accData['uuid']] = $newUuid;
+                }
+                $acc->enabled = $accData['enabled'] ?? '1';
+                $acc->name = $accData['name'] ?? '';
+                $acc->description = $accData['description'] ?? '';
+                $acc->apiType = $accData['apiType'] ?? 'cloud';
+                $acc->apiToken = $accData['apiToken'];
+                $imported['accounts']++;
+            }
+        }
+
+        // Import entries (update references to new gateway/account UUIDs)
+        if (isset($importData['entries']) && is_array($importData['entries'])) {
+            foreach ($importData['entries'] as $entryData) {
+                // Map old UUIDs to new ones
+                $accountUuid = $entryData['account'] ?? '';
+                $primaryGwUuid = $entryData['primaryGateway'] ?? '';
+                $failoverGwUuid = $entryData['failoverGateway'] ?? '';
+
+                if (isset($accountMap[$accountUuid])) {
+                    $accountUuid = $accountMap[$accountUuid];
+                }
+                if (isset($gatewayMap[$primaryGwUuid])) {
+                    $primaryGwUuid = $gatewayMap[$primaryGwUuid];
+                }
+                if (!empty($failoverGwUuid) && isset($gatewayMap[$failoverGwUuid])) {
+                    $failoverGwUuid = $gatewayMap[$failoverGwUuid];
+                }
+
+                $entry = $mdl->entries->entry->Add();
+                $entry->enabled = $entryData['enabled'] ?? '1';
+                $entry->account = $accountUuid;
+                $entry->zoneId = $entryData['zoneId'] ?? '';
+                $entry->zoneName = $entryData['zoneName'] ?? '';
+                $entry->recordId = $entryData['recordId'] ?? '';
+                $entry->recordName = $entryData['recordName'] ?? '';
+                $entry->recordType = $entryData['recordType'] ?? 'A';
+                $entry->primaryGateway = $primaryGwUuid;
+                $entry->failoverGateway = $failoverGwUuid;
+                $entry->ttl = $entryData['ttl'] ?? '300';
+                $entry->status = 'pending';
+                $imported['entries']++;
+            }
+        }
+
+        // Validate and save
+        $valMsgs = $mdl->performValidation();
+        if ($valMsgs->count() > 0) {
+            foreach ($valMsgs as $msg) {
+                $errors[] = $msg->getField() . ': ' . $msg->getMessage();
+            }
+        }
+
+        $mdl->serializeToConfig();
+        \OPNsense\Core\Config::getInstance()->save();
+
+        return [
+            'status' => 'ok',
+            'imported' => $imported,
+            'errors' => $errors,
+            'message' => sprintf(
+                'Imported %d gateways, %d accounts, %d entries',
+                $imported['gateways'],
+                $imported['accounts'],
+                $imported['entries']
+            )
+        ];
+    }
+
+    /**
+     * Get zone groups configuration
+     * @return array
+     */
+    public function getZoneGroupsAction()
+    {
+        $mdl = $this->getModel();
+        $zoneGroupsJson = (string)$mdl->general->zoneGroups;
+
+        if (empty($zoneGroupsJson)) {
+            return [
+                'status' => 'ok',
+                'groups' => [],
+                'assignments' => []
+            ];
+        }
+
+        $data = json_decode($zoneGroupsJson, true);
+        if (!is_array($data)) {
+            return [
+                'status' => 'ok',
+                'groups' => [],
+                'assignments' => []
+            ];
+        }
+
+        return [
+            'status' => 'ok',
+            'groups' => $data['groups'] ?? [],
+            'assignments' => $data['assignments'] ?? []
+        ];
+    }
+
+    /**
+     * Set zone group assignment
+     * @return array
+     */
+    public function setZoneGroupAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'error', 'message' => 'POST required'];
+        }
+
+        $zoneId = $this->request->getPost('zone_id');
+        $groupName = $this->request->getPost('group_name');
+
+        if (empty($zoneId)) {
+            return ['status' => 'error', 'message' => 'zone_id required'];
+        }
+
+        $mdl = $this->getModel();
+        $zoneGroupsJson = (string)$mdl->general->zoneGroups;
+        $data = json_decode($zoneGroupsJson, true);
+
+        if (!is_array($data)) {
+            $data = ['groups' => [], 'assignments' => []];
+        }
+        if (!isset($data['groups'])) {
+            $data['groups'] = [];
+        }
+        if (!isset($data['assignments'])) {
+            $data['assignments'] = [];
+        }
+
+        // Add group if new and not empty
+        if (!empty($groupName) && !in_array($groupName, $data['groups'])) {
+            $data['groups'][] = $groupName;
+        }
+
+        // Set or remove assignment
+        if (empty($groupName)) {
+            unset($data['assignments'][$zoneId]);
+        } else {
+            $data['assignments'][$zoneId] = $groupName;
+        }
+
+        $mdl->general->zoneGroups = json_encode($data);
+        $mdl->serializeToConfig();
+        \OPNsense\Core\Config::getInstance()->save();
+
+        return [
+            'status' => 'ok',
+            'groups' => $data['groups'],
+            'assignments' => $data['assignments']
+        ];
+    }
+
+    /**
+     * Delete a zone group
+     * @return array
+     */
+    public function deleteZoneGroupAction()
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'error', 'message' => 'POST required'];
+        }
+
+        $groupName = $this->request->getPost('group_name');
+        if (empty($groupName)) {
+            return ['status' => 'error', 'message' => 'group_name required'];
+        }
+
+        $mdl = $this->getModel();
+        $zoneGroupsJson = (string)$mdl->general->zoneGroups;
+        $data = json_decode($zoneGroupsJson, true);
+
+        if (!is_array($data)) {
+            return ['status' => 'ok', 'message' => 'No groups exist'];
+        }
+
+        // Remove group from list
+        if (isset($data['groups'])) {
+            $data['groups'] = array_values(array_filter($data['groups'], function($g) use ($groupName) {
+                return $g !== $groupName;
+            }));
+        }
+
+        // Remove all assignments to this group
+        if (isset($data['assignments'])) {
+            foreach ($data['assignments'] as $zoneId => $group) {
+                if ($group === $groupName) {
+                    unset($data['assignments'][$zoneId]);
+                }
+            }
+        }
+
+        $mdl->general->zoneGroups = json_encode($data);
+        $mdl->serializeToConfig();
+        \OPNsense\Core\Config::getInstance()->save();
+
+        return [
+            'status' => 'ok',
+            'groups' => $data['groups'] ?? [],
+            'assignments' => $data['assignments'] ?? []
+        ];
+    }
+}
