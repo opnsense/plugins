@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/ospf</mount>
     <description>OSPF Routing configuration</description>
-    <version>1.1.4</version>
+    <version>1.1.5</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -36,13 +36,6 @@
             <MaximumValue>16777214</MaximumValue>
             <ValidationMessage>Must be a number between 0 and 16777214.</ValidationMessage>
         </originatemetric>
-        <passiveinterfaces type="InterfaceField">
-            <Multiple>Y</Multiple>
-            <AllowDynamic>Y</AllowDynamic>
-            <filters>
-                <enable>/^(?!0).*$/</enable>
-            </filters>
-        </passiveinterfaces>
         <areas>
             <area type="ArrayField">
                 <enabled type="BooleanField">
@@ -160,6 +153,10 @@
                         <enable>/^(?!0).*$/</enable>
                     </filters>
                 </interfacename>
+                <passive type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </passive>
                 <authtype type="OptionField">
                     <OptionValues>
                         <message-digest>MD5</message-digest>
