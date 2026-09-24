@@ -142,8 +142,8 @@
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#areas">{{ lang._('Areas') }}</a></li>
-    <li><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
     <li><a data-toggle="tab" href="#interfaces">{{ lang._('Interfaces') }}</a></li>
+    <li><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
     <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
     <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>
 </ul>
@@ -157,13 +157,13 @@
     <div id="areas" class="tab-pane fade in">
         {{ partial('layout_partials/base_bootgrid_table', formGridEditArea)}}
     </div>
-    <!-- Tab: Networks -->
-    <div id="networks" class="tab-pane fade in">
-        {{ partial('layout_partials/base_bootgrid_table', formGridEditNetwork)}}
-    </div>
     <!-- Tab: Interfaces -->
     <div id="interfaces" class="tab-pane fade in">
         {{ partial('layout_partials/base_bootgrid_table', formGridEditInterface)}}
+    </div>
+    <!-- Tab: Networks -->
+    <div id="networks" class="tab-pane fade in">
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditNetwork)}}
     </div>
     <!-- Tab: Prefixlists -->
     <div id="prefixlists" class="tab-pane fade in">
