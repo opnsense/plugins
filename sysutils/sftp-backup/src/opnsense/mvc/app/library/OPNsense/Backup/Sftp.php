@@ -277,6 +277,7 @@ class Sftp extends Base implements IBackupProvider
                 } else {
                     syslog(LOG_NOTICE, "backup configuration as " . $target_filename);
                 }
+                @unlink($tmpfilename);
                 $remote_backups = $this->ls(sprintf('%s*.xml', $fileprefix));
             }
             /* cleanup only if backup count is > 0*/
