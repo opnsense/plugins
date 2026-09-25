@@ -515,4 +515,45 @@
         <type>checkbox</type>
         <help>If checked the switch will be rebooted once the certificate has been successfully installed.</help>
     </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_jetkvm</style>
+    </field>
+    <field>
+        <id>action.acme_jetkvm_host</id>
+        <label>JetKVM Host</label>
+        <type>text</type>
+        <help>IP address or hostname of the JetKVM device. Required first: the device must already have "HTTPS
+              Mode" set to "Custom" in its own web UI (Settings &gt; Network) -- this automation only writes the
+              certificate/key files (and optionally reboots); it does not switch HTTPS mode for you, and the
+              deploy will fail if it isn't already set (check the ACME Client log for the exact reason). Also
+              requires SSH access to already work non-interactively as the configured user (JetKVM only supports
+              key-based SSH authentication -- enable "Developer Mode" on the device and paste this firewall's SSH
+              public key, e.g. from /root/.ssh/id_rsa.pub, into its "SSH Keys" field under Settings &gt; Advanced).
+              Leaving this blank does not fail validation -- it falls back to the certificate's own domain name,
+              which is almost never the device's address, so set it explicitly.</help>
+    </field>
+    <field>
+        <id>action.acme_jetkvm_user</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>The username to login to the JetKVM device via SSH. JetKVM only supports the "root" account for SSH
+              access. Defaults to "root".</help>
+    </field>
+    <field>
+        <id>action.acme_jetkvm_port</id>
+        <label>SSH Port</label>
+        <type>text</type>
+        <help>SSH server port on the JetKVM device. Defaults to "22".</help>
+    </field>
+    <field>
+        <id>action.acme_jetkvm_reboot</id>
+        <label>Reboot After Upload</label>
+        <type>checkbox</type>
+        <help>JetKVM does not hot-reload a new "Custom" certificate -- a full device reboot is required to apply
+              it, which briefly drops any active KVM-over-IP session. If checked (default), the device is
+              rebooted automatically right after the certificate is uploaded, so an unattended renewal actually
+              takes effect. Uncheck to upload only and apply/verify manually instead.</help>
+    </field>
 </form>
