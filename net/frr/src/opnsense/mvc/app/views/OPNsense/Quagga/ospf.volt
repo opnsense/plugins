@@ -65,7 +65,14 @@ POSSIBILITY OF SUCH DAMAGE.
             'set':'/api/quagga/ospfsettings/set_area/',
             'add':'/api/quagga/ospfsettings/add_area/',
             'del':'/api/quagga/ospfsettings/del_area/',
-            'toggle':'/api/quagga/ospfsettings/toggle_area/'
+            'toggle':'/api/quagga/ospfsettings/toggle_area/',
+            options: {
+                formatters: {
+                    area_type: function(column, row) {
+                        return row["%" + column.id] || row[column.id] || 'normal';
+                    }
+                }
+            }
         });
         $("#{{formGridEditNetwork['table_id']}}").UIBootgrid({
             'search':'/api/quagga/ospfsettings/search_network',
