@@ -15,6 +15,13 @@
             <Default>41641</Default>
             <Required>Y</Required>
         </listenPort>
+        <relayServerPort type="PortField">
+            <Required>N</Required>
+        </relayServerPort>
+        <webclient type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </webclient>
         <acceptDNS type="BooleanField">
             <Default>1</Default>
             <Required>Y</Required>
