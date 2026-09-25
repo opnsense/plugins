@@ -39,6 +39,7 @@ SOCKET_FILE = '/var/run/iperf-manager.sock'
 ONE_HOUR = 3600
 KEY_START_TIME = 'start_time'
 KEY_PORT = 'port'
+IPERF_DEFAULT_PORT = 5201
 LF = "\n"
 
 def execute_firewall_port(rule)
@@ -106,8 +107,11 @@ def find_open_ports
   ports
 end
 
-def find_open_port
-  find_open_ports.sample
+def find_open_port(prefer_default_port = false)
+  ports = find_open_ports
+  return IPERF_DEFAULT_PORT if prefer_default_port && ports.include?(IPERF_DEFAULT_PORT)
+
+  ports.sample
 end
 
 def run_iperf3(port)
@@ -123,9 +127,9 @@ def run_iperf3(port)
   output
 end
 
-def run_test(interface = 'any', data)
+def run_test(interface, data, prefer_default_port = false)
   ret = nil
-  data[KEY_PORT] = port = find_open_port
+  data[KEY_PORT] = port = find_open_port(prefer_default_port)
   # regenerate ruleset
   flush_firewall_rules
   gen_firewall_rules
@@ -149,12 +153,12 @@ def run_test(interface = 'any', data)
   ret
 end
 
-def run_test_thread(interface = 'any')
+def run_test_thread(interface = 'any', prefer_default_port = false)
   data = {}
   t = Thread.new do
     data[KEY_START_TIME] = Time.now
     data['interface'] = interface
-    run_test(interface, data)
+    run_test(interface, data, prefer_default_port)
   end
   $instances[t] = data
 end
@@ -190,7 +194,8 @@ begin
               # check if a valid interface was given
               interface = intf if intf =~ /^[a-z0-9_-]+$/
             end
-            data = run_test_thread interface
+            prefer_default_port = command.shift == '1'
+            data = run_test_thread interface, prefer_default_port
             connection.puts '{"status": "queued job"}'
           when 'query'
             connection.puts $instances.values.to_json
