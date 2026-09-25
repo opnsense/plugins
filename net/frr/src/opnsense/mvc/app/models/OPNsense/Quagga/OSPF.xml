@@ -148,9 +148,11 @@
                     <Required>Y</Required>
                 </enabled>
                 <interfacename type="InterfaceField">
+                    <Required>Y</Required>
                     <AllowDynamic>Y</AllowDynamic>
                     <filters>
                         <enable>/^(?!0).*$/</enable>
+                        <type>/^(?!group).*$/</type>
                     </filters>
                 </interfacename>
                 <passive type="BooleanField">
