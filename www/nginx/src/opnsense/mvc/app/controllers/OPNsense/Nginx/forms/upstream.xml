@@ -58,6 +58,29 @@
     <type>checkbox</type>
   </field>
   <field>
+    <id>upstream.xff_header_mode</id>
+    <label>XFF: Mode</label>
+    <style>selectpicker</style>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <help>Append (default) keeps the X-Forwarded-For chain via $proxy_add_x_forwarded_for. Replace sends only the validated client address ($remote_addr). Drop suppresses the header.</help>
+  </field>
+  <field>
+    <id>upstream.forwarded_header_mode</id>
+    <label>Forwarded: Mode</label>
+    <style>selectpicker</style>
+    <type>dropdown</type>
+    <advanced>true</advanced>
+    <help>Preserve (default) leaves a client-supplied Forwarded header unchanged. Replace sets a sanitized RFC 7239 value from $remote_addr and $scheme. Drop suppresses the header. Backends that prefer Forwarded may otherwise accept a spoofed address.</help>
+  </field>
+  <field>
+    <id>upstream.suppress_client_headers</id>
+    <label>Suppress CF-/True-Client-IP</label>
+    <help>Clear CF-Connecting-IP and True-Client-IP before proxying so they cannot bypass the validated client address.</help>
+    <advanced>true</advanced>
+    <type>checkbox</type>
+  </field>
+  <field>
     <id>upstream.tls_enable</id>
     <label>Enable TLS (HTTPS)</label>
     <help>Use TLS (HTTPS) to connect to the server.</help>
