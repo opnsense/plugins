@@ -218,6 +218,15 @@ class Sftp extends Base implements IBackupProvider
     }
 
     /**
+     * @param string $source filename
+     * @param string $destination filename
+     */
+    private function get($source, $destination)
+    {
+        $this->sftpCmd(sprintf('get %s %s', $source, $destination));
+    }
+
+    /**
      * @param string $filename
      */
     private function del($filename)
@@ -252,11 +261,22 @@ class Sftp extends Base implements IBackupProvider
             $target_filename = strtolower(preg_replace('/^config-/', $fileprefix, basename($most_recent)));
 
             if (!in_array($target_filename, $remote_backups)) {
-                syslog(LOG_NOTICE, "backup configuration as " . $target_filename);
                 $tmpfilename = sprintf("/conf/backup/sftp/%s", $target_filename);
                 File::file_put_contents($tmpfilename, $confdata, 0600);
                 $this->put($tmpfilename, $target_filename);
                 unlink($tmpfilename);
+                /**
+                 *  Ensure proper backup by re-reading the contents, only log errors do not throw as the receiving
+                 *  party might not allow reading back in which case we can't verify proper transfer.
+                 */
+                $this->get($target_filename, $tmpfilename);
+                if (!is_file($tmpfilename)) {
+                    syslog(LOG_ERR, sprintf("Failed to backup to %s (missing target)", $target_filename));
+                } elseif (file_get_contents($tmpfilename) != $confdata) {
+                    syslog(LOG_ERR, sprintf("Failed to backup to %s (content mismatch)", $target_filename));
+                } else {
+                    syslog(LOG_NOTICE, "backup configuration as " . $target_filename);
+                }
                 $remote_backups = $this->ls(sprintf('%s*.xml', $fileprefix));
             }
             /* cleanup only if backup count is > 0*/
