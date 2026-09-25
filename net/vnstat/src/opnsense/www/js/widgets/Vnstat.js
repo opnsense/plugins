@@ -42,7 +42,10 @@ export default class Vnstat extends BaseTableWidget {
 
     async getWidgetOptions() {
         const data = await this.ajaxCall(`/api/vnstat/service/${'interface_list'}`);
-        const ifaceOptions = (data?.interfaces ?? []).map(name => ({ value: name, label: name }));
+        const ifaceOptions = (data?.interfaces ?? []).map(iface => ({
+            value: iface.device,
+            label: iface.description
+        }));
 
         return {
             excluded_interfaces: {
@@ -154,22 +157,24 @@ export default class Vnstat extends BaseTableWidget {
         const data = await this.ajaxCall(`/api/vnstat/service/${'interface_list'}`);
         if (!data || !data.interfaces) return;
 
-        const names = data.interfaces.filter(name => !this.excludedInterfaces.includes(name));
+        const interfaces = data.interfaces.filter(iface => !this.excludedInterfaces.includes(iface.device));
 
         const $select = $('#vnstat-interface-select');
         $select.empty();
-        for (const name of names) {
-            $select.append($('<option></option>').val(name).text(name));
+        for (const iface of interfaces) {
+            $select.append($('<option></option>').val(iface.device).text(iface.description));
         }
 
-        if (this.currentInterface && names.includes(this.currentInterface)) {
+        const devices = interfaces.map(iface => iface.device);
+        const wan = interfaces.find(iface => iface.identifier === 'wan');
+        if (this.currentInterface && devices.includes(this.currentInterface)) {
             $select.val(this.currentInterface);
-        } else if (names.includes('WAN')) {
-            $select.val('WAN');
-            this.currentInterface = 'WAN';
-        } else if (names.length > 0) {
-            $select.val(names[0]);
-            this.currentInterface = names[0];
+        } else if (wan) {
+            $select.val(wan.device);
+            this.currentInterface = wan.device;
+        } else if (devices.length > 0) {
+            $select.val(devices[0]);
+            this.currentInterface = devices[0];
         }
     }
 
