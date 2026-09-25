@@ -75,8 +75,24 @@ function frr_firewall($fw)
                 'quick' => true,
                 'log' => !isset($config['syslog']['nologdefaultpass']),
                 '#ref' => 'ui/quagga/general/index',
-                'descr' => 'Pass OSPF',
-                'to' => '224.0.0.0/24',
+                'descr' => 'Pass OSPF MULTICAST',
+                'to' => '224.0.0.5/32',
+                'direction' => 'in',
+            ]
+        );
+        $fw->registerFilterRule(
+            1,
+            [
+                'ipprotocol' => 'inet',
+                'protocol' => 'ospf',
+                'statetype' => 'keep',
+                'type' => 'pass',
+                'disablereplyto' => 1,
+                'quick' => true,
+                'log' => !isset($config['syslog']['nologdefaultpass']),
+                '#ref' => 'ui/quagga/general/index',
+                'descr' => 'Pass OSPF MULTICAST DR',
+                'to' => '224.0.0.6/32',
                 'direction' => 'in',
             ]
         );
@@ -107,9 +123,26 @@ function frr_firewall($fw)
                 'quick' => true,
                 'log' => !isset($config['syslog']['nologdefaultpass']),
                 '#ref' => 'ui/quagga/general/index',
-                'descr' => 'Pass OSPF',
+                'descr' => 'Pass OSPF MULTICAST',
                 'from' => '(self)',
-                'to' => '224.0.0.0/24',
+                'to' => '224.0.0.5/32',
+                'direction' => 'out',
+            ]
+        );
+        $fw->registerFilterRule(
+            1,
+            [
+                'ipprotocol' => 'inet',
+                'protocol' => 'ospf',
+                'statetype' => 'keep',
+                'type' => 'pass',
+                'disablereplyto' => 1,
+                'quick' => true,
+                'log' => !isset($config['syslog']['nologdefaultpass']),
+                '#ref' => 'ui/quagga/general/index',
+                'descr' => 'Pass OSPF MULTICAST DR',
+                'from' => '(self)',
+                'to' => '224.0.0.6/32',
                 'direction' => 'out',
             ]
         );
