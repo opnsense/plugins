@@ -65,7 +65,14 @@ POSSIBILITY OF SUCH DAMAGE.
             'set':'/api/quagga/ospfsettings/set_area/',
             'add':'/api/quagga/ospfsettings/add_area/',
             'del':'/api/quagga/ospfsettings/del_area/',
-            'toggle':'/api/quagga/ospfsettings/toggle_area/'
+            'toggle':'/api/quagga/ospfsettings/toggle_area/',
+            options: {
+                formatters: {
+                    area_type: function(column, row) {
+                        return row["%" + column.id] || row[column.id] || 'normal';
+                    }
+                }
+            }
         });
         $("#{{formGridEditNetwork['table_id']}}").UIBootgrid({
             'search':'/api/quagga/ospfsettings/search_network',
@@ -161,10 +168,10 @@ POSSIBILITY OF SUCH DAMAGE.
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-    <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
     <li><a data-toggle="tab" href="#areas">{{ lang._('Areas') }}</a></li>
-    <li><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
     <li><a data-toggle="tab" href="#interfaces">{{ lang._('Interfaces') }}</a></li>
+    <li><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
+    <li><a data-toggle="tab" href="#neighbors">{{ lang._('Neighbors') }}</a></li>
     <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
     <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>
 </ul>
@@ -174,21 +181,21 @@ POSSIBILITY OF SUCH DAMAGE.
         {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_ospf_settings'])}}
         {{ partial('layout_partials/base_bootgrid_table', formGridEditRedistribution)}}
     </div>
-    <!-- Tab: Neighbors -->
-    <div id="neighbors" class="tab-pane fade in">
-        {{ partial('layout_partials/base_bootgrid_table', formGridEditOSPFNeighbor)}}
-    </div>
     <!-- Tab: Areas -->
     <div id="areas" class="tab-pane fade in">
         {{ partial('layout_partials/base_bootgrid_table', formGridEditOSPFArea)}}
+    </div>
+    <!-- Tab: Interfaces -->
+    <div id="interfaces" class="tab-pane fade in">
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditInterface)}}
     </div>
     <!-- Tab: Networks -->
     <div id="networks" class="tab-pane fade in">
         {{ partial('layout_partials/base_bootgrid_table', formGridEditNetwork)}}
     </div>
-    <!-- Tab: Interfaces -->
-    <div id="interfaces" class="tab-pane fade in">
-        {{ partial('layout_partials/base_bootgrid_table', formGridEditInterface)}}
+    <!-- Tab: Neighbors -->
+    <div id="neighbors" class="tab-pane fade in">
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditOSPFNeighbor)}}
     </div>
     <!-- Tab: Prefixlists -->
     <div id="prefixlists" class="tab-pane fade in">

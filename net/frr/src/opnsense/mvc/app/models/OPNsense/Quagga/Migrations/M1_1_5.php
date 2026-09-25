@@ -30,51 +30,45 @@ namespace OPNsense\Quagga\Migrations;
 
 use OPNsense\Base\BaseModelMigration;
 use OPNsense\Core\Config;
-use OPNsense\Quagga\BGP;
+use OPNsense\Quagga\OSPF;
 
-class M1_1_3 extends BaseModelMigration
+class M1_1_5 extends BaseModelMigration
 {
     public function run($model)
     {
-        if (!$model instanceof BGP) {
-            return;
-        }
-
-        $neighbors = $model->getNodeByReference('neighbors.neighbor');
-
-        if ($neighbors === null) {
+        if (!$model instanceof OSPF) {
             return;
         }
 
         $config = Config::getInstance()->object();
-
-        if (empty($config->OPNsense->quagga->bgp->neighbors->neighbor)) {
+        $passiveInterfaces = (string)$config->OPNsense->quagga->ospf->passiveinterfaces;
+        if ($passiveInterfaces === '') {
             return;
         }
 
-        foreach ($neighbors->iterateItems() as $uuid => $neighbor) {
-            $config_neighbor = null;
-            // Could be a lookup table but a migration is one shot anyway
-            foreach ($config->OPNsense->quagga->bgp->neighbors->neighbor as $candidate) {
-                if ((string)$candidate['uuid'] === (string)$uuid) {
-                    $config_neighbor = $candidate;
-                    break;
-                }
+        // Reuse enabled interface records without activating dormant settings.
+        $interfaces = $model->getNodeByReference('interfaces.interface');
+        $interfacesByName = [];
+        foreach ($interfaces->iterateItems() as $interface) {
+            if ($interface->enabled->isEqual('1') && !$interface->interfacename->isEmpty()) {
+                $interfacesByName[(string)$interface->interfacename] = $interface;
             }
+        }
 
-            if ($config_neighbor === null || isset($config_neighbor->family)) {
+        // Move legacy passive interfaces into their interface records.
+        foreach (explode(',', $passiveInterfaces) as $interfaceName) {
+            $interfaceName = trim($interfaceName);
+            if ($interfaceName === '') {
                 continue;
             }
 
-            if ((string)$config_neighbor->multiprotocol === '1') {
-                $neighbor->family = 'ipv4,ipv6';
-            } elseif (strpos((string)$config_neighbor->address, ':') !== false) {
-                $neighbor->family = 'ipv6';
-            } else {
-                $neighbor->family = 'ipv4';
+            if (!isset($interfacesByName[$interfaceName])) {
+                $interface = $interfaces->add();
+                $interface->enabled = '1';
+                $interface->interfacename = $interfaceName;
+                $interfacesByName[$interfaceName] = $interface;
             }
+            $interfacesByName[$interfaceName]->passive = '1';
         }
     }
-
-    // Model is saved by 'run_migrations.php'
 }

@@ -30,7 +30,7 @@
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>Summarize networks from this area into one or more prefixes, for example 192.168.0.0/23.</help>
+        <help>Summarize networks from this area into one or more prefixes, for example 2001:db8::/32.</help>
         <grid_view>
             <visible>false</visible>
         </grid_view>
@@ -39,7 +39,7 @@
         <id>area.linkedPrefixlistIn</id>
         <label>Prefix-List In</label>
         <type>dropdown</type>
-        <help>Filter Type-3 summary LSAs announced into this area.</help>
+        <help>Filter inter-area prefixes announced into this area.</help>
         <grid_view>
             <visible>false</visible>
         </grid_view>
@@ -48,7 +48,7 @@
         <id>area.linkedPrefixlistOut</id>
         <label>Prefix-List Out</label>
         <type>dropdown</type>
-        <help>Filter Type-3 summary LSAs announced from this area.</help>
+        <help>Filter inter-area prefixes announced from this area.</help>
         <grid_view>
             <visible>false</visible>
         </grid_view>
