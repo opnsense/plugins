@@ -59,7 +59,8 @@ function frr_configure_do($verbose = false)
 function frr_firewall($fw)
 {
     global $config;
-    if ((new \OPNsense\Quagga\General())->fwrules->isEmpty()) {
+    $model = new \OPNsense\Quagga\General();
+    if ($model->enabled->isEmpty() || $model->fwrules->isEmpty()) {
         // automatic rules disabled
         return;
     }
