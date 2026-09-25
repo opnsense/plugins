@@ -1,0 +1,5 @@
+<menu>
+    <System>
+        <VepHW VisibleName="VEP1400 Hardware Settings" cssClass="fa fa-server fa-fw" url="/ui/vep1400hw"/>
+    </System>
+</menu>
