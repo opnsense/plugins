@@ -39,6 +39,10 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     protected static $internalModelClass = '\OPNsense\Quagga\OSPF6';
     protected static $internalModelUseSafeDelete = true;
 
+    public function searchAreaAction()
+    {
+        return $this->searchBase('areas.area');
+    }
     public function searchNetworkAction()
     {
         return $this->searchBase('networks.network');
@@ -54,6 +58,10 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     public function searchRoutemapAction()
     {
         return $this->searchBase('routemaps.routemap');
+    }
+    public function getAreaAction($uuid = null)
+    {
+        return $this->getBase('area', 'areas.area', $uuid);
     }
     public function getNetworkAction($uuid = null)
     {
@@ -71,6 +79,10 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     {
         return $this->getBase('routemap', 'routemaps.routemap', $uuid);
     }
+    public function addAreaAction()
+    {
+        return $this->addBase('area', 'areas.area');
+    }
     public function addNetworkAction()
     {
         return $this->addBase('network', 'networks.network');
@@ -86,6 +98,10 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     public function addRoutemapAction()
     {
         return $this->addBase('routemap', 'routemaps.routemap');
+    }
+    public function delAreaAction($uuid)
+    {
+        return $this->delBase('areas.area', $uuid);
     }
     public function delNetworkAction($uuid)
     {
@@ -103,6 +119,10 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     {
         return $this->delBase('routemaps.routemap', $uuid);
     }
+    public function setAreaAction($uuid)
+    {
+        return $this->setBase('area', 'areas.area', $uuid);
+    }
     public function setNetworkAction($uuid)
     {
         return $this->setBase('network', 'networks.network', $uuid);
@@ -118,6 +138,10 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     public function setRoutemapAction($uuid)
     {
         return $this->setBase('routemap', 'routemaps.routemap', $uuid);
+    }
+    public function toggleAreaAction($uuid)
+    {
+        return $this->toggleBase('areas.area', $uuid);
     }
     public function toggleNetworkAction($uuid)
     {

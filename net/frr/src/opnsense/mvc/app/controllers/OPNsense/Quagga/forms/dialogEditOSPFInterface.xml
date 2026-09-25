@@ -46,8 +46,8 @@
   <field>
     <id>interface.area</id>
     <label>Area</label>
-    <type>text</type>
-    <help>Assigns the network to an OSPF area using an identifier like 0.0.0.0 (Backbone Area). The Backbone Area connects other areas, supporting inter-area communication, while additional areas (e.g., 0.0.0.1, 0.0.0.255) segment the network logically to limit routing updates. Only use Area in Interface tab or in Network tab once.</help>
+    <type>dropdown</type>
+    <help>Select the explicitly configured OSPF area for this interface.</help>
   </field>
   <field>
     <id>interface.cost</id>
