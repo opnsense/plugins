@@ -1,0 +1,75 @@
+<form>
+    <field>
+        <id>ac.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>ac.description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>ac.interface</id>
+        <label>Interface</label>
+        <type>dropdown</type>
+        <help>Interface (physical or VLAN) the concentrator listens on for PPPoE discovery.</help>
+    </field>
+    <field>
+        <id>ac.acname</id>
+        <label>AC name</label>
+        <type>text</type>
+        <help>Access concentrator name announced in PADO. Empty uses the system default.</help>
+    </field>
+    <field>
+        <id>ac.servicename</id>
+        <label>Service name</label>
+        <type>text</type>
+        <help>PPPoE service name for this concentrator. Empty accepts any.</help>
+    </field>
+    <field>
+        <id>ac.pool</id>
+        <label>Address pool</label>
+        <type>dropdown</type>
+        <help>IPv4 pool used for dynamic client addressing.</help>
+    </field>
+    <field>
+        <id>ac.gateway</id>
+        <label>Local gateway</label>
+        <type>text</type>
+        <help>Local IPv4 address of the PPP links (must be outside the pool).</help>
+    </field>
+    <field>
+        <id>ac.mtu</id>
+        <label>MTU override</label>
+        <type>text</type>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>ac.mru</id>
+        <label>MRU override</label>
+        <type>text</type>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>ac.maxsessions</id>
+        <label>Maximum sessions</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Session cap for this concentrator. Empty uses the global maximum.</help>
+    </field>
+    <field>
+        <id>ac.idletimeout</id>
+        <label>Idle timeout (s)</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Disconnect after this many seconds without traffic; 0 disables.</help>
+    </field>
+    <field>
+        <id>ac.sessiontimeout</id>
+        <label>Session timeout (s)</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Hard session lifetime limit; 0 disables.</help>
+    </field>
+</form>

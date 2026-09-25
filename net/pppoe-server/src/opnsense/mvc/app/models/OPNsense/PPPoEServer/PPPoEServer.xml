@@ -1,0 +1,340 @@
+<model>
+    <mount>//OPNsense/pppoeserver</mount>
+    <version>0.0.1</version>
+    <description>PPPoE Access Concentrator settings</description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <servicename type="TextField">
+                <Mask>/^[0-9a-zA-Z._-]{0,64}$/</Mask>
+                <ValidationMessage>Service name may only contain letters, digits, dots, dashes and underscores (max 64).</ValidationMessage>
+            </servicename>
+            <authmethod type="OptionField">
+                <Default>chap</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <chap>CHAP</chap>
+                    <pap>PAP</pap>
+                    <both>PAP + CHAP</both>
+                </OptionValues>
+            </authmethod>
+            <mtu type="IntegerField">
+                <Default>1492</Default>
+                <Required>Y</Required>
+                <MinimumValue>576</MinimumValue>
+                <MaximumValue>9000</MaximumValue>
+                <ValidationMessage>MTU must be between 576 and 9000.</ValidationMessage>
+            </mtu>
+            <mru type="IntegerField">
+                <Default>1492</Default>
+                <Required>Y</Required>
+                <MinimumValue>576</MinimumValue>
+                <MaximumValue>9000</MaximumValue>
+                <ValidationMessage>MRU must be between 576 and 9000.</ValidationMessage>
+            </mru>
+            <ipv6 type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </ipv6>
+            <dns1 type="NetworkField">
+                <NetMaskAllowed>N</NetMaskAllowed>
+                <AddressFamily>ipv4</AddressFamily>
+            </dns1>
+            <dns2 type="NetworkField">
+                <NetMaskAllowed>N</NetMaskAllowed>
+                <AddressFamily>ipv4</AddressFamily>
+            </dns2>
+            <maxsessions type="IntegerField">
+                <Default>256</Default>
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>4096</MaximumValue>
+                <ValidationMessage>Maximum sessions must be between 1 and 4096.</ValidationMessage>
+            </maxsessions>
+            <maxsessionsperuser type="IntegerField">
+                <Default>1</Default>
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>64</MaximumValue>
+                <ValidationMessage>Sessions per user must be between 1 and 64.</ValidationMessage>
+            </maxsessionsperuser>
+            <radiusauth type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </radiusauth>
+            <radiusacct type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </radiusacct>
+            <acctinterval type="IntegerField">
+                <Default>0</Default>
+                <Required>Y</Required>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>86400</MaximumValue>
+                <ValidationMessage>Interim accounting interval must be between 0 (off) and 86400 seconds.</ValidationMessage>
+            </acctinterval>
+            <carpdependent type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </carpdependent>
+            <localshaping type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </localshaping>
+            <consoleport type="IntegerField">
+                <Default>5005</Default>
+                <Required>Y</Required>
+                <MinimumValue>1024</MinimumValue>
+                <MaximumValue>65535</MaximumValue>
+                <ValidationMessage>Console port must be between 1024 and 65535.</ValidationMessage>
+            </consoleport>
+            <consolepass type="TextField">
+                <Mask>/^[0-9a-f]{0,64}$/</Mask>
+                <ValidationMessage>Console password is managed automatically.</ValidationMessage>
+            </consolepass>
+            <loglevel type="OptionField">
+                <Default>info</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <error>Error</error>
+                    <warning>Warning</warning>
+                    <info>Info</info>
+                    <debug>Debug</debug>
+                </OptionValues>
+            </loglevel>
+        </general>
+        <pools>
+            <pool type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^[0-9a-zA-Z_-]{1,32}$/</Mask>
+                    <ValidationMessage>Pool name may only contain letters, digits, dashes and underscores (max 32).</ValidationMessage>
+                </name>
+                <description type="DescriptionField"/>
+                <start type="NetworkField">
+                    <Required>Y</Required>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <AddressFamily>ipv4</AddressFamily>
+                </start>
+                <end type="NetworkField">
+                    <Required>Y</Required>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <AddressFamily>ipv4</AddressFamily>
+                </end>
+            </pool>
+        </pools>
+        <acs>
+            <ac type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <description type="DescriptionField"/>
+                <acname type="TextField">
+                    <Mask>/^[0-9a-zA-Z._-]{0,32}$/</Mask>
+                    <ValidationMessage>AC name may only contain letters, digits, dots, dashes and underscores (max 32).</ValidationMessage>
+                </acname>
+                <servicename type="TextField">
+                    <Mask>/^[0-9a-zA-Z._-]{0,64}$/</Mask>
+                    <ValidationMessage>Service name may only contain letters, digits, dots, dashes and underscores (max 64).</ValidationMessage>
+                </servicename>
+                <interface type="InterfaceField">
+                    <Required>Y</Required>
+                    <filters>
+                        <enable>/^(?!0).*$/</enable>
+                    </filters>
+                </interface>
+                <pool type="ModelRelationField">
+                    <Required>Y</Required>
+                    <Model>
+                        <pools>
+                            <source>OPNsense.PPPoEServer.PPPoEServer</source>
+                            <items>pools.pool</items>
+                            <display>name</display>
+                        </pools>
+                    </Model>
+                    <ValidationMessage>Related pool not found.</ValidationMessage>
+                </pool>
+                <gateway type="NetworkField">
+                    <Required>Y</Required>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <AddressFamily>ipv4</AddressFamily>
+                </gateway>
+                <mtu type="IntegerField">
+                    <MinimumValue>576</MinimumValue>
+                    <MaximumValue>9000</MaximumValue>
+                    <ValidationMessage>MTU must be between 576 and 9000.</ValidationMessage>
+                </mtu>
+                <mru type="IntegerField">
+                    <MinimumValue>576</MinimumValue>
+                    <MaximumValue>9000</MaximumValue>
+                    <ValidationMessage>MRU must be between 576 and 9000.</ValidationMessage>
+                </mru>
+                <maxsessions type="IntegerField">
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>4096</MaximumValue>
+                    <ValidationMessage>Maximum sessions must be between 1 and 4096.</ValidationMessage>
+                </maxsessions>
+                <idletimeout type="IntegerField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                    <ValidationMessage>Idle timeout must be between 0 (off) and 86400 seconds.</ValidationMessage>
+                </idletimeout>
+                <sessiontimeout type="IntegerField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>604800</MaximumValue>
+                    <ValidationMessage>Session timeout must be between 0 (off) and 604800 seconds.</ValidationMessage>
+                </sessiontimeout>
+            </ac>
+        </acs>
+        <radius>
+            <options>
+                <timeout type="IntegerField">
+                    <Default>5</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>60</MaximumValue>
+                    <ValidationMessage>Timeout must be between 1 and 60 seconds.</ValidationMessage>
+                </timeout>
+                <retries type="IntegerField">
+                    <Default>3</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>10</MaximumValue>
+                    <ValidationMessage>Retries must be between 1 and 10.</ValidationMessage>
+                </retries>
+                <srcaddr type="NetworkField">
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <AddressFamily>ipv4</AddressFamily>
+                </srcaddr>
+                <nasip type="NetworkField">
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <AddressFamily>ipv4</AddressFamily>
+                </nasip>
+                <nasid type="TextField">
+                    <Mask>/^[0-9a-zA-Z._-]{0,64}$/</Mask>
+                    <ValidationMessage>NAS-Identifier may only contain letters, digits, dots, dashes and underscores (max 64).</ValidationMessage>
+                </nasid>
+                <messageauth type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </messageauth>
+            </options>
+            <coa>
+                <enabled type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <port type="IntegerField">
+                    <Default>3799</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>1024</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>CoA port must be between 1024 and 65535.</ValidationMessage>
+                </port>
+                <secret type="TextField">
+                    <Mask>/^[^"'\s]{0,64}$/</Mask>
+                    <ValidationMessage>CoA shared secret may not contain spaces or quotes (max 64).</ValidationMessage>
+                </secret>
+                <allowedclients type="TextField">
+                    <Mask>/^[0-9a-fA-F:.,\/ ]{0,255}$/</Mask>
+                    <ValidationMessage>Allowed clients must be a comma-separated list of IPv4/IPv6 addresses or CIDRs.</ValidationMessage>
+                </allowedclients>
+            </coa>
+            <server type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <description type="DescriptionField"/>
+                <host type="NetworkField">
+                    <Required>Y</Required>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <AddressFamily>ipv4</AddressFamily>
+                </host>
+                <secret type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^[^"'\s]{1,64}$/</Mask>
+                    <ValidationMessage>Shared secret may not contain spaces or quotes (max 64 characters).</ValidationMessage>
+                </secret>
+                <authport type="IntegerField">
+                    <Default>1812</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Authentication port must be between 0 (disabled) and 65535.</ValidationMessage>
+                </authport>
+                <acctport type="IntegerField">
+                    <Default>1813</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <ValidationMessage>Accounting port must be between 0 (disabled) and 65535.</ValidationMessage>
+                </acctport>
+                <priority type="IntegerField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>9</MaximumValue>
+                    <ValidationMessage>Priority must be between 0 (primary) and 9.</ValidationMessage>
+                </priority>
+            </server>
+        </radius>
+        <users>
+            <user type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <username type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^[0-9a-zA-Z._@-]{1,64}$/</Mask>
+                    <ValidationMessage>Username may only contain letters, digits and . _ @ - (max 64 characters).</ValidationMessage>
+                </username>
+                <password type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^[^"\r\n]{1,128}$/</Mask>
+                    <ValidationMessage>Password may not contain double quotes or line breaks (max 128 characters).</ValidationMessage>
+                </password>
+                <description type="DescriptionField"/>
+                <staticip type="NetworkField">
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <AddressFamily>ipv4</AddressFamily>
+                </staticip>
+                <downlimit type="IntegerField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Download limit must be 0 (unlimited) or a value in kbit/s.</ValidationMessage>
+                </downlimit>
+                <uplimit type="IntegerField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                    <MinimumValue>0</MinimumValue>
+                    <MaximumValue>10000000</MaximumValue>
+                    <ValidationMessage>Upload limit must be 0 (unlimited) or a value in kbit/s.</ValidationMessage>
+                </uplimit>
+                <ip6route type="TextField">
+                    <Mask>/^([0-9a-fA-F:]+\/[0-9]{1,3})?$/</Mask>
+                    <ValidationMessage>Routed IPv6 prefix must be a CIDR such as 2001:db8:1234::/56.</ValidationMessage>
+                </ip6route>
+                <expires type="TextField">
+                    <Mask>/^([0-9]{4}-[0-9]{2}-[0-9]{2})?$/</Mask>
+                    <ValidationMessage>Expiration date must use YYYY-MM-DD format.</ValidationMessage>
+                </expires>
+            </user>
+        </users>
+    </items>
+</model>

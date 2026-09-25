@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+# PROVIDE: pppoe_server_coa
+# REQUIRE: pppoe_server
+# KEYWORD: shutdown
+#
+# RFC 5176 Disconnect/CoA adapter for the PPPoE Access Concentrator plugin.
+
+. /etc/rc.subr
+
+name=pppoe_server_coa
+rcvar=pppoe_server_coa_enable
+
+load_rc_config ${name}
+
+: ${pppoe_server_coa_enable:="NO"}
+
+pidfile="/var/run/pppoe_server_coa.pid"
+command="/usr/sbin/daemon"
+coa_script="/usr/local/opnsense/scripts/OPNsense/PPPoEServer/coa_daemon.py"
+command_args="-f -P ${pidfile} -r -t pppoe_server_coa ${coa_script}"
+required_files="/usr/local/etc/pppoe_server/coa.conf"
+start_precmd="pppoe_server_coa_precmd"
+
+pppoe_server_coa_precmd()
+{
+	# the config carries the CoA shared secret
+	if [ -f "/usr/local/etc/pppoe_server/coa.conf" ]; then
+		chown root:wheel "/usr/local/etc/pppoe_server/coa.conf"
+		chmod 0600 "/usr/local/etc/pppoe_server/coa.conf"
+	fi
+}
+
+run_rc_command "$1"
