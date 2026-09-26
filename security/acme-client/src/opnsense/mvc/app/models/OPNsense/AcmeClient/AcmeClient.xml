@@ -1445,8 +1445,9 @@
                         <acme_ruckus>Upload certificate to Ruckus controller</acme_ruckus>
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
-                        <acme_truenas>Upload certificate to TrueNAS Server (deprecated API)</acme_truenas>
-                        <acme_truenas_ws>Deprecated - Upload certificate to TrueNAS Server (midctl/websocket)</acme_truenas_ws>
+                        <acme_truenas>Deprecated - Upload certificate to TrueNAS Server</acme_truenas>
+                        <acme_truenas_ws>Upload certificate to TrueNAS Server (python midctl/websocket)</acme_truenas_ws>
+                        <acme_truenas_websocat>Upload certificate to TrueNAS Server (websocat binary)</acme_truenas_websocat>
                         <acme_zyxel_gs1900>Upload certificate to Zyxel GS1900 series switches</acme_zyxel_gs1900>
                         <acme_unifi>Update local Unifi keystore</acme_unifi>
                         <configd_generic>System or Plugin Command</configd_generic>
@@ -1741,6 +1742,7 @@
                 <acme_ruckus_pass type="TextField">
                     <Required>N</Required>
                 </acme_ruckus_pass>
+                <!-- TODO: old "truenas" with REST API (without websocket like midctl or websocat) is deprecated and will be removed in TrueNas 26 -->
                 <acme_truenas_apikey type="TextField">
                     <Required>N</Required>
                     <Mask>/^.{1,1024}$/u</Mask>
@@ -1778,7 +1780,49 @@
                         <ws>ws [default]</ws>
                         <wss>wss</wss>
                     </OptionValues>
-                </acme_truenas_ws_protocol>
+                </acme_truenas_ws_protocol>     
+                <acme_truenas_websocat_apikey type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_truenas_websocat_apikey>
+                <acme_truenas_websocat_hostname type="HostnameField">
+                    <Default>localhost</Default>
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_truenas_websocat_hostname>
+                <acme_truenas_websocat_protocol type="OptionField">
+                    <Default>ws</Default>
+                    <Required>N</Required>
+                    <OptionValues>
+                        <ws>ws [default]</ws>
+                        <wss>wss</wss>
+                    </OptionValues>
+                </acme_truenas_websocat_protocol>
+                <acme_truenas_websocat_port type="IntegerField">
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <Default>80</Default>
+                    <ValidationMessage>Should be a valid port number between 1 and 65535.</ValidationMessage>
+                </acme_truenas_websocat_port>
+                <acme_truenas_websocat_update_ftp type="OptionField">
+                    <Default>no</Default>
+                    <Required>N</Required>
+                    <OptionValues>
+                        <no>no [default]</no>
+                        <yes>yes</yes>
+                    </OptionValues>
+                </acme_truenas_websocat_update_ftp>
+                <acme_truenas_websocat_update_apps type="OptionField">
+                    <Default>no</Default>
+                    <Required>N</Required>
+                    <OptionValues>
+                        <no>no [default]</no>
+                        <yes>yes</yes>
+                    </OptionValues>
+                </acme_truenas_websocat_update_apps>             
                 <!-- TODO: old "truenasws" values kept for model migration, should be removed in version 5.0.0 -->
                 <acme_truenasws_apikey type="TextField">
                     <Required>N</Required>
