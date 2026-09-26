@@ -1,0 +1,8 @@
+<menu>
+    <Services>
+        <AvahiReflector VisibleName="Avahi mDNS Reflector" cssClass="fa fa-podcast fa-fw">
+            <Settings url="/ui/avahireflector"/>
+            <Log VisibleName="Log File" order="100" url="/ui/diagnostics/log/core/avahi"/>
+        </AvahiReflector>
+    </Services>
+</menu>
