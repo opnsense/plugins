@@ -100,7 +100,10 @@ class Azure(BaseAccount):
                 syslog.syslog(syslog.LOG_ERR, 'No subscription id found for account %s' % self.description)
                 return
             subscriptionId = resourceId.split('subscriptions/')[-1].split('/')[0]
-            req = requests.get('https://management.azure.com/subscriptions/%s?api-version=2016-09-01' % subscriptionId)
+            req = requests.get(
+                'https://management.azure.com/subscriptions/%s?api-version=2016-09-01' % subscriptionId,
+                timeout=(5, 30)
+            )
             auth_target = req.headers.get('WWW-Authenticate', '').split(maxsplit=1)
             if len(auth_target) < 2 or auth_target[0] != 'Bearer':
                 syslog.syslog(syslog.LOG_ERR, 'No Bearer token found for account %s' % self.description)
@@ -125,7 +128,7 @@ class Azure(BaseAccount):
                     'User-Agent': 'OPNsense-dyndns'
                 }
             }
-            req = requests.post(**req_opts)
+            req = requests.post(**req_opts, timeout=(5, 30))
             try:
                 token_payload = req.json()
             except requests.exceptions.JSONDecodeError:
@@ -178,7 +181,7 @@ class Azure(BaseAccount):
                         }
                     }
 
-                req = requests.patch(**req_opts)
+                req = requests.patch(**req_opts, timeout=(5, 30))
                 if req.status_code == 200:
                     if self.is_verbose:
                         syslog.syslog(

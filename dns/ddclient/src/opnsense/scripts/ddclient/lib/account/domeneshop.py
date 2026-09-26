@@ -64,7 +64,7 @@ class Domeneshop(BaseAccount):
                     'User-Agent': 'OPNsense-dyndns'
                 }
             }
-            response = requests.get(**req_opts)
+            response = requests.get(**req_opts, timeout=(5, 30))
 
             # Parse response and update state and log
             if response.status_code == 204:
