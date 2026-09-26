@@ -94,7 +94,7 @@ class Hetzner(HetznerAccount):
         url = f"{self._api_base}/zones"
         params = {'name': zone_name}
 
-        response = requests.get(url, headers=headers, params=params)
+        response = requests.get(url, headers=headers, params=params, timeout=(5, 30))
 
         if response.status_code != 200:
             syslog.syslog(
@@ -134,7 +134,7 @@ class Hetzner(HetznerAccount):
     def _delete_record(self, headers, zone_id, record_name, record_type):
         """Delete existing record"""
         url = f"{self._api_base}/zones/{zone_id}/rrsets/{record_name}/{record_type}"
-        response = requests.delete(url, headers=headers)
+        response = requests.delete(url, headers=headers, timeout=(5, 30))
         if response.status_code not in [200, 201, 204]:
             syslog.syslog(
                 syslog.LOG_ERR,
@@ -160,7 +160,7 @@ class Hetzner(HetznerAccount):
                'value': str(address)
             }]
         }
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=data, timeout=(5, 30))
         if response.status_code not in [200, 201]:
             syslog.syslog(
                 syslog.LOG_ERR,
@@ -192,7 +192,7 @@ class Hetzner(HetznerAccount):
             'ttl': int(self.settings.get('ttl', 300))
         }
 
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=data, timeout=(5, 30))
 
         if response.status_code not in [200, 201]:
             syslog.syslog(
@@ -313,7 +313,7 @@ class HetznerLegacy(HetznerAccount):
         zone_name = self._get_zone_name()
 
         url = f"{self._api_base}/zones"
-        response = requests.get(url, headers=headers)
+        response = requests.get(url, headers=headers, timeout=(5, 30))
 
         if response.status_code != 200:
             syslog.syslog(
@@ -355,7 +355,7 @@ class HetznerLegacy(HetznerAccount):
         url = f"{self._api_base}/records"
         params = {'zone_id': zone_id}
 
-        response = requests.get(url, headers=headers, params=params)
+        response = requests.get(url, headers=headers, params=params, timeout=(5, 30))
 
         if response.status_code != 200:
             syslog.syslog(
@@ -402,7 +402,7 @@ class HetznerLegacy(HetznerAccount):
             'ttl': int(self.settings.get('ttl', 300))
         }
 
-        response = requests.put(url, headers=headers, json=data)
+        response = requests.put(url, headers=headers, json=data, timeout=(5, 30))
 
         if response.status_code != 200:
             syslog.syslog(
@@ -435,7 +435,7 @@ class HetznerLegacy(HetznerAccount):
             'ttl': int(self.settings.get('ttl', 300))
         }
 
-        response = requests.post(url, headers=headers, json=data)
+        response = requests.post(url, headers=headers, json=data, timeout=(5, 30))
 
         if response.status_code not in [200, 201]:
             syslog.syslog(

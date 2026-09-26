@@ -68,7 +68,7 @@ class Porkbun(BaseAccount):
 
                 # fetch subdomain A records
                 fetch_url = f'https://api.porkbun.com/api/json/v3/dns/retrieveByNameType/{domain}/{recordType}/{subdomain}'
-                fetch_resp = s.post(fetch_url)
+                fetch_resp = s.post(fetch_url, timeout=(5, 30))
 
                 try:
                     records_json = fetch_resp.json()
@@ -104,7 +104,7 @@ class Porkbun(BaseAccount):
             # update each record based on ID
             for domain, hostname, record_id in updates:
                 edit_url = f'https://api.porkbun.com/api/json/v3/dns/edit/{domain}/{record_id}'
-                edit_resp = s.post(edit_url, json=edit_payload)
+                edit_resp = s.post(edit_url, json=edit_payload, timeout=(5, 30))
 
                 try:
                     edit_json = edit_resp.json()

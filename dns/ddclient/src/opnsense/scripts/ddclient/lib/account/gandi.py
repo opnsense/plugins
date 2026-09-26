@@ -60,7 +60,7 @@ class Gandi(BaseAccount):
                 'User-Agent': 'OPNsense-dyndns'
             }
             # Send IP address update
-            req = requests.request("PUT", url, data=payload, headers=headers)
+            req = requests.request("PUT", url, data=payload, headers=headers, timeout=(5, 30))
             if 200 <= req.status_code < 300:
                 if self.is_verbose:
                     syslog.syslog(
