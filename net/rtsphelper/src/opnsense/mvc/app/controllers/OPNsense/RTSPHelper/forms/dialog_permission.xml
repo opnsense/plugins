@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>permission.network</id>
+        <label>Network</label>
+        <type>text</type>
+        <help>Network (CIDR) or IP address.</help>
+    </field>
+    <field>
+        <id>permission.port</id>
+        <label>Port / Range</label>
+        <type>text</type>
+        <help>Port or port range (e.g. 1024-65535).</help>
+    </field>
+</form>
