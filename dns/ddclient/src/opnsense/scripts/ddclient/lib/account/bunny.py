@@ -58,7 +58,7 @@ class Bunny(BaseAccount):
 
         while True:
             params['page'] = page
-            response = requests.get(url, headers=headers, params=params)
+            response = requests.get(url, headers=headers, params=params, timeout=(5, 30))
             if response.status_code != 200:
                 syslog.syslog(
                     syslog.LOG_ERR,
@@ -158,7 +158,8 @@ class Bunny(BaseAccount):
                 self._services[self.settings.get('service')], zone_id, record_id
             ),
             headers=headers,
-            json={'Value': str(self.current_address)}
+            json={'Value': str(self.current_address)},
+            timeout=(5, 30)
         )
         if response.status_code != 204:
             syslog.syslog(
