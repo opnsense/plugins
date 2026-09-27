@@ -2,3 +2,4 @@ ssserver:/etc/rc.conf.d/ssserver_rust
 config.json:/usr/local/etc/shadowsocks-rust/config.json
 sslocal:/etc/rc.conf.d/sslocal_rust
 local.json:/usr/local/etc/shadowsocks-rust/local.json
+server.acl:/usr/local/etc/shadowsocks-rust/server.acl
