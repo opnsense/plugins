@@ -165,11 +165,7 @@ class Netcup(BaseAccount):
         return requestPayload
 
     def _sendRequest(self, payload):
-        req = requests.post(
-            url='https://ccp.netcup.net/run/webservice/servers/endpoint.php?JSON',
-            json=payload,
-            timeout=(5, 30)
-        )
+        req = requests.post(url='https://ccp.netcup.net/run/webservice/servers/endpoint.php?JSON', json=payload)
         try:
             resp = req.json()
         except requests.exceptions.JSONDecodeError:

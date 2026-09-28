@@ -74,7 +74,7 @@ class Cloudflare(BaseAccount):
                 },
                 'headers': headers
             }
-            response = requests.get(**req_opts, timeout=(5, 30))
+            response = requests.get(**req_opts)
             try:
                 payload = response.json()
             except requests.exceptions.JSONDecodeError:
@@ -118,7 +118,7 @@ class Cloudflare(BaseAccount):
                     },
                     'headers': headers
                 }
-                response = requests.get(**req_opts, timeout=(5, 30))
+                response = requests.get(**req_opts)
                 try:
                     payload = response.json()
                 except requests.exceptions.JSONDecodeError:
@@ -161,7 +161,7 @@ class Cloudflare(BaseAccount):
                     },
                     'headers': headers
                 }
-                response = requests.patch(**req_opts, timeout=(5, 30))
+                response = requests.patch(**req_opts)
                 try:
                     payload = response.json()
                 except requests.exceptions.JSONDecodeError:

@@ -75,8 +75,7 @@ class DynDNS2(BaseAccount):
                     method=protocol,
                     url=url,
                     headers={'User-Agent': 'OPNsense-dyndns'},
-                    auth=HTTPBasicAuth(self.settings.get('username'), self.settings.get('password')),
-                    timeout=(5, 30)
+                    auth=HTTPBasicAuth(self.settings.get('username'), self.settings.get('password'))
                 )
             else:
                 uri_proto = 'https' if self.settings.get('force_ssl', False) else 'http'
@@ -98,7 +97,7 @@ class DynDNS2(BaseAccount):
                         'User-Agent': 'OPNsense-dyndns'
                     }
                 }
-                req = requests.get(**req_opts, timeout=(5, 30))
+                req = requests.get(**req_opts)
 
             if 200 <= req.status_code < 300:
                 if self.is_verbose:

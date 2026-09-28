@@ -58,9 +58,7 @@ class PowerDNS(BaseAccount):
         )
 
         url = base_url + url
-        return requests.request(
-            method=method, url=url, headers=headers, params=params, json=json, timeout=(5, 30)
-        )
+        return requests.request(method=method, url=url, headers=headers, params=params, json=json)
 
 
     def _find_zone_id(self, hostname):

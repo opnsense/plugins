@@ -90,7 +90,7 @@ class DigitalOcean(BaseAccount):
                 }
 
                 # Get record ID
-                response = requests.get(**request, timeout=(5, 30))
+                response = requests.get(**request)
 
                 try:
                     payload = response.json()
@@ -142,7 +142,7 @@ class DigitalOcean(BaseAccount):
                 }
 
                 # Update record IP
-                response = requests.patch(**request, timeout=(5, 30))
+                response = requests.patch(**request)
 
                 if response.status_code == 200:
                     if self.is_verbose:

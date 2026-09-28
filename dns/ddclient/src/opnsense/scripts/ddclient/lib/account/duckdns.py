@@ -64,7 +64,7 @@ class duckdns(BaseAccount):
             proto = 'https' if self.settings.get('force_ssl', False) else 'http'
 
             try:
-                response = requests.get(proto+'://www.duckdns.org/update', data, timeout=(5, 30))
+                response = requests.get(proto+'://www.duckdns.org/update', data)
                 if response.text.startswith('KO'):
                     raise RuntimeError(
                         f"DuckDNS update failed for {self.description} with ip {self.current_address} for domains {data['domains']}, response: {response.text}")
