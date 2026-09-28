@@ -38,6 +38,7 @@
         <label>resourceId</label>
         <type>text</type>
         <advanced>true</advanced>
+        <style>optional_setting service_azure</style>
     </field>
     <field>
         <id>account.username</id>
@@ -52,11 +53,32 @@
         <help>Password associated with this account</help>
     </field>
     <field>
+        <id>account.token_secret</id>
+        <label>Token secret</label>
+        <type>password</type>
+        <style>optional_setting service_desec-v4 service_desec-v6</style>
+        <help>Token secret for the domain. This is not your deSEC account password.</help>
+    </field>
+    <field>
         <id>account.wildcard</id>
         <label>Wildcard</label>
         <type>checkbox</type>
         <style>optional_setting service_dyndns2 service_woima service_cloudflare service_easydns service_custom</style>
         <help>add a DNS wildcard CNAME record that points to the configured host.</help>
+    </field>
+    <field>
+        <id>account.prune_a</id>
+        <label>Prune A</label>
+        <type>checkbox</type>
+        <style>optional_setting service_desec-v6</style>
+        <help>Delete existing A (IPv4) records when this IPv6 domain updates. Leave unchecked to preserve them.</help>
+    </field>
+    <field>
+        <id>account.prune_aaaa</id>
+        <label>Prune AAAA</label>
+        <type>checkbox</type>
+        <style>optional_setting service_desec-v4</style>
+        <help>Delete existing AAAA (IPv6) records when this IPv4 domain updates. Leave unchecked to preserve them.</help>
     </field>
     <field>
         <id>account.zone</id>
