@@ -23,7 +23,6 @@
     <grid_view>
       <type>boolean</type>
       <formatter>boolean</formatter>
-      <visible>false</visible>
     </grid_view>
   </field>
   <field>
