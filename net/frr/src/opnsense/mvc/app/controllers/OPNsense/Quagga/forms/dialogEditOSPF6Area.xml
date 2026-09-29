@@ -30,7 +30,7 @@
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>Summarizes multiple networks in the specified area, consolidating multiple networks into a single summarized route like 192.168.0.0/23</help>
+        <help>Summarizes multiple networks in the specified area, consolidating multiple networks into a single summarized route like fe80:1234::/56.</help>
         <grid_view>
             <visible>false</visible>
         </grid_view>
