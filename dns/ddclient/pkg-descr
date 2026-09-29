@@ -6,6 +6,11 @@ accounts on many dynamic DNS services.
 Plugin Changelog
 ================
 
+1.32
+
+* Fix lstrip that should be removeprefix (contributed by Mark Youngman)
+* Add native porkbun script (contributed by 5t0n3)
+
 1.31
 
 * Add multiple hostname support for cloudflare (contributed by Maksim Tokarev)
