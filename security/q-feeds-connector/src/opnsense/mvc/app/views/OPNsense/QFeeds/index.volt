@@ -48,10 +48,22 @@ POSSIBILITY OF SUCH DAMAGE.
             if (e.target.id === 'feeds_tab') {
                 if (!$("#grid-feeds").hasClass('tabulator')) {
                     $("#grid-feeds").UIBootgrid({
-                        'search': '/api/q_feeds/settings/search_feeds/'
+                        search: '/api/q_feeds/settings/search_feeds/'
                     });
                 } else {
                     $("#grid-feeds").bootgrid("reload");
+                }
+            } else if (e.target.id === 'alias_tab') {
+                if (!$("#{{formGridAlias['table_id']}}").hasClass('tabulator')) {
+                    $("#{{formGridAlias['table_id']}}").UIBootgrid({
+                        search: '/api/q_feeds/settings/search_alias/',
+                        get:'/api/q_feeds/settings/get_alias/',
+                        set:'/api/q_feeds/settings/set_alias/',
+                        add:'/api/q_feeds/settings/add_alias/',
+                        del:'/api/q_feeds/settings/del_alias/',
+                    });
+                } else {
+                    $("#{{formGridAlias['table_id']}}").bootgrid("reload");
                 }
             } else if (e.target.id === 'events_tab') {
                 if (!$("#grid-events").hasClass('tabulator')) {
@@ -122,6 +134,7 @@ POSSIBILITY OF SUCH DAMAGE.
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li><a data-toggle="tab" href="#settings" id="settings_tab">{{ lang._('Settings') }}</a></li>
     <li><a data-toggle="tab" href="#feeds" id="feeds_tab">{{ lang._('Feeds') }}</a></li>
+    <li><a data-toggle="tab" href="#aliases" id="alias_tab">{{ lang._('Firewall aliases') }}</a></li>
     <li><a data-toggle="tab" href="#events" id="events_tab">{{ lang._('Events') }}</a></li>
 </ul>
 <div class="tab-content content-box">
@@ -142,6 +155,9 @@ POSSIBILITY OF SUCH DAMAGE.
             <tbody>
             </tbody>
         </table>
+    </div>
+    <div id="aliases"  class="tab-pane fade in">
+        {{ partial('layout_partials/base_bootgrid_table', formGridAlias)}}
     </div>
     <div id="events"  class="tab-pane fade in">
 
@@ -178,3 +194,5 @@ POSSIBILITY OF SUCH DAMAGE.
         </div>
     </div>
 </section>
+
+{{ partial("layout_partials/base_dialog",['fields':formDialogAlias,'id':formGridAlias['edit_dialog_id'],'label':lang._('Edit Alias')])}}

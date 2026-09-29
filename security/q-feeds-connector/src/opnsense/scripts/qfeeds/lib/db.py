@@ -84,15 +84,15 @@ class DB:
                                  'code': meta_name,
                                  'main_code': meta_name.split('.')[0],
                                  'category': meta_class,
-                                 'payload': ujson.dumps(content),
+                                 'name': content.get('name', ''),
                             })
 
                 self._connection.executemany("""
-                    insert into meta(id, code, main_code, category, payload)
-                    values(:id,:code,:main_code,:category,:payload)
+                    insert into meta(id, code, main_code, category, name)
+                    values(:id,:code,:main_code,:category,:name)
                     on conflict(id) do update
                         set category = excluded.category,
-                            payload = excluded.payload
+                            name = excluded.name
                     """,
                     meta
                 )
@@ -181,22 +181,18 @@ class DB:
             free_pages = self._connection.execute("PRAGMA freelist_count").fetchone()[0]
             if (free_pages / page_count if page_count else 0) >= 0.1:
                 self._connection.execute('vacuum')
+            # analyse after larger updates
+            if len(ioc_todo) > 500:
+                self._connection.execute('analyze')
 
     def last_updated(self):
         return self._connection.execute('select max(updated_at) from delivery').fetchone()[0] or 0
 
-    def get_meta(self):
+    def get_ip_meta(self):
         result = {}
-        for row in self._connection.execute('select code, category, payload from meta'):
+        for row in self._connection.execute("select * from v_meta where kind = 'ip'"):
             if row['category'] not in result:
                 result[row['category']] = {}
 
-            try:
-                payload = ujson.decode(row['payload'])
-            except:
-                payload = {}
-
-            result[row['category']][row['code']] = {
-                'name': payload.get('name', '')
-            }
+            result[row['category']][row['code']] = "%s {%d}" % (row['name'], row['cnt'])
         return result

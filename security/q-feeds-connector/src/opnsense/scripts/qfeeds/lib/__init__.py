@@ -52,7 +52,7 @@ class QFeedsActions:
             'update',
             'stats',
             'logs',
-            'get_meta'
+            'get_ip_meta'
         ]
 
     @property
@@ -238,8 +238,8 @@ class QFeedsActions:
 
         yield  ujson.dumps(result)
 
-    def get_meta(self):
-        yield ujson.dumps(DB(self._target_dir).get_meta())
+    def get_ip_meta(self):
+        yield ujson.dumps(DB(self._target_dir).get_ip_meta())
 
     def logs(self):
         feeds = []

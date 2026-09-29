@@ -19,7 +19,8 @@ create table if not exists iocs (
 );
 
 create index if not exists idx_iocs_md5 on iocs(md5);
-create index if not exists idx_iocs_delivery_id on iocs(delivery_id);
+create index if not exists idx_delivery_kind_id ON delivery(kind, id);
+create index if not exists idx_iocs_delivery_id on iocs(delivery_id, id);
 
 create table if not exists iocs_meta (
     id blob,
@@ -28,15 +29,18 @@ create table if not exists iocs_meta (
     foreign key(ioc_id) references iocs(id) on delete cascade
 );
 
+create index if not exists idx_iocs_meta_ioc_id ON iocs_meta(ioc_id, id);
+
 create table if not exists meta (
     id blob primary key,
     code text,
     main_code text,
     category text,
-    payload json
+    name text
 );
 
 begin;
+
 drop view if exists v_ioc_meta;
 create view v_ioc_meta as
     select d.kind, i.ioc, m.code
@@ -45,4 +49,14 @@ create view v_ioc_meta as
     inner join iocs_meta im on im.ioc_id = i.id
     inner join meta m on m.id = im.id  ;
 
+drop view if exists v_meta;
+create view v_meta as
+    select d.kind, m.code, m.category, m.name, count(*) cnt
+    from delivery d
+    inner join iocs i on i.delivery_id = d.id
+    inner join iocs_meta im on im.ioc_id = i.id
+    inner join meta m on m.id = im.id
+    group by d.kind, m.code, m.category, m.name;
+
 commit;
+
