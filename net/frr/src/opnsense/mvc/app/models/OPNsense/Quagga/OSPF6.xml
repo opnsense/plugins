@@ -83,24 +83,22 @@
                     <AsList>Y</AsList>
                     <AddressFamily>ipv6</AddressFamily>
                 </ranges>
-                <linkedPrefixlistIn type="ModelRelationField">
+                <linkedPrefixlistIn type=".\GroupedModelRelationField">
                     <Model>
                         <prefixlists>
                             <source>OPNsense.quagga.ospf6</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name,seqnumber</display>
-                            <display_format>%s:%s</display_format>
+                            <display>name</display>
                         </prefixlists>
                     </Model>
                     <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
                 </linkedPrefixlistIn>
-                <linkedPrefixlistOut type="ModelRelationField">
+                <linkedPrefixlistOut type=".\GroupedModelRelationField">
                     <Model>
                         <prefixlists>
                             <source>OPNsense.quagga.ospf6</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name,seqnumber</display>
-                            <display_format>%s:%s</display_format>
+                            <display>name</display>
                         </prefixlists>
                     </Model>
                     <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
@@ -241,13 +239,12 @@
                     <MinimumValue>10</MinimumValue>
                     <MaximumValue>99</MaximumValue>
                 </id>
-                <match2 type="ModelRelationField">
+                <match2 type=".\GroupedModelRelationField">
                     <Model>
                         <prefixlists>
                             <source>OPNsense.quagga.ospf6</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name,seqnumber</display>
-                            <display_format>%s:%s</display_format>
+                            <display>name</display>
                         </prefixlists>
                     </Model>
                     <Multiple>Y</Multiple>
@@ -274,13 +271,12 @@
                         <static>Statically configured routes</static>
                     </OptionValues>
                 </redistribute>
-                <linkedRoutemap type="ModelRelationField">
+                <linkedRoutemap type=".\GroupedModelRelationField">
                     <Model>
                         <routemaps>
                             <source>OPNsense.quagga.ospf6</source>
                             <items>routemaps.routemap</items>
-                            <display>name,id</display>
-                            <display_format>%s:%s</display_format>
+                            <display>name</display>
                         </routemaps>
                     </Model>
                     <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
