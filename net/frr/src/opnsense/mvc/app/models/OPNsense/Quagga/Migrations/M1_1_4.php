@@ -102,7 +102,10 @@ class M1_1_4 extends BaseModelMigration
         }
 
         // Replace legacy area IDs with references to the explicit area records.
-        foreach (['networks.network', 'interfaces.interface'] as $reference) {
+        $references = $model instanceof OSPF
+            ? ['networks.network', 'interfaces.interface']
+            : ['interfaces.interface'];
+        foreach ($references as $reference) {
             foreach ($model->getNodeByReference($reference)->iterateItems() as $item) {
                 if ($item->area->isEmpty()) {
                     continue;

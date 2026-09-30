@@ -34,9 +34,6 @@ class Ospf6Controller extends \OPNsense\Base\IndexController
         $this->view->formDialogEditArea = $this->getForm("dialogEditOSPF6Area");
         $this->view->formGridEditArea = $this->getFormGrid("dialogEditOSPF6Area");
 
-        $this->view->formDialogEditNetwork = $this->getForm("dialogEditOSPF6Network");
-        $this->view->formGridEditNetwork = $this->getFormGrid("dialogEditOSPF6Network");
-
         $this->view->formDialogEditInterface = $this->getForm("dialogEditOSPF6Interface");
         $this->view->formGridEditInterface = $this->getFormGrid("dialogEditOSPF6Interface");
 
