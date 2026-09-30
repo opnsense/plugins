@@ -13,6 +13,7 @@ Plugin Changelog
 
 1.60
 
+* Report failed configuration reloads and include frr-reload.log in the log file (debug level)
 * BGP: Move peer group policies into address family configuration
 * BGP: Replace the neighbor Multi-Protocol toggle with explicit address family selection
 * BGP: Avoid rendering empty remote-as commands for peer groups
