@@ -110,15 +110,42 @@ function crowdsec_firewall(Plugin $fw)
 
 function crowdsec_services()
 {
-    $services[] = array(
-        'description' => 'CrowdSec',
-        'configd' => array(
-            'restart' => array('crowdsec restart'),
-            'start'   => array('crowdsec start'),
-            'stop'    => array('crowdsec stop'),
-        ),
-        'name' => 'crowdsec'
-    );
+    global $config;
+
+    $services = array();
+
+    $general = $config['OPNsense']['crowdsec']['general'] ?? array();
+
+    $agent_enabled = !empty($general['agent_enabled']);
+    $lapi_enabled = !empty($general['lapi_enabled']);
+    $bouncer_enabled = !empty($general['firewall_bouncer_enabled']);
+
+    // the log processor (agent) and the LAPI run in the same process
+    if ($agent_enabled || $lapi_enabled) {
+        $services[] = array(
+            'description' => 'CrowdSec',
+            'configd' => array(
+                'restart' => array('crowdsec restart'),
+                'start'   => array('crowdsec start'),
+                'stop'    => array('crowdsec stop'),
+            ),
+            'pidfile' => '/var/run/crowdsec.pid',
+            'name' => 'crowdsec'
+        );
+    }
+
+    if ($bouncer_enabled) {
+        $services[] = array(
+            'description' => 'CrowdSec Firewall Bouncer',
+            'configd' => array(
+                'restart' => array('crowdsec firewall-restart'),
+                'start'   => array('crowdsec firewall-start'),
+                'stop'    => array('crowdsec firewall-stop'),
+            ),
+            'pidfile' => '/var/run/crowdsec_firewall.pid',
+            'name' => 'crowdsec_firewall'
+        );
+    }
 
     return $services;
 }
