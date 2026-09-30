@@ -28,7 +28,6 @@
 
 namespace OPNsense\Backup;
 
-use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
 use OPNsense\Core\File;
 use OPNsense\Backup\SftpSettings;
