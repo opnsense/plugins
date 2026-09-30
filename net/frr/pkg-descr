@@ -24,6 +24,7 @@ Plugin Changelog
 * OSPF/OSPF6: Add explicit area configuration and migrate legacy area settings
 * OSPF/OSPF6: Move area ranges and prefix-list filters into area configuration
 * OSPF6: Add NSSA area type support
+* OSPF6: Remove unsupported router-level network configuration
 * OSPF: Move passive-interface settings into interface configuration and migrate legacy settings
 * OSPF/OSPF6: Require interface selection and exclude firewall group interfaces
 * OSPF/OSPF6: Reorder tabs to follow the configuration workflow
@@ -39,6 +40,11 @@ filters from network records to their area. Note that each area can only have a
 single in and out prefix-list, the migration persists the last matching prefix-lists
 for each area to retain the prior implicit behavior.
 Existing OSPF passive interfaces are moved into interface records for parity with OSPFv3.
+OSPF6 network entries are no longer exposed or rendered because FRR does not
+support assigning IPv6 prefixes to OSPFv3 areas with a router-level network
+command. OSPFv3 area membership is configured on interfaces instead. Area
+ranges and prefix-list filters formerly attached to network entries are still
+migrated into their explicit area records.
 
 1.55
 
