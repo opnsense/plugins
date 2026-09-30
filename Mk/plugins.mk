@@ -253,7 +253,7 @@ install: check
 			mv "${DESTDIR}${LOCALBASE}/$${FILE}" \
 			    "${DESTDIR}${LOCALBASE}/$${FILE%%.shadow}.sample"; \
 		fi; \
-		if [ "$${FILE%%/*}" == "man" ]; then \
+		if [ "$${FILE%%/*}" = "man" ]; then \
 			gzip -cn "${DESTDIR}${LOCALBASE}/$${FILE}" > \
 			    "${DESTDIR}${LOCALBASE}/$${FILE}.gz"; \
 			rm "${DESTDIR}${LOCALBASE}/$${FILE}"; \
@@ -274,7 +274,7 @@ plist: check
 			FILE="$${FILE%%.shadow}.sample"; \
 			PREFIX="@shadow "; \
 		fi; \
-		if [ "$${FILE%%/*}" == "man" ]; then \
+		if [ "$${FILE%%/*}" = "man" ]; then \
 			FILE="$${FILE}.gz"; \
 		fi; \
 		echo "$${PREFIX}${LOCALBASE}/$${FILE}"; \

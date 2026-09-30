@@ -10,6 +10,7 @@ Plugin Changelog
 
 * Add option to upload to one file each day instead of syncing the contents of /conf/backup
 * Add support for having backing up to a subdirectory instead of the root backup dir
+* Move creation of root directory to before addhostname check
 * Skip non-files when enumerating local entries to backup
 * Only back up when local file is newer than remote
 * Switch to UpdateOnlyTextField from TextField

@@ -4,6 +4,10 @@ such as DNSCrypt v2 and DNS-over-HTTPS.
 Plugin Changelog
 ================
 
+1.17
+
+* Add OISD wildcard blocklists (big, small, NSFW, NSFW small) to DNSBL selection
+
 1.16
 
 * Fix ODoH servers not working (contributed by Pascal Herget)

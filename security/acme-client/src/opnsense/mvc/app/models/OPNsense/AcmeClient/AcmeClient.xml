@@ -468,7 +468,9 @@
                         <dns_exoscale>Exoscale</dns_exoscale>
                         <dns_fornex>Fornex</dns_fornex>
                         <dns_freedns>FreeDNS</dns_freedns>
+                        <dns_freemyip>FreeMyIP</dns_freemyip>
                         <dns_gandi_livedns>Gandi LiveDNS</dns_gandi_livedns>
+                        <dns_gcore>GCore Managed DNS</dns_gcore>
                         <dns_gd>GoDaddy.com</dns_gd>
                         <dns_gcloud>Google Cloud DNS</dns_gcloud>
                         <dns_googledomains>Google Domains</dns_googledomains>
@@ -477,6 +479,7 @@
                         <dns_hetznercloud>Hetzner Cloud</dns_hetznercloud>
                         <dns_hexonet>hexonet.com</dns_hexonet>
                         <dns_hostingde>hosting.de</dns_hostingde>
+                        <dns_hostinger>Hostinger</dns_hostinger>
                         <dns_he>Hurricane Electric</dns_he>
                         <dns_he_ddns>Hurricane Electric DDNS</dns_he_ddns>
                         <dns_infoblox>Infoblox</dns_infoblox>
@@ -722,6 +725,9 @@
                 <dns_freedns_password type="TextField">
                     <Required>N</Required>
                 </dns_freedns_password>
+                <dns_freemyip_token type="TextField">
+                    <Required>N</Required>
+                </dns_freemyip_token>
                 <dns_fornex_api_key type="TextField">
                     <Required>N</Required>
                 </dns_fornex_api_key>
@@ -734,6 +740,9 @@
                 <dns_gcloud_key type="TextField">
                     <Required>N</Required>
                 </dns_gcloud_key>
+                <dns_gcore_token type="TextField">
+                    <Required>N</Required>
+                </dns_gcore_token>
                 <dns_googledomains_access_token type="TextField">
                     <Required>N</Required>
                 </dns_googledomains_access_token>
@@ -752,6 +761,9 @@
                 <dns_hostingde_apiKey type="TextField">
                     <Required>N</Required>
                 </dns_hostingde_apiKey>
+                <dns_hostinger_token type="TextField">
+                    <Required>N</Required>
+                </dns_hostinger_token>
                 <dns_he_user type="TextField">
                     <Required>N</Required>
                 </dns_he_user>
@@ -1434,7 +1446,7 @@
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
                         <acme_truenas>Upload certificate to TrueNAS Server (deprecated API)</acme_truenas>
-                        <acme_truenas_ws>Upload certificate to TrueNAS Server (Websocket API)</acme_truenas_ws>
+                        <acme_truenas_ws>Deprecated - Upload certificate to TrueNAS Server (midctl/websocket)</acme_truenas_ws>
                         <acme_zyxel_gs1900>Upload certificate to Zyxel GS1900 series switches</acme_zyxel_gs1900>
                         <acme_unifi>Update local Unifi keystore</acme_unifi>
                         <configd_generic>System or Plugin Command</configd_generic>

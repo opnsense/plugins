@@ -33,8 +33,8 @@ function caddy_services()
     $services = array();
 
     if (
-        isset($config['Pischem']['caddy']['general']['enabled']) &&
-        $config['Pischem']['caddy']['general']['enabled'] == 1
+        isset($config['OPNsense']['caddy']['general']['enabled']) &&
+        $config['OPNsense']['caddy']['general']['enabled'] == 1
     ) {
         $services[] = array(
             'description' => gettext('Caddy'),
@@ -51,13 +51,27 @@ function caddy_services()
     return $services;
 }
 
+function caddy_configure()
+{
+    return [
+        'caddy_sync' => ['caddy_configure_do'],
+    ];
+}
+
+function caddy_configure_do($verbose = false)
+{
+    (new \OPNsense\Core\Backend())->configdpRun('template reload', ['OPNsense/Caddy/Config']);
+    mwexecf('/usr/local/bin/caddy fmt --overwrite /usr/local/etc/caddy/Caddyfile');
+    mwexecf('/usr/local/opnsense/scripts/OPNsense/Caddy/caddy_certs.php');
+}
+
 function caddy_xmlrpc_sync()
 {
     $result = array();
 
     $result[] = array(
         'description' => gettext('Caddy'),
-        'section' => 'Pischem.caddy',
+        'section' => 'OPNsense.caddy',
         'id' => 'caddy',
         'services' => ["caddy"],
     );

@@ -19,6 +19,10 @@
                 <ep>Easyprivacy List</ep>
                 <nc>NoCoin List</nc>
                 <pt>PornTop1M List</pt>
+                <ob>OISD big (wildcard)</ob>
+                <os>OISD small (wildcard)</os>
+                <on>OISD NSFW (wildcard)</on>
+                <ons>OISD NSFW small (wildcard)</ons>
                 <qf>Q-Feeds (when installed)</qf>
                 <sa>Simple Ad List</sa>
                 <st>Simple Tracker List</st>

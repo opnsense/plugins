@@ -6,6 +6,14 @@ WWW: https://github.com/coturn/coturn
 Plugin Changelog
 ================
 
+1.4
+
+Changed:
+* now runs without root privileges
+
+Fixed:
+* fix wrong file permissions for certs/keys and PID directory (#5704)
+
 1.3
 
 Changed:

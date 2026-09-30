@@ -115,6 +115,18 @@
             <hint>300</hint>
             <help>idle is a duration value in seconds that sets the maximum time to wait for the next request when keep-alives are enabled. The default value helps to avoid resource exhaustion.</help>
         </field>
+        <field>
+            <type>header</type>
+            <label>Listener Settings</label>
+        </field>
+        <field>
+            <id>caddy.general.ProxyProtocolAllow</id>
+            <label>Proxy Protocol Sources</label>
+            <type>select_multiple</type>
+            <style>tokenize</style>
+            <allownew>true</allownew>
+            <help>Enter one or multiple trusted proxy source IP addresses or networks in CIDR notation. PROXY protocol headers received from these sources will be accepted and used to determine the original client connection information. Only applies when Layer 4 Proxy is enabled.</help>
+        </field>
     </tab>
     <tab id="general-logsettings" description="Log Settings">
         <field>

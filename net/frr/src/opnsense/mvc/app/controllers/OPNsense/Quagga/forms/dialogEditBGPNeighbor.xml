@@ -46,6 +46,13 @@
     </grid_view>
   </field>
   <field>
+    <id>neighbor.family</id>
+    <label>Address Family</label>
+    <type>dropdown</type>
+    <type>select_multiple</type>
+    <help>Select which address families to activate for this neighbor.</help>
+  </field>
+  <field>
     <id>neighbor.password</id>
     <label>BGP MD5 Password</label>
     <type>text</type>
@@ -121,18 +128,6 @@
     <label>Multi-Hop</label>
     <help>Enables connections to eBGP neighbors across multiple hops; often required for peering over loopback addresses.</help>
     <type>checkbox</type>
-    <grid_view>
-      <type>boolean</type>
-      <formatter>boolean</formatter>
-      <visible>false</visible>
-    </grid_view>
-  </field>
-  <field>
-    <id>neighbor.multiprotocol</id>
-    <label>Multi-Protocol</label>
-    <type>checkbox</type>
-    <advanced>true</advanced>
-    <help>Enables multiprotocol BGP for support of additional address families like IPv6.</help>
     <grid_view>
       <type>boolean</type>
       <formatter>boolean</formatter>

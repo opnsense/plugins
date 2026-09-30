@@ -151,9 +151,7 @@
                                         ? 'text-warning'
                                         : 'text-success';
 
-                                    const countValue = `<span class="badge chip">${count}</span>`;
-
-                                    return `<i class="fa fa-fw fa-globe ${iconClass}"></i> ${value} ${countValue}`;
+                                    return `<i class="fa fa-fw fa-globe ${iconClass}"></i> ${value}`;
                                 },
                             },
 
@@ -161,7 +159,7 @@
 
                             options: {
                                 responsive: true,
-                                rowCount: [20,50,200,500,1000,-1],
+                                rowCount: [20,3,7,14,50,200,500,1000,-1],
                                 requestHandler: function (request) {
                                     const selectedDomains = $('#reverseFilter').val();
                                     if (selectedDomains && selectedDomains.length > 0) {
@@ -171,7 +169,7 @@
                                 },
                                 headerFormatters: {
                                     enabled: function (column) {
-                                        return '<i class="fa-solid fa-fw fa-check-square" data-toggle="tooltip" title="{{ lang._('Enabled') }}"></i>';;
+                                        return '<i class="fa-solid fa-fw fa-check-square" data-toggle="tooltip" title="{{ lang._('Enabled') }}"></i>';
                                     },
                                     ToDomain: function (column) { return labels.upstream; },
                                     FromDomain: function (column) {
@@ -246,7 +244,7 @@
 
 {% if entrypoint == 'reverse_proxy' %}
 
-        // Safe reload on filter change, ensures all grids are initalized beforehand
+        // Safe reload on filter change, ensures all grids are initialized beforehand
         $('#reverseFilter').change(function () {
             if (suppressFilterReload) return;
             Object.keys(all_grids).forEach(function (grid_id) {

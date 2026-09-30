@@ -231,6 +231,10 @@
         <style>style_reverse_proxy</style>
     </field>
     <field>
+        <type>subheader</type>
+        <label>Load Balance</label>
+    </field>
+    <field>
         <id>handle.lb_policy</id>
         <label>Load Balance Policy</label>
         <type>dropdown</type>
@@ -274,8 +278,12 @@
         </grid_view>
     </field>
     <field>
+        <type>subheader</type>
+        <label>Passive Health Check</label>
+    </field>
+    <field>
         <id>handle.PassiveHealthFailDuration</id>
-        <label>Passive Health Fail Duration (s)</label>
+        <label>Fail Duration (s)</label>
         <type>text</type>
         <style>style_reverse_proxy</style>
         <hint>off</hint>
@@ -286,7 +294,7 @@
     </field>
     <field>
         <id>handle.PassiveHealthMaxFails</id>
-        <label>Passive Health Max Fails</label>
+        <label>Max Fails</label>
         <type>text</type>
         <style>style_reverse_proxy</style>
         <hint>1</hint>
@@ -297,7 +305,7 @@
     </field>
     <field>
         <id>handle.PassiveHealthUnhealthyStatus</id>
-        <label>Passive Health Unhealthy Status</label>
+        <label>Unhealthy Status</label>
         <type>text</type>
         <style>style_reverse_proxy</style>
         <hint>off</hint>
@@ -308,7 +316,7 @@
     </field>
     <field>
         <id>handle.PassiveHealthUnhealthyLatency</id>
-        <label>Passive Health Unhealthy Latency (ms)</label>
+        <label>Unhealthy Latency (ms)</label>
         <type>text</type>
         <style>style_reverse_proxy</style>
         <hint>off</hint>
@@ -319,7 +327,7 @@
     </field>
     <field>
         <id>handle.PassiveHealthUnhealthyRequestCount</id>
-        <label>Passive Health Unhealthy Request Count</label>
+        <label>Unhealthy Request Count</label>
         <type>text</type>
         <style>style_reverse_proxy</style>
         <hint>off</hint>
@@ -329,8 +337,12 @@
         </grid_view>
     </field>
     <field>
+        <type>subheader</type>
+        <label>Active Health Check</label>
+    </field>
+    <field>
         <id>handle.health_uri</id>
-        <label>Active Health URI</label>
+        <label>Health URI</label>
         <type>text</type>
         <style>style_reverse_proxy</style>
         <help>health_uri is the URI path (and optional query) for active health checks.</help>
@@ -340,7 +352,7 @@
     </field>
     <field>
         <id>handle.health_upstream</id>
-        <label>Active Health Upstream</label>
+        <label>Health Upstream</label>
         <type>text</type>
         <style>style_reverse_proxy</style>
         <help>health_upstream is the ip:port to use for active health checks, if different from the upstream. This should be used in tandem with health_header and {http.reverse_proxy.active.target_upstream}</help>
@@ -350,7 +362,7 @@
     </field>
     <field>
         <id>handle.health_port</id>
-        <label>Active Health Port</label>
+        <label>Health Port</label>
         <type>text</type>
         <style>style_reverse_proxy</style>
         <help>health_port is the port to use for active health checks, if different from the upstream's port. Ignored if health_upstream is used.</help>
@@ -360,7 +372,7 @@
     </field>
     <field>
         <id>handle.health_interval</id>
-        <label>Active Health Interval</label>
+        <label>Health Interval</label>
         <type>text</type>
         <style>style_reverse_proxy</style>
         <hint>30</hint>
@@ -371,7 +383,7 @@
     </field>
     <field>
         <id>handle.health_passes</id>
-        <label>Active Health Passes</label>
+        <label>Health Passes</label>
         <type>text</type>
         <style>style_reverse_proxy</style>
         <hint>1</hint>
@@ -382,7 +394,7 @@
     </field>
     <field>
         <id>handle.health_fails</id>
-        <label>Active Health Fails</label>
+        <label>Health Fails</label>
         <type>text</type>
         <style>style_reverse_proxy</style>
         <hint>1</hint>
@@ -393,7 +405,7 @@
     </field>
     <field>
         <id>handle.health_timeout</id>
-        <label>Active Health Timeout</label>
+        <label>Health Timeout</label>
         <type>text</type>
         <style>style_reverse_proxy</style>
         <hint>5</hint>
@@ -404,7 +416,7 @@
     </field>
     <field>
         <id>handle.health_status</id>
-        <label>Active Health Status</label>
+        <label>Health Status</label>
         <type>text</type>
         <style>style_reverse_proxy</style>
         <hint>200</hint>
@@ -415,7 +427,7 @@
     </field>
     <field>
         <id>handle.health_body</id>
-        <label>Active Health Body</label>
+        <label>Health Body</label>
         <type>text</type>
         <style>style_reverse_proxy</style>
         <help>health_body is a substring or regular expression to match on the response body of an active health check. If the backend does not return a matching body, it will be marked as down.</help>
@@ -425,7 +437,7 @@
     </field>
     <field>
         <id>handle.health_follow_redirects</id>
-        <label>Active Health Follow Redirects</label>
+        <label>Health Follow Redirects</label>
         <type>checkbox</type>
         <style>style_reverse_proxy</style>
         <help>health_follow_redirects will cause the health check to follow redirects provided by upstream. By default, a redirect response would cause the health check to count as a fail.</help>

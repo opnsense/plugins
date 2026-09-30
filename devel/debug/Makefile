@@ -7,7 +7,7 @@ PLUGIN_DEPENDS=		php${PLUGIN_PHP}-pear-PHP_CodeSniffer \
 			py${PLUGIN_PYTHON}-pycodestyle \
 			py${PLUGIN_PYTHON}-pytest \
 			py${PLUGIN_PYTHON}-scapy \
-			p5-File-Slurp git jq
+			p5-File-Slurp git
 PLUGIN_MAINTAINER=	franco@opnsense.org
 PLUGIN_TIER=		2
 

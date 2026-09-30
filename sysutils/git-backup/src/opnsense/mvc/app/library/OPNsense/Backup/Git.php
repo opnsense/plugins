@@ -142,7 +142,7 @@ class Git extends Base implements IBackupProvider
             mkdir($targetdir);
         }
 
-        if (!is_dir('{$targetdir}/.git')) {
+        if (!is_dir("{$targetdir}/.git")) {
             Shell::run_safe('/usr/local/bin/git init %s', $targetdir);
         }
 

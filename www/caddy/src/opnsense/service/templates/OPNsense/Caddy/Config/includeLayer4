@@ -12,7 +12,7 @@
 #  This context is for advanced usecases where raw TCP/UDP traffic on custom ports should be proxied or load balanced.
 #}
 
-{% set unsorted_layer4_configs = helpers.toList('Pischem.caddy.reverseproxy.layer4') %}
+{% set unsorted_layer4_configs = helpers.toList('OPNsense.caddy.reverseproxy.layer4') %}
 
 {# Ensure that 'Sequence' is present and converted to an integer in each item #}
 {% for item in unsorted_layer4_configs %}
@@ -39,11 +39,29 @@
         {% if layer4.lb_policy|default("") %}
             lb_policy {{ layer4.lb_policy }}
         {% endif %}
+        {% if layer4.lb_try_duration|default("") %}
+            lb_try_duration {{ layer4.lb_try_duration }}s
+        {% endif %}
+        {% if layer4.lb_try_interval|default("") %}
+            lb_try_interval {{ layer4.lb_try_interval }}ms
+        {% endif %}
+        {% if layer4.ActiveHealthPort|default("") %}
+            health_port {{ layer4.ActiveHealthPort }}
+        {% endif %}
+        {% if layer4.ActiveHealthInterval|default("") %}
+            health_interval {{ layer4.ActiveHealthInterval }}s
+        {% endif %}
+        {% if layer4.ActiveHealthTimeout|default("") %}
+            health_timeout {{ layer4.ActiveHealthTimeout }}s
+        {% endif %}
         {% if layer4.PassiveHealthFailDuration|default("") %}
             fail_duration {{ layer4.PassiveHealthFailDuration }}s
         {% endif %}
         {% if layer4.PassiveHealthMaxFails|default("") %}
             max_fails {{ layer4.PassiveHealthMaxFails }}
+        {% endif %}
+        {% if layer4.PassiveHealthUnhealthyConnectionCount|default("") %}
+            unhealthy_connection_count {{ layer4.PassiveHealthUnhealthyConnectionCount }}
         {% endif %}
         {% if layer4.ProxyProtocol %}
             proxy_protocol {{ layer4.ProxyProtocol }}

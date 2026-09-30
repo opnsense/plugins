@@ -161,6 +161,34 @@ qfeeds() {
 	fi
 }
 
+oisd_big() {
+	# OISD Big
+	/usr/bin/fetch -qT 30 https://big.oisd.nl/domainswild -o ${WORKDIR}/oisd_big-raw
+	sed "/\.$/d" ${WORKDIR}/oisd_big-raw | sed "/^#/d" | sed "/\_/d" | sed "/^[[:space:]]*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/oisd_big
+	rm ${WORKDIR}/oisd_big-raw
+}
+
+oisd_small() {
+	# OISD Small
+	/usr/bin/fetch -qT 30 https://small.oisd.nl/domainswild -o ${WORKDIR}/oisd_small-raw
+	sed "/\.$/d" ${WORKDIR}/oisd_small-raw | sed "/^#/d" | sed "/\_/d" | sed "/^[[:space:]]*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/oisd_small
+	rm ${WORKDIR}/oisd_small-raw
+}
+
+oisd_nsfw() {
+	# OISD NSFW
+	/usr/bin/fetch -qT 30 https://nsfw.oisd.nl/domainswild -o ${WORKDIR}/oisd_nsfw-raw
+	sed "/\.$/d" ${WORKDIR}/oisd_nsfw-raw | sed "/^#/d" | sed "/\_/d" | sed "/^[[:space:]]*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/oisd_nsfw
+	rm ${WORKDIR}/oisd_nsfw-raw
+}
+
+oisd_nsfwsmall() {
+	# OISD NSFW Small
+	/usr/bin/fetch -qT 30 https://nsfw-small.oisd.nl/domainswild -o ${WORKDIR}/oisd_nsfwsmall-raw
+	sed "/\.$/d" ${WORKDIR}/oisd_nsfwsmall-raw | sed "/^#/d" | sed "/\_/d" | sed "/^[[:space:]]*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/oisd_nsfwsmall
+	rm ${WORKDIR}/oisd_nsfwsmall-raw
+}
+
 install() {
 	# Put all files in correct format
 	for FILE in $(find ${WORKDIR} -type f); do
@@ -228,6 +256,18 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 		;;
 	yy)
 		yoyo
+		;;
+	ob)
+		oisd_big
+		;;
+	os)
+		oisd_small
+		;;
+	on)
+		oisd_nsfw
+		;;
+	ons)
+		oisd_nsfwsmall
 		;;
 	qf)
 		qfeeds

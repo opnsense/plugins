@@ -116,7 +116,7 @@ sysutils/munin-node -- Munin monitoring agent
 sysutils/nextcloud-backup -- Track config changes using NextCloud (not maintained)
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
-sysutils/puppet-agent -- Manage Puppet Agent
+sysutils/puppet-agent -- Manage Puppet/OpenVox Agent
 sysutils/sftp-backup -- Backup configurations using SFTP
 sysutils/smart -- SMART tools (not maintained)
 sysutils/virtualbox -- VirtualBox guest additions

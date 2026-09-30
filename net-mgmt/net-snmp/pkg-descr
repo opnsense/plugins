@@ -11,6 +11,10 @@ WWW: http://www.net-snmp.org
 Plugin Changelog
 ----------------
 
+1.7
+
+* Hardening input fields to avoid multiline templating (reported by Ravindu Lakmina Munaweera)
+
 1.6
 
 * Add support for Observium (contributed by Patrick M. Hausen)
