@@ -83,7 +83,17 @@
             'set':'/api/quagga/ospf6settings/set_prefixlist/',
             'add':'/api/quagga/ospf6settings/add_prefixlist/',
             'del':'/api/quagga/ospf6settings/del_prefixlist/',
-            'toggle':'/api/quagga/ospf6settings/toggle_prefixlist/'
+            'toggle':'/api/quagga/ospf6settings/toggle_prefixlist/',
+            tabulatorOptions: {
+                groupBy: "name",
+                groupHeader: (value, count, data, group) => {
+                    const icons = {
+                        name: '<i class="fa fa-fw fa-list fa-sm text-info"></i>',
+                    };
+
+                    return `${icons.name} ${value}`;
+                },
+            }
         });
         $("#{{formGridEditRouteMaps['table_id']}}").UIBootgrid({
             'search':'/api/quagga/ospf6settings/search_routemap',
@@ -91,7 +101,17 @@
             'set':'/api/quagga/ospf6settings/set_routemap/',
             'add':'/api/quagga/ospf6settings/add_routemap/',
             'del':'/api/quagga/ospf6settings/del_routemap/',
-            'toggle':'/api/quagga/ospf6settings/toggle_routemap/'
+            'toggle':'/api/quagga/ospf6settings/toggle_routemap/',
+            tabulatorOptions: {
+                groupBy: "name",
+                groupHeader: (value, count, data, group) => {
+                    const icons = {
+                        name: '<i class="fa fa-fw fa-list fa-sm text-info"></i>',
+                    };
+
+                    return `${icons.name} ${value}`;
+                },
+            }
         });
         $("#{{formGridEditRedistribution['table_id']}}").UIBootgrid({
             'search':'/api/quagga/ospf6settings/search_redistribution',
