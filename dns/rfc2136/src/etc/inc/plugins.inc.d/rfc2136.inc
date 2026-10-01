@@ -35,6 +35,7 @@ function rfc2136_configure()
         'bootup' => ['rfc2136_configure_do'],
         'local' => ['rfc2136_configure_do'],
         'newwanip' => ['rfc2136_configure_do:2'],
+        'updateip' => ['rfc2136_configure_do:2'],
     ];
 }
 
