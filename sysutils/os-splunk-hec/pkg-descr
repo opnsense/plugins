@@ -1,0 +1,8 @@
+Splunk HTTP Event Collector (HEC) log exporter for OPNsense.
+
+Forwards OPNsense system and firewall logs to a Splunk instance
+via the HTTP Event Collector API. Supports configurable log sources,
+on-disk payload caching with retry, and inode-based log rotation
+detection.
+
+WWW: https://github.com/pvols79/os-splunk-hec
