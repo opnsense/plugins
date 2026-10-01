@@ -36,9 +36,19 @@ def get_netloc(settings: dict[str, str]):
     return '{}:{}'.format(listen_address, listen_port)
 
 
+def get_client_netloc(settings: dict[str, str]):
+    settings = settings.copy()
+    listen_address = settings.get('lapi_listen_address', '127.0.0.1')
+    if listen_address == '0.0.0.0':
+        settings['lapi_listen_address'] = '127.0.0.1'
+    elif listen_address == '::':
+        settings['lapi_listen_address'] = '::1'
+    return get_netloc(settings)
+
+
 def get_new_url(old_url: str, settings: dict[str, str]):
     old_tuple = urllib.parse.urlsplit(old_url)
-    new_tuple = old_tuple._replace(netloc=get_netloc(settings))
+    new_tuple = old_tuple._replace(netloc=get_client_netloc(settings))
     new_url = urllib.parse.urlunsplit(new_tuple)
     # client lapi requires a trailing slash for the path part
     # and no, query and fragment don't make much sense
