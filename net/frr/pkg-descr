@@ -18,11 +18,13 @@ Plugin Changelog
 * BGP: Replace the neighbor Multi-Protocol toggle with explicit address family selection
 * BGP: Avoid rendering empty remote-as commands for peer groups
 * BGP: Render BFD and strict mode as separate commands
+* BGP: Handle prefix lists, AS path lists, community lists, and route maps as logical groups
 * BGP/OSPF/OSPF6: Tighten validation for addresses, networks, and identifiers
 * Firewall: Generate automatic rules directly for enabled OSPF, OSPF6, BGP, BFD, and RIP services
 * Firewall: Tighten OSPF rules and remove automatic rules when FRR is disabled
 * OSPF/OSPF6: Add explicit area configuration and migrate legacy area settings
 * OSPF/OSPF6: Move area ranges and prefix-list filters into area configuration
+* OSPF/OSPF6: Handle prefix lists and route maps as logical groups
 * OSPF6: Add NSSA area type support
 * OSPF6: Remove unsupported router-level network configuration
 * OSPF: Move passive-interface settings into interface configuration and migrate legacy settings
