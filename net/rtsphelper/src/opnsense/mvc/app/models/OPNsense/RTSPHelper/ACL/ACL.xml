@@ -1,0 +1,9 @@
+<acl>
+    <page-service-rtsphelper>
+        <name>Service: RTSP Helper</name>
+        <patterns>
+            <pattern>ui/rtsphelper/*</pattern>
+            <pattern>api/rtsphelper/*</pattern>
+        </patterns>
+    </page-service-rtsphelper>
+</acl>
