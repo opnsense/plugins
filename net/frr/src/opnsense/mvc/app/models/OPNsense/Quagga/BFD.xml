@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/bfd</mount>
     <description>BFD configuration</description>
-    <version>1.0.3</version>
+    <version>1.1.5</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>

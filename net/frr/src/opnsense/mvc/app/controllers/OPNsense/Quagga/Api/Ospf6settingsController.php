@@ -39,9 +39,9 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     protected static $internalModelClass = '\OPNsense\Quagga\OSPF6';
     protected static $internalModelUseSafeDelete = true;
 
-    public function searchNetworkAction()
+    public function searchAreaAction()
     {
-        return $this->searchBase('networks.network');
+        return $this->searchBase('areas.area');
     }
     public function searchInterfaceAction()
     {
@@ -55,9 +55,9 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     {
         return $this->searchBase('routemaps.routemap');
     }
-    public function getNetworkAction($uuid = null)
+    public function getAreaAction($uuid = null)
     {
-        return $this->getBase('network', 'networks.network', $uuid);
+        return $this->getBase('area', 'areas.area', $uuid);
     }
     public function getInterfaceAction($uuid = null)
     {
@@ -71,9 +71,9 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     {
         return $this->getBase('routemap', 'routemaps.routemap', $uuid);
     }
-    public function addNetworkAction()
+    public function addAreaAction()
     {
-        return $this->addBase('network', 'networks.network');
+        return $this->addBase('area', 'areas.area');
     }
     public function addInterfaceAction()
     {
@@ -87,9 +87,9 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     {
         return $this->addBase('routemap', 'routemaps.routemap');
     }
-    public function delNetworkAction($uuid)
+    public function delAreaAction($uuid)
     {
-        return $this->delBase('networks.network', $uuid);
+        return $this->delBase('areas.area', $uuid);
     }
     public function delInterfaceAction($uuid)
     {
@@ -103,9 +103,9 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     {
         return $this->delBase('routemaps.routemap', $uuid);
     }
-    public function setNetworkAction($uuid)
+    public function setAreaAction($uuid)
     {
-        return $this->setBase('network', 'networks.network', $uuid);
+        return $this->setBase('area', 'areas.area', $uuid);
     }
     public function setInterfaceAction($uuid)
     {
@@ -119,9 +119,9 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('routemap', 'routemaps.routemap', $uuid);
     }
-    public function toggleNetworkAction($uuid)
+    public function toggleAreaAction($uuid)
     {
-        return $this->toggleBase('networks.network', $uuid);
+        return $this->toggleBase('areas.area', $uuid);
     }
     public function toggleInterfaceAction($uuid)
     {

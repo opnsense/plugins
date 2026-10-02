@@ -1,0 +1,56 @@
+<form>
+    <field>
+        <id>area.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <grid_view>
+            <width>6em</width>
+            <type>boolean</type>
+            <formatter>rowtoggle</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>area.id</id>
+        <label>Area ID</label>
+        <type>text</type>
+        <help>Enter the area ID in dotted format, for example 0.0.0.0 for the Backbone Area. The Backbone Area connects other areas and supports inter-area communication, while additional areas, for example 0.0.0.1, segment the network logically to limit routing updates.</help>
+    </field>
+    <field>
+        <id>area.type</id>
+        <label>Area Type</label>
+        <type>dropdown</type>
+        <help>Select area behavior.</help>
+        <grid_view>
+            <formatter>area_type</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>area.ranges</id>
+        <label>Area Ranges</label>
+        <style>tokenize</style>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <help>Summarizes multiple networks in the specified area, consolidating multiple networks into a single summarized route like fe80:1234::/56.</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>area.linkedPrefixlistIn</id>
+        <label>Prefix-List In</label>
+        <type>dropdown</type>
+        <help>Filters inbound route advertisements using a prefix list. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>area.linkedPrefixlistOut</id>
+        <label>Prefix-List Out</label>
+        <type>dropdown</type>
+        <help>Filters outbound route advertisements using a prefix list. If multiple items with the same name exist, choosing one of them will apply all items with the same name.</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+</form>

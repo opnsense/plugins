@@ -11,6 +11,41 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+1.60
+
+* Report failed configuration reloads and include frr-reload.log in the log file (debug level)
+* BGP: Move peer group policies into address family configuration
+* BGP: Replace the neighbor Multi-Protocol toggle with explicit address family selection
+* BGP: Avoid rendering empty remote-as commands for peer groups
+* BGP: Render BFD and strict mode as separate commands
+* BGP/OSPF/OSPF6: Tighten validation for addresses, networks, and identifiers
+* Firewall: Generate automatic rules directly for enabled OSPF, OSPF6, BGP, BFD, and RIP services
+* Firewall: Tighten OSPF rules and remove automatic rules when FRR is disabled
+* OSPF/OSPF6: Add explicit area configuration and migrate legacy area settings
+* OSPF/OSPF6: Move area ranges and prefix-list filters into area configuration
+* OSPF6: Add NSSA area type support
+* OSPF6: Remove unsupported router-level network configuration
+* OSPF: Move passive-interface settings into interface configuration and migrate legacy settings
+* OSPF/OSPF6: Require interface selection and exclude firewall group interfaces
+* OSPF/OSPF6: Reorder tabs to follow the configuration workflow
+* OSPF/OSPF6: Show passive-interface status in the interface grid
+
+Migration Notes:
+
+The BGP migration assigns explicit address families to existing neighbors,
+preserving the previous Multi-Protocol setting and inferring single-stack
+neighbors from their address. The OSPF migrations convert existing OSPF and
+OSPF6 area IDs into explicit area records and move area ranges and prefix-list
+filters from network records to their area. Note that each area can only have a
+single in and out prefix-list, the migration persists the last matching prefix-lists
+for each area to retain the prior implicit behavior.
+Existing OSPF passive interfaces are moved into interface records for parity with OSPFv3.
+OSPF6 network entries are no longer exposed or rendered because FRR does not
+support assigning IPv6 prefixes to OSPFv3 areas with a router-level network
+command. OSPFv3 area membership is configured on interfaces instead. Area
+ranges and prefix-list filters formerly attached to network entries are still
+migrated into their explicit area records.
+
 1.55
 
 * BGP: Write neighbor remote-as only when set (contributed by juan-ferrer-toribio)

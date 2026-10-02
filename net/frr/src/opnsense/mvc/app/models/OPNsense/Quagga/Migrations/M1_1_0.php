@@ -30,11 +30,18 @@ namespace OPNsense\Quagga\Migrations;
 
 use OPNsense\Base\BaseModelMigration;
 use OPNsense\Core\Config;
+use OPNsense\Quagga\BGP;
+use OPNsense\Quagga\OSPF;
+use OPNsense\Quagga\OSPF6;
 
 class M1_1_0 extends BaseModelMigration
 {
     public function run($model)
     {
+        if (!$model instanceof BGP && !$model instanceof OSPF && !$model instanceof OSPF6) {
+            return;
+        }
+
         $config = Config::getInstance()->object();
 
         if ($model->getNodeByReference('redistributions') === null) {
