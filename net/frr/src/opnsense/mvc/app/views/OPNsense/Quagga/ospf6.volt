@@ -61,14 +61,6 @@
                 }
             }
         });
-        $("#{{formGridEditNetwork['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospf6settings/search_network',
-            'get':'/api/quagga/ospf6settings/get_network/',
-            'set':'/api/quagga/ospf6settings/set_network/',
-            'add':'/api/quagga/ospf6settings/add_network/',
-            'del':'/api/quagga/ospf6settings/del_network/',
-            'toggle':'/api/quagga/ospf6settings/toggle_network/'
-        });
         $("#{{formGridEditInterface['table_id']}}").UIBootgrid({
             'search':'/api/quagga/ospf6settings/search_interface',
             'get':'/api/quagga/ospf6settings/get_interface/',
@@ -143,7 +135,6 @@
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
     <li><a data-toggle="tab" href="#areas">{{ lang._('Areas') }}</a></li>
     <li><a data-toggle="tab" href="#interfaces">{{ lang._('Interfaces') }}</a></li>
-    <li><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
     <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
     <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>
 </ul>
@@ -156,10 +147,6 @@
     <!-- Tab: Areas -->
     <div id="areas" class="tab-pane fade in">
         {{ partial('layout_partials/base_bootgrid_table', formGridEditArea)}}
-    </div>
-    <!-- Tab: Networks -->
-    <div id="networks" class="tab-pane fade in">
-        {{ partial('layout_partials/base_bootgrid_table', formGridEditNetwork)}}
     </div>
     <!-- Tab: Interfaces -->
     <div id="interfaces" class="tab-pane fade in">
@@ -183,7 +170,6 @@
     }
 ) }}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditArea,'id':formGridEditArea['edit_dialog_id'],'label':lang._('Edit Area')])}}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':formGridEditNetwork['edit_dialog_id'],'label':lang._('Edit Network')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':formGridEditInterface['edit_dialog_id'],'label':lang._('Edit Interface')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditPrefixLists,'id':formGridEditPrefixLists['edit_dialog_id'],'label':lang._('Edit Prefix Lists')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditRouteMaps,'id':formGridEditRouteMaps['edit_dialog_id'],'label':lang._('Edit Route Maps')])}}

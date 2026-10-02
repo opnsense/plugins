@@ -43,10 +43,6 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     {
         return $this->searchBase('areas.area');
     }
-    public function searchNetworkAction()
-    {
-        return $this->searchBase('networks.network');
-    }
     public function searchInterfaceAction()
     {
         return $this->searchBase('interfaces.interface');
@@ -62,10 +58,6 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     public function getAreaAction($uuid = null)
     {
         return $this->getBase('area', 'areas.area', $uuid);
-    }
-    public function getNetworkAction($uuid = null)
-    {
-        return $this->getBase('network', 'networks.network', $uuid);
     }
     public function getInterfaceAction($uuid = null)
     {
@@ -83,10 +75,6 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     {
         return $this->addBase('area', 'areas.area');
     }
-    public function addNetworkAction()
-    {
-        return $this->addBase('network', 'networks.network');
-    }
     public function addInterfaceAction()
     {
         return $this->addBase('interface', 'interfaces.interface');
@@ -102,10 +90,6 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     public function delAreaAction($uuid)
     {
         return $this->delBase('areas.area', $uuid);
-    }
-    public function delNetworkAction($uuid)
-    {
-        return $this->delBase('networks.network', $uuid);
     }
     public function delInterfaceAction($uuid)
     {
@@ -123,10 +107,6 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('area', 'areas.area', $uuid);
     }
-    public function setNetworkAction($uuid)
-    {
-        return $this->setBase('network', 'networks.network', $uuid);
-    }
     public function setInterfaceAction($uuid)
     {
         return $this->setBase('interface', 'interfaces.interface', $uuid);
@@ -142,10 +122,6 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     public function toggleAreaAction($uuid)
     {
         return $this->toggleBase('areas.area', $uuid);
-    }
-    public function toggleNetworkAction($uuid)
-    {
-        return $this->toggleBase('networks.network', $uuid);
     }
     public function toggleInterfaceAction($uuid)
     {

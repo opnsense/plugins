@@ -28,39 +28,6 @@
             <MaximumValue>16777214</MaximumValue>
             <ValidationMessage>Must be a number between 0 and 16777214.</ValidationMessage>
         </originatemetric>
-        <networks>
-            <network type="ArrayField">
-                <enabled type="BooleanField">
-                    <Default>1</Default>
-                    <Required>Y</Required>
-                </enabled>
-                <!-- XXX: it would make sense to merge both into a single field "network" -->
-                <ipaddr type="NetworkField">
-                    <Required>Y</Required>
-                    <NetMaskAllowed>N</NetMaskAllowed>
-                    <WildcardEnabled>N</WildcardEnabled>
-                    <AddressFamily>ipv6</AddressFamily>
-                </ipaddr>
-                <netmask type="IntegerField">
-                    <Default>64</Default>
-                    <MinimumValue>0</MinimumValue>
-                    <Required>Y</Required>
-                    <MaximumValue>128</MaximumValue>
-                    <ValidationMessage>Network mask must be between 0 and 128.</ValidationMessage>
-                </netmask>
-                <area type="ModelRelationField">
-                    <Required>Y</Required>
-                    <Model>
-                        <areas>
-                            <source>OPNsense.quagga.ospf6</source>
-                            <items>areas.area</items>
-                            <display>id</display>
-                        </areas>
-                    </Model>
-                    <ValidationMessage>Related Area not found.</ValidationMessage>
-                </area>
-            </network>
-        </networks>
         <areas>
             <area type="ArrayField">
                 <enabled type="BooleanField">
