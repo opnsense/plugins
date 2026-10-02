@@ -7,6 +7,7 @@ namespace OPNsense\CrowdSec\Api;
 
 use OPNsense\Base\ApiControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\CrowdSec\Util;
 
 function unrollDecisions(array $alerts): array
 {
@@ -72,7 +73,7 @@ class DecisionsController extends ApiControllerBase
     {
         $result = json_decode(trim((new Backend())->configdRun("crowdsec decisions-list")), true);
         if ($result === null) {
-            return ["message" => "unable to retrieve data"];
+            return ["message" => Util::noDataMessage()];
         }
 
         $decisions = unrollDecisions($result);
@@ -96,6 +97,22 @@ class DecisionsController extends ApiControllerBase
         }
 
         return $this->searchRecordsetBase($rows);
+    }
+
+    /**
+     * Retrieve the addresses blocked by this firewall (pf tables filled by the bouncer),
+     * whichever LAPI the decisions come from
+     *
+     * @return array of addresses
+     */
+    public function blocklistAction(): array
+    {
+        $result = json_decode(trim((new Backend())->configdRun("crowdsec bouncer-blocklist")), true);
+        if (!is_array($result) || isset($result['error'])) {
+            return ["message" => gettext('Unable to read the firewall blocklists.')];
+        }
+
+        return $this->searchRecordsetBase($result);
     }
 
     public function delAction($decision_id): array
