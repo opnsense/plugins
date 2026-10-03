@@ -29,13 +29,101 @@ POSSIBILITY OF SUCH DAMAGE.
 <script>
 
     $( document ).ready(function() {
+        // force refresh is offered for the enabled native backend, as configured on the settings tab
+        let forceRefreshAvailable = false;
+        function updateForceRefresh() {
+            forceRefreshAvailable = $("#ddclient\\.general\\.enabled").is(':checked') &&
+                $("#ddclient\\.general\\.backend").val() === 'opnsense';
+            $("#grid-accounts .command-force_refresh_selected").toggle(forceRefreshAvailable);
+            $("#grid-accounts").bootgrid('reload');
+        }
+
+        /**
+         * force refresh the given accounts, the service updates them after restarting.
+         * wait until all accounts show a new update time, report the ones without an update after 30 seconds.
+         */
+        function forceRefresh(uuids, $icon) {
+            if (uuids.length === 0 || $icon.hasClass('fa-spin')) {
+                // nothing selected or still running
+                return;
+            }
+            const accounts = function (callback) {
+                ajaxCall('/api/dyndns/accounts/search_item', {current: 1, rowCount: -1}, function (data) {
+                    let result = {};
+                    $.each(data?.rows ?? [], function (i, row) {
+                        result[row.uuid] = {description: row.description || row.hostnames, mtime: row.current_mtime};
+                    });
+                    callback(result);
+                });
+            };
+            const done = function (message, type) {
+                $icon.removeClass('fa-spin');
+                $("#grid-accounts").bootgrid('reload');
+                if (message) {
+                    stdDialogInform("{{ lang._('Force refresh') }}", message, "{{ lang._('Close') }}", undefined, type);
+                }
+            };
+            $icon.addClass('fa-spin');
+            accounts(function (before) {
+                ajaxCall('/api/dyndns/accounts/force_refresh/' + uuids.join(','), {}, function (data, status) {
+                    if (status !== 'success' || data?.status !== 'ok') {
+                        done(data?.message ?? "{{ lang._('Unexpected error, see the log for details.') }}", 'danger');
+                        return;
+                    }
+                    let attempts = 15;
+                    const poll = function () {
+                        accounts(function (after) {
+                            const pending = uuids.filter(x => !after[x]?.mtime || after[x].mtime === before[x]?.mtime);
+                            if (pending.length === 0) {
+                                done();
+                            } else if (--attempts > 0) {
+                                setTimeout(poll, 2000);
+                            } else {
+                                let $msg = $('<ul class="list-unstyled"/>');
+                                pending.forEach(x => $msg.append($('<li/>').append($('<b/>').text(after[x]?.description || x))
+                                    .append(': ' + "{{ lang._('no update received, see the log for details.') }}")));
+                                done($msg, 'warning');
+                            }
+                        });
+                    };
+                    setTimeout(poll, 2000);
+                });
+            });
+        }
+
         $("#grid-accounts").UIBootgrid(
             {   search:'/api/dyndns/accounts/search_item',
                 get:'/api/dyndns/accounts/get_item/',
                 set:'/api/dyndns/accounts/set_item/',
                 add:'/api/dyndns/accounts/add_item/',
                 del:'/api/dyndns/accounts/del_item/',
-                toggle:'/api/dyndns/accounts/toggle_item/'
+                toggle:'/api/dyndns/accounts/toggle_item/',
+                commands: {
+                    force_refresh: {
+                        method: function () {
+                            forceRefresh([$(this).data('row-id')], $(this).find('span'));
+                        },
+                        filter: function (cell) {
+                            return forceRefreshAvailable && cell.getData().enabled === '1';
+                        },
+                        classname: 'fa fa-fw fa-refresh',
+                        title: "{{ lang._('Force refresh') }}",
+                        sequence: 50
+                    },
+                    force_refresh_selected: {
+                        method: function () {
+                            forceRefresh($("#grid-accounts").bootgrid('getSelectedRows'), $(this).find('span'));
+                        },
+                        classname: 'fa fa-fw fa-refresh',
+                        title: "{{ lang._('Force refresh selected') }}",
+                        footer: true,
+                        primary: true,
+                        sequence: 350,
+                        onRendered: function () {
+                            this.toggle(forceRefreshAvailable);
+                        }
+                    }
+                }
             }
         );
         let data_get_map = {'frm_settings':"/api/dyndns/settings/get"};
@@ -43,6 +131,7 @@ POSSIBILITY OF SUCH DAMAGE.
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
             updateServiceControlUI('dyndns');
+            updateForceRefresh();
         });
 
         $("#reconfigureAct").SimpleActionButton({
@@ -55,6 +144,7 @@ POSSIBILITY OF SUCH DAMAGE.
           },
           onAction: function(data, status) {
               updateServiceControlUI('dyndns');
+              updateForceRefresh();
           }
         });
         $("#account\\.service").change(function(){
@@ -111,7 +201,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="current_ip" data-type="string">{{ lang._('Current IP') }}</th>
                 <th data-column-id="current_mtime" data-type="string">{{ lang._('Updated') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
             <tbody>
