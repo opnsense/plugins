@@ -1,5 +1,5 @@
 PLUGIN_NAME=		netflector
-PLUGIN_VERSION=		1.0.d
+PLUGIN_VERSION=		1.0.0
 PLUGIN_DEVEL=		yes
 PLUGIN_COMMENT=		Reflect link-local service discovery between interfaces
 PLUGIN_MAINTAINER=	sergii@bogomolov.io

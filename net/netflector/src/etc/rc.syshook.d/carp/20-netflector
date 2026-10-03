@@ -27,16 +27,6 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
-/*
- * Both nodes of a pair reflecting would put two copies of every relayed packet on the segment, and two
- * DIAL proxies would rewrite the same device's LOCATION to different authorities.
- *
- * devd passes the transitioning group as "<vhid>@<interface>" (see /usr/local/etc/devd/carp.conf). A
- * node can hold one group and not another, so the vhid is matched too, not the state alone.
- */
-
-/* config.inc is load-bearing twice: get_real_interface() silently returns its argument unresolved
- * without it, and it registers the autoloader the models need, so load_phalcon is not required. */
 require_once('config.inc');
 require_once('interfaces.inc');
 require_once('util.inc');
@@ -47,8 +37,6 @@ use OPNsense\Interfaces\Vip;
 $subsystem = $argv[1] ?? '';
 $type = $argv[2] ?? '';
 
-/* A link failure parks the group in INIT with the election timers stopped, so it stays there for
- * the whole outage and no BACKUP follows: INIT is the only notice that we stopped being MASTER. */
 if (!in_array($type, ['MASTER', 'BACKUP', 'INIT'], true) || strpos($subsystem, '@') === false) {
     exit(0);
 }
@@ -59,8 +47,6 @@ if (!$model->general->enabled->isEqual('1') || !$model->general->carp_depend_on-
 }
 $depends_on = $model->general->carp_depend_on->getValue();
 
-/* carp_depend_on holds the VIP's uuid; the event carries "<vhid>@<interface>", so resolve one to the
- * other. Both halves are compared: the same vhid can run on several interfaces as unrelated groups. */
 $group = null;
 foreach ((new Vip())->vip->iterateItems() as $uuid => $vip) {
     if ($uuid === $depends_on && $vip->mode->isEqual('carp')) {
@@ -69,8 +55,6 @@ foreach ((new Vip())->vip->iterateItems() as $uuid => $vip) {
     }
 }
 
-/* The VIP was deleted or is no longer carp, so this node's role is unknowable. Stop rather than
- * leave it reflecting, which on a pair is what the dependency exists to prevent. */
 if ($group === null) {
     log_msg('carp_depend_on names no CARP virtual IP; stopping netflector', LOG_ERR);
     mwexecf('/usr/local/etc/rc.d/netflector %s', ['stop'], true);
@@ -84,6 +68,4 @@ if ($group !== $subsystem) {
 $action = $type === 'MASTER' ? 'start' : 'stop';
 log_msg(sprintf('CARP %s is %s, running netflector %s', $subsystem, $type, $action));
 
-/* Stopping what is already stopped is the normal case on a backup node, so that failure is muted;
- * a start that fails is worth the log line. */
 mwexecf('/usr/local/etc/rc.d/netflector %s', [$action], $action === 'stop');

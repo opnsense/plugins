@@ -37,13 +37,7 @@ class SettingsController extends ApiMutableModelControllerBase
 
     public function searchReflectorAction()
     {
-        return $this->searchBase(
-            'reflectors.reflector',
-            [
-                'enabled', 'name', 'source_if', 'target_if', 'description',
-                'wol', 'mdns', 'ssdp', 'dial', 'wsd', 'address_family',
-            ]
-        );
+        return $this->searchBase('reflectors.reflector');
     }
 
     public function getReflectorAction($uuid = null)

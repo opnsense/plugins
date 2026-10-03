@@ -54,11 +54,6 @@ function netflector_xmlrpc_sync()
 {
     return [[
         'description' => gettext('Netflector'),
-        'help' => gettext(
-            'Synchronize the netflector configuration to the other HA host. Include Virtual IPs as ' .
-            'well if a CARP dependency is set: it is stored as the virtual IP\'s identifier, which ' .
-            'only means anything on a host that has that virtual IP.'
-        ),
         'id' => 'netflector',
         'section' => 'OPNsense.Netflector',
         'services' => ['netflector'],

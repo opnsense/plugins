@@ -27,8 +27,7 @@ ssdp = {{ 'true' if entry.ssdp|default('0') == '1' else 'false' }}
 dial = {{ 'true' if entry.dial|default('0') == '1' else 'false' }}
 wsd = {{ 'true' if entry.wsd|default('0') == '1' else 'false' }}
 {%       if entry.macs %}
-{#       The field keeps the spelling as typed; the daemon parses the colon form only. #}
-macs = [{% for mac in entry.macs.split(',') %}{% set hex = mac|lower|replace(':', '')|replace('-', '')|replace('.', '') %}"{{ hex[0:2] }}:{{ hex[2:4] }}:{{ hex[4:6] }}:{{ hex[6:8] }}:{{ hex[8:10] }}:{{ hex[10:12] }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+macs = [{% for mac in entry.macs.split(',') %}"{{ mac }}"{% if not loop.last %}, {% endif %}{% endfor %}]
 {%       endif %}
 address_family = "{{ entry.address_family|default('default') }}"
 {%       if entry.udp_ports %}
