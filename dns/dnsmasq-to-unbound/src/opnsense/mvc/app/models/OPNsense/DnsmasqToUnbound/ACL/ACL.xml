@@ -1,0 +1,9 @@
+<acl>
+   <page-services-dnsmasqtounbound>
+      <name>Services: Dnsmasq to Unbound</name>
+      <patterns>
+         <pattern>ui/dnsmasqtounbound/*</pattern>
+         <pattern>api/dnsmasqtounbound/*</pattern>
+      </patterns>
+   </page-services-dnsmasqtounbound>
+</acl>
