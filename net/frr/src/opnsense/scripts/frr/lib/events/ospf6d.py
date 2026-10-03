@@ -74,7 +74,11 @@ class Ospf6dEventHandler(BaseEventHandler):
             config_interfaces = self._read_config()
             for intf in config_interfaces:
                 if 'interfaces' in ospf_interfaces and intf in ospf_interfaces['interfaces']:
-                    ospf_intf_cost = ospf_interfaces['interfaces'][intf]['cost']
+                    ospf_intf_cost = ospf_interfaces['interfaces'][intf].get('cost')
+                    if ospf_intf_cost is None:
+                        # known to ospf6d, but no cost reported for it, no cost to adjust
+                        syslog.syslog(syslog.LOG_NOTICE, 'ospf6d skip interface %s (no cost reported).' % intf)
+                        continue
                     is_intf_master = self.ifstatus.address_status(config_interfaces[intf]['carp_depend_on']) == 'master'
                     is_ospf_dem = ospf_intf_cost == config_interfaces[intf]['demoted_cost']
                     if is_intf_master and is_ospf_dem:
