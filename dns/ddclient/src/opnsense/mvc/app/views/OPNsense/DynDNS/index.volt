@@ -29,65 +29,30 @@ POSSIBILITY OF SUCH DAMAGE.
 <script>
 
     $( document ).ready(function() {
-        // force refresh is offered for the enabled native backend, as configured on the settings tab
-        let forceRefreshAvailable = false;
-        function updateForceRefresh() {
-            forceRefreshAvailable = $("#ddclient\\.general\\.enabled").is(':checked') &&
-                $("#ddclient\\.general\\.backend").val() === 'opnsense';
-            $("#grid-accounts .command-force_refresh_selected").toggle(forceRefreshAvailable);
-            $("#grid-accounts").bootgrid('reload');
-        }
-
         /**
-         * force refresh the given accounts, the service updates them after restarting.
-         * wait until all accounts show a new update time, report the ones without an update after 30 seconds.
+         * force refresh the given accounts, the service writes their new state shortly after restarting.
+         * wait (max 20 seconds) until none of them shows an empty update time, then reload the grid.
          */
         function forceRefresh(uuids, $icon) {
             if (uuids.length === 0 || $icon.hasClass('fa-spin')) {
-                // nothing selected or still running
                 return;
             }
-            const accounts = function (callback) {
-                ajaxCall('/api/dyndns/accounts/search_item', {current: 1, rowCount: -1}, function (data) {
-                    let result = {};
-                    $.each(data?.rows ?? [], function (i, row) {
-                        result[row.uuid] = {description: row.description || row.hostnames, mtime: row.current_mtime};
-                    });
-                    callback(result);
-                });
-            };
-            const done = function (message, type) {
-                $icon.removeClass('fa-spin');
-                $("#grid-accounts").bootgrid('reload');
-                if (message) {
-                    stdDialogInform("{{ lang._('Force refresh') }}", message, "{{ lang._('Close') }}", undefined, type);
-                }
-            };
             $icon.addClass('fa-spin');
-            accounts(function (before) {
-                ajaxCall('/api/dyndns/accounts/force_refresh/' + uuids.join(','), {}, function (data, status) {
-                    if (status !== 'success' || data?.status !== 'ok') {
-                        done(data?.message ?? "{{ lang._('Unexpected error, see the log for details.') }}", 'danger');
-                        return;
-                    }
-                    let attempts = 15;
-                    const poll = function () {
-                        accounts(function (after) {
-                            const pending = uuids.filter(x => !after[x]?.mtime || after[x].mtime === before[x]?.mtime);
-                            if (pending.length === 0) {
-                                done();
-                            } else if (--attempts > 0) {
-                                setTimeout(poll, 2000);
-                            } else {
-                                let $msg = $('<ul class="list-unstyled"/>');
-                                pending.forEach(x => $msg.append($('<li/>').append($('<b/>').text(after[x]?.description || x))
-                                    .append(': ' + "{{ lang._('no update received, see the log for details.') }}")));
-                                done($msg, 'warning');
-                            }
-                        });
-                    };
-                    setTimeout(poll, 2000);
-                });
+            ajaxCall('/api/dyndns/accounts/force_refresh/' + uuids.join(','), {}, function (data, status) {
+                // on error (reported by the generic error dialog) stop right away
+                let attempts = status === 'success' ? 10 : 0;
+                const poll = function () {
+                    ajaxCall('/api/dyndns/accounts/search_item', {current: 1, rowCount: -1}, function (data) {
+                        const pending = (data?.rows ?? []).some(row => uuids.includes(row.uuid) && !row.current_mtime);
+                        if (pending && --attempts > 0) {
+                            setTimeout(poll, 2000);
+                        } else {
+                            $icon.removeClass('fa-spin');
+                            $('#grid-accounts').bootgrid('reload');
+                        }
+                    });
+                };
+                poll();
             });
         }
 
@@ -104,7 +69,7 @@ POSSIBILITY OF SUCH DAMAGE.
                             forceRefresh([$(this).data('row-id')], $(this).find('span'));
                         },
                         filter: function (cell) {
-                            return forceRefreshAvailable && cell.getData().enabled === '1';
+                            return cell.getData().enabled === '1';
                         },
                         classname: 'fa fa-fw fa-refresh',
                         title: "{{ lang._('Force refresh') }}",
@@ -118,10 +83,7 @@ POSSIBILITY OF SUCH DAMAGE.
                         title: "{{ lang._('Force refresh selected') }}",
                         footer: true,
                         primary: true,
-                        sequence: 350,
-                        onRendered: function () {
-                            this.toggle(forceRefreshAvailable);
-                        }
+                        sequence: 350
                     }
                 }
             }
@@ -131,7 +93,6 @@ POSSIBILITY OF SUCH DAMAGE.
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
             updateServiceControlUI('dyndns');
-            updateForceRefresh();
         });
 
         $("#reconfigureAct").SimpleActionButton({
@@ -144,7 +105,6 @@ POSSIBILITY OF SUCH DAMAGE.
           },
           onAction: function(data, status) {
               updateServiceControlUI('dyndns');
-              updateForceRefresh();
           }
         });
         $("#account\\.service").change(function(){

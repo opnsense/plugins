@@ -31,6 +31,7 @@
 namespace OPNsense\DynDNS\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\UserException;
 use OPNsense\Core\Backend;
 
 class AccountsController extends ApiMutableModelControllerBase
@@ -83,8 +84,8 @@ class AccountsController extends ApiMutableModelControllerBase
     }
 
     /**
-     * Force refresh the given accounts (native backend): their cached state is cleared while the service is
-     * stopped, after which the service updates them on startup. The grid shows the outcome per account.
+     * Force refresh the given accounts (native backend): their cached state is reset and the service restarted,
+     * after which the service updates them on startup. The grid shows the outcome per account.
      * @param string $uuids comma separated list of account uuids
      * @return array status
      */
@@ -94,41 +95,16 @@ class AccountsController extends ApiMutableModelControllerBase
         if (!$this->request->isPost()) {
             return $result;
         }
-        $mdl = $this->getModel();
-        $enabled = [];
-        foreach ($mdl->accounts->account->iterateItems() as $uuid => $account) {
-            if (!empty((string)$account->enabled)) {
-                $enabled[] = $uuid;
-            }
+        $general = $this->getModel()->general;
+        if (empty((string)$general->enabled) || (string)$general->backend != 'opnsense') {
+            throw new UserException(gettext('Force refresh requires the native backend to be enabled.'));
         }
-        $uuids = array_values(array_unique(array_filter(explode(',', (string)$uuids))));
-        if (empty((string)$mdl->general->enabled) || (string)$mdl->general->backend != 'opnsense') {
-            $result['message'] = gettext('Force refresh requires the native backend to be enabled.');
-        } elseif (empty($uuids) || !empty(array_diff($uuids, $enabled))) {
-            // only existing, enabled accounts
-            $result['message'] = gettext('Invalid account.');
-        } else {
-            $backend = new Backend();
-            $backend->configdRun('ddclient stop');
-            $cleared = trim($backend->configdpRun('ddclient force_refresh', [implode(',', $uuids)])) == 'OK';
-            // always start the service again, also when clearing failed
-            $backend->configdRun('ddclient start');
-            // the service reports running shortly after start returns, allow it up to 10 seconds
-            $running = false;
-            for ($retries = 10; !$running && $retries > 0; $retries--) {
-                $running = strpos($backend->configdRun('ddclient status'), 'is running') !== false;
-                if (!$running) {
-                    sleep(1);
-                }
-            }
-            if (!$cleared) {
-                $result['message'] = gettext('Unable to clear the cached state, see the log for details.');
-            } elseif (!$running) {
-                $result['message'] = gettext('The Dynamic DNS service did not start, see the log for details.');
-            } else {
-                $result['status'] = 'ok';
-            }
+        $backend = new Backend();
+        if (trim($backend->configdpRun('ddclient force_refresh', [(string)$uuids])) != 'OK') {
+            throw new UserException(gettext('Unable to reset the cached state, see the log for details.'));
         }
+        $backend->configdRun('ddclient restart');
+        $result['status'] = 'ok';
         return $result;
     }
 }

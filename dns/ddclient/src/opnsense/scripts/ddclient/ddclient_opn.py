@@ -34,8 +34,8 @@ sys.path.insert(0, "/usr/local/opnsense/site-python")
 from daemonize import Daemonize
 
 
-def clear_state(filename, account_ids):
-    """ forget the cached state of the given accounts, so the poller updates them on its next run
+def reset_state(filename, account_ids):
+    """ reset the cached state of the given accounts, so the poller updates them on its next run
     """
     with open(filename, 'a+') as fhandle:
         fcntl.flock(fhandle, fcntl.LOCK_EX)
@@ -60,12 +60,12 @@ if __name__ == '__main__':
     parser.add_argument('-f', '--foreground', help='run (log) in foreground', default=False, action='store_true')
     parser.add_argument('-l', '--list', help='list known services and exit', default=False, action='store_true')
     parser.add_argument('-p', '--pid', help='pid file location', default='/var/run/ddclient_opn.pid')
-    parser.add_argument('--clear-state', help='forget the cached state of these accounts (comma separated) and exit')
+    parser.add_argument('-r', '--reset-state', help='reset the cached state of these accounts (comma separated) and exit')
     inputargs = parser.parse_args()
     if inputargs.list:
         print(json.dumps(AccountFactory().known_services()))
-    elif inputargs.clear_state is not None:
-        clear_state(inputargs.status, inputargs.clear_state.split(','))
+    elif inputargs.reset_state is not None:
+        reset_state(inputargs.status, inputargs.reset_state.split(','))
     else:
         cmd = lambda : Poller(inputargs.config, inputargs.status)
         daemon = Daemonize(app="ddclient", pid=inputargs.pid, action=cmd, foreground=inputargs.foreground)
