@@ -61,11 +61,11 @@ class OspfdEventHandler(BaseEventHandler):
             config_interfaces = self._read_config()
             for intf in config_interfaces:
                 if 'interfaces' in ospf_interfaces and intf in ospf_interfaces['interfaces']:
-                    ospf_intf_cost = ospf_interfaces['interfaces'][intf].get('cost')
-                    if ospf_intf_cost is None:
-                        # known to ospfd, but ospf is not running on it (e.g. interface down), no cost to adjust
+                    if not ospf_interfaces['interfaces'][intf].get('ospfRunning', True):
+                        # ospf is enabled on this interface, but not running (interface down), no cost to adjust
                         syslog.syslog(syslog.LOG_NOTICE, 'ospfd skip interface %s (ospf not running).' % intf)
                         continue
+                    ospf_intf_cost = ospf_interfaces['interfaces'][intf]['cost']
                     is_intf_master = self.ifstatus.address_status(config_interfaces[intf]['carp_depend_on']) == 'master'
                     is_ospf_dem = ospf_intf_cost == config_interfaces[intf]['demoted_cost']
                     if is_intf_master and is_ospf_dem:
