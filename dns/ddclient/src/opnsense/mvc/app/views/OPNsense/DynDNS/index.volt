@@ -37,6 +37,9 @@ POSSIBILITY OF SUCH DAMAGE.
             if (uuids.length === 0 || $icon.hasClass('fa-spin')) {
                 return;
             }
+            // also spin the row icons of the requested accounts, the grid is only reloaded when done
+            const rows = uuids.map(uuid => '#grid-accounts .command-force_refresh[data-row-id="' + uuid + '"] span');
+            $icon = $icon.add(rows.join(','));
             $icon.addClass('fa-spin');
             ajaxCall('/api/dyndns/accounts/force_refresh/' + uuids.join(','), {}, function (data, status) {
                 // on error (reported by the generic error dialog) stop right away
