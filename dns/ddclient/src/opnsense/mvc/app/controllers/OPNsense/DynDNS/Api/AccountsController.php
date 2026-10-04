@@ -84,7 +84,7 @@ class AccountsController extends ApiMutableModelControllerBase
     }
 
     /**
-     * Force refresh the given accounts (native backend): their cached state is reset and the service restarted,
+     * Force refresh the given accounts (native backend): their cached state is reset while the service is stopped,
      * after which the service updates them on startup. The grid shows the outcome per account.
      * @param string $uuids comma separated list of account uuids
      * @return array status
@@ -99,11 +99,14 @@ class AccountsController extends ApiMutableModelControllerBase
         if (empty((string)$general->enabled) || (string)$general->backend != 'opnsense') {
             throw new UserException(gettext('Force refresh requires the native backend to be enabled.'));
         }
+        // reset while the service is stopped, so it can't write its previous state back in between
         $backend = new Backend();
-        if (trim($backend->configdpRun('ddclient force_refresh', [(string)$uuids])) != 'OK') {
+        $backend->configdRun('ddclient stop');
+        $reset = trim($backend->configdpRun('ddclient force_refresh', [(string)$uuids])) == 'OK';
+        $backend->configdRun('ddclient start');
+        if (!$reset) {
             throw new UserException(gettext('Unable to reset the cached state, see the log for details.'));
         }
-        $backend->configdRun('ddclient restart');
         $result['status'] = 'ok';
         return $result;
     }
