@@ -72,10 +72,27 @@ class TorCTL
   def send_query(str)
     @tor.puts(str)
     ret = ''
-    while (data = @tor.gets&.strip) && (!data.start_with? "250 ")
+    in_data = false
+    while (data = @tor.gets&.strip)
+      # Inside a "250+key=" multiline reply, raw data lines are not prefixed
+      # with a status code and must not be run through the code-stripping
+      # logic below: a circuit-status/stream-status line legitimately starts
+      # with a numeric circuit/stream ID (e.g. "336 BUILT ..."), and once
+      # that ID reaches 100-999 it looks exactly like a 3-digit Tor control
+      # status code, so the code was misparsed as a status line and the ID
+      # got dropped -- collapsing every circuit onto hash key 0 downstream.
+      if in_data
+        ret << data + "\n"
+        in_data = false if data == '.'
+        next
+      end
+      break if data.start_with? "250 "
       begin
         res = data.scan(/^(\d{3})(.*)$/).first
         if res[1][0] == '-'
+          ret << res[1][1..-1] + "\n"
+        elsif res[1][0] == '+'
+          in_data = true
           ret << res[1][1..-1] + "\n"
         else
           ret << res[1] + "\n"
