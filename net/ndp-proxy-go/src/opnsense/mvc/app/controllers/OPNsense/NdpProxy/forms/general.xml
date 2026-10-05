@@ -21,6 +21,10 @@
         <label>Proxy Settings</label>
     </field>
     <field>
+        <type>subheader</type>
+        <label>Upstream</label>
+    </field>
+    <field>
         <id>ndpproxy.general.upstream</id>
         <label>Upstream interface</label>
         <type>dropdown</type>
@@ -31,6 +35,10 @@
         <label>Respond to prefixes</label>
         <type>checkbox</type>
         <help>Respond to unknown upstream Neighbor Solicitations for addresses within learned or static prefixes after a WAN-side DAD check. This is useful for NPTv6 and generally needs no downstream interfaces. It can also be combined with downstream proxying; claimed addresses become normally learned hosts when seen downstream. The option is a no-op on point-to-point upstreams.</help>
+    </field>
+    <field>
+        <type>subheader</type>
+        <label>Downstream</label>
     </field>
     <field>
         <id>ndpproxy.general.downstream</id>
