@@ -15,6 +15,8 @@ Plugin Changelog
 
 * Report failed configuration reloads and include frr-reload.log in the log file (debug level) (d8d9b66e0)
 * Generate automatic firewall rules for enabled OSPF, OSPFv3, BGP, BFD, and RIP services (d701990c6)
+* Diagnostics: Avoid undefined router ID errors when BGP is disabled (4a4342732)
+* Diagnostics: Prevent modal styles from affecting other dialogs (d0681b300)
 * BGP: Move peer group policies into address family configuration (9577062f5)
 * BGP: Replace the neighbor Multi-Protocol toggle with explicit address family selection (f7a268594)
 * BGP: Avoid rendering empty remote-as commands for peer groups (4f95c4fd2)
