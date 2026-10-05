@@ -27,10 +27,16 @@
         <help>Choose the upstream interface which receives the external IPv6 prefix from the ISP. Usually, this is the WAN interface. Ethernet interfaces are fully supported, point-to-point (PPPoE) devices are experimental.</help>
     </field>
     <field>
+        <id>ndpproxy.general.respond_prefix</id>
+        <label>Respond to prefixes</label>
+        <type>checkbox</type>
+        <help>Respond to unknown upstream Neighbor Solicitations for addresses within learned or static prefixes after a WAN-side DAD check. This is useful for NPTv6 and generally needs no downstream interfaces. It can also be combined with downstream proxying; claimed addresses become normally learned hosts when seen downstream. The option is a no-op on point-to-point upstreams.</help>
+    </field>
+    <field>
         <id>ndpproxy.general.downstream</id>
         <label>Downstream interfaces</label>
         <type>select_multiple</type>
-        <help>Choose one or multiple downstream interfaces which should proxy the upstream IPv6 prefix. Only ethernet interfaces are supported.</help>
+        <help>Leave empty for WAN-only operation, or choose one or more downstream interfaces which should proxy the upstream IPv6 prefix. Only ethernet interfaces are supported.</help>
     </field>
     <field>
         <id>ndpproxy.general.ra</id>
@@ -50,7 +56,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help>Manually trust an IPv6 prefix for downstream learning. This is only needed in static IPv6 provider networks without usable RA information on the upstream interface.</help>
+        <help>Manually trust an IPv6 prefix for downstream learning and prefix responding. This is only needed in static IPv6 provider networks without usable RA information on the upstream interface.</help>
         <advanced>true</advanced>
     </field>
     <field>
