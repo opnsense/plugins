@@ -11,7 +11,7 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
-1.60
+2.0
 
 * Report failed configuration reloads and include frr-reload.log in the log file (debug level)
 * BGP: Move peer group policies into address family configuration
