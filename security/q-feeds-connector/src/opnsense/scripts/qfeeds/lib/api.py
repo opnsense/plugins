@@ -29,10 +29,14 @@ import requests
 from configparser import ConfigParser
 
 
+class ApiException(Exception):
+    pass
+
 class QFeedsConfig:
     config_filename = '/usr/local/etc/qfeeds.conf'
     conf_timestamp = None
     api_key = None
+    fw_aliases = {}
 
     def __init__(self):
         if os.path.isfile(self.config_filename):
@@ -44,6 +48,13 @@ class QFeedsConfig:
             if self.conf_timestamp is None:
                 QFeedsConfig.conf_timestamp = os.stat(self.config_filename).st_mtime
 
+            for section in cnf.sections():
+                if section.startswith('pf-table-'):
+                    self.fw_aliases[cnf.get(section, 'name')] = {
+                        'include': cnf.get(section, 'include', fallback=''),
+                        'exclude': cnf.get(section, 'exclude', fallback='')
+                    }
+
     @classmethod
     def has_changed(cls):
         return os.path.isfile(cls.config_filename) and cls.conf_timestamp != os.stat(cls.config_filename).st_mtime
@@ -54,14 +65,17 @@ class Api:
         self.api_key = QFeedsConfig().api_key
 
     def licenses(self):
-        r = requests.get(
-            url='https://api.qfeeds.com/licenses.php',
-            auth=('api_token', self.api_key),
-            timeout=60,
-            headers={'User-Agent': 'Q-Feeds_OPNsense'}
-        )
-        r.raise_for_status()
-        return r.json()
+        if self.api_key:
+            r = requests.get(
+                url='https://api.qfeeds.com/licenses.php',
+                auth=('api_token', self.api_key),
+                timeout=60,
+                headers={'User-Agent': 'Q-Feeds_OPNsense'}
+            )
+            r.raise_for_status()
+            return r.json()
+        else:
+            raise ApiException('Missing API key')
 
     def fetch(self, feed):
         r = requests.get(

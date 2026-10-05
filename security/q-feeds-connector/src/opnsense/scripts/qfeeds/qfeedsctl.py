@@ -33,7 +33,7 @@ import sys
 import ujson
 from requests.exceptions import HTTPError, Timeout
 from lib import QFeedsActions
-from lib.api import QFeedsConfig
+from lib.api import QFeedsConfig, ApiException
 
 
 if __name__ == '__main__':
@@ -83,6 +83,9 @@ if __name__ == '__main__':
         sys.exit(-1)
     except ujson.JSONDecodeError:
         print("JSON decode error")
+        sys.exit(-1)
+    except ApiException as e:
+        print("Api error [%s]" % e)
         sys.exit(-1)
     finally:
         if fhandle:

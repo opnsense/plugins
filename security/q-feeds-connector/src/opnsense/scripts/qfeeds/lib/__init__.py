@@ -25,10 +25,11 @@
 """
 import os
 import subprocess
+import tempfile
 import time
 import ujson
 from datetime import datetime, UTC
-from lib.api import Api
+from lib.api import Api, QFeedsConfig
 from lib.db import DB
 from lib.log import PFLogCrawler
 from lib.file import LockedFile
@@ -119,20 +120,56 @@ class QFeedsActions:
                 yield "skipped %s [%s]" % (feed['local_filename'], feed['updated_at'])
 
     def firewall_load(self):
+        fhandles = {}
+        conf = QFeedsConfig()
         for feed in self.index.get('feeds', []):
             if feed['licensed'] and os.path.exists(feed['local_filename']) and feed['type'] == 'ip':
                 with open(feed['local_filename'], 'r') as f_in:
                     data = ujson.load(f_in)
-                    if type(data) is dict and data.get('iocs'):
-                        payload = "\n".join(data['iocs'].keys())
-                        table_name = '__qfeeds_%s' % feed['feed_type']
-                        sp = subprocess.run(
-                            ['/sbin/pfctl', '-t', table_name, '-T', 'replace', '-f', '/dev/stdin'],
-                            input=payload,
-                            capture_output=True,
-                            text=True
-                        )
-                        yield 'load feed %s [%s]' % (feed['feed_type'], sp.stderr.strip().replace("\n", " "))
+                    if type(data) is not dict or not data.get('iocs'):
+                        continue
+                    # XXX: default alias, might be optional when items are defined in "Firewall aliases"
+                    table_name = '__qfeeds_%s' % feed['feed_type']
+                    fhandles[table_name] = tempfile.TemporaryFile('a+')
+                    fhandles[table_name].write("\n".join(data['iocs'].keys()))
+                    # construct meta map
+                    meta_map = {}
+                    for _, meta_items in data.get('meta', {}).items():
+                        for meta_name, meta_opts in meta_items.items():
+                            if type(meta_opts.get('id')) is int:
+                                meta_map[meta_name] = meta_opts.get('id')
+
+                    # flush all configured aliases to temp
+                    for table_name, conf_opts in conf.fw_aliases.items():
+                        if table_name not in fhandles:
+                            fhandles[table_name] = tempfile.TemporaryFile('a+')
+                        this_inc = set()
+                        this_excl = set()
+                        for item in conf_opts['include'].split(','):
+                            if item in meta_map:
+                                this_inc.add(meta_map[item])
+                        for item in conf_opts['exclude'].split(','):
+                            if item in meta_map:
+                                this_excl.add(meta_map[item])
+
+                        for ioc, ioc_meta in data['iocs'].items():
+                            if len(this_inc) > 0 and len(set(ioc_meta.get('m', [])) & this_inc) == 0:
+                                continue # include selected
+                            if len(set(ioc_meta.get('m', [])) & this_excl) > 0:
+                                continue # exclude selected
+                            fhandles[table_name].write("%s\n"%ioc)
+
+        # dump all collected aliases
+        for table_name, fhandle in fhandles.items():
+            fhandle.seek(0)
+            sp = subprocess.run(
+                ['/sbin/pfctl', '-t', table_name, '-T', 'replace', '-f', '/dev/stdin'],
+                input=fhandle.read(),
+                capture_output=True,
+                text=True
+            )
+
+            yield 'load feed %s [%s]' % (table_name, sp.stderr.strip().replace("\n", " "))
 
     def unbound_load(self):
         bl_conf = '/usr/local/etc/unbound/qfeeds-blocklists.conf'
