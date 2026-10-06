@@ -29,13 +29,66 @@ POSSIBILITY OF SUCH DAMAGE.
 <script>
 
     $( document ).ready(function() {
+        /**
+         * force refresh the given accounts, the service writes their new state shortly after restarting.
+         * wait (max 20 seconds) until none of them shows an empty update time, then reload the grid.
+         */
+        function forceRefresh(uuids, $icon) {
+            if (uuids.length === 0 || $icon.hasClass('fa-spin')) {
+                return;
+            }
+            // also spin the row icons of the requested accounts, the grid is only reloaded when done
+            const rows = uuids.map(uuid => '#grid-accounts .command-force_refresh[data-row-id="' + uuid + '"] span');
+            $icon = $icon.add(rows.join(','));
+            $icon.addClass('fa-spin');
+            ajaxCall('/api/dyndns/accounts/force_refresh/' + uuids.join(','), {}, function (data, status) {
+                // on error (reported by the generic error dialog) stop right away
+                let attempts = status === 'success' ? 10 : 0;
+                const poll = function () {
+                    ajaxCall('/api/dyndns/accounts/search_item', {current: 1, rowCount: -1}, function (data) {
+                        const pending = (data?.rows ?? []).some(row => uuids.includes(row.uuid) && !row.current_mtime);
+                        if (pending && --attempts > 0) {
+                            setTimeout(poll, 2000);
+                        } else {
+                            $icon.removeClass('fa-spin');
+                            $('#grid-accounts').bootgrid('reload');
+                        }
+                    });
+                };
+                poll();
+            });
+        }
+
         $("#grid-accounts").UIBootgrid(
             {   search:'/api/dyndns/accounts/search_item',
                 get:'/api/dyndns/accounts/get_item/',
                 set:'/api/dyndns/accounts/set_item/',
                 add:'/api/dyndns/accounts/add_item/',
                 del:'/api/dyndns/accounts/del_item/',
-                toggle:'/api/dyndns/accounts/toggle_item/'
+                toggle:'/api/dyndns/accounts/toggle_item/',
+                commands: {
+                    force_refresh: {
+                        method: function () {
+                            forceRefresh([$(this).data('row-id')], $(this).find('span'));
+                        },
+                        filter: function (cell) {
+                            return cell.getData().enabled === '1';
+                        },
+                        classname: 'fa fa-fw fa-refresh',
+                        title: "{{ lang._('Force refresh') }}",
+                        sequence: 50
+                    },
+                    force_refresh_selected: {
+                        method: function () {
+                            forceRefresh($("#grid-accounts").bootgrid('getSelectedRows'), $(this).find('span'));
+                        },
+                        classname: 'fa fa-fw fa-refresh',
+                        title: "{{ lang._('Force refresh selected') }}",
+                        footer: true,
+                        primary: true,
+                        sequence: 350
+                    }
+                }
             }
         );
         let data_get_map = {'frm_settings':"/api/dyndns/settings/get"};
@@ -111,7 +164,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 <th data-column-id="current_ip" data-type="string">{{ lang._('Current IP') }}</th>
                 <th data-column-id="current_mtime" data-type="string">{{ lang._('Updated') }}</th>
                 <th data-column-id="description" data-type="string">{{ lang._('Description') }}</th>
-                <th data-column-id="commands" data-width="7em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="commands" data-width="9em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
             </thead>
             <tbody>

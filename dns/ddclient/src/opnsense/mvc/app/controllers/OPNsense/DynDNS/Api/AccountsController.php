@@ -31,6 +31,7 @@
 namespace OPNsense\DynDNS\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\UserException;
 use OPNsense\Core\Backend;
 
 class AccountsController extends ApiMutableModelControllerBase
@@ -80,5 +81,33 @@ class AccountsController extends ApiMutableModelControllerBase
     public function toggleItemAction($uuid, $enabled = null)
     {
         return $this->toggleBase("accounts.account", $uuid, $enabled);
+    }
+
+    /**
+     * Force refresh the given accounts (native backend): their cached state is reset while the service is stopped,
+     * after which the service updates them on startup. The grid shows the outcome per account.
+     * @param string $uuids comma separated list of account uuids
+     * @return array status
+     */
+    public function forceRefreshAction($uuids = null)
+    {
+        $result = ['status' => 'failed'];
+        if (!$this->request->isPost()) {
+            return $result;
+        }
+        $general = $this->getModel()->general;
+        if (empty((string)$general->enabled) || (string)$general->backend != 'opnsense') {
+            throw new UserException(gettext('Force refresh requires the native backend to be enabled.'));
+        }
+        // reset while the service is stopped, so it can't write its previous state back in between
+        $backend = new Backend();
+        $backend->configdRun('ddclient stop');
+        $reset = trim($backend->configdpRun('ddclient force_refresh', [(string)$uuids])) == 'OK';
+        $backend->configdRun('ddclient start');
+        if (!$reset) {
+            throw new UserException(gettext('Unable to reset the cached state, see the log for details.'));
+        }
+        $result['status'] = 'ok';
+        return $result;
     }
 }
