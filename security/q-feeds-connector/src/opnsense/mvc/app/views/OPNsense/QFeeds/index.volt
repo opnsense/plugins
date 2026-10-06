@@ -111,6 +111,47 @@ POSSIBILITY OF SUCH DAMAGE.
             }
         });
 
+        /* Firewall aliases dropdown expansions (hide selectors and add one per category) */
+        $("select.optgrp_expand").change(function(){
+            let update_target = $(this);
+            let this_id = $(this).attr('id').replaceAll('.','_');
+            let container = $(this).closest('td');
+            let is_loading = !container.is(':visible');
+            if (is_loading) {
+                if (container.find('div.option-groups').length == 0) {
+                    container.find('div').addClass('hidden');
+                    container.prepend($("<div class='option-groups'>"));
+                }
+                container = container.find('div.option-groups');
+                container.empty();
+                let selected_opts = $(this).val();
+                $(this).find('optgroup').each(function(){
+                    let grp = $(this).attr('label');
+                    let grpid = this_id + '_' + grp;
+                    let frmgroup = $("<div class='form-group'>");
+                    frmgroup.append($('<label for="'+grpid+'">').text(grp));
+                    let this_select = $('<select id="'+grpid+'" multiple=multiple class="select_group">');
+                    let grpopts = [];
+                    $(this).find('option').each(function() {
+                        this_select.append($("<option>").val($(this).val()).text($(this).text()));
+                        if (selected_opts.includes($(this).val())) {
+                            grpopts.push($(this).val());
+                        }
+                    });
+                    frmgroup.append(this_select);
+                    container.append(frmgroup);
+                    this_select.val(grpopts).selectpicker();
+                    this_select.change(function(){
+                        let set_values = [];
+                        update_target.closest('td').find('select.select_group').each(function(){
+                            set_values = set_values.concat($(this).val());
+                        });
+                        update_target.val(set_values);
+                    });
+                });
+            }
+        });
+
         $("#connect\\.general\\.enable_unbound_bl").change(function(){
             if ($(this).is(':checked')) {
                 $(".unbound_options").closest('table').show();
@@ -130,6 +171,12 @@ POSSIBILITY OF SUCH DAMAGE.
 
     });
 </script>
+
+<style>
+    .form-group {
+        margin-bottom: 0px;
+    }
+</style>
 
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li><a data-toggle="tab" href="#settings" id="settings_tab">{{ lang._('Settings') }}</a></li>

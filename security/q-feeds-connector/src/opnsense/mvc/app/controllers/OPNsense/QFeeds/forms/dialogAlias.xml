@@ -9,12 +9,14 @@
         <id>alias.include</id>
         <label>Include tags</label>
         <type>select_multiple</type>
+        <style>optgrp_expand</style>
         <help>Select the classes to include (none selects all).</help>
     </field>
     <field>
         <id>alias.exclude</id>
         <label>Exclude tags</label>
         <type>select_multiple</type>
+        <style>optgrp_expand</style>
         <help>Select the classes to exclude when found in the set.</help>
     </field>
 </form>
