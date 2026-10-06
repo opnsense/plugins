@@ -43,4 +43,10 @@ class IndexController extends \OPNsense\Base\IndexController
         $this->view->instance_settings = $this->getForm("instance_settings");
         $this->view->pick('OPNsense/iperf/index');
     }
+
+    public function clientAction()
+    {
+        $this->view->clientForm = $this->getForm("client");
+        $this->view->pick('OPNsense/iperf/client');
+    }
 }

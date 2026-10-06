@@ -1,0 +1,42 @@
+<form>
+   <field>
+      <id>client.settings.server</id>
+      <label>Server</label>
+      <type>text</type>
+      <help>Hostname or address of the iperf3 server.</help>
+   </field>
+   <field>
+      <id>client.settings.port</id>
+      <label>Port</label>
+      <type>text</type>
+      <help>Public servers often run one test at a time per port, try another port when the server is busy.</help>
+   </field>
+   <field>
+      <id>client.settings.interface</id>
+      <label>Source interface</label>
+      <type>dropdown</type>
+      <help>Use the IPv4 address of this interface as source address (-B). The routing table still selects the outgoing interface.</help>
+   </field>
+   <field>
+      <id>client.settings.protocol</id>
+      <label>Protocol</label>
+      <type>dropdown</type>
+   </field>
+   <field>
+      <id>client.settings.parallel</id>
+      <label>Parallel streams</label>
+      <type>text</type>
+   </field>
+   <field>
+      <id>client.settings.reverse</id>
+      <label>Reverse</label>
+      <type>checkbox</type>
+      <help>Let the server send, to measure the download direction.</help>
+   </field>
+   <field>
+      <id>client.settings.duration</id>
+      <label>Duration</label>
+      <type>text</type>
+      <help>Test duration in seconds. A test still running 30 seconds after this time is stopped.</help>
+   </field>
+</form>
