@@ -1,0 +1,160 @@
+<model>
+    <mount>//OPNsense/Netflector</mount>
+    <version>1.0.0</version>
+    <description>Netflector settings</description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <log_level type="OptionField">
+                <Default>info</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <off>Off</off>
+                    <error>Error</error>
+                    <warn>Warning</warn>
+                    <info>Info</info>
+                    <debug>Debug</debug>
+                </OptionValues>
+            </log_level>
+            <carp_depend_on type="VirtualIPField">
+                <type>carp</type>
+                <key>mvc</key>
+            </carp_depend_on>
+            <counters_interval_secs type="IntegerField">
+                <Default>0</Default>
+                <Required>Y</Required>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>86400</MaximumValue>
+                <ValidationMessage>The counter interval must be between 0 and 86400 seconds, where 0 disables the summary.</ValidationMessage>
+            </counters_interval_secs>
+        </general>
+        <reflectors>
+            <reflector type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^[0-9a-zA-Z_-]{1,32}$/u</Mask>
+                    <ValidationMessage>The name identifies the reflector in the log and in the generated configuration. Use 1 to 32 letters, digits, dashes or underscores.</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <type>UniqueConstraint</type>
+                            <caseInsensitive>Y</caseInsensitive>
+                            <ValidationMessage>This name is already used. Names are compared case-insensitive.</ValidationMessage>
+                        </check001>
+                    </Constraints>
+                </name>
+                <source_if type="InterfaceField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Select the interface to listen on.</ValidationMessage>
+                </source_if>
+                <target_if type="InterfaceField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Select the interface to re-emit on.</ValidationMessage>
+                </target_if>
+                <bidirectional type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </bidirectional>
+                <wol type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                    <Constraints>
+                        <check001>
+                            <type>DependConstraint</type>
+                            <addFields>
+                                <field1>wol_ports</field1>
+                            </addFields>
+                            <ValidationMessage>Wake-on-LAN ports only apply when Wake-on-LAN is enabled.</ValidationMessage>
+                        </check001>
+                    </Constraints>
+                </wol>
+                <mdns type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </mdns>
+                <ssdp type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                    <Constraints>
+                        <check001>
+                            <type>DependConstraint</type>
+                            <addFields>
+                                <field1>dial</field1>
+                            </addFields>
+                            <ValidationMessage>The DIAL proxy needs SSDP enabled.</ValidationMessage>
+                        </check001>
+                    </Constraints>
+                </ssdp>
+                <dial type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </dial>
+                <wsd type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </wsd>
+                <macs type="MacAddressField">
+                    <AsList>Y</AsList>
+                    <ValidationMessage>Enter one or more MAC addresses to scope this reflector to specific devices. Leave empty to reflect for the whole network.</ValidationMessage>
+                </macs>
+                <wol_ports type=".\PortListField">
+                    <AsList>Y</AsList>
+                    <ValidationMessage>Enter the UDP ports magic packets arrive on, as numbers between 1 and 65535. The daemon defaults to 7 and 9.</ValidationMessage>
+                </wol_ports>
+                <udp_ports type=".\PortListField">
+                    <AsList>Y</AsList>
+                    <ValidationMessage>Enter the UDP ports to relay, as numbers between 1 and 65535.</ValidationMessage>
+                    <Constraints>
+                        <check001>
+                            <type>DependConstraint</type>
+                            <addFields>
+                                <field1>udp_groups</field1>
+                                <field2>udp_broadcast</field2>
+                            </addFields>
+                            <ValidationMessage>Groups and broadcasts only apply when relay ports are set.</ValidationMessage>
+                        </check001>
+                    </Constraints>
+                </udp_ports>
+                <udp_groups type="NetworkField">
+                    <AsList>Y</AsList>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <WildcardEnabled>N</WildcardEnabled>
+                    <ValidationMessage>Enter the multicast groups to relay, as IPv4 or IPv6 addresses.</ValidationMessage>
+                </udp_groups>
+                <udp_broadcast type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </udp_broadcast>
+                <source_peers type="NetworkField">
+                    <AsList>Y</AsList>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <WildcardEnabled>N</WildcardEnabled>
+                    <ValidationMessage>Enter the hosts behind the source interface, as IPv4 or IPv6 addresses without a prefix length.</ValidationMessage>
+                </source_peers>
+                <target_peers type="NetworkField">
+                    <AsList>Y</AsList>
+                    <NetMaskAllowed>N</NetMaskAllowed>
+                    <WildcardEnabled>N</WildcardEnabled>
+                    <ValidationMessage>Enter the hosts behind the target interface, as IPv4 or IPv6 addresses without a prefix length.</ValidationMessage>
+                </target_peers>
+                <address_family type="OptionField">
+                    <Default>default</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <option value="default">Default (IPv4 required, IPv6 best-effort)</option>
+                        <dual>Dual (IPv4 and IPv6, both required)</dual>
+                        <ipv4>IPv4 only</ipv4>
+                        <ipv6>IPv6 only</ipv6>
+                    </OptionValues>
+                </address_family>
+                <description type="DescriptionField"/>
+            </reflector>
+        </reflectors>
+    </items>
+</model>

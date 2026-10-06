@@ -189,46 +189,42 @@
                     </OptionValues>
                     <Multiple>Y</Multiple>
                 </capabilities>
-                <linkedPrefixlistIn type="ModelRelationField">
+                <linkedPrefixlistIn type=".\GroupedModelRelationField">
                     <Model>
                         <prefixlists>
                             <source>OPNsense.quagga.bgp</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name,seqnumber</display>
-                            <display_format>%s:%s</display_format>
+                            <display>name</display>
                         </prefixlists>
                     </Model>
                     <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
                 </linkedPrefixlistIn>
-                <linkedPrefixlistOut type="ModelRelationField">
+                <linkedPrefixlistOut type=".\GroupedModelRelationField">
                     <Model>
                         <prefixlists>
                             <source>OPNsense.quagga.bgp</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name,seqnumber</display>
-                            <display_format>%s:%s</display_format>
+                            <display>name</display>
                         </prefixlists>
                     </Model>
                     <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
                 </linkedPrefixlistOut>
-                <linkedRoutemapIn type="ModelRelationField">
+                <linkedRoutemapIn type=".\GroupedModelRelationField">
                     <Model>
                         <routemaps>
                             <source>OPNsense.quagga.bgp</source>
                             <items>routemaps.routemap</items>
-                            <display>name,id</display>
-                            <display_format>%s:%s</display_format>
+                            <display>name</display>
                         </routemaps>
                     </Model>
                     <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
                 </linkedRoutemapIn>
-                <linkedRoutemapOut type="ModelRelationField">
+                <linkedRoutemapOut type=".\GroupedModelRelationField">
                     <Model>
                         <routemaps>
                             <source>OPNsense.quagga.bgp</source>
                             <items>routemaps.routemap</items>
-                            <display>name,id</display>
-                            <display_format>%s:%s</display_format>
+                            <display>name</display>
                         </routemaps>
                     </Model>
                     <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
@@ -361,37 +357,34 @@
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
                 </id>
-                <match type="ModelRelationField">
+                <match type=".\GroupedModelRelationField">
                     <Model>
                         <aspaths>
                             <source>OPNsense.quagga.bgp</source>
                             <items>aspaths.aspath</items>
-                            <display>name,description</display>
-                            <display_format>%s %s</display_format>
+                            <display>number</display>
                         </aspaths>
                     </Model>
                     <ValidationMessage>Related item not found.</ValidationMessage>
                     <Multiple>Y</Multiple>
                 </match>
-                <match2 type="ModelRelationField">
+                <match2 type=".\GroupedModelRelationField">
                     <Model>
                         <prefixlists>
                             <source>OPNsense.quagga.bgp</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name,seqnumber</display>
-                            <display_format>%s:%s</display_format>
+                            <display>name</display>
                         </prefixlists>
                     </Model>
                     <ValidationMessage>Related item PrefixList not found.</ValidationMessage>
                     <Multiple>Y</Multiple>
                 </match2>
-                <match3 type="ModelRelationField">
+                <match3 type=".\GroupedModelRelationField">
                     <Model>
                         <communitylists>
                             <source>OPNsense.quagga.bgp</source>
                             <items>communitylists.communitylist</items>
-                            <display>name,description</display>
-                            <display_format>%s %s</display_format>
+                            <display>number</display>
                         </communitylists>
                     </Model>
                     <ValidationMessage>Related item CommunityList not found.</ValidationMessage>
@@ -446,46 +439,42 @@
                 </updatesource>
                 <nexthopself type="BooleanField"/>
                 <defaultoriginate type="BooleanField"/>
-                <linkedPrefixlistIn type="ModelRelationField">
+                <linkedPrefixlistIn type=".\GroupedModelRelationField">
                     <Model>
                         <prefixlists>
                             <source>OPNsense.quagga.bgp</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name,seqnumber</display>
-                            <display_format>%s:%s</display_format>
+                            <display>name</display>
                         </prefixlists>
                     </Model>
                     <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
                 </linkedPrefixlistIn>
-                <linkedPrefixlistOut type="ModelRelationField">
+                <linkedPrefixlistOut type=".\GroupedModelRelationField">
                     <Model>
                         <prefixlists>
                             <source>OPNsense.quagga.bgp</source>
                             <items>prefixlists.prefixlist</items>
-                            <display>name,seqnumber</display>
-                            <display_format>%s:%s</display_format>
+                            <display>name</display>
                         </prefixlists>
                     </Model>
                     <ValidationMessage>Related Prefix-List item not found.</ValidationMessage>
                 </linkedPrefixlistOut>
-                <linkedRoutemapIn type="ModelRelationField">
+                <linkedRoutemapIn type=".\GroupedModelRelationField">
                     <Model>
                         <routemaps>
                             <source>OPNsense.quagga.bgp</source>
                             <items>routemaps.routemap</items>
-                            <display>name,id</display>
-                            <display_format>%s:%s</display_format>
+                            <display>name</display>
                         </routemaps>
                     </Model>
                     <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
                 </linkedRoutemapIn>
-                <linkedRoutemapOut type="ModelRelationField">
+                <linkedRoutemapOut type=".\GroupedModelRelationField">
                     <Model>
                         <routemaps>
                             <source>OPNsense.quagga.bgp</source>
                             <items>routemaps.routemap</items>
-                            <display>name,id</display>
-                            <display_format>%s:%s</display_format>
+                            <display>name</display>
                         </routemaps>
                     </Model>
                     <ValidationMessage>Related Route-Map item not found.</ValidationMessage>
@@ -510,13 +499,12 @@
                         <static>Statically configured routes</static>
                     </OptionValues>
                 </redistribute>
-                <linkedRoutemap type="ModelRelationField">
+                <linkedRoutemap type=".\GroupedModelRelationField">
                     <Model>
                         <routemaps>
                             <source>OPNsense.quagga.bgp</source>
                             <items>routemaps.routemap</items>
-                            <display>name,id</display>
-                            <display_format>%s:%s</display_format>
+                            <display>name</display>
                         </routemaps>
                     </Model>
                     <ValidationMessage>Related Route-Map item not found.</ValidationMessage>

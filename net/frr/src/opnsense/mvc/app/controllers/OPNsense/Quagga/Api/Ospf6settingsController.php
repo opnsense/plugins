@@ -31,9 +31,7 @@
 
 namespace OPNsense\Quagga\Api;
 
-use OPNsense\Base\ApiMutableModelControllerBase;
-
-class Ospf6settingsController extends ApiMutableModelControllerBase
+class Ospf6settingsController extends QuaggaControllerBase
 {
     protected static $internalModelName = 'ospf6';
     protected static $internalModelClass = '\OPNsense\Quagga\OSPF6';
@@ -97,10 +95,12 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     }
     public function delPrefixlistAction($uuid)
     {
+        $this->throwGroupInUse($this->getModel()->prefixlists->prefixlist, $uuid, 'name');
         return $this->delBase('prefixlists.prefixlist', $uuid);
     }
     public function delRoutemapAction($uuid)
     {
+        $this->throwGroupInUse($this->getModel()->routemaps->routemap, $uuid, 'name');
         return $this->delBase('routemaps.routemap', $uuid);
     }
     public function setAreaAction($uuid)

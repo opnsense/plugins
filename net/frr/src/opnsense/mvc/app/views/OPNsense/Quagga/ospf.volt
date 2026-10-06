@@ -96,7 +96,17 @@ POSSIBILITY OF SUCH DAMAGE.
             'set':'/api/quagga/ospfsettings/set_prefixlist/',
             'add':'/api/quagga/ospfsettings/add_prefixlist/',
             'del':'/api/quagga/ospfsettings/del_prefixlist/',
-            'toggle':'/api/quagga/ospfsettings/toggle_prefixlist/'
+            'toggle':'/api/quagga/ospfsettings/toggle_prefixlist/',
+            tabulatorOptions: {
+                groupBy: "name",
+                groupHeader: (value, count, data, group) => {
+                    const icons = {
+                        name: '<i class="fa fa-fw fa-list fa-sm text-info"></i>',
+                    };
+
+                    return `${icons.name} ${value}`;
+                },
+            }
         });
         $("#{{formGridEditRouteMaps['table_id']}}").UIBootgrid({
             'search':'/api/quagga/ospfsettings/search_routemap',
@@ -104,7 +114,17 @@ POSSIBILITY OF SUCH DAMAGE.
             'set':'/api/quagga/ospfsettings/set_routemap/',
             'add':'/api/quagga/ospfsettings/add_routemap/',
             'del':'/api/quagga/ospfsettings/del_routemap/',
-            'toggle':'/api/quagga/ospfsettings/toggle_routemap/'
+            'toggle':'/api/quagga/ospfsettings/toggle_routemap/',
+            tabulatorOptions: {
+                groupBy: "name",
+                groupHeader: (value, count, data, group) => {
+                    const icons = {
+                        name: '<i class="fa fa-fw fa-list fa-sm text-info"></i>',
+                    };
+
+                    return `${icons.name} ${value}`;
+                },
+            }
         });
         $("#{{formGridEditRedistribution['table_id']}}").UIBootgrid({
             'search':'/api/quagga/ospfsettings/search_redistribution',
