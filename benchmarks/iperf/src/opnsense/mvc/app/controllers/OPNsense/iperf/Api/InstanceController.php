@@ -48,7 +48,7 @@ class InstanceController extends ApiMutableModelControllerBase
         }
 
         $payload = json_decode((new Backend())->configdpRun(
-            'iperf server start',
+            'iperf server create',
             [$this->getModel()->port->getValue()]
         ), true);
         return !empty($payload) ? $payload : ['status' => 'failed'];
@@ -59,6 +59,25 @@ class InstanceController extends ApiMutableModelControllerBase
         $payload = json_decode((new Backend())->configdRun('iperf server list'), true);
         $records = !empty($payload['jobs']) ? $payload['jobs'] : [];
         return $this->searchRecordsetBase($records);
+    }
+
+    public function startAction($jobId)
+    {
+        return $this->runJobAction($jobId, 'start');
+    }
+
+    public function stopAction($jobId)
+    {
+        return $this->runJobAction($jobId, 'stop');
+    }
+
+    private function runJobAction($jobId, $action)
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'failed'];
+        }
+        $payload = json_decode((new Backend())->configdpRun("iperf server $action", [$jobId]), true);
+        return !empty($payload) ? $payload : ['status' => 'failed'];
     }
 
     public function removeAction($jobId)

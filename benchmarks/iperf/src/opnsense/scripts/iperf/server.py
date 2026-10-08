@@ -54,6 +54,15 @@ def load_json(filename):
         return None
 
 
+def load_job(job_id):
+    try:
+        if uuid.UUID(job_id).hex != job_id:
+            return None
+    except ValueError:
+        return None
+    return load_json(job_path(job_id, 'json'))
+
+
 def load_events(filename):
     events = []
     try:
@@ -86,6 +95,16 @@ def job_pids(job_id):
     return [pid for pid in output.split() if pid.isdigit()]
 
 
+def stop_processes(job_id):
+    for pid in job_pids(job_id):
+        subprocess.run(['/bin/kill', pid])
+    for _ in range(20):
+        if not job_pids(job_id):
+            break
+        time.sleep(0.1)
+    return not job_pids(job_id)
+
+
 def available_port(port):
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
@@ -115,7 +134,9 @@ def list_jobs():
             None
         )
         running = bool(job_pids(job_id))
-        if running:
+        if os.path.exists(job_path(job_id, 'stop')):
+            job['status'] = 'stopped'
+        elif running:
             active = last_event.get('event') in ('start', 'interval')
             job['status'] = 'running' if active else 'listening'
         elif not events and startup_pending(filename):
@@ -135,14 +156,34 @@ def list_jobs():
     return {'status': 'ok', 'jobs': jobs}
 
 
-def start(port):
+def launch(job_id, port):
+    logfile = job_path(job_id, 'log')
+    if os.path.exists(logfile):
+        os.remove(logfile)
+    os.utime(job_path(job_id, 'json'), None)
+    command = [
+        '/usr/sbin/daemon', '-f',
+        '/usr/local/bin/iperf3', '--json-stream', '--forceflush', '-f', 'M', '-s',
+        '-p', str(port), '--logfile', logfile
+    ]
+    result = subprocess.run(command, capture_output=True, text=True)
+    if result.returncode != 0:
+        return {'status': 'error', 'error': result.stderr.strip() or 'unable to start iperf3'}
+    stopped = job_path(job_id, 'stop')
+    if os.path.exists(stopped):
+        os.remove(stopped)
+    return {'status': 'ok', 'id': job_id, 'port': port}
+
+
+def create(port):
     port = available_port(port)
     if port is None:
         return {'status': 'error', 'error': 'port is already in use'}
     for filename in glob.glob(os.path.join(JOB_DIR, '*.json')):
         job_id = os.path.basename(filename).split('.')[0]
         job = load_json(filename) or {}
-        if job.get('port') == port and (job_pids(job_id) or startup_pending(filename)):
+        stopped = os.path.exists(job_path(job_id, 'stop'))
+        if job.get('port') == port and not stopped and (job_pids(job_id) or startup_pending(filename)):
             return {'status': 'error', 'error': 'port is already in use'}
 
     job_id = uuid.uuid4().hex
@@ -152,29 +193,38 @@ def start(port):
     }
     with open(job_path(job_id, 'json'), 'w') as handle:
         json.dump(metadata, handle)
-    command = [
-        '/usr/sbin/daemon', '-f',
-        '/usr/local/bin/iperf3', '--json-stream', '--forceflush', '-f', 'M', '-s',
-        '-p', str(port), '--logfile', job_path(job_id, 'log')
-    ]
-    result = subprocess.run(command, capture_output=True, text=True)
-    if result.returncode != 0:
+    result = launch(job_id, port)
+    if result['status'] != 'ok':
         os.remove(job_path(job_id, 'json'))
-        return {'status': 'error', 'error': result.stderr.strip() or 'unable to start iperf3'}
-    return {'status': 'ok', 'id': job_id, 'port': port}
+    return result
+
+
+def start(job_id):
+    job = load_job(job_id)
+    if job is None:
+        return {'status': 'error', 'error': 'instance not found'}
+    if job_pids(job_id):
+        return {'status': 'error', 'error': 'instance is already running'}
+    if available_port(job['port']) is None:
+        return {'status': 'error', 'error': 'port is already in use'}
+    return launch(job_id, job['port'])
+
+
+def stop(job_id):
+    if load_job(job_id) is None:
+        return {'status': 'error', 'error': 'instance not found'}
+    if not stop_processes(job_id):
+        return {'status': 'error', 'error': 'unable to stop iperf3'}
+    with open(job_path(job_id, 'stop'), 'w'):
+        pass
+    return {'status': 'ok'}
 
 
 def remove(job_id):
-    try:
-        if uuid.UUID(job_id).hex != job_id:
-            raise ValueError
-    except ValueError:
-        return {'status': 'error', 'error': 'invalid instance'}
-    metadata = job_path(job_id, 'json')
-    if not os.path.exists(metadata):
+    if load_job(job_id) is None:
         return {'status': 'error', 'error': 'instance not found'}
-    for pid in job_pids(job_id):
-        subprocess.run(['/bin/kill', pid])
+    if not stop_processes(job_id):
+        return {'status': 'error', 'error': 'unable to stop iperf3'}
     for filename in glob.glob(os.path.join(JOB_DIR, '%s.*' % job_id)):
         os.remove(filename)
     return {'status': 'ok'}
@@ -184,15 +234,19 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--job')
     parser.add_argument('--port', type=int, default=0)
-    parser.add_argument('action', choices=['list', 'start', 'remove'])
+    parser.add_argument('action', choices=['list', 'create', 'start', 'stop', 'remove'])
     args = parser.parse_args()
     os.makedirs(JOB_DIR, exist_ok=True)
     with open(os.path.join(JOB_DIR, '.lock'), 'w') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
         if args.action == 'list':
             response = list_jobs()
+        elif args.action == 'create':
+            response = create(args.port)
         elif args.action == 'start':
-            response = start(args.port)
+            response = start(args.job or '')
+        elif args.action == 'stop':
+            response = stop(args.job or '')
         else:
             response = remove(args.job or '')
     print(json.dumps(response))

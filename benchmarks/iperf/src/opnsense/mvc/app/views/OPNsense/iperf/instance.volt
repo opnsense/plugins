@@ -28,6 +28,18 @@
 <script>
     $( document ).ready(function() {
         let poll = null;
+        let jobAction = function(action, jobId) {
+            ajaxCall("/api/iperf/instance/" + action + "/" + jobId, {}, function (data) {
+                if (data.status !== 'ok') {
+                    BootstrapDialog.show({
+                        type: BootstrapDialog.TYPE_WARNING,
+                        title: "{{ lang._('Iperf Server') }}",
+                        message: data.error !== undefined ? data.error : data.status
+                    });
+                }
+                $("#grid-jobs").bootgrid("reload");
+            });
+        };
         $("#grid-jobs").UIBootgrid({
             search: '/api/iperf/instance/search_jobs',
             datakey: 'id',
@@ -39,6 +51,8 @@
                             return '<i class="fa fa-fw fa-spinner fa-pulse"></i>';
                         } else if (row.status == 'listening') {
                             return '<i class="fa fa-fw fa-circle text-success" title="{{ lang._('Listening') }}"></i>';
+                        } else if (row.status == 'stopped') {
+                            return '<i class="fa fa-fw fa-stop text-muted" title="{{ lang._('Stopped') }}"></i>';
                         } else if (row.status == 'error') {
                             return '<i class="fa fa-fw fa-circle text-danger" title="{{ lang._('Error') }}"></i>';
                         } else {
@@ -48,20 +62,26 @@
                 }
             },
             commands: {
+                start: {
+                    title: "{{ lang._('Start') }}",
+                    method: function() {
+                        jobAction('start', $(this).data('row-id'));
+                    },
+                    classname: 'fa fa-fw fa-play',
+                    requires: []
+                },
+                stop: {
+                    title: "{{ lang._('Stop') }}",
+                    method: function() {
+                        jobAction('stop', $(this).data('row-id'));
+                    },
+                    classname: 'fa fa-fw fa-stop',
+                    requires: []
+                },
                 delete: {
                     title: "{{ lang._('Remove') }}",
                     method: function() {
-                        ajaxCall("/api/iperf/instance/remove/" + $(this).data('row-id'), {}, function (data) {
-                            if (data.status !== 'ok') {
-                                BootstrapDialog.show({
-                                    type: BootstrapDialog.TYPE_WARNING,
-                                    title: "{{ lang._('Iperf Server') }}",
-                                    message: data.error !== undefined ? data.error :
-                                        (data.msg !== undefined ? data.msg : data.status)
-                                });
-                            }
-                            $("#grid-jobs").bootgrid("reload");
-                        });
+                        jobAction('remove', $(this).data('row-id'));
                     },
                     classname: 'fa fa-fw fa-trash-o',
                     requires: []
@@ -117,7 +137,7 @@
                 <th data-column-id="sent" data-type="string">{{ lang._('Sent (Mbit/s)') }}</th>
                 <th data-column-id="received" data-type="string">{{ lang._('Received (Mbit/s)') }}</th>
                 <th data-column-id="error" data-type="string">{{ lang._('Error') }}</th>
-                <th data-column-id="commands" data-width="4em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
+                <th data-column-id="commands" data-width="12em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
         </thead>
         <tbody>

@@ -32,6 +32,7 @@ import glob
 import os
 import socket
 import subprocess
+import time
 import ujson
 from datetime import datetime
 
@@ -47,6 +48,16 @@ def job_pids(jobid):
         if line.isdigit():
             pids.append(line)
     return pids
+
+
+def stop_job(jobid):
+    for pid in job_pids(jobid):
+        subprocess.run(['kill', pid])
+    for _ in range(20):
+        if not job_pids(jobid):
+            return True
+        time.sleep(0.1)
+    return False
 
 
 def load_json(filename):
@@ -70,7 +81,7 @@ if __name__ == '__main__':
     result = dict()
     parser = argparse.ArgumentParser()
     parser.add_argument('--job', help='job id', default=None)
-    parser.add_argument('action', help='action to perform', choices=['list', 'start', 'remove'])
+    parser.add_argument('action', help='action to perform', choices=['list', 'start', 'stop', 'remove'])
     cmd_args = parser.parse_args()
 
     all_jobs = {}
@@ -90,7 +101,9 @@ if __name__ == '__main__':
             job['id'] = jobid
             job['started'] = datetime.fromtimestamp(started).isoformat(timespec='seconds')
             job['sent'] = job['received'] = job['error'] = ''
-            if len(job_pids(jobid)) > 0:
+            if os.path.exists("%s%s.stop" % (JOB_DIR, jobid)):
+                job['status'] = 'stopped'
+            elif len(job_pids(jobid)) > 0:
                 job['status'] = 'running'
             else:
                 output = load_json("%s%s.log" % (JOB_DIR, jobid))
@@ -137,7 +150,8 @@ if __name__ == '__main__':
                 result['status_msg'] = 'no %s address on %s' % ('IPv6' if inet6 else 'IPv4', settings['interface'])
             else:
                 args += ['-B', address]
-        if len(job_pids(cmd_args.job)) > 0:
+        pids = job_pids(cmd_args.job)
+        if pids:
             result['status'] = 'failed'
             result['status_msg'] = 'already running'
         if result['status'] == 'ok':
@@ -146,12 +160,26 @@ if __name__ == '__main__':
             if subprocess.run(args).returncode != 0:
                 result['status'] = 'failed'
                 result['status_msg'] = 'unable to start iperf3'
+            else:
+                stopped = "%s%s.stop" % (JOB_DIR, cmd_args.job)
+                if os.path.exists(stopped):
+                    os.remove(stopped)
+    elif cmd_args.action == 'stop' and cmd_args.job in all_jobs:
+        if stop_job(cmd_args.job):
+            result['status'] = 'ok'
+            with open("%s%s.stop" % (JOB_DIR, cmd_args.job), 'w'):
+                pass
+        else:
+            result['status'] = 'failed'
+            result['status_msg'] = 'unable to stop iperf3'
     elif cmd_args.action == 'remove' and cmd_args.job in all_jobs:
-        result['status'] = 'ok'
-        for pid in job_pids(cmd_args.job):
-            subprocess.run(['kill', pid])
-        for filename in glob.glob("%s%s*" % (JOB_DIR, cmd_args.job)):
-            os.remove(filename)
+        if stop_job(cmd_args.job):
+            result['status'] = 'ok'
+            for filename in glob.glob("%s%s*" % (JOB_DIR, cmd_args.job)):
+                os.remove(filename)
+        else:
+            result['status'] = 'failed'
+            result['status_msg'] = 'unable to stop iperf3'
     else:
         result['status'] = 'failed'
 

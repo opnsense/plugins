@@ -79,9 +79,22 @@ class ClientController extends ApiMutableModelControllerBase
      */
     public function startAction($jobid)
     {
+        return $this->runJobAction($jobid, 'start');
+    }
+
+    /**
+     * stop client job
+     */
+    public function stopAction($jobid)
+    {
+        return $this->runJobAction($jobid, 'stop');
+    }
+
+    private function runJobAction($jobid, $action)
+    {
         $result = ['status' => 'failed'];
         if ($this->request->isPost()) {
-            $payload = json_decode((new Backend())->configdpRun('iperf client start', [$jobid]), true);
+            $payload = json_decode((new Backend())->configdpRun("iperf client $action", [$jobid]), true);
             if (!empty($payload)) {
                 $result = $payload;
             }
