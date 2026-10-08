@@ -54,23 +54,20 @@ def load_json(filename):
         return None
 
 
-def load_last_json(filename):
+def load_events(filename):
+    events = []
     try:
         with open(filename, 'r') as handle:
-            content = handle.read()
+            for line in handle:
+                try:
+                    event = json.loads(line)
+                    if isinstance(event, dict):
+                        events.append(event)
+                except json.JSONDecodeError:
+                    continue
     except OSError:
-        return None
-    decoder = json.JSONDecoder()
-    result = None
-    while content.strip():
-        try:
-            value, offset = decoder.raw_decode(content.lstrip())
-        except json.JSONDecodeError:
-            break
-        if isinstance(value, dict):
-            result = value
-        content = content.lstrip()[offset:]
-    return result
+        pass
+    return events
 
 
 def startup_pending(filename):
@@ -99,7 +96,7 @@ def available_port(port):
 
 
 def rate(result, field):
-    value = result.get('end', {}).get(field, {}).get('bits_per_second')
+    value = result.get(field, {}).get('bits_per_second')
     return round(value / 1000000, 2) if isinstance(value, (int, float)) else ''
 
 
@@ -111,22 +108,29 @@ def list_jobs():
         if job is None:
             continue
         job.update({'id': job_id, 'sent': '', 'received': '', 'error': ''})
-        result = load_last_json(job_path(job_id, 'log'))
+        events = load_events(job_path(job_id, 'log'))
+        last_event = events[-1] if events else {}
+        last_result = next(
+            (event.get('data', {}) for event in reversed(events) if event.get('event') == 'end'),
+            None
+        )
         running = bool(job_pids(job_id))
-        if running or (result is None and startup_pending(filename)):
-            job['status'] = 'running'
-        elif result is None:
+        if running:
+            active = last_event.get('event') in ('start', 'interval')
+            job['status'] = 'running' if active else 'listening'
+        elif not events and startup_pending(filename):
+            job['status'] = 'listening'
+        elif last_result is not None:
+            job['status'] = 'done'
+        else:
             job['status'] = 'error'
             job['error'] = 'iperf3 did not start or produced no result'
-        elif result.get('error'):
-            job['status'] = 'error'
-        else:
-            job['status'] = 'done'
-        if result is not None and result.get('error'):
-            job['error'] = result['error']
-        elif result is not None:
-            job['sent'] = rate(result, 'sum_sent')
-            job['received'] = rate(result, 'sum_received')
+        if last_result is not None:
+            job['sent'] = rate(last_result, 'sum_sent')
+            job['received'] = rate(last_result, 'sum_received')
+        if last_event.get('event') == 'error':
+            error = last_event.get('data', 'iperf3 test failed')
+            job['error'] = error.get('error', str(error)) if isinstance(error, dict) else str(error)
         jobs.append(job)
     return {'status': 'ok', 'jobs': jobs}
 
@@ -138,8 +142,7 @@ def start(port):
     for filename in glob.glob(os.path.join(JOB_DIR, '*.json')):
         job_id = os.path.basename(filename).split('.')[0]
         job = load_json(filename) or {}
-        result = load_last_json(job_path(job_id, 'log'))
-        if job.get('port') == port and (job_pids(job_id) or (result is None and startup_pending(filename))):
+        if job.get('port') == port and (job_pids(job_id) or startup_pending(filename)):
             return {'status': 'error', 'error': 'port is already in use'}
 
     job_id = uuid.uuid4().hex
@@ -151,7 +154,7 @@ def start(port):
         json.dump(metadata, handle)
     command = [
         '/usr/sbin/daemon', '-f',
-        '/usr/local/bin/iperf3', '-J', '--forceflush', '-f', 'M', '-s',
+        '/usr/local/bin/iperf3', '--json-stream', '--forceflush', '-f', 'M', '-s',
         '-p', str(port), '--logfile', job_path(job_id, 'log')
     ]
     result = subprocess.run(command, capture_output=True, text=True)

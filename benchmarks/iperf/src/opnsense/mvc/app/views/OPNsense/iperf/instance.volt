@@ -37,6 +37,8 @@
                     "status": function (column, row) {
                         if (row.status == 'running') {
                             return '<i class="fa fa-fw fa-spinner fa-pulse"></i>';
+                        } else if (row.status == 'listening') {
+                            return '<i class="fa fa-fw fa-hourglass-o" title="{{ lang._('Listening') }}"></i>';
                         } else if (row.status == 'error') {
                             return '<i class="fa fa-fw fa-exclamation-triangle"></i>';
                         } else {
@@ -66,9 +68,11 @@
                 }
             }
         }).on("loaded.rs.jquery.bootgrid", function () {
-            /* refresh only while a job is running */
+            /* refresh while a server is listening or handling a test */
             clearTimeout(poll);
-            if ($("#grid-jobs").bootgrid("getCurrentRows").some(row => row.status == 'running')) {
+            if ($("#grid-jobs").bootgrid("getCurrentRows").some(
+                row => row.status == 'listening' || row.status == 'running'
+            )) {
                 poll = setTimeout(function(){ $("#grid-jobs").bootgrid("reload"); }, 5000);
             }
         });
