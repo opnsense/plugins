@@ -80,9 +80,14 @@ if __name__ == '__main__':
         result['status'] = 'ok'
         result['jobs'] = []
         for jobid in all_jobs:
+            try:
+                started = os.path.getmtime(all_jobs[jobid])
+            except FileNotFoundError:
+                # removed while listing
+                continue
             job = load_json(all_jobs[jobid]) or {}
             job['id'] = jobid
-            job['started'] = datetime.fromtimestamp(os.path.getmtime(all_jobs[jobid])).isoformat(timespec='seconds')
+            job['started'] = datetime.fromtimestamp(started).isoformat(timespec='seconds')
             job['sent'] = job['received'] = job['error'] = ''
             if len(job_pids(jobid)) > 0:
                 job['status'] = 'running'
@@ -132,7 +137,9 @@ if __name__ == '__main__':
         if result['status'] == 'ok':
             if os.path.exists(logfile):
                 os.remove(logfile)
-            subprocess.run(args)
+            if subprocess.run(args).returncode != 0:
+                result['status'] = 'failed'
+                result['status_msg'] = 'unable to start iperf3'
     elif cmd_args.action == 'remove' and cmd_args.job in all_jobs:
         result['status'] = 'ok'
         for pid in job_pids(cmd_args.job):

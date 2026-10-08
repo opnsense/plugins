@@ -31,6 +31,7 @@ namespace OPNsense\iperf\Api;
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
+use OPNsense\Core\File;
 
 class ClientController extends ApiMutableModelControllerBase
 {
@@ -65,7 +66,7 @@ class ClientController extends ApiMutableModelControllerBase
                 /* the script binds to an address, it needs the device name */
                 $nodes['interface'] = (string)Config::getInstance()->object()->interfaces->{$nodes['interface']}->if;
             }
-            file_put_contents(
+            File::file_put_contents(
                 sprintf('%s/%s.json', self::$job_dir, $result['uuid']),
                 json_encode($nodes)
             );
