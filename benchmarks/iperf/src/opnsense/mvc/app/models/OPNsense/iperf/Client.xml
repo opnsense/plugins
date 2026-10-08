@@ -26,9 +26,13 @@
                 <MinimumValue>1</MinimumValue>
                 <MaximumValue>128</MaximumValue>
             </parallel>
-            <reverse type="BooleanField">
-                <Default>0</Default>
+            <reverse type="OptionField">
                 <Required>Y</Required>
+                <Default>1</Default>
+                <OptionValues>
+                    <p1 value="0">Upload</p1>
+                    <p2 value="1">Download</p2>
+                </OptionValues>
             </reverse>
             <duration type="IntegerField">
                 <Default>10</Default>

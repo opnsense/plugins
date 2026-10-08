@@ -15,7 +15,7 @@
       <id>client.settings.interface</id>
       <label>Source interface</label>
       <type>dropdown</type>
-      <help>Use the IPv4 address of this interface as source address (-B). The routing table still selects the outgoing interface.</help>
+      <help>Use the IPv4 address of this interface as source address (-B).</help>
    </field>
    <field>
       <id>client.settings.protocol</id>
@@ -29,9 +29,9 @@
    </field>
    <field>
       <id>client.settings.reverse</id>
-      <label>Reverse</label>
-      <type>checkbox</type>
-      <help>Let the server send, to measure the download direction.</help>
+      <label>Direction</label>
+      <type>dropdown</type>
+      <help>Download lets the server send (-R).</help>
    </field>
    <field>
       <id>client.settings.duration</id>

@@ -26,13 +26,14 @@
 
 <script>
     $( document ).ready(function() {
-        let grid_jobs = $("#grid-jobs").UIBootgrid({
+        $("#grid-jobs").UIBootgrid({
             search: '/api/iperf/client/search_jobs',
+            datakey: 'id',
             options: {
                 selection: false,
                 formatters: {
-                    "commands": function (column, row) {
-                        return '<button type="button" class="btn btn-xs btn-default command-remove" title="{{ lang._('remove') }}" data-row-id="' + row.id + '"><span class="fa fa-fw fa-remove"></span></button>';
+                    "direction": function (column, row) {
+                        return row.reverse == '1' ? "{{ lang._('Download') }}" : "{{ lang._('Upload') }}";
                     },
                     "status": function (column, row) {
                         if (row.status == 'running') {
@@ -44,14 +45,19 @@
                         }
                     }
                 }
+            },
+            commands: {
+                delete: {
+                    title: "{{ lang._('Remove') }}",
+                    method: function() {
+                        ajaxCall("/api/iperf/client/remove/" + $(this).data('row-id'), {}, function () {
+                            $("#grid-jobs").bootgrid("reload");
+                        });
+                    },
+                    classname: 'fa fa-fw fa-trash-o',
+                    requires: []
+                }
             }
-        });
-        grid_jobs.on('loaded.rs.jquery.bootgrid', function() {
-            $(".command-remove").click(function(){
-                ajaxCall("/api/iperf/client/remove/" + $(this).data('row-id'), {}, function(){
-                    $("#grid-jobs").bootgrid("reload");
-                });
-            });
         });
         setInterval(function(){ $("#grid-jobs").bootgrid("reload"); }, 5000);
 
@@ -99,7 +105,7 @@
                 <th data-column-id="port" data-type="string">{{ lang._('Port') }}</th>
                 <th data-column-id="protocol" data-type="string">{{ lang._('Protocol') }}</th>
                 <th data-column-id="parallel" data-type="string">{{ lang._('Streams') }}</th>
-                <th data-column-id="reverse" data-type="boolean" data-formatter="boolean">{{ lang._('Reverse') }}</th>
+                <th data-column-id="reverse" data-type="string" data-formatter="direction">{{ lang._('Direction') }}</th>
                 <th data-column-id="sent" data-type="string">{{ lang._('Sent (Mbit/s)') }}</th>
                 <th data-column-id="received" data-type="string">{{ lang._('Received (Mbit/s)') }}</th>
                 <th data-column-id="error" data-type="string">{{ lang._('Error') }}</th>
