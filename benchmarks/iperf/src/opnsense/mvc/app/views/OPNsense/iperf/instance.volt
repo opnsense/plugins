@@ -38,9 +38,9 @@
                         if (row.status == 'running') {
                             return '<i class="fa fa-fw fa-spinner fa-pulse"></i>';
                         } else if (row.status == 'listening') {
-                            return '<i class="fa fa-fw fa-hourglass-o" title="{{ lang._('Listening') }}"></i>';
+                            return '<i class="fa fa-fw fa-circle text-success" title="{{ lang._('Listening') }}"></i>';
                         } else if (row.status == 'error') {
-                            return '<i class="fa fa-fw fa-exclamation-triangle"></i>';
+                            return '<i class="fa fa-fw fa-circle text-danger" title="{{ lang._('Error') }}"></i>';
                         } else {
                             return '<i class="fa fa-fw fa-check"></i>';
                         }
