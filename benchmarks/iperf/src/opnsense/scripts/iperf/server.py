@@ -33,12 +33,13 @@ import json
 import os
 import socket
 import subprocess
+import time
 import uuid
 from datetime import datetime
 
 
 JOB_DIR = '/tmp/iperf-server'
-TEST_TIMEOUT = 600
+STARTUP_GRACE = 5
 
 
 def job_path(job_id, extension):
@@ -51,6 +52,32 @@ def load_json(filename):
             return json.load(handle)
     except (OSError, ValueError):
         return None
+
+
+def load_last_json(filename):
+    try:
+        with open(filename, 'r') as handle:
+            content = handle.read()
+    except OSError:
+        return None
+    decoder = json.JSONDecoder()
+    result = None
+    while content.strip():
+        try:
+            value, offset = decoder.raw_decode(content.lstrip())
+        except json.JSONDecodeError:
+            break
+        if isinstance(value, dict):
+            result = value
+        content = content.lstrip()[offset:]
+    return result
+
+
+def startup_pending(filename):
+    try:
+        return time.time() - os.path.getmtime(filename) < STARTUP_GRACE
+    except OSError:
+        return False
 
 
 def job_pids(job_id):
@@ -84,20 +111,22 @@ def list_jobs():
         if job is None:
             continue
         job.update({'id': job_id, 'sent': '', 'received': '', 'error': ''})
-        if job_pids(job_id):
+        result = load_last_json(job_path(job_id, 'log'))
+        running = bool(job_pids(job_id))
+        if running or (result is None and startup_pending(filename)):
             job['status'] = 'running'
+        elif result is None:
+            job['status'] = 'error'
+            job['error'] = 'iperf3 did not start or produced no result'
+        elif result.get('error'):
+            job['status'] = 'error'
         else:
-            result = load_json(job_path(job_id, 'log'))
-            if result is None:
-                job['status'] = 'error'
-                job['error'] = 'no result available'
-            elif result.get('error'):
-                job['status'] = 'error'
-                job['error'] = result['error']
-            else:
-                job['status'] = 'done'
-                job['sent'] = rate(result, 'sum_sent')
-                job['received'] = rate(result, 'sum_received')
+            job['status'] = 'done'
+        if result is not None and result.get('error'):
+            job['error'] = result['error']
+        elif result is not None:
+            job['sent'] = rate(result, 'sum_sent')
+            job['received'] = rate(result, 'sum_received')
         jobs.append(job)
     return {'status': 'ok', 'jobs': jobs}
 
@@ -109,7 +138,8 @@ def start(port):
     for filename in glob.glob(os.path.join(JOB_DIR, '*.json')):
         job_id = os.path.basename(filename).split('.')[0]
         job = load_json(filename) or {}
-        if job.get('port') == port and (job_pids(job_id) or load_json(job_path(job_id, 'log')) is None):
+        result = load_last_json(job_path(job_id, 'log'))
+        if job.get('port') == port and (job_pids(job_id) or (result is None and startup_pending(filename))):
             return {'status': 'error', 'error': 'port is already in use'}
 
     job_id = uuid.uuid4().hex
@@ -121,8 +151,7 @@ def start(port):
         json.dump(metadata, handle)
     command = [
         '/usr/sbin/daemon', '-f',
-        '/usr/bin/timeout', '-s', 'KILL', str(TEST_TIMEOUT),
-        '/usr/local/bin/iperf3', '-J', '-f', 'M', '-s', '-1',
+        '/usr/local/bin/iperf3', '-J', '--forceflush', '-f', 'M', '-s',
         '-p', str(port), '--logfile', job_path(job_id, 'log')
     ]
     result = subprocess.run(command, capture_output=True, text=True)
