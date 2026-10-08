@@ -102,7 +102,8 @@ if __name__ == '__main__':
             job['started'] = datetime.fromtimestamp(started).isoformat(timespec='seconds')
             job['sent'] = job['received'] = job['error'] = ''
             if os.path.exists("%s%s.stop" % (JOB_DIR, jobid)):
-                job['status'] = 'stopped'
+                job['status'] = 'error'
+                job['error'] = 'test was stopped before completion'
             elif len(job_pids(jobid)) > 0:
                 job['status'] = 'running'
             else:

@@ -51,8 +51,6 @@
                     "status": function (column, row) {
                         if (row.status == 'running') {
                             return '<i class="fa fa-fw fa-spinner fa-pulse"></i>';
-                        } else if (row.status == 'stopped') {
-                            return '<i class="fa fa-fw fa-stop text-muted" title="{{ lang._('Stopped') }}"></i>';
                         } else if (row.status == 'error') {
                             return '<i class="fa fa-fw fa-exclamation-triangle"></i>';
                         } else {
