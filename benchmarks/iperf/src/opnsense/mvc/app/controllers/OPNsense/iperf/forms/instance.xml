@@ -1,0 +1,8 @@
+<form>
+   <field>
+      <id>instance.port</id>
+      <label>Port</label>
+      <type>text</type>
+      <help>Set the iperf3 listen port, or use 0 to select an available port automatically.</help>
+   </field>
+</form>
