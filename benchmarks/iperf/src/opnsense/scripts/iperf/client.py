@@ -25,7 +25,7 @@ CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
     --------------------------------------------------------------------------------------
-    run iperf3 in client mode as a background job, settings and results are kept in /tmp
+    run iperf3 in client mode as a background job
 """
 import argparse
 import glob
@@ -36,7 +36,7 @@ import time
 import ujson
 from datetime import datetime
 
-JOB_DIR = '/tmp/iperf/'
+JOB_DIR = '/var/db/iperf/client/'
 # iperf3 can wait forever on a server that accepts the connection but never starts the test
 GRACE_TIME = 30
 

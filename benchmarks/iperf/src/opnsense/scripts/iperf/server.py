@@ -38,7 +38,7 @@ import uuid
 from datetime import datetime
 
 
-JOB_DIR = '/tmp/iperf-server'
+JOB_DIR = '/var/db/iperf/server'
 STARTUP_GRACE = 5
 
 
@@ -134,18 +134,17 @@ def list_jobs():
             None
         )
         running = bool(job_pids(job_id))
-        if os.path.exists(job_path(job_id, 'stop')):
-            job['status'] = 'stopped'
-        elif running:
+        if running:
             active = last_event.get('event') in ('start', 'interval')
             job['status'] = 'running' if active else 'listening'
+        elif os.path.exists(job_path(job_id, 'stop')):
+            job['status'] = 'stopped'
+        elif last_event.get('event') == 'error':
+            job['status'] = 'error'
         elif not events and startup_pending(filename):
             job['status'] = 'listening'
-        elif last_result is not None:
-            job['status'] = 'done'
         else:
-            job['status'] = 'error'
-            job['error'] = 'iperf3 did not start or produced no result'
+            job['status'] = 'stopped'
         if last_result is not None:
             job['sent'] = rate(last_result, 'sum_sent')
             job['received'] = rate(last_result, 'sum_received')
@@ -236,7 +235,7 @@ if __name__ == '__main__':
     parser.add_argument('--port', type=int, default=0)
     parser.add_argument('action', choices=['list', 'create', 'start', 'stop', 'remove'])
     args = parser.parse_args()
-    os.makedirs(JOB_DIR, exist_ok=True)
+    os.makedirs(JOB_DIR, mode=0o750, exist_ok=True)
     with open(os.path.join(JOB_DIR, '.lock'), 'w') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
         if args.action == 'list':

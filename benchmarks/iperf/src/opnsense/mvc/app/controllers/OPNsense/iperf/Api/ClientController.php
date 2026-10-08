@@ -37,7 +37,7 @@ class ClientController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'client';
     protected static $internalModelClass = 'OPNsense\iperf\Client';
-    private static $job_dir = '/tmp/iperf';
+    private static $job_dir = '/var/db/iperf/client';
 
     /**
      * create client job
@@ -68,7 +68,8 @@ class ClientController extends ApiMutableModelControllerBase
             }
             File::file_put_contents(
                 sprintf('%s/%s.json', self::$job_dir, $result['uuid']),
-                json_encode($nodes)
+                json_encode($nodes),
+                0640
             );
         }
         return $result;

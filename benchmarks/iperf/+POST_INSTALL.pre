@@ -1,0 +1,5 @@
+#!/bin/sh
+
+/usr/bin/install -d -o root -g wheel -m 0755 /var/db/iperf
+/usr/bin/install -d -o wwwonly -g wheel -m 0750 /var/db/iperf/client
+/usr/bin/install -d -o root -g wheel -m 0750 /var/db/iperf/server
