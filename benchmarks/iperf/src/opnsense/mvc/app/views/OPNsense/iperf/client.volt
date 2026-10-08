@@ -63,6 +63,7 @@
             },
             commands: {
                 start: {
+                    filter: (cell) => commandFilter(cell, 'start'),
                     title: "{{ lang._('Start') }}",
                     method: function() {
                         jobAction('start', $(this).data('row-id'));
@@ -71,6 +72,7 @@
                     requires: []
                 },
                 stop: {
+                    filter: (cell) => commandFilter(cell, 'stop'),
                     title: "{{ lang._('Stop') }}",
                     method: function() {
                         jobAction('stop', $(this).data('row-id'));
@@ -94,6 +96,11 @@
                 poll = setTimeout(function(){ $("#grid-jobs").bootgrid("reload"); }, 5000);
             }
         });
+
+        function commandFilter(cell, action) {
+            const active = cell.getData().status == 'running';
+            return action == 'stop' ? active : !active;
+        }
 
         mapDataToFormUI({'frm_ClientSettings': "/api/iperf/client/get"}).done(function(){
             $('.selectpicker').selectpicker('refresh');

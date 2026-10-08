@@ -52,7 +52,7 @@
                         } else if (row.status == 'listening') {
                             return '<i class="fa fa-fw fa-circle text-success" title="{{ lang._('Listening') }}"></i>';
                         } else if (row.status == 'stopped') {
-                            return '<i class="fa fa-fw fa-stop text-muted" title="{{ lang._('Stopped') }}"></i>';
+                            return '<i class="fa fa-fw fa-circle text-danger" title="{{ lang._('Stopped') }}"></i>';
                         } else if (row.status == 'error') {
                             return '<i class="fa fa-fw fa-circle text-danger" title="{{ lang._('Error') }}"></i>';
                         } else {
@@ -63,6 +63,7 @@
             },
             commands: {
                 start: {
+                    filter: (cell) => commandFilter(cell, 'start'),
                     title: "{{ lang._('Start') }}",
                     method: function() {
                         jobAction('start', $(this).data('row-id'));
@@ -71,6 +72,7 @@
                     requires: []
                 },
                 stop: {
+                    filter: (cell) => commandFilter(cell, 'stop'),
                     title: "{{ lang._('Stop') }}",
                     method: function() {
                         jobAction('stop', $(this).data('row-id'));
@@ -96,6 +98,12 @@
                 poll = setTimeout(function(){ $("#grid-jobs").bootgrid("reload"); }, 5000);
             }
         });
+
+        function commandFilter(cell, action) {
+            const status = cell.getData().status;
+            const active = status == 'listening' || status == 'running';
+            return action == 'stop' ? active : !active;
+        }
 
         mapDataToFormUI({'frm_InstanceSettings': "/api/iperf/instance/get"}).done(function(){
             $('.selectpicker').selectpicker('refresh');
