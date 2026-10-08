@@ -1,0 +1,45 @@
+<model>
+    <mount>:memory:</mount>
+    <version>1.0.0</version>
+    <description>iperf client</description>
+    <items>
+        <settings>
+            <server type="HostnameField">
+                <Required>Y</Required>
+            </server>
+            <port type="PortField">
+                <Default>5201</Default>
+                <Required>Y</Required>
+            </port>
+            <interface type="InterfaceField"/>
+            <protocol type="OptionField">
+                <Default>tcp</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <tcp>TCP</tcp>
+                    <udp>UDP</udp>
+                </OptionValues>
+            </protocol>
+            <parallel type="IntegerField">
+                <Default>1</Default>
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>128</MaximumValue>
+            </parallel>
+            <reverse type="OptionField">
+                <Required>Y</Required>
+                <Default>1</Default>
+                <OptionValues>
+                    <p1 value="0">Upload</p1>
+                    <p2 value="1">Download</p2>
+                </OptionValues>
+            </reverse>
+            <duration type="IntegerField">
+                <Default>10</Default>
+                <Required>Y</Required>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>86400</MaximumValue>
+            </duration>
+        </settings>
+    </items>
+</model>
