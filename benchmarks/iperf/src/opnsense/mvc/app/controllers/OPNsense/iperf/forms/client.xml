@@ -15,7 +15,7 @@
       <id>client.settings.interface</id>
       <label>Source interface</label>
       <type>dropdown</type>
-      <help>Use the IPv4 address of this interface as source address (-B).</help>
+      <help>Use the address of this interface as source address (-B).</help>
    </field>
    <field>
       <id>client.settings.protocol</id>

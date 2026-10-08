@@ -30,6 +30,7 @@ POSSIBILITY OF SUCH DAMAGE.
 import argparse
 import glob
 import os
+import socket
 import subprocess
 import ujson
 from datetime import datetime
@@ -56,11 +57,11 @@ def load_json(filename):
         return None
 
 
-def interface_address(intf):
-    output = subprocess.run(['/sbin/ifconfig', intf, 'inet'], capture_output=True, text=True).stdout
+def interface_address(intf, family):
+    output = subprocess.run(['/sbin/ifconfig', intf, family], capture_output=True, text=True).stdout
     for line in output.split("\n"):
         parts = line.split()
-        if len(parts) > 1 and parts[0] == 'inet':
+        if len(parts) > 1 and parts[0] == family and not parts[1].startswith('fe80:'):
             return parts[1]
     return None
 
@@ -125,10 +126,15 @@ if __name__ == '__main__':
             args.append('-R')
         result['status'] = 'ok'
         if settings.get('interface', '') != '':
-            address = interface_address(settings['interface'])
+            # iperf3 connects to the first address the server resolves to, -B must be of the same family
+            try:
+                inet6 = socket.getaddrinfo(settings.get('server', ''), None)[0][0] == socket.AF_INET6
+            except socket.gaierror:
+                inet6 = False
+            address = interface_address(settings['interface'], 'inet6' if inet6 else 'inet')
             if address is None:
                 result['status'] = 'failed'
-                result['status_msg'] = 'no IPv4 address on %s' % settings['interface']
+                result['status_msg'] = 'no %s address on %s' % ('IPv6' if inet6 else 'IPv4', settings['interface'])
             else:
                 args += ['-B', address]
         if len(job_pids(cmd_args.job)) > 0:
