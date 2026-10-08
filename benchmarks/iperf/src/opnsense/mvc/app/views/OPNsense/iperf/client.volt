@@ -48,6 +48,10 @@
                     "direction": function (column, row) {
                         return row.reverse == '1' ? "{{ lang._('Download') }}" : "{{ lang._('Upload') }}";
                     },
+                    "rate": function (column, row) {
+                        return row[column.id] === '' ? '' :
+                            byteFormat(row[column.id], 2, true).replace(/ B$/, ' G') + 'bit/s';
+                    },
                     "status": function (column, row) {
                         if (row.status == 'running') {
                             return '<i class="fa fa-fw fa-spinner fa-pulse"></i>';
@@ -146,8 +150,8 @@
                 <th data-column-id="protocol" data-type="string">{{ lang._('Protocol') }}</th>
                 <th data-column-id="parallel" data-type="string">{{ lang._('Streams') }}</th>
                 <th data-column-id="reverse" data-type="string" data-formatter="direction">{{ lang._('Direction') }}</th>
-                <th data-column-id="sent" data-type="string">{{ lang._('Sent (Mbit/s)') }}</th>
-                <th data-column-id="received" data-type="string">{{ lang._('Received (Mbit/s)') }}</th>
+                <th data-column-id="sent" data-type="numeric" data-formatter="rate">{{ lang._('Sent') }}</th>
+                <th data-column-id="received" data-type="numeric" data-formatter="rate">{{ lang._('Received') }}</th>
                 <th data-column-id="error" data-type="string">{{ lang._('Error') }}</th>
                 <th data-column-id="commands" data-width="12em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>

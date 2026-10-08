@@ -116,7 +116,7 @@ def available_port(port):
 
 def rate(result, field):
     value = result.get(field, {}).get('bits_per_second')
-    return round(value / 1000000, 2) if isinstance(value, (int, float)) else ''
+    return value if isinstance(value, (int, float)) else ''
 
 
 def list_jobs():

@@ -118,8 +118,8 @@ if __name__ == '__main__':
                     job['error'] = output['error']
                 else:
                     job['status'] = 'done'
-                    job['sent'] = round(output['end']['sum_sent']['bits_per_second'] / 1000000, 2)
-                    job['received'] = round(output['end']['sum_received']['bits_per_second'] / 1000000, 2)
+                    job['sent'] = output['end']['sum_sent']['bits_per_second']
+                    job['received'] = output['end']['sum_received']['bits_per_second']
             result['jobs'].append(job)
     elif cmd_args.action == 'start' and cmd_args.job in all_jobs:
         settings = load_json(all_jobs[cmd_args.job]) or {}

@@ -46,6 +46,10 @@
             options: {
                 selection: false,
                 formatters: {
+                    "rate": function (column, row) {
+                        return row[column.id] === '' ? '' :
+                            byteFormat(row[column.id], 2, true).replace(/ B$/, ' G') + 'bit/s';
+                    },
                     "status": function (column, row) {
                         if (row.status == 'running') {
                             return '<i class="fa fa-fw fa-spinner fa-pulse"></i>';
@@ -142,8 +146,8 @@
                 <th data-column-id="id" data-type="string" data-sortable="false" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="started" data-type="string" data-order="desc">{{ lang._('Started') }}</th>
                 <th data-column-id="port" data-type="string">{{ lang._('Port') }}</th>
-                <th data-column-id="sent" data-type="string">{{ lang._('Sent (Mbit/s)') }}</th>
-                <th data-column-id="received" data-type="string">{{ lang._('Received (Mbit/s)') }}</th>
+                <th data-column-id="sent" data-type="numeric" data-formatter="rate">{{ lang._('Sent') }}</th>
+                <th data-column-id="received" data-type="numeric" data-formatter="rate">{{ lang._('Received') }}</th>
                 <th data-column-id="error" data-type="string">{{ lang._('Error') }}</th>
                 <th data-column-id="commands" data-width="12em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
