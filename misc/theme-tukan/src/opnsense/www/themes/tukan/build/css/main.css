@@ -3924,7 +3924,7 @@ tbody.collapse.in {
   padding: 10px 20px;
   font-size: 18px;
   height: 50px; }
-  
+
   .navbar-brand:hover, .navbar-brand:focus {
     text-decoration: none; }
 .navbar-default {
@@ -6212,7 +6212,7 @@ button.toggle-sidebar {
   background-color: #fff;
   color: #000;
   }
-  
+
   .active-menu-title:before, .active-menu a:before {
     width: 3px; }
   .active-menu-title.active, .active-menu a.active {
