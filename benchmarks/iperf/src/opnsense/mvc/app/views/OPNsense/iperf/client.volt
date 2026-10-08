@@ -109,6 +109,7 @@
                 <th data-column-id="started" data-type="string" data-order="desc">{{ lang._('Started') }}</th>
                 <th data-column-id="server" data-type="string">{{ lang._('Server') }}</th>
                 <th data-column-id="port" data-type="string">{{ lang._('Port') }}</th>
+                <th data-column-id="interface" data-type="string">{{ lang._('Source interface') }}</th>
                 <th data-column-id="protocol" data-type="string">{{ lang._('Protocol') }}</th>
                 <th data-column-id="parallel" data-type="string">{{ lang._('Streams') }}</th>
                 <th data-column-id="reverse" data-type="string" data-formatter="direction">{{ lang._('Direction') }}</th>
