@@ -1,7 +1,7 @@
 <menu>
     <Interfaces>
         <Diagnostics>
-            <Iperf url="/ui/iperf" />
+            <Iperf VisibleName="Iperf Server" url="/ui/iperf" />
             <IperfClient VisibleName="Iperf Client" url="/ui/iperf/index/client" />
         </Diagnostics>
     </Interfaces>

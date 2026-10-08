@@ -26,6 +26,7 @@
 
 <script>
     $( document ).ready(function() {
+        let poll = null;
         $("#grid-jobs").UIBootgrid({
             search: '/api/iperf/client/search_jobs',
             datakey: 'id',
@@ -58,8 +59,13 @@
                     requires: []
                 }
             }
+        }).on("loaded.rs.jquery.bootgrid", function () {
+            /* refresh only while a job is running */
+            clearTimeout(poll);
+            if ($("#grid-jobs").bootgrid("getCurrentRows").some(row => row.status == 'running')) {
+                poll = setTimeout(function(){ $("#grid-jobs").bootgrid("reload"); }, 5000);
+            }
         });
-        setInterval(function(){ $("#grid-jobs").bootgrid("reload"); }, 5000);
 
         mapDataToFormUI({'frm_ClientSettings': "/api/iperf/client/get"}).done(function(){
             $('.selectpicker').selectpicker('refresh');
