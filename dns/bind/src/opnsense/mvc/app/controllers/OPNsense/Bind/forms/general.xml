@@ -109,10 +109,27 @@
         <help>How much memory in percent the cache can use from the system. Default is 80%.</help>
     </field>
     <field>
-        <id>general.recursion</id>
+        <type>header</type>
         <label>Recursion</label>
+    </field>
+    <field>
+        <id>general.enablerecursion</id>
+        <label>Enable Recursive Resolution</label>
+        <type>checkbox</type>
+        <help>This will enable recursive resolution (default). Disable for public authoritative DNS servers.</help>
+    </field>
+    <field>
+        <id>general.recursion</id>
+        <label>Recursion ACLs</label>
         <type>select_multiple</type>
-        <help>Define an ACL where you allow which clients can resolve via this service. Usually use your local LAN.</help>
+        <help>Select ACLs for which you wish to enable recursive resolution. For public authoritative DNS servers, recursion should be disabled and this field left empty. For private recursive DNS servers, this is usually an ACL representing your local LAN. When recursion is enabled and no ACL is defined here or for "Cache Query ACLs" or "Allow Query", the default will be the local address list. Otherwise this field will default to the value found in "Cache Query ACLs", or failing that, "Allow Query".</help>
+    </field>
+    <field>
+        <id>general.allowcachequeries</id>
+        <label>Cache Query ACLs</label>
+        <advanced>true</advanced>
+        <type>select_multiple</type>
+        <help>Select ACLs for which you wish to enable cache access. For private recursive DNS servers, use this field to override the defaults. When "Recursion ACLs" is set, the default will be the same ACL. Otherwise, the default will be the local address list.</help>
     </field>
     <field>
         <id>general.allowtransfer</id>
