@@ -31,13 +31,11 @@ namespace OPNsense\iperf\Api;
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
-use OPNsense\Core\File;
 
 class ClientController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'client';
     protected static $internalModelClass = 'OPNsense\iperf\Client';
-    private static $job_dir = '/var/db/iperf/client';
 
     /**
      * create client job
@@ -45,34 +43,36 @@ class ClientController extends ApiMutableModelControllerBase
     public function setAction()
     {
         $result = parent::setAction();
-        if ($result['result'] != 'failed') {
-            $mdl = $this->getModel();
-            $result['result'] = 'ok';
-            $result['uuid'] = $mdl->settings->generateUUID();
-            @mkdir(self::$job_dir);
-            $nodes = $mdl->settings->getNodes();
-            foreach ($nodes as $key => $value) {
-                if (is_array($value)) {
-                    $items = [];
-                    foreach ($value as $itemkey => $itemval) {
-                        if (!empty($itemval['selected'])) {
-                            $items[] = $itemkey;
-                        }
-                    }
-                    $nodes[$key] = implode(',', $items);
-                }
-            }
-            if (!empty($nodes['interface'])) {
-                /* the script binds to an address, it needs the device name */
-                $nodes['interface'] = (string)Config::getInstance()->object()->interfaces->{$nodes['interface']}->if;
-            }
-            File::file_put_contents(
-                sprintf('%s/%s.json', self::$job_dir, $result['uuid']),
-                json_encode($nodes),
-                0640
-            );
+        if ($result['result'] === 'failed') {
+            return $result;
         }
-        return $result;
+
+        $nodes = $this->getModel()->settings->getNodes();
+        foreach ($nodes as $key => $value) {
+            if (is_array($value)) {
+                $items = [];
+                foreach ($value as $itemkey => $itemval) {
+                    if (!empty($itemval['selected'])) {
+                        $items[] = $itemkey;
+                    }
+                }
+                $nodes[$key] = implode(',', $items);
+            }
+        }
+        if (!empty($nodes['interface'])) {
+            /* the script binds to an address, it needs the device name */
+            $nodes['interface'] = (string)Config::getInstance()->object()->interfaces->{$nodes['interface']}->if;
+        }
+        $payload = json_decode((new Backend())->configdpRun('iperf client create', [
+            $nodes['server'],
+            $nodes['port'],
+            $nodes['interface'] ?: '-',
+            $nodes['protocol'],
+            $nodes['parallel'],
+            $nodes['reverse'],
+            $nodes['duration']
+        ]), true);
+        return !empty($payload) ? $payload : ['status' => 'failed'];
     }
 
     /**
