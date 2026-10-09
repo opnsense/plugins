@@ -82,10 +82,6 @@ class InstanceController extends ApiMutableModelControllerBase
 
     public function removeAction($jobId)
     {
-        if (!$this->request->isPost()) {
-            return ['status' => 'failed'];
-        }
-        $payload = json_decode((new Backend())->configdpRun('iperf server remove', [$jobId]), true);
-        return !empty($payload) ? $payload : ['status' => 'failed'];
+        return $this->runJobAction($jobId, 'remove');
     }
 }

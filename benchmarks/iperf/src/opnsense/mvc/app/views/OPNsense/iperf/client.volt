@@ -33,7 +33,7 @@
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_WARNING,
                         title: "{{ lang._('Iperf Client') }}",
-                        message: data.status_msg !== undefined ? data.status_msg : data.status
+                        message: data.error !== undefined ? data.error : data.status
                     });
                 }
                 $("#grid-jobs").bootgrid("reload");
@@ -118,7 +118,7 @@
                                 BootstrapDialog.show({
                                     type: BootstrapDialog.TYPE_WARNING,
                                     title: "{{ lang._('Iperf Client') }}",
-                                    message: data.status_msg !== undefined ? data.status_msg : data.status
+                                    message: data.error !== undefined ? data.error : data.status
                                 });
                             }
                             $("#grid-jobs").bootgrid("reload");

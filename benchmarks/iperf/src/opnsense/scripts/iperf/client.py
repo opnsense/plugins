@@ -77,6 +77,10 @@ def interface_address(intf, family):
     return None
 
 
+def failed(error, **details):
+    return {'status': 'failed', 'error': error, **details}
+
+
 if __name__ == '__main__':
     result = dict()
     parser = argparse.ArgumentParser()
@@ -103,16 +107,15 @@ if __name__ == '__main__':
             job['sent'] = job['received'] = job['error'] = ''
             if os.path.exists("%s%s.stop" % (JOB_DIR, jobid)):
                 job['status'] = 'error'
-                job['error'] = 'test was stopped before completion'
+                job['error'] = 'stopped'
             elif len(job_pids(jobid)) > 0:
                 job['status'] = 'running'
             else:
                 output = load_json("%s%s.log" % (JOB_DIR, jobid))
                 if output is None:
                     job['status'] = 'error'
-                    job['error'] = 'no result, the test was stopped after %s seconds' % (
-                        int(job.get('duration', 0)) + GRACE_TIME
-                    )
+                    job['error'] = 'no_result'
+                    job['error_seconds'] = int(job.get('duration', 0)) + GRACE_TIME
                 elif output.get('error'):
                     job['status'] = 'error'
                     job['error'] = output['error']
@@ -147,20 +150,21 @@ if __name__ == '__main__':
                 inet6 = False
             address = interface_address(settings['interface'], 'inet6' if inet6 else 'inet')
             if address is None:
-                result['status'] = 'failed'
-                result['status_msg'] = 'no %s address on %s' % ('IPv6' if inet6 else 'IPv4', settings['interface'])
+                result = failed(
+                    'source_unavailable',
+                    family='IPv6' if inet6 else 'IPv4',
+                    interface=settings['interface']
+                )
             else:
                 args += ['-B', address]
         pids = job_pids(cmd_args.job)
         if pids:
-            result['status'] = 'failed'
-            result['status_msg'] = 'already running'
+            result = failed('in_use')
         if result['status'] == 'ok':
             if os.path.exists(logfile):
                 os.remove(logfile)
             if subprocess.run(args).returncode != 0:
-                result['status'] = 'failed'
-                result['status_msg'] = 'unable to start iperf3'
+                result = failed('start_failed')
             else:
                 stopped = "%s%s.stop" % (JOB_DIR, cmd_args.job)
                 if os.path.exists(stopped):
@@ -171,17 +175,15 @@ if __name__ == '__main__':
             with open("%s%s.stop" % (JOB_DIR, cmd_args.job), 'w'):
                 pass
         else:
-            result['status'] = 'failed'
-            result['status_msg'] = 'unable to stop iperf3'
+            result = failed('stop_failed')
     elif cmd_args.action == 'remove' and cmd_args.job in all_jobs:
         if stop_job(cmd_args.job):
             result['status'] = 'ok'
             for filename in glob.glob("%s%s*" % (JOB_DIR, cmd_args.job)):
                 os.remove(filename)
         else:
-            result['status'] = 'failed'
-            result['status_msg'] = 'unable to stop iperf3'
+            result = failed('stop_failed')
     else:
-        result['status'] = 'failed'
+        result = failed('not_found')
 
     print(ujson.dumps(result))

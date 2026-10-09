@@ -93,14 +93,11 @@ class ClientController extends ApiMutableModelControllerBase
 
     private function runJobAction($jobid, $action)
     {
-        $result = ['status' => 'failed'];
-        if ($this->request->isPost()) {
-            $payload = json_decode((new Backend())->configdpRun("iperf client $action", [$jobid]), true);
-            if (!empty($payload)) {
-                $result = $payload;
-            }
+        if (!$this->request->isPost()) {
+            return ['status' => 'failed'];
         }
-        return $result;
+        $payload = json_decode((new Backend())->configdpRun("iperf client $action", [$jobid]), true);
+        return !empty($payload) ? $payload : ['status' => 'failed'];
     }
 
     /**
@@ -108,14 +105,7 @@ class ClientController extends ApiMutableModelControllerBase
      */
     public function removeAction($jobid)
     {
-        $result = ['status' => 'failed'];
-        if ($this->request->isPost()) {
-            $payload = json_decode((new Backend())->configdpRun('iperf client remove', [$jobid]), true);
-            if (!empty($payload)) {
-                $result = $payload;
-            }
-        }
-        return $result;
+        return $this->runJobAction($jobid, 'remove');
     }
 
     /**

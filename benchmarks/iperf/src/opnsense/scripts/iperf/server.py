@@ -119,6 +119,10 @@ def rate(result, field):
     return value if isinstance(value, (int, float)) else ''
 
 
+def failed(error, **details):
+    return {'status': 'failed', 'error': error, **details}
+
+
 def list_jobs():
     jobs = []
     for filename in glob.glob(os.path.join(JOB_DIR, '*.json')):
@@ -149,8 +153,9 @@ def list_jobs():
             job['sent'] = rate(last_result, 'sum_sent')
             job['received'] = rate(last_result, 'sum_received')
         if last_event.get('event') == 'error':
-            error = last_event.get('data', 'iperf3 test failed')
-            job['error'] = error.get('error', str(error)) if isinstance(error, dict) else str(error)
+            error = last_event.get('data')
+            if error is not None:
+                job['error'] = error.get('error', str(error)) if isinstance(error, dict) else str(error)
         jobs.append(job)
     return {'status': 'ok', 'jobs': jobs}
 
@@ -167,7 +172,7 @@ def launch(job_id, port):
     ]
     result = subprocess.run(command, capture_output=True, text=True)
     if result.returncode != 0:
-        return {'status': 'error', 'error': result.stderr.strip() or 'unable to start iperf3'}
+        return failed('start_failed', detail=result.stderr.strip())
     stopped = job_path(job_id, 'stop')
     if os.path.exists(stopped):
         os.remove(stopped)
@@ -177,13 +182,13 @@ def launch(job_id, port):
 def create(port):
     port = available_port(port)
     if port is None:
-        return {'status': 'error', 'error': 'port is already in use'}
+        return failed('in_use')
     for filename in glob.glob(os.path.join(JOB_DIR, '*.json')):
         job_id = os.path.basename(filename).split('.')[0]
         job = load_json(filename) or {}
         stopped = os.path.exists(job_path(job_id, 'stop'))
         if job.get('port') == port and not stopped and (job_pids(job_id) or startup_pending(filename)):
-            return {'status': 'error', 'error': 'port is already in use'}
+            return failed('in_use')
 
     job_id = uuid.uuid4().hex
     metadata = {
@@ -201,19 +206,19 @@ def create(port):
 def start(job_id):
     job = load_job(job_id)
     if job is None:
-        return {'status': 'error', 'error': 'instance not found'}
+        return failed('not_found')
     if job_pids(job_id):
-        return {'status': 'error', 'error': 'instance is already running'}
+        return failed('in_use')
     if available_port(job['port']) is None:
-        return {'status': 'error', 'error': 'port is already in use'}
+        return failed('in_use')
     return launch(job_id, job['port'])
 
 
 def stop(job_id):
     if load_job(job_id) is None:
-        return {'status': 'error', 'error': 'instance not found'}
+        return failed('not_found')
     if not stop_processes(job_id):
-        return {'status': 'error', 'error': 'unable to stop iperf3'}
+        return failed('stop_failed')
     with open(job_path(job_id, 'stop'), 'w'):
         pass
     return {'status': 'ok'}
@@ -221,9 +226,9 @@ def stop(job_id):
 
 def remove(job_id):
     if load_job(job_id) is None:
-        return {'status': 'error', 'error': 'instance not found'}
+        return failed('not_found')
     if not stop_processes(job_id):
-        return {'status': 'error', 'error': 'unable to stop iperf3'}
+        return failed('stop_failed')
     for filename in glob.glob(os.path.join(JOB_DIR, '%s.*' % job_id)):
         os.remove(filename)
     return {'status': 'ok'}
