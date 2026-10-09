@@ -117,7 +117,7 @@
             onPreAction: function() {
                 const dfObj = new $.Deferred();
                 let callb = function (data) {
-                    if (data.status !== 'ok') {
+                    if (data.status !== undefined && data.status !== 'ok') {
                         BootstrapDialog.show({
                             type: BootstrapDialog.TYPE_WARNING,
                             title: "{{ lang._('Iperf Server') }}",

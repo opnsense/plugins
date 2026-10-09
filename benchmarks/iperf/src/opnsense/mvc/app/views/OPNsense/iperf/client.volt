@@ -49,6 +49,10 @@
                     "direction": function (column, row) {
                         return row.reverse == '1' ? "{{ lang._('Download') }}" : "{{ lang._('Upload') }}";
                     },
+                    "error": function (column, row) {
+                        return row.error == 'no_result' && row.error_seconds !== undefined ?
+                            row.error + ' (' + row.error_seconds + 's)' : row.error;
+                    },
                     "rate": function (column, row) {
                         return row[column.id] === '' ? '' :
                             byteFormat(row[column.id], 2, true).replace(/ B$/, ' G') + 'bit/s';
@@ -159,7 +163,7 @@
                 <th data-column-id="reverse" data-type="string" data-formatter="direction">{{ lang._('Direction') }}</th>
                 <th data-column-id="sent" data-type="numeric" data-formatter="rate">{{ lang._('Sent') }}</th>
                 <th data-column-id="received" data-type="numeric" data-formatter="rate">{{ lang._('Received') }}</th>
-                <th data-column-id="error" data-type="string">{{ lang._('Error') }}</th>
+                <th data-column-id="error" data-type="string" data-formatter="error">{{ lang._('Error') }}</th>
                 <th data-column-id="commands" data-width="12em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
         </thead>

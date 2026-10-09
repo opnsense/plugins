@@ -31,6 +31,7 @@ POSSIBILITY OF SUCH DAMAGE.
 import argparse
 import base64
 import binascii
+import fcntl
 import glob
 import os
 import socket
@@ -93,6 +94,8 @@ if __name__ == '__main__':
     parser.add_argument('action', help='action to perform', choices=['list', 'create', 'start', 'stop', 'remove'])
     cmd_args = parser.parse_args()
     os.makedirs(JOB_DIR, mode=0o750, exist_ok=True)
+    lock = open(os.path.join(JOB_DIR, '.lock'), 'w')
+    fcntl.flock(lock, fcntl.LOCK_EX)
 
     all_jobs = {}
     for filename in glob.glob("%s*.json" % JOB_DIR):
@@ -204,4 +207,5 @@ if __name__ == '__main__':
     else:
         result = failed('not_found')
 
+    lock.close()
     print(ujson.dumps(result))

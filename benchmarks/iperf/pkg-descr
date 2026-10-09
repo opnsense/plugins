@@ -19,4 +19,5 @@ Plugin Changelog
 * Reworked server mode
 
 Note: The API has changed.
-Note: Server and client jobs are not restarted after a reboot.
+Note: Stored jobs and results persist across reboots, but running server and
+client processes are not restarted.
