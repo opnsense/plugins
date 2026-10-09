@@ -117,24 +117,14 @@
             onPreAction: function() {
                 const dfObj = new $.Deferred();
                 let callb = function (data) {
-                    if (data.status === 'ok') {
-                        ajaxCall("/api/iperf/client/start/" + data.uuid, {}, function(data){
-                            if (data.status !== 'ok') {
-                                BootstrapDialog.show({
-                                    type: BootstrapDialog.TYPE_WARNING,
-                                    title: "{{ lang._('Iperf Client') }}",
-                                    message: data.error !== undefined ? data.error : data.status
-                                });
-                            }
-                            $("#grid-jobs").bootgrid("reload");
-                        });
-                    } else if (data.status !== undefined) {
+                    if (data.status !== undefined && data.status !== 'ok') {
                         BootstrapDialog.show({
                             type: BootstrapDialog.TYPE_WARNING,
                             title: "{{ lang._('Iperf Client') }}",
                             message: data.error !== undefined ? data.error : data.status
                         });
                     }
+                    $("#grid-jobs").bootgrid("reload");
                     dfObj.reject(); /* do not execute regular data_endpoint */
                 }
                 saveFormToEndpoint("/api/iperf/client/set", 'frm_ClientSettings', callb, true, callb);

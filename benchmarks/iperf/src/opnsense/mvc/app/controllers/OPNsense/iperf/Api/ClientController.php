@@ -39,7 +39,7 @@ class ClientController extends ApiMutableModelControllerBase
     protected static $internalModelClass = 'OPNsense\iperf\Client';
 
     /**
-     * create client job
+     * Validate the settings and start an iperf client job.
      */
     public function setAction()
     {

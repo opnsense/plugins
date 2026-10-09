@@ -166,7 +166,6 @@ def launch(job_id, port):
     logfile = job_path(job_id, 'log')
     if os.path.exists(logfile):
         os.remove(logfile)
-    os.utime(job_path(job_id, 'json'), None)
     command = [
         '/usr/sbin/daemon', '-f',
         '/usr/local/bin/iperf3', '--json-stream', '--forceflush', '-f', 'M', '-s',
@@ -175,6 +174,10 @@ def launch(job_id, port):
     result = subprocess.run(command, capture_output=True, text=True)
     if result.returncode != 0:
         return failed('start_failed', detail=result.stderr.strip())
+    metadata = load_job(job_id)
+    metadata['started'] = datetime.now().astimezone().isoformat(timespec='seconds')
+    with open(job_path(job_id, 'json'), 'w') as handle:
+        json.dump(metadata, handle)
     stopped = job_path(job_id, 'stop')
     if os.path.exists(stopped):
         os.remove(stopped)
