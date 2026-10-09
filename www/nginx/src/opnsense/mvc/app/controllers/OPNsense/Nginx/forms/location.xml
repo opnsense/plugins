@@ -70,6 +70,13 @@
     <help>Select an upstream to proxy to or connect via FastCGI if chosen.</help>
   </field>
   <field>
+    <id>location.upstream_protocol</id>
+    <label>Upstream Protocol</label>
+    <type>dropdown</type>
+    <style>selectpicker</style>
+    <help>Choose how requests are passed to the selected upstream. HTTP uses proxy_pass. gRPC uses grpc_pass for native gRPC backends and requires HTTP/2 to be enabled on the HTTP server. TLS towards the upstream (https or grpcs) is controlled by the "Enable TLS" option of the upstream. Path Prefix, WebSocket Support, Upstream Keepalive Support, caching and the buffering options are not applied to gRPC locations.</help>
+  </field>
+  <field>
     <id>location.path_prefix</id>
     <label>Path Prefix</label>
     <type>text</type>

@@ -254,7 +254,23 @@
                     </template>
                 </Model>
                 <ValidationMessage>Selected upstream not found.</ValidationMessage>
+                <Constraints>
+                    <check001>
+                        <ValidationMessage>An upstream is required when the upstream protocol is gRPC.</ValidationMessage>
+                        <type>SetIfConstraint</type>
+                        <field>upstream_protocol</field>
+                        <check>grpc</check>
+                    </check001>
+                </Constraints>
             </upstream>
+            <upstream_protocol type="OptionField">
+                <Default>http</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <http>HTTP</http>
+                    <grpc>gRPC</grpc>
+                </OptionValues>
+            </upstream_protocol>
             <path_prefix type="TextField">
                 <Mask>/^[^" \t]+$/</Mask>
             </path_prefix>
