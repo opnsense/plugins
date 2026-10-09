@@ -84,4 +84,10 @@ class InstanceController extends ApiMutableModelControllerBase
     {
         return $this->runJobAction($jobId, 'remove');
     }
+
+    public function viewAction($jobId)
+    {
+        $payload = json_decode((new Backend())->configdpRun('iperf server view', [$jobId]), true);
+        return !empty($payload) ? $payload : ['status' => 'failed'];
+    }
 }

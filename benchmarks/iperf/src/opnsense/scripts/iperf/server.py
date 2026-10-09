@@ -162,6 +162,15 @@ def list_jobs():
     return {'status': 'ok', 'jobs': jobs}
 
 
+def view_job(job_id):
+    if load_job(job_id) is None:
+        return failed('not_found')
+    events = load_events(job_path(job_id, 'log'))
+    if not events:
+        return failed('no_result')
+    return {'status': 'ok', 'id': job_id, 'data': events}
+
+
 def launch(job_id, port):
     logfile = job_path(job_id, 'log')
     if os.path.exists(logfile):
@@ -246,7 +255,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--job')
     parser.add_argument('--settings', default='')
-    parser.add_argument('action', choices=['list', 'create', 'start', 'stop', 'remove'])
+    parser.add_argument('action', choices=['list', 'create', 'start', 'stop', 'remove', 'view'])
     args = parser.parse_args()
     os.makedirs(JOB_DIR, mode=0o750, exist_ok=True)
     with open(os.path.join(JOB_DIR, '.lock'), 'w') as lock:
@@ -266,6 +275,8 @@ if __name__ == '__main__':
             response = start(args.job or '')
         elif args.action == 'stop':
             response = stop(args.job or '')
-        else:
+        elif args.action == 'remove':
             response = remove(args.job or '')
+        else:
+            response = view_job(args.job or '')
     print(json.dumps(response))

@@ -28,16 +28,39 @@
 <script>
     $( document ).ready(function() {
         let poll = null;
+        let errorMessage = function(data) {
+            const value = data.error !== undefined ? data.error : data.status;
+            return $("<span />").text(value === undefined ? '' : String(value));
+        };
         let jobAction = function(action, jobId) {
             ajaxCall("/api/iperf/instance/" + action + "/" + jobId, {}, function (data) {
                 if (data.status !== 'ok') {
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_WARNING,
                         title: "{{ lang._('Iperf Server') }}",
-                        message: data.error !== undefined ? data.error : data.status
+                        message: errorMessage(data)
                     });
                 }
                 $("#grid-jobs").bootgrid("reload");
+            });
+        };
+        let viewResult = function(jobId) {
+            ajaxGet("/api/iperf/instance/view/" + jobId, {}, function (data) {
+                if (data.status !== 'ok') {
+                    BootstrapDialog.show({
+                        type: BootstrapDialog.TYPE_WARNING,
+                        title: "{{ lang._('Iperf Server') }}",
+                        message: errorMessage(data)
+                    });
+                } else {
+                    BootstrapDialog.show({
+                        size: BootstrapDialog.SIZE_WIDE,
+                        title: "{{ lang._('Iperf Server Results') }}",
+                        message: $("<pre style='white-space:pre-wrap;word-break:break-word;' />").text(
+                            JSON.stringify(data.data, null, 2)
+                        )
+                    });
+                }
             });
         };
         $("#grid-jobs").UIBootgrid({
@@ -46,6 +69,9 @@
             options: {
                 selection: false,
                 formatters: {
+                    "error": function (column, row) {
+                        return document.createTextNode(row.error === undefined ? '' : String(row.error));
+                    },
                     "rate": function (column, row) {
                         return row[column.id] === '' ? '' :
                             byteFormat(row[column.id], 2, true).replace(/ B$/, ' G') + 'bit/s';
@@ -82,6 +108,14 @@
                         jobAction('stop', $(this).data('row-id'));
                     },
                     classname: 'fa fa-fw fa-stop',
+                    requires: []
+                },
+                view: {
+                    title: "{{ lang._('View results') }}",
+                    method: function() {
+                        viewResult($(this).data('row-id'));
+                    },
+                    classname: 'fa fa-fw fa-file-text-o',
                     requires: []
                 },
                 delete: {
@@ -121,7 +155,7 @@
                         BootstrapDialog.show({
                             type: BootstrapDialog.TYPE_WARNING,
                             title: "{{ lang._('Iperf Server') }}",
-                            message: data.error !== undefined ? data.error : data.status
+                            message: errorMessage(data)
                         });
                     }
                     $("#grid-jobs").bootgrid("reload");
@@ -148,7 +182,7 @@
                 <th data-column-id="port" data-type="string">{{ lang._('Port') }}</th>
                 <th data-column-id="sent" data-type="numeric" data-formatter="rate">{{ lang._('Sent') }}</th>
                 <th data-column-id="received" data-type="numeric" data-formatter="rate">{{ lang._('Received') }}</th>
-                <th data-column-id="error" data-type="string">{{ lang._('Error') }}</th>
+                <th data-column-id="error" data-type="string" data-formatter="error">{{ lang._('Error') }}</th>
                 <th data-column-id="commands" data-width="12em" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
             </tr>
         </thead>

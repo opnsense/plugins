@@ -143,12 +143,24 @@ def start_job(jobid, filename):
     return {'status': 'ok', 'id': jobid, 'port': port}
 
 
+def view_job(jobid):
+    output = load_json(job_path(jobid, 'log'))
+    if not isinstance(output, dict):
+        return failed('no_result')
+    data = {key: output[key] for key in ('start', 'end', 'error') if key in output}
+    return {'status': 'ok', 'id': jobid, 'data': data} if data else failed('no_result')
+
+
 if __name__ == '__main__':
     result = dict()
     parser = argparse.ArgumentParser()
     parser.add_argument('--job', help='job id', default=None)
     parser.add_argument('--settings', default='')
-    parser.add_argument('action', help='action to perform', choices=['list', 'create', 'start', 'stop', 'remove'])
+    parser.add_argument(
+        'action',
+        help='action to perform',
+        choices=['list', 'create', 'start', 'stop', 'remove', 'view']
+    )
     cmd_args = parser.parse_args()
     os.makedirs(JOB_DIR, mode=0o750, exist_ok=True)
     lock = open(os.path.join(JOB_DIR, '.lock'), 'w')
@@ -221,6 +233,8 @@ if __name__ == '__main__':
                 os.remove(filename)
         else:
             result = failed('stop_failed')
+    elif cmd_args.action == 'view' and cmd_args.job in all_jobs:
+        result = view_job(cmd_args.job)
     else:
         result = failed('not_found')
 

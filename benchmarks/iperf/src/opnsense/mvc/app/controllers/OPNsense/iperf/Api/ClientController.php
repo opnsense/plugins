@@ -105,6 +105,15 @@ class ClientController extends ApiMutableModelControllerBase
     }
 
     /**
+     * view the latest client result
+     */
+    public function viewAction($jobid)
+    {
+        $payload = json_decode((new Backend())->configdpRun('iperf client view', [$jobid]), true);
+        return !empty($payload) ? $payload : ['status' => 'failed'];
+    }
+
+    /**
      * search client jobs and their results
      */
     public function searchJobsAction()

@@ -28,16 +28,39 @@
 <script>
     $( document ).ready(function() {
         let poll = null;
+        let errorMessage = function(data) {
+            const value = data.error !== undefined ? data.error : data.status;
+            return $("<span />").text(value === undefined ? '' : String(value));
+        };
         let jobAction = function(action, jobId) {
             ajaxCall("/api/iperf/client/" + action + "/" + jobId, {}, function (data) {
                 if (data.status !== 'ok') {
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_WARNING,
                         title: "{{ lang._('Iperf Client') }}",
-                        message: data.error !== undefined ? data.error : data.status
+                        message: errorMessage(data)
                     });
                 }
                 $("#grid-jobs").bootgrid("reload");
+            });
+        };
+        let viewResult = function(jobId) {
+            ajaxGet("/api/iperf/client/view/" + jobId, {}, function (data) {
+                if (data.status !== 'ok') {
+                    BootstrapDialog.show({
+                        type: BootstrapDialog.TYPE_WARNING,
+                        title: "{{ lang._('Iperf Client') }}",
+                        message: errorMessage(data)
+                    });
+                } else {
+                    BootstrapDialog.show({
+                        size: BootstrapDialog.SIZE_WIDE,
+                        title: "{{ lang._('Iperf Client Results') }}",
+                        message: $("<pre style='white-space:pre-wrap;word-break:break-word;' />").text(
+                            JSON.stringify(data.data, null, 2)
+                        )
+                    });
+                }
             });
         };
         $("#grid-jobs").UIBootgrid({
@@ -50,8 +73,9 @@
                         return row.reverse == '1' ? "{{ lang._('Download') }}" : "{{ lang._('Upload') }}";
                     },
                     "error": function (column, row) {
-                        return row.error == 'no_result' && row.error_seconds !== undefined ?
+                        const value = row.error == 'no_result' && row.error_seconds !== undefined ?
                             row.error + ' (' + row.error_seconds + 's)' : row.error;
+                        return document.createTextNode(value === undefined ? '' : String(value));
                     },
                     "rate": function (column, row) {
                         return row[column.id] === '' ? '' :
@@ -85,6 +109,14 @@
                         jobAction('stop', $(this).data('row-id'));
                     },
                     classname: 'fa fa-fw fa-stop',
+                    requires: []
+                },
+                view: {
+                    title: "{{ lang._('View results') }}",
+                    method: function() {
+                        viewResult($(this).data('row-id'));
+                    },
+                    classname: 'fa fa-fw fa-file-text-o',
                     requires: []
                 },
                 delete: {
@@ -121,7 +153,7 @@
                         BootstrapDialog.show({
                             type: BootstrapDialog.TYPE_WARNING,
                             title: "{{ lang._('Iperf Client') }}",
-                            message: data.error !== undefined ? data.error : data.status
+                            message: errorMessage(data)
                         });
                     }
                     $("#grid-jobs").bootgrid("reload");
