@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/DynDNS</mount>
-    <version>1.5.1</version>
+    <version>1.5.2</version>
     <description>Dynamic DNS client</description>
     <items>
         <general>
@@ -113,6 +113,16 @@
                     <Required>N</Required>
                     <Mask>/^[^\n]*$/</Mask>
                 </password>
+                <!--
+                    Keep this as TextField to support cloning and to avoid
+                    confusion about the state of migrated deSEC accounts. The
+                    dialog still renders it as a protected password input.
+                    Users who can access this GUI can trivially extract it anyway.
+                -->
+                <token_secret type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^[^\n]*$/</Mask>
+                </token_secret>
                 <resourceId type="TextField">
                     <Required>N</Required>
                     <Mask>/^[^\n]*$/</Mask>
@@ -131,6 +141,14 @@
                     <Default>0</Default>
                     <Required>Y</Required>
                 </wildcard>
+                <prune_a type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </prune_a>
+                <prune_aaaa type="BooleanField">
+                    <Default>0</Default>
+                    <Required>Y</Required>
+                </prune_aaaa>
                 <zone type="HostnameField">
                     <Required>N</Required>
                     <IpAllowed>N</IpAllowed>
