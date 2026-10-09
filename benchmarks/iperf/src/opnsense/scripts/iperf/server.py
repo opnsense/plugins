@@ -27,6 +27,8 @@ POSSIBILITY OF SUCH DAMAGE.
 """
 
 import argparse
+import base64
+import binascii
 import fcntl
 import glob
 import json
@@ -179,7 +181,11 @@ def launch(job_id, port):
     return {'status': 'ok', 'id': job_id, 'port': port}
 
 
-def create(port):
+def create(settings):
+    try:
+        port = int(settings.get('port', 0))
+    except (TypeError, ValueError):
+        return failed('invalid_settings')
     port = available_port(port)
     if port is None:
         return failed('in_use')
@@ -191,10 +197,9 @@ def create(port):
             return failed('in_use')
 
     job_id = uuid.uuid4().hex
-    metadata = {
-        'started': datetime.now().astimezone().isoformat(timespec='seconds'),
-        'port': port
-    }
+    metadata = dict(settings)
+    metadata['started'] = datetime.now().astimezone().isoformat(timespec='seconds')
+    metadata['port'] = port
     with open(job_path(job_id, 'json'), 'w') as handle:
         json.dump(metadata, handle)
     result = launch(job_id, port)
@@ -237,7 +242,7 @@ def remove(job_id):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--job')
-    parser.add_argument('--port', type=int, default=0)
+    parser.add_argument('--settings', default='')
     parser.add_argument('action', choices=['list', 'create', 'start', 'stop', 'remove'])
     args = parser.parse_args()
     os.makedirs(JOB_DIR, mode=0o750, exist_ok=True)
@@ -246,7 +251,14 @@ if __name__ == '__main__':
         if args.action == 'list':
             response = list_jobs()
         elif args.action == 'create':
-            response = create(args.port)
+            try:
+                settings = json.loads(base64.b64decode(args.settings, validate=True).decode())
+                if not isinstance(settings, dict):
+                    raise ValueError
+            except (binascii.Error, UnicodeDecodeError, ValueError):
+                response = failed('invalid_settings')
+            else:
+                response = create(settings)
         elif args.action == 'start':
             response = start(args.job or '')
         elif args.action == 'stop':

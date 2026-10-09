@@ -28,6 +28,8 @@ POSSIBILITY OF SUCH DAMAGE.
     run iperf3 in client mode as a background job
 """
 import argparse
+import base64
+import binascii
 import glob
 import os
 import socket
@@ -86,13 +88,7 @@ if __name__ == '__main__':
     result = dict()
     parser = argparse.ArgumentParser()
     parser.add_argument('--job', help='job id', default=None)
-    parser.add_argument('--server', default='')
-    parser.add_argument('--port', default='5201')
-    parser.add_argument('--interface', default='-')
-    parser.add_argument('--protocol', default='tcp')
-    parser.add_argument('--parallel', default='1')
-    parser.add_argument('--reverse', default='1')
-    parser.add_argument('--duration', default='10')
+    parser.add_argument('--settings', default='')
     parser.add_argument('action', help='action to perform', choices=['list', 'create', 'start', 'stop', 'remove'])
     cmd_args = parser.parse_args()
     os.makedirs(JOB_DIR, mode=0o750, exist_ok=True)
@@ -134,19 +130,17 @@ if __name__ == '__main__':
                     job['received'] = output['end']['sum_received']['bits_per_second']
             result['jobs'].append(job)
     elif cmd_args.action == 'create':
-        jobid = uuid.uuid4().hex
-        settings = {
-            'server': cmd_args.server,
-            'port': cmd_args.port,
-            'interface': '' if cmd_args.interface == '-' else cmd_args.interface,
-            'protocol': cmd_args.protocol,
-            'parallel': cmd_args.parallel,
-            'reverse': cmd_args.reverse,
-            'duration': cmd_args.duration
-        }
-        with open("%s%s.json" % (JOB_DIR, jobid), 'w') as output:
-            ujson.dump(settings, output)
-        result = {'status': 'ok', 'uuid': jobid}
+        try:
+            settings = ujson.loads(base64.b64decode(cmd_args.settings, validate=True).decode())
+            if not isinstance(settings, dict):
+                raise ValueError
+        except (binascii.Error, UnicodeDecodeError, ValueError):
+            result = failed('invalid_settings')
+        else:
+            jobid = uuid.uuid4().hex
+            with open("%s%s.json" % (JOB_DIR, jobid), 'w') as output:
+                ujson.dump(settings, output)
+            result = {'status': 'ok', 'uuid': jobid}
     elif cmd_args.action == 'start' and cmd_args.job in all_jobs:
         settings = load_json(all_jobs[cmd_args.job]) or {}
         logfile = "%s%s.log" % (JOB_DIR, cmd_args.job)

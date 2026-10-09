@@ -63,15 +63,10 @@ class ClientController extends ApiMutableModelControllerBase
             /* the script binds to an address, it needs the device name */
             $nodes['interface'] = (string)Config::getInstance()->object()->interfaces->{$nodes['interface']}->if;
         }
-        $payload = json_decode((new Backend())->configdpRun('iperf client create', [
-            $nodes['server'],
-            $nodes['port'],
-            $nodes['interface'] ?: '-',
-            $nodes['protocol'],
-            $nodes['parallel'],
-            $nodes['reverse'],
-            $nodes['duration']
-        ]), true);
+        $payload = json_decode((new Backend())->configdpRun(
+            'iperf client create',
+            [base64_encode(json_encode($nodes))]
+        ), true);
         return !empty($payload) ? $payload : ['status' => 'failed'];
     }
 

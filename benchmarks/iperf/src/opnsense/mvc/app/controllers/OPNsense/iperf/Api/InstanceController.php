@@ -49,7 +49,7 @@ class InstanceController extends ApiMutableModelControllerBase
 
         $payload = json_decode((new Backend())->configdpRun(
             'iperf server create',
-            [$this->getModel()->port->getValue()]
+            [base64_encode(json_encode($this->getModel()->getNodes()))]
         ), true);
         return !empty($payload) ? $payload : ['status' => 'failed'];
     }
