@@ -9,3 +9,15 @@ Sciences Network (ESnet).  Among its goals were a smaller, simpler
 code base (compared to its predecessor, iperf2) and a library version
 of the functionality that can be used in other programs.  Note that
 iperf3 does not interoperate with with iperf 2.x.
+
+Plugin Changelog
+================
+
+2.0
+
+* Added client mode (contributed by François Maymil)
+* Reworked server mode
+
+Note: The API has changed.
+Note: Stored jobs and results persist across reboots, but running server and
+client processes are not restarted.

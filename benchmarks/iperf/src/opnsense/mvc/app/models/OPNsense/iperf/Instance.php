@@ -29,21 +29,8 @@
 
 namespace OPNsense\iperf;
 
-/**
-* Class IndexController
-* @package OPNsense/Iperf
-*/
-class IndexController extends \OPNsense\Base\IndexController
-{
-    public function instanceAction()
-    {
-        $this->view->instanceForm = $this->getForm("instance");
-        $this->view->pick('OPNsense/iperf/instance');
-    }
+use OPNsense\Base\BaseModel;
 
-    public function clientAction()
-    {
-        $this->view->clientForm = $this->getForm("client");
-        $this->view->pick('OPNsense/iperf/client');
-    }
+class Instance extends BaseModel
+{
 }

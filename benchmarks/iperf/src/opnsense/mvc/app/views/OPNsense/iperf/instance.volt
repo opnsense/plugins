@@ -1,6 +1,6 @@
 {#
  # Copyright (C) 2026 Cedrik Pischem
- # Copyright (C) 2026 François Maymil
+ # Copyright (C) 2017 Fabian Franz
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without
@@ -33,11 +33,11 @@
             return $("<span />").text(htmlDecode(value === undefined ? '' : String(value)));
         };
         let jobAction = function(action, jobId) {
-            ajaxCall("/api/iperf/client/" + action + "/" + jobId, {}, function (data) {
+            ajaxCall("/api/iperf/instance/" + action + "/" + jobId, {}, function (data) {
                 if (data.status !== 'ok') {
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_WARNING,
-                        title: "{{ lang._('Iperf Client') }}",
+                        title: "{{ lang._('Iperf Server') }}",
                         message: errorMessage(data)
                     });
                 }
@@ -45,17 +45,17 @@
             });
         };
         let viewResult = function(jobId) {
-            ajaxGet("/api/iperf/client/view/" + jobId, {}, function (data) {
+            ajaxGet("/api/iperf/instance/view/" + jobId, {}, function (data) {
                 if (data.status !== 'ok') {
                     BootstrapDialog.show({
                         type: BootstrapDialog.TYPE_WARNING,
-                        title: "{{ lang._('Iperf Client') }}",
+                        title: "{{ lang._('Iperf Server') }}",
                         message: errorMessage(data)
                     });
                 } else {
                     BootstrapDialog.show({
                         size: BootstrapDialog.SIZE_WIDE,
-                        title: "{{ lang._('Iperf Client Results') }}",
+                        title: "{{ lang._('Iperf Server Results') }}",
                         message: $("<pre style='white-space:pre-wrap;word-break:break-word;' />").text(
                             htmlDecode(JSON.stringify(data.data, null, 2))
                         )
@@ -64,20 +64,14 @@
             });
         };
         $("#grid-jobs").UIBootgrid({
-            search: '/api/iperf/client/search_jobs',
+            search: '/api/iperf/instance/search_jobs',
             datakey: 'id',
             options: {
                 selection: false,
                 formatters: {
-                    "direction": function (column, row) {
-                        return row.reverse == '1' ? "{{ lang._('Download') }}" : "{{ lang._('Upload') }}";
-                    },
                     "error": function (column, row) {
-                        const value = row.error == 'no_result' && row.error_seconds !== undefined ?
-                            row.error + ' (' + row.error_seconds + 's)' : row.error;
-                        return document.createTextNode(
-                            htmlDecode(value === undefined ? '' : String(value))
-                        );
+                        const value = row.error === undefined ? '' : String(row.error);
+                        return document.createTextNode(htmlDecode(value));
                     },
                     "rate": function (column, row) {
                         return row[column.id] === '' ? '' :
@@ -86,8 +80,12 @@
                     "status": function (column, row) {
                         if (row.status == 'running') {
                             return '<i class="fa fa-fw fa-spinner fa-pulse"></i>';
+                        } else if (row.status == 'listening') {
+                            return '<i class="fa fa-fw fa-circle text-success" title="{{ lang._('Listening') }}"></i>';
+                        } else if (row.status == 'stopped') {
+                            return '<i class="fa fa-fw fa-circle text-danger" title="{{ lang._('Stopped') }}"></i>';
                         } else if (row.status == 'error') {
-                            return '<i class="fa fa-fw fa-exclamation-triangle"></i>';
+                            return '<i class="fa fa-fw fa-circle text-danger" title="{{ lang._('Error') }}"></i>';
                         } else {
                             return '<i class="fa fa-fw fa-check"></i>';
                         }
@@ -131,19 +129,22 @@
                 }
             }
         }).on("loaded.rs.jquery.bootgrid", function () {
-            /* refresh only while a job is running */
+            /* refresh while a server is listening or handling a test */
             clearTimeout(poll);
-            if ($("#grid-jobs").bootgrid("getCurrentRows").some(row => row.status == 'running')) {
+            if ($("#grid-jobs").bootgrid("getCurrentRows").some(
+                row => row.status == 'listening' || row.status == 'running'
+            )) {
                 poll = setTimeout(function(){ $("#grid-jobs").bootgrid("reload"); }, 5000);
             }
         });
 
         function commandFilter(cell, action) {
-            const active = cell.getData().status == 'running';
+            const status = cell.getData().status;
+            const active = status == 'listening' || status == 'running';
             return action == 'stop' ? active : !active;
         }
 
-        mapDataToFormUI({'frm_ClientSettings': "/api/iperf/client/get"}).done(function(){
+        mapDataToFormUI({'frm_InstanceSettings': "/api/iperf/instance/get"}).done(function(){
             $('.selectpicker').selectpicker('refresh');
         });
 
@@ -154,14 +155,14 @@
                     if (data.status !== undefined && data.status !== 'ok') {
                         BootstrapDialog.show({
                             type: BootstrapDialog.TYPE_WARNING,
-                            title: "{{ lang._('Iperf Client') }}",
+                            title: "{{ lang._('Iperf Server') }}",
                             message: errorMessage(data)
                         });
                     }
                     $("#grid-jobs").bootgrid("reload");
                     dfObj.reject(); /* do not execute regular data_endpoint */
                 }
-                saveFormToEndpoint("/api/iperf/client/set", 'frm_ClientSettings', callb, true, callb);
+                saveFormToEndpoint("/api/iperf/instance/set", 'frm_InstanceSettings', callb, true, callb);
                 return dfObj;
             }
         });
@@ -169,7 +170,7 @@
 </script>
 
 <div class="content-box">
-    {{ partial("layout_partials/base_form",['fields':clientForm,'id':'frm_ClientSettings'])}}
+    {{ partial("layout_partials/base_form",['fields':instanceForm,'id':'frm_InstanceSettings'])}}
     {{ partial('layout_partials/base_apply_button', {'button_id': 'btn_start_new', 'data_endpoint': '', 'data_label': lang._('Start')}) }}
 </div>
 <div class="content-box">
@@ -179,12 +180,7 @@
                 <th data-column-id="status" data-width="2em" data-sortable="false" data-formatter="status">&nbsp;</th>
                 <th data-column-id="id" data-type="string" data-sortable="false" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                 <th data-column-id="started" data-type="string" data-order="desc">{{ lang._('Started') }}</th>
-                <th data-column-id="server" data-type="string">{{ lang._('Server') }}</th>
                 <th data-column-id="port" data-type="string">{{ lang._('Port') }}</th>
-                <th data-column-id="interface" data-type="string">{{ lang._('Source interface') }}</th>
-                <th data-column-id="protocol" data-type="string">{{ lang._('Protocol') }}</th>
-                <th data-column-id="parallel" data-type="string">{{ lang._('Streams') }}</th>
-                <th data-column-id="reverse" data-type="string" data-formatter="direction">{{ lang._('Direction') }}</th>
                 <th data-column-id="sent" data-type="numeric" data-formatter="rate">{{ lang._('Sent') }}</th>
                 <th data-column-id="received" data-type="numeric" data-formatter="rate">{{ lang._('Received') }}</th>
                 <th data-column-id="error" data-type="string" data-formatter="error">{{ lang._('Error') }}</th>

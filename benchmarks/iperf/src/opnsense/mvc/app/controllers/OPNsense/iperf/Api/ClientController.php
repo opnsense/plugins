@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * Copyright (C) 2026 Cedrik Pischem
  * Copyright (C) 2026 François Maymil
  * All rights reserved.
  *
@@ -31,47 +32,43 @@ namespace OPNsense\iperf\Api;
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
-use OPNsense\Core\File;
 
 class ClientController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'client';
     protected static $internalModelClass = 'OPNsense\iperf\Client';
-    private static $job_dir = '/tmp/iperf';
 
     /**
-     * create client job
+     * Validate the settings and start an iperf client job.
      */
     public function setAction()
     {
         $result = parent::setAction();
-        if ($result['result'] != 'failed') {
-            $mdl = $this->getModel();
-            $result['result'] = 'ok';
-            $result['uuid'] = $mdl->settings->generateUUID();
-            @mkdir(self::$job_dir);
-            $nodes = $mdl->settings->getNodes();
-            foreach ($nodes as $key => $value) {
-                if (is_array($value)) {
-                    $items = [];
-                    foreach ($value as $itemkey => $itemval) {
-                        if (!empty($itemval['selected'])) {
-                            $items[] = $itemkey;
-                        }
-                    }
-                    $nodes[$key] = implode(',', $items);
-                }
-            }
-            if (!empty($nodes['interface'])) {
-                /* the script binds to an address, it needs the device name */
-                $nodes['interface'] = (string)Config::getInstance()->object()->interfaces->{$nodes['interface']}->if;
-            }
-            File::file_put_contents(
-                sprintf('%s/%s.json', self::$job_dir, $result['uuid']),
-                json_encode($nodes)
-            );
+        if ($result['result'] === 'failed') {
+            return $result;
         }
-        return $result;
+
+        $nodes = $this->getModel()->settings->getNodes();
+        foreach ($nodes as $key => $value) {
+            if (is_array($value)) {
+                $items = [];
+                foreach ($value as $itemkey => $itemval) {
+                    if (!empty($itemval['selected'])) {
+                        $items[] = $itemkey;
+                    }
+                }
+                $nodes[$key] = implode(',', $items);
+            }
+        }
+        if (!empty($nodes['interface'])) {
+            /* the script binds to an address, it needs the device name */
+            $nodes['interface'] = (string)Config::getInstance()->object()->interfaces->{$nodes['interface']}->if;
+        }
+        $payload = json_decode((new Backend())->configdpRun(
+            'iperf client create',
+            [base64_encode(json_encode($nodes))]
+        ), true);
+        return !empty($payload) ? $payload : ['status' => 'failed'];
     }
 
     /**
@@ -79,14 +76,24 @@ class ClientController extends ApiMutableModelControllerBase
      */
     public function startAction($jobid)
     {
-        $result = ['status' => 'failed'];
-        if ($this->request->isPost()) {
-            $payload = json_decode((new Backend())->configdpRun('iperf client start', [$jobid]), true);
-            if (!empty($payload)) {
-                $result = $payload;
-            }
+        return $this->runJobAction($jobid, 'start');
+    }
+
+    /**
+     * stop client job
+     */
+    public function stopAction($jobid)
+    {
+        return $this->runJobAction($jobid, 'stop');
+    }
+
+    private function runJobAction($jobid, $action)
+    {
+        if (!$this->request->isPost()) {
+            return ['status' => 'failed'];
         }
-        return $result;
+        $payload = json_decode((new Backend())->configdpRun("iperf client $action", [$jobid]), true);
+        return !empty($payload) ? $payload : ['status' => 'failed'];
     }
 
     /**
@@ -94,14 +101,16 @@ class ClientController extends ApiMutableModelControllerBase
      */
     public function removeAction($jobid)
     {
-        $result = ['status' => 'failed'];
-        if ($this->request->isPost()) {
-            $payload = json_decode((new Backend())->configdpRun('iperf client remove', [$jobid]), true);
-            if (!empty($payload)) {
-                $result = $payload;
-            }
-        }
-        return $result;
+        return $this->runJobAction($jobid, 'remove');
+    }
+
+    /**
+     * view the latest client result
+     */
+    public function viewAction($jobid)
+    {
+        $payload = json_decode((new Backend())->configdpRun('iperf client view', [$jobid]), true);
+        return !empty($payload) ? $payload : ['status' => 'failed'];
     }
 
     /**

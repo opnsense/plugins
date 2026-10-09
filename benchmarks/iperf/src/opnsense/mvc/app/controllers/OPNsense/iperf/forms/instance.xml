@@ -1,0 +1,8 @@
+<form>
+   <field>
+      <id>instance.port</id>
+      <label>Port</label>
+      <type>text</type>
+      <help>Start a listener that remains available until removed. Each completed test updates the results below. An appropriate firewall rule is required. Use 0 to select an available port, then allow the port shown below.</help>
+   </field>
+</form>
