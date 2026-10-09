@@ -125,4 +125,31 @@ class SettingsController extends ApiMutableModelControllerBase
         }
         return $stats;
     }
+
+    /**
+     * Firewall aliases
+     */
+    public function searchAliasAction()
+    {
+        return $this->searchBase("firewall.alias", null, "name");
+    }
+
+    public function addAliasAction()
+    {
+        return $this->addBase("alias", "firewall.alias");
+    }
+
+    public function setAliasAction($uuid)
+    {
+        return $this->setBase("alias", "firewall.alias", $uuid);
+    }
+
+    public function getAliasAction($uuid = null)
+    {
+        return $this->getBase("alias", "firewall.alias", $uuid);
+    }
+
+    public function delAliasAction($uuid = null) {
+        return $this->delBase("firewall.alias", $uuid);
+    }
 }

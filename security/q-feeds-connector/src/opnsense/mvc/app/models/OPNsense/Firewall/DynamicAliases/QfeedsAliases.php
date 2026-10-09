@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2025 Deciso B.V.
+ * Copyright (C) 2025-2026 Deciso B.V.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -29,12 +29,14 @@
 namespace OPNsense\Firewall\DynamicAliases;
 
 use OPNsense\Core\Backend;
+use OPNsense\QFeeds\Connector;
 
 class QfeedsAliases
 {
     public function collect()
     {
         $result = [];
+        /* XXX: when aliases are configured in "Firewall aliases" we can probably ignore the default ones */
         $payload = json_decode((new Backend())->configdRun('qfeeds index') ?? '', true) ?? [];
         if (is_array($payload) && !empty($payload['feeds'])) {
             foreach ($payload['feeds'] as $feed) {
@@ -50,6 +52,17 @@ class QfeedsAliases
                     ];
                 }
             }
+        }
+        foreach ((new Connector)->firewall->alias->iterateItems() as $alias) {
+            $name = '__qfeeds_' . $alias->name->getValue();
+            $result[$name] = [
+                'enabled' => '1',
+                'counters' => '1',
+                'name' => $name,
+                'type' => 'external',
+                'description' => $name,
+                'content' => ''
+            ];
         }
         return $result;
     }

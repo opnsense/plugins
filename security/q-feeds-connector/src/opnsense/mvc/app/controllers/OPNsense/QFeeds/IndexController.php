@@ -35,6 +35,8 @@ class IndexController extends \OPNsense\Base\IndexController
     public function indexAction()
     {
         $this->view->formSettings = $this->getForm("settings");
+        $this->view->formDialogAlias = $this->getForm("dialogAlias");
+        $this->view->formGridAlias = $this->getFormGrid('dialogAlias');
         $this->view->pick('OPNsense/QFeeds/index');
     }
 }

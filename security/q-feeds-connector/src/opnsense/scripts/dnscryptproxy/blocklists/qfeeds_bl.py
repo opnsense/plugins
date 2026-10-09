@@ -1,7 +1,7 @@
 #!/usr/local/bin/python3
 
 """
-    Copyright (c) 2025 Deciso B.V.
+    Copyright (c) 2025-2026 Deciso B.V.
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -29,6 +29,7 @@
 import os
 import glob
 import re
+import ujson
 
 # Check if 'qf' is selected in DNSCrypt-proxy DNSBL configuration
 def is_qf_selected():
@@ -55,7 +56,7 @@ qfeeds_tables_dir = '/var/db/qfeeds-tables'
 qfeeds_filenames = []
 if os.path.isdir(qfeeds_tables_dir):
     # Find all files ending with _domains.txt (e.g., malware_domains.txt, phishing_domains.txt)
-    pattern = os.path.join(qfeeds_tables_dir, '*_domains.txt')
+    pattern = os.path.join(qfeeds_tables_dir, '*_domains.json')
     qfeeds_filenames = sorted(glob.glob(pattern))
 
 # Collect q-feeds domains
@@ -63,10 +64,9 @@ qfeeds_domains = set()
 for filename in qfeeds_filenames:
     if os.path.exists(filename):
         with open(filename, 'r') as f_in:
-            for line in f_in:
-                domain = line.strip()
-                if domain:
-                    qfeeds_domains.add(domain)
+            data = ujson.load(f_in)
+            if type(data) is dict and data.get('iocs'):
+                qfeeds_domains.update(data['iocs'].keys())
 
 # Write q-feeds domains to blacklist-qfeeds.txt
 # dnscrypt-proxy's dnsbl.sh qfeeds() function will read this file when 'qf' is selected in DNSBL config

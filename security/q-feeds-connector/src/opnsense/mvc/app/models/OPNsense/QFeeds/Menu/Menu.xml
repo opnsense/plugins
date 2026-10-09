@@ -3,7 +3,8 @@
         <QFeeds VisibleName="Q-Feeds Connect" cssClass="fa fa-heartbeat fa-fw">
             <Settings order="10" url="/ui/q_feeds/#settings"/>
             <Feeds order="20" url="/ui/q_feeds/#feeds"/>
-            <Events order="30" url="/ui/q_feeds/#events"/>
+            <Aliases VisibleName="Firewall Aliases" order="30" url="/ui/q_feeds/#aliases"/>
+            <Events order="40" url="/ui/q_feeds/#events"/>
         </QFeeds>
     </Security>
 </menu>
