@@ -1,0 +1,7 @@
+{% set coa = OPNsense.pppoeserver.radius.coa|default({}) %}
+{% set general = OPNsense.pppoeserver.general|default({}) %}
+{% if general.enabled|default('0') == '1' and coa.enabled|default('0') == '1' and coa.secret|default('') != '' and coa.allowedclients|default('') != '' %}
+pppoe_server_coa_enable="YES"
+{% else %}
+pppoe_server_coa_enable="NO"
+{% endif %}

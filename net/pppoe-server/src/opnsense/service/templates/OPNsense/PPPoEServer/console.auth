@@ -1,0 +1,3 @@
+{# mpd5 control console credentials for management scripts - root only #}
+{% set general = OPNsense.pppoeserver.general|default({}) %}
+127.0.0.1 {{ general.consoleport|default('5005') }} svc {{ general.consolepass|default('') }}
