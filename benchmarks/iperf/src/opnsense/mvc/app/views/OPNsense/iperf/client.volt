@@ -30,7 +30,7 @@
         let poll = null;
         let errorMessage = function(data) {
             const value = data.error !== undefined ? data.error : data.status;
-            return $("<span />").text(value === undefined ? '' : String(value));
+            return $("<span />").text(htmlDecode(value === undefined ? '' : String(value)));
         };
         let jobAction = function(action, jobId) {
             ajaxCall("/api/iperf/client/" + action + "/" + jobId, {}, function (data) {
@@ -57,7 +57,7 @@
                         size: BootstrapDialog.SIZE_WIDE,
                         title: "{{ lang._('Iperf Client Results') }}",
                         message: $("<pre style='white-space:pre-wrap;word-break:break-word;' />").text(
-                            JSON.stringify(data.data, null, 2)
+                            htmlDecode(JSON.stringify(data.data, null, 2))
                         )
                     });
                 }
@@ -75,7 +75,9 @@
                     "error": function (column, row) {
                         const value = row.error == 'no_result' && row.error_seconds !== undefined ?
                             row.error + ' (' + row.error_seconds + 's)' : row.error;
-                        return document.createTextNode(value === undefined ? '' : String(value));
+                        return document.createTextNode(
+                            htmlDecode(value === undefined ? '' : String(value))
+                        );
                     },
                     "rate": function (column, row) {
                         return row[column.id] === '' ? '' :
