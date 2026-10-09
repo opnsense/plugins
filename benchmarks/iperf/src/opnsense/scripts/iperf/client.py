@@ -1,6 +1,7 @@
 #!/usr/local/bin/python3
 
 """
+Copyright (C) 2026 Cedrik Pischem
 Copyright (C) 2026 François Maymil
 All rights reserved.
 
