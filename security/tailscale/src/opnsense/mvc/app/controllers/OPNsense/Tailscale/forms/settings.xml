@@ -19,6 +19,20 @@
         <help>UDP port to listen on for WireGuard and peer-to-peer traffic.</help>
     </field>
     <field>
+        <id>settings.relayServerPort</id>
+        <label>Relay Server Port</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Specify a UDP port to accept peer relay connections on. UDP port number (0 will pick a random unused port) for the relay server to bind to, on all interfaces, or empty string to disable relay server functionality.</help>
+    </field>
+    <field>
+        <id>settings.webclient</id>
+        <label>Web Client</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Expose the web interface to your tailnet persistently in the background on port :5252.</help>
+    </field>
+    <field>
         <id>settings.acceptDNS</id>
         <label>Accept DNS</label>
         <type>checkbox</type>
