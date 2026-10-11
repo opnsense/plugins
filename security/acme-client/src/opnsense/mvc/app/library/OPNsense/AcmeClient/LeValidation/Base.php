@@ -154,6 +154,15 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         $account_conf_dir = self::ACME_BASE_ACCOUNT_DIR . '/' . $this->account_id . '_' . $this->ca_compat;
         $account_conf_file = $account_conf_dir . '/account.conf';
 
+        // The account may already be registered even if its runtime directory is missing.
+        if (!is_dir($account_conf_dir)
+            && !mkdir($account_conf_dir, 0700, true)
+            && !is_dir($account_conf_dir)
+        ) {
+            LeUtils::log_error('failed to create account directory: ' . $account_conf_dir);
+            return false;
+        }
+
         // Preparation to run acme client
         $proc_env = $this->acme_env; // add env variables
         $proc_env['PATH'] = $this::ACME_ENV_PATH;
