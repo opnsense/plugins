@@ -31,8 +31,11 @@
 namespace OPNsense\DynDNS\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\UIModelGrid;
 use OPNsense\Base\UserException;
 use OPNsense\Core\Backend;
+use OPNsense\Core\Type;
+use OPNsense\DynDNS\DynDNS;
 
 class AccountsController extends ApiMutableModelControllerBase
 {
@@ -41,13 +44,24 @@ class AccountsController extends ApiMutableModelControllerBase
 
     public function searchItemAction()
     {
-        $result = $this->searchBase(
-            "accounts.account",
-            [
-              'enabled', 'service', 'description', 'username', 'hostnames', 'use_interface',
-              'interface', 'protocol', 'current_ip', 'current_mtime'
-            ],
-            "description"
+        // The account list needs current statistics, but not the dynamic list of supported services.
+        $model = new DynDNS(true);
+        $fields = [
+            'enabled', 'service', 'description', 'username', 'hostnames', 'use_interface',
+            'interface', 'protocol', 'current_ip', 'current_mtime'
+        ];
+        $searchTokens = array_filter(explode(' ', $this->request->get('searchPhrase', 'string', '')));
+        if (!empty($searchTokens) && Type::containsUUID($searchTokens)) {
+            $fields[] = 'uuid';
+        }
+        $grid = new UIModelGrid($model->accounts->account);
+        $result = $grid->fetchBindRequest(
+            $this->request,
+            $fields,
+            'description',
+            null,
+            SORT_NATURAL | SORT_FLAG_CASE,
+            $searchTokens
         );
         foreach ($result['rows'] as &$row) {
             if ($row['service'] == 'Custom') {
