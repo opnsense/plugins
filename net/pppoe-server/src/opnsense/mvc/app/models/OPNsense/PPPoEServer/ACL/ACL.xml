@@ -1,0 +1,24 @@
+<acl>
+    <page-services-pppoeserver>
+        <name>Services: PPPoE Server</name>
+        <patterns>
+            <pattern>ui/pppoeserver/*</pattern>
+            <pattern>api/pppoeserver/settings/*</pattern>
+            <pattern>api/pppoeserver/service/status</pattern>
+            <pattern>api/pppoeserver/sessions/search</pattern>
+            <pattern>api/pppoeserver/diagnostics/*</pattern>
+        </patterns>
+    </page-services-pppoeserver>
+    <page-services-pppoeserver-disconnect>
+        <name>Services: PPPoE Server: disconnect sessions</name>
+        <patterns>
+            <pattern>api/pppoeserver/sessions/*</pattern>
+        </patterns>
+    </page-services-pppoeserver-disconnect>
+    <page-services-pppoeserver-service>
+        <name>Services: PPPoE Server: control service</name>
+        <patterns>
+            <pattern>api/pppoeserver/service/*</pattern>
+        </patterns>
+    </page-services-pppoeserver-service>
+</acl>

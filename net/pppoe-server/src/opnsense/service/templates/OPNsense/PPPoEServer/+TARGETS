@@ -1,0 +1,8 @@
+mpd.conf:/usr/local/etc/pppoe_server/mpd.conf
+mpd.secret:/usr/local/etc/pppoe_server/mpd.secret
+console.auth:/usr/local/etc/pppoe_server/console.auth
+users.meta:/usr/local/etc/pppoe_server/users.meta
+users.ext:/usr/local/etc/pppoe_server/users.ext
+coa.conf:/usr/local/etc/pppoe_server/coa.conf
+rc.conf.d.coa:/etc/rc.conf.d/pppoe_server_coa
+rc.conf.d:/etc/rc.conf.d/pppoe_server

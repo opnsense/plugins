@@ -1,0 +1,6 @@
+{# ext-auth data: username<TAB>password<TAB>up<TAB>down<TAB>staticip<TAB>ip6route. root 0600 #}
+{% for user in helpers.toList('OPNsense.pppoeserver.users.user') %}
+{%   if user.enabled|default('0') == '1' %}
+{{ user.username }}	{{ user.password }}	{{ user.uplimit|default('0') }}	{{ user.downlimit|default('0') }}	{{ user.staticip|default('') }}	{{ user.ip6route|default('') }}
+{%   endif %}
+{% endfor %}
