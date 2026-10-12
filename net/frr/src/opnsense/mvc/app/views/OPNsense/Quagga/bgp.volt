@@ -69,7 +69,17 @@ POSSIBILITY OF SUCH DAMAGE.
             'set':'/api/quagga/bgp/set_aspath/',
             'add':'/api/quagga/bgp/add_aspath/',
             'del':'/api/quagga/bgp/del_aspath/',
-            'toggle':'/api/quagga/bgp/toggle_aspath/'
+            'toggle':'/api/quagga/bgp/toggle_aspath/',
+            tabulatorOptions: {
+                groupBy: "number",
+                groupHeader: (value, count, data, group) => {
+                    const icons = {
+                        number: '<i class="fa fa-fw fa-list fa-sm text-info"></i>',
+                    };
+
+                    return `${icons.number} ${value}`;
+                },
+            }
         });
         $("#{{formGridEditBGPPrefixLists['table_id']}}").UIBootgrid({
             'search':'/api/quagga/bgp/search_prefixlist',
@@ -77,7 +87,17 @@ POSSIBILITY OF SUCH DAMAGE.
             'set':'/api/quagga/bgp/set_prefixlist/',
             'add':'/api/quagga/bgp/add_prefixlist/',
             'del':'/api/quagga/bgp/del_prefixlist/',
-            'toggle':'/api/quagga/bgp/toggle_prefixlist/'
+            'toggle':'/api/quagga/bgp/toggle_prefixlist/',
+            tabulatorOptions: {
+                groupBy: "name",
+                groupHeader: (value, count, data, group) => {
+                    const icons = {
+                        name: '<i class="fa fa-fw fa-list fa-sm text-info"></i>',
+                    };
+
+                    return `${icons.name} ${value}`;
+                },
+            }
         });
         $("#{{formGridEditBGPCommunityLists['table_id']}}").UIBootgrid({
             'search':'/api/quagga/bgp/search_communitylist',
@@ -85,7 +105,17 @@ POSSIBILITY OF SUCH DAMAGE.
             'set':'/api/quagga/bgp/set_communitylist/',
             'add':'/api/quagga/bgp/add_communitylist/',
             'del':'/api/quagga/bgp/del_communitylist/',
-            'toggle':'/api/quagga/bgp/toggle_communitylist/'
+            'toggle':'/api/quagga/bgp/toggle_communitylist/',
+            tabulatorOptions: {
+                groupBy: "number",
+                groupHeader: (value, count, data, group) => {
+                    const icons = {
+                        number: '<i class="fa fa-fw fa-list fa-sm text-info"></i>',
+                    };
+
+                    return `${icons.number} ${value}`;
+                },
+            }
         });
         $("#{{formGridEditBGPRouteMaps['table_id']}}").UIBootgrid({
             'search':'/api/quagga/bgp/search_routemap',
@@ -93,7 +123,17 @@ POSSIBILITY OF SUCH DAMAGE.
             'set':'/api/quagga/bgp/set_routemap/',
             'add':'/api/quagga/bgp/add_routemap/',
             'del':'/api/quagga/bgp/del_routemap/',
-            'toggle':'/api/quagga/bgp/toggle_routemap/'
+            'toggle':'/api/quagga/bgp/toggle_routemap/',
+            tabulatorOptions: {
+                groupBy: "name",
+                groupHeader: (value, count, data, group) => {
+                    const icons = {
+                        name: '<i class="fa fa-fw fa-list fa-sm text-info"></i>',
+                    };
+
+                    return `${icons.name} ${value}`;
+                },
+            }
         });
         $("#{{formGridEditBGPPeergroups['table_id']}}").UIBootgrid({
             'search':'/api/quagga/bgp/search_peergroup',

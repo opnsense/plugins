@@ -7,7 +7,7 @@
       <OSPFv3 VisibleName="OSPFv3" url="/ui/quagga/diagnostics/ospfv3" order="25" />
       <BGP VisibleName="BGP" url="/ui/quagga/diagnostics/bgp" order="40" />
       <BFD VisibleName="BFD" url="/ui/quagga/diagnostics/bfd" order="50" />
-      <LOG VisibleName="Log" url="/ui/diagnostics/log/routing/frr" order="100" />
     </Diagnostics>
+    <Log VisibleName="Log File" url="/ui/diagnostics/log/routing/frr" order="100" />
   </Routing>
 </menu>

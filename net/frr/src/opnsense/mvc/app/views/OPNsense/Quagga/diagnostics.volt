@@ -44,23 +44,7 @@ POSSIBILITY OF SUCH DAMAGE.
             font-style: italic;
         }
     }
-    .bootstrap-dialog-body {
-        overflow-x: auto;
-    }
-    .modal-dialog,
-    .modal-content {
-        height: 80%;
-    }
 
-    .modal-body {
-        height: calc(100% - 120px);
-        overflow-y: scroll;
-    }
-    @media (min-width: 768px) {
-        .modal-dialog {
-            width: 90%;
-        }
-    }
 </style>
 
 <script>

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2015-2025 Deciso B.V.
+ * Copyright (C) 2015-2026 Deciso B.V.
  * Copyright (C) 2017 Fabian Franz
  * All rights reserved.
  *
@@ -45,6 +45,6 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected function reconfigureForceRestart()
     {
         // frr can reload using frr-reload and frr8-pythontools
-        return 0;
+        return false;
     }
 }

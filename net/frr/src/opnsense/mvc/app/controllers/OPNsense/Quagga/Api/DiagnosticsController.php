@@ -126,7 +126,7 @@ class DiagnosticsController extends ApiControllerBase
             }
         }
         $result = $this->searchRecordsetBase($records);
-        if (!empty($baserecord)) {
+        if (isset($baserecord['routerId'], $baserecord['localAS'])) {
             $result['subtitle'] = sprintf(
                 '%s : %s , %s : %s',
                 gettext('routerId'),
@@ -162,7 +162,7 @@ class DiagnosticsController extends ApiControllerBase
             }
         }
         $result = $this->searchRecordsetBase($records);
-        if (!empty($baserecord)) {
+        if (isset($baserecord['routerId'], $baserecord['localAS'])) {
             $result['subtitle'] = sprintf(
                 '%s : %s , %s : %s',
                 gettext('routerId'),
