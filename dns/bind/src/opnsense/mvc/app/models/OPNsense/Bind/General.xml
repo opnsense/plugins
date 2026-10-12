@@ -167,5 +167,21 @@
             <Required>Y</Required>
             <Default>VxtIzJevSQXqnr7h2qerrcwjnZlMWSGGFBndKeNIDfw=</Default>
         </rndcsecret>
+        <ddnskeyname type="TextField"/>
+        <ddnskeyalgo type="OptionField">
+            <Default>hmac-sha256</Default>
+            <OptionValues>
+                <hmac-sha512>HMAC-SHA512</hmac-sha512>
+                <hmac-sha384>HMAC-SHA384</hmac-sha384>
+                <hmac-sha256>HMAC-SHA256</hmac-sha256>
+                <hmac-sha224>HMAC-SHA224</hmac-sha224>
+                <hmac-sha1>HMAC-SHA1</hmac-sha1>
+                <hmac-md5>HMAC-MD5</hmac-md5>
+            </OptionValues>
+        </ddnskeyalgo>
+        <ddnskeysecret type="Base64Field">
+            <Required>false</Required>
+        </ddnskeysecret>
+
     </items>
 </model>
