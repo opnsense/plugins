@@ -6,6 +6,10 @@ accounts on many dynamic DNS services.
 Plugin Changelog
 ================
 
+1.33
+
+* Add force refresh (contributed by claudioguareschi)
+
 1.32
 
 * Fix lstrip that should be removeprefix (contributed by Mark Youngman)
