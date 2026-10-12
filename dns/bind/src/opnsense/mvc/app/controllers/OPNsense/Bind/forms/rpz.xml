@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>rpz.enabled</id>
+        <label>Enable RPZ</label>
+        <type>checkbox</type>
+        <help>Enable Response Policy Zone support. Each zone's file must exist at /usr/local/etc/namedb/primary/&lt;name&gt;.db before applying.</help>
+    </field>
+    <field>
+        <id>rpz.break_dnssec</id>
+        <label>Break DNSSEC</label>
+        <type>checkbox</type>
+        <help>Allow RPZ to rewrite DNSSEC-signed responses. Required when using NXDOMAIN or NODATA policy with DNSSEC-validating clients. Applies to the whole response-policy statement, not per zone.</help>
+    </field>
+</form>
