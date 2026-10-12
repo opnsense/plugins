@@ -44,7 +44,7 @@ class AcmeTruenasWebsocat extends Base implements LeAutomationInterface
         $this->acme_env['DEPLOY_TRUENAS_PROTOCOL'] = (string)$this->config->acme_truenas_websocat_protocol;
         $this->acme_env['DEPLOY_TRUENAS_PORT'] = (string)$this->config->acme_truenas_websocat_port;
         $this->acme_env['DEPLOY_TRUENAS_UPDATE_FTP'] = (string)$this->config->acme_truenas_websocat_update_ftp;
-        $this->acme_env['DEPLOY_TRUENAS_UPDATE_APPS'] = (string)$this->config->acme_truenas_websocat_update_ftp;
+        $this->acme_env['DEPLOY_TRUENAS_UPDATE_APPS'] = (string)$this->config->acme_truenas_websocat_update_apps;
         $this->acme_args[] = '--deploy-hook truenas_websocat';
         return true;
     }
