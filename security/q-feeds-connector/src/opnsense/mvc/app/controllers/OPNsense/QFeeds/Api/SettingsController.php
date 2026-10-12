@@ -149,7 +149,8 @@ class SettingsController extends ApiMutableModelControllerBase
         return $this->getBase("alias", "firewall.alias", $uuid);
     }
 
-    public function delAliasAction($uuid = null) {
+    public function delAliasAction($uuid = null)
+    {
         return $this->delBase("firewall.alias", $uuid);
     }
 }

@@ -59,4 +59,3 @@ create view v_meta as
     group by d.kind, m.code, m.category, m.name;
 
 commit;
-
