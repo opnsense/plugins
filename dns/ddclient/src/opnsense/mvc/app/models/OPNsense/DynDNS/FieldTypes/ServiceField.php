@@ -37,9 +37,6 @@ class ServiceField extends BaseListField
 
     protected function actionPostLoadingEvent()
     {
-        if ($this->getParentModel()->isLazyLoaded()) {
-            return;
-        }
         if (empty(self::$internalCacheOptionList)) {
             // request supported services from backend
             if ((string)$this->getParentModel()->general->backend == 'opnsense') {
@@ -59,15 +56,6 @@ class ServiceField extends BaseListField
      */
     public function setOptionValues($data)
     {
-        if ($this->getParentModel()->isLazyLoaded()) {
-            // Use the model's static labels for list views without querying the native backend.
-            if (is_array($data)) {
-                foreach ($data as $key => $value) {
-                    $this->internalOptionList[$key] = gettext($value);
-                }
-            }
-            return;
-        }
         if (!empty(self::$internalCacheOptionList) || (string)$this->getParentModel()->general->backend == 'opnsense') {
             return;
         }
