@@ -9,6 +9,7 @@ Plugin Changelog
 1.33
 
 * Add force refresh (contributed by claudioguareschi)
+* Cache supported provider lookup (contributed by Emanuele Baglini)
 
 1.32
 
