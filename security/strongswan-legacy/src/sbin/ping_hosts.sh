@@ -28,13 +28,6 @@ if [ -f /var/db/ipsecpinghosts ]; then
 	fi
 fi
 
-# General file meant for user consumption
-if [ -f /var/db/hosts ]; then
-	HOSTS="/var/db/hosts"
-fi
-
-cat $HOSTS $IPSECHOSTS >/tmp/tmpHOSTS
-
 if [ ! -d /var/db/pingstatus ]; then
 	/bin/mkdir -p /var/db/pingstatus
 fi
@@ -43,9 +36,9 @@ if [ ! -d /var/db/pingmsstatus ]; then
 	/bin/mkdir -p /var/db/pingmsstatus
 fi
 
-PINGHOSTS=$(cat /tmp/tmpHOSTS)
+PINGHOSTS=$(cat $IPSECHOSTS)
 
-PINGHOSTCOUNT=$(cat /tmp/tmpHOSTS | wc -l)
+PINGHOSTCOUNT=$(echo "$PINGHOSTS" | wc -l | awk '{print $1 }')
 
 if [ "$PINGHOSTCOUNT" -lt "1" ]; then
 	exit
