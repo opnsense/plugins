@@ -86,7 +86,7 @@ class OspfdEventHandler(BaseEventHandler):
                                 ['interface %s' % intf, 'ip ospf cost %d' % conf_cost],
                                 translate=None, configure=True
                             )
-                    elif not is_intf_master and not is_ospf_dem:
+                    elif not is_intf_master and is_ospf_dem:
                         # demote ospf interface
                         conf_cost = config_interfaces[intf]['demoted_cost']
                         syslog.syslog(

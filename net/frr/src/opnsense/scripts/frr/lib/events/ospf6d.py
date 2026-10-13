@@ -95,7 +95,7 @@ class Ospf6dEventHandler(BaseEventHandler):
                                 ['interface %s' % intf, 'ipv6 ospf6 cost %d' % conf_cost],
                                 translate=None, configure=True
                             )
-                    elif not is_intf_master and not is_ospf_dem:
+                    elif not is_intf_master and is_ospf_dem:
                         # demote ospf6 interface
                         conf_cost = config_interfaces[intf]['demoted_cost']
                         syslog.syslog(
