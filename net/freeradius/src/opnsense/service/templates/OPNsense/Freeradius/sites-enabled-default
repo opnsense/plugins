@@ -60,6 +60,9 @@ authorize {
 {% else %}
         -sql
 {% endif %}
+{% if helpers.exists('OPNsense.freeradius.general.mysql') and OPNsense.freeradius.general.mysql == '1' %}
+        sql1
+{% endif %}
 {% if helpers.exists('OPNsense.freeradius.general.ldap_enabled') and OPNsense.freeradius.general.ldap_enabled == '1' %}
         ldap
         if ((ok || updated) && User-Password) {
