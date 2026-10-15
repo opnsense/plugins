@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model>
+    <mount>//OPNsense/SplunkHEC</mount>
+    <version>1.1.0</version>
+    <description>Splunk HEC Log Exporter settings</description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <token type="TextField">
+                <Required>N</Required>
+                <Mask>/^[a-fA-F0-9\-]*$/</Mask>
+                <ValidationMessage>Please enter a valid HEC token (UUID format).</ValidationMessage>
+            </token>
+            <use_gzip type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </use_gzip>
+            <enable_telemetry type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable_telemetry>
+            <verify_ssl type="BooleanField">
+                <default>1</default>
+                <Required>Y</Required>
+            </verify_ssl>
+            <endpoint type="UrlField">
+                <Required>N</Required>
+                <ValidationMessage>Please enter a valid URL (e.g. https://splunk.example.com:8088/services/collector).</ValidationMessage>
+            </endpoint>
+            <cache_size type="IntegerField">
+                <Default>100</Default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>10000</MaximumValue>
+                <Required>Y</Required>
+                <ValidationMessage>Cache size must be between 1 and 10000 MB.</ValidationMessage>
+            </cache_size>
+            <cache_time type="IntegerField">
+                <Default>24</Default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>720</MaximumValue>
+                <Required>Y</Required>
+                <ValidationMessage>Cache retention must be between 1 and 720 hours.</ValidationMessage>
+            </cache_time>
+        </general>
+        <logs>
+            <!-- System / syslog -->
+            <system type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </system>
+            <!-- Firewall filter log (pf) -->
+            <filter type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </filter>
+            <audit type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </audit>
+            <dhcpd type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </dhcpd>
+            <lighttpd type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </lighttpd>
+            <ntpd type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </ntpd>
+            <openvpn type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </openvpn>
+            <routing type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </routing>
+            <suricata type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </suricata>
+            <unbound type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </unbound>
+            <kea type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </kea>
+            <dnsmasq type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </dnsmasq>
+            <wireguard type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </wireguard>
+            <suricata_eve type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </suricata_eve>
+            <portalauth type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </portalauth>
+            <crowdsec type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </crowdsec>
+            <elasticsearch type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </elasticsearch>
+            <zenarmor type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </zenarmor>
+        </logs>
+    </items>
+</model>
