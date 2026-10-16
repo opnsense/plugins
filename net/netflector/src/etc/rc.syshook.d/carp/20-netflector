@@ -68,4 +68,9 @@ if ($group !== $subsystem) {
 $action = $type === 'MASTER' ? 'start' : 'stop';
 log_msg(sprintf('CARP %s is %s, running netflector %s', $subsystem, $type, $action));
 
+if ($action === 'start') {
+    // The rc script gates on the vhid rendered into rc.conf.d, which a VIP edit leaves stale.
+    configd_run('template reload OPNsense/Netflector');
+}
+
 mwexecf('/usr/local/etc/rc.d/netflector %s', [$action], $action === 'stop');
