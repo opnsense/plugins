@@ -1449,6 +1449,7 @@
                         <acme_truenas_ws>Deprecated - Upload certificate to TrueNAS Server (midctl/websocket)</acme_truenas_ws>
                         <acme_zyxel_gs1900>Upload certificate to Zyxel GS1900 series switches</acme_zyxel_gs1900>
                         <acme_unifi>Update local Unifi keystore</acme_unifi>
+                        <acme_jetkvm>Upload certificate to JetKVM (SSH)</acme_jetkvm>
                         <configd_generic>System or Plugin Command</configd_generic>
                     </OptionValues>
                 </type>
@@ -1842,6 +1843,23 @@
                     <Default>0</Default>
                     <Required>N</Required>
                 </acme_zyxel_gs1900_reboot>
+                <acme_jetkvm_host type="HostnameField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_jetkvm_host>
+                <acme_jetkvm_user type="TextField">
+                    <Default>root</Default>
+                    <Required>N</Required>
+                </acme_jetkvm_user>
+                <acme_jetkvm_port type="PortField">
+                    <Default>22</Default>
+                    <Required>N</Required>
+                </acme_jetkvm_port>
+                <acme_jetkvm_reboot type="BooleanField">
+                    <Default>1</Default>
+                    <Required>N</Required>
+                </acme_jetkvm_reboot>
             </action>
         </actions>
     </items>
