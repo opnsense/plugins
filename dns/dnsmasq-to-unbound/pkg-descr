@@ -1,0 +1,8 @@
+Enables Unbound DNS to automatically register hostnames from
+dnsmasq DHCP leases and static reservations.
+
+Watches /var/db/dnsmasq.leases for changes and updates Unbound
+DNS records via unbound-control, allowing DHCP clients to be
+resolved by hostname without running dnsmasq's DNS server.
+
+WWW: https://github.com/opnsense/plugins
