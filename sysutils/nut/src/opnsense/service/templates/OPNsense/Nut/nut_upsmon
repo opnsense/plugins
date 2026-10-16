@@ -1,5 +1,8 @@
 {% if helpers.exists('OPNsense.Nut.general.enable') and OPNsense.Nut.general.enable == '1' %}
 nut_upsmon_enable="YES"
+{% if helpers.exists('OPNsense.Nut.apcupsd.enable') and helpers.exists('OPNsense.apcupsd.general.Enabled') and OPNsense.Nut.general.mode|default('standalone') == 'standalone' and OPNsense.Nut.apcupsd.enable|default('0') == '1' and OPNsense.Nut.apcupsd.hostname|default('localhost') in ['localhost', '127.0.0.1', '::1', '[::1]'] and OPNsense.apcupsd.general.Enabled|default('0') == '1' %}
+nut_upsmon_defer="YES"
+{% endif %}
 {% else %}
 nut_upsmon_enable="NO"
 {% endif %}
