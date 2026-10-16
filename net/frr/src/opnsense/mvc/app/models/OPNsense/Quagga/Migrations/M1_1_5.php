@@ -57,7 +57,11 @@ class M1_1_5 extends BaseModelMigration
 
         // Move legacy passive interfaces into their interface records.
         foreach (explode(',', $passiveInterfaces) as $interfaceName) {
-            if ($interfaceName === '') {
+            if (
+                $interfaceName === '' ||
+                (isset($config->interfaces->{$interfaceName}) &&
+                    (string)$config->interfaces->{$interfaceName}->type === 'group')
+            ) {
                 continue;
             }
 
