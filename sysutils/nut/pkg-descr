@@ -9,6 +9,12 @@ and management interface.
 Plugin Changelog
 ----------------
 
+2.0
+
+* Add support for any number UPS drivers
+* Add support for any UPS driver
+* Add support for arbitrary global UPS driver options
+
 1.9
 
 * Add dashboard widget
