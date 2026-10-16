@@ -36,6 +36,9 @@
                 <Required>Y</Required>
                 <Default>Password</Default>
             </mon_password>
+            <client_password type="TextField">
+                <Required>N</Required>
+            </client_password>
         </account>
         <usbhid>
             <enable type="BooleanField">
