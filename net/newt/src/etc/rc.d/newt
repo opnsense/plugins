@@ -1,0 +1,35 @@
+#!/bin/sh
+# PROVIDE: newt
+# REQUIRE: NETWORKING SERVERS
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name="newt"
+rcvar="newt_enable"
+load_rc_config "$name"
+: "${newt_enable:=NO}"
+
+pidfile="/var/run/newt.pid"
+required_files="/usr/local/etc/newt/config.json"
+required_dirs="/usr/local/etc/newt"
+command="/usr/sbin/daemon"
+procname="/usr/sbin/daemon"
+start_precmd="newt_prestart"
+# Stop the supervisor, so an intentional stop cannot respawn Newt.
+# Credentials stay in the config file and do not appear in process arguments.
+command_args="-f -r -R 5 -P ${pidfile} -p /var/run/newt.child.pid -S -T newt /usr/local/sbin/newt --config-file /usr/local/etc/newt/config.json"
+
+newt_prestart()
+{
+    if [ ! -x /usr/local/sbin/newt ]; then
+        warn "Newt binary missing: /usr/local/sbin/newt"
+        return 1
+    fi
+    if [ "$(/usr/bin/stat -f '%u:%Lp' /usr/local/etc/newt/config.json)" != "0:600" ]; then
+        warn "Config must belong to root and have mode 600."
+        return 1
+    fi
+}
+
+run_rc_command "$1"
