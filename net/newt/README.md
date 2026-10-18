@@ -7,12 +7,17 @@ JSON is root-only; credentials are not passed as command-line arguments.
 
 ## Integration prerequisite
 
-This draft requires a FreeBSD port for fosrl/newt. `PLUGIN_DEPENDS=newt` is a
-provisional package name, not a reference to the unrelated devel/newt library.
-Before integration, confirm the dependency name, /usr/local/sbin/newt executable
-path, --config-file support and rc.d ownership with the port maintainer. This
-plugin currently supplies /usr/local/etc/rc.d/newt; the dependency must not
-install a conflicting file. No binary or binary download script is included.
+The plugin depends on the `pangolin-newt` package from the proposed
+`net/pangolin-newt` port: https://github.com/opnsense/ports/pull/301.
+The port builds Newt 1.18.1 from source with Go 1.26+ and installs
+`/usr/local/sbin/newt`; upstream supports the `--config-file` interface.
+The package name avoids the unrelated `devel/newt` library.
+
+The plugin owns `/usr/local/etc/rc.d/newt` and generated configuration;
+the dependency supplies only the executable (plus framework license metadata).
+No precompiled binary or binary download script is included.
+The port must be merged and the package published before this plugin can be
+installed from the official repository.
 
 Plugin code is BSD-2-Clause. The separately packaged Newt executable is AGPLv3.
 
@@ -28,3 +33,8 @@ clean install, upgrade, config import, apply, start/stop, uninstall and reboot
 on OPNsense. On 2026-10-18, the user confirmed a successful reboot test of
 the existing installation. This does not validate the upstream packaging
 adaptation with the future FreeBSD port dependency.
+
+Dependency validation: source cross-builds of Newt 1.18.1 for FreeBSD/amd64
+and FreeBSD/arm64 succeeded with vendored modules and GOPROXY=off. Upstream
+newtconfig tests passed on macOS. Source distfile checksums and sizes were
+verified. Native FreeBSD ports staging/package tests remain outstanding.
