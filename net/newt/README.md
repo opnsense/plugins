@@ -25,4 +25,6 @@ results do not validate this upstream packaging adaptation.
 
 Before marking this draft ready, build the plugin with the actual port and test
 clean install, upgrade, config import, apply, start/stop, uninstall and reboot
-on OPNsense. Reboot and upstream package integration have not been tested.
+on OPNsense. On 2026-10-18, the user confirmed a successful reboot test of
+the existing installation. This does not validate the upstream packaging
+adaptation with the future FreeBSD port dependency.
