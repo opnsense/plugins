@@ -42,10 +42,12 @@
                 let message;
                 let type;
                 if (!isEnabled) {
-                    message = "Enable NetBird first";
+                    message = "{{ lang._('Enable NetBird first') }}";
                     type = "warning";
                 } else {
-                    message = isConnected ? "NetBird is connected" : "NetBird is not connected";
+                    message = isConnected
+                        ? "{{ lang._('NetBird is connected') }}"
+                        : "{{ lang._('NetBird is not connected') }}";
                     type = isConnected ? "info" : "warning";
                 }
 
@@ -91,6 +93,45 @@
         });
 
         $("#disconnectBtn").SimpleActionButton({
+            /*
+             * One click here takes the tunnel offline, and an admin who reaches
+             * this firewall through NetBird is on it. SimpleActionButton has no
+             * confirm of its own; it runs the endpoint when this deferred
+             * resolves, so rejecting it is how the action is called off.
+             */
+            onPreAction: () => {
+                const dfObj = new $.Deferred();
+                BootstrapDialog.show({
+                    type: BootstrapDialog.TYPE_WARNING,
+                    title: "{{ lang._('Disconnect NetBird') }}",
+                    message: "{{ lang._('This takes the tunnel offline. If you are reaching this firewall through NetBird, this session ends here and you will need another way in to reconnect it.') }}",
+                    buttons: [
+                        {
+                            label: "{{ lang._('Cancel') }}",
+                            action: (dialog) => {
+                                /* settle before closing: the onhide below fires on the way out */
+                                dfObj.reject();
+                                dialog.close();
+                            }
+                        },
+                        {
+                            label: "{{ lang._('Disconnect') }}",
+                            cssClass: 'btn-warning',
+                            action: (dialog) => {
+                                dfObj.resolve();
+                                dialog.close();
+                            }
+                        }
+                    ],
+                    /* closing any other way - backdrop, escape, the X - is a decision not to
+                       disconnect; a deferred the buttons already settled ignores this */
+                    onhide: () => {
+                        dfObj.reject();
+                    }
+                });
+
+                return dfObj;
+            },
             onAction: () => {
                 updateServiceControlUI('netbird');
                 updateNetBirdStatusUI();
