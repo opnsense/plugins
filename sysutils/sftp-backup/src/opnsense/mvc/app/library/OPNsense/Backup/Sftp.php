@@ -188,7 +188,7 @@ class Sftp extends Base implements IBackupProvider
         }
         $this_key = trim(str_replace("\r", "", $this->model->privkey)) . "\n";
         if (!is_file($identfile) || file_get_contents($identfile) != $this_key) {
-            File::file_put_contents($identfile, $this_key, 0600);
+            File::file_put_contents($identfile, $this_key, 0600, 0, 'wwwonly:wheel');
         }
         return $identfile;
     }
