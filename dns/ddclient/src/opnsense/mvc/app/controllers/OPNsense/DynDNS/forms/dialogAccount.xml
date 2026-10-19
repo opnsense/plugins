@@ -52,6 +52,72 @@
         <help>Password associated with this account</help>
     </field>
     <field>
+        <id>account.aws_auth</id>
+        <label>Authentication</label>
+        <type>dropdown</type>
+        <style>optional_setting service_aws</style>
+        <help>Access key uses the access key ID (username) and secret access key (password) of an IAM user.
+        The certificate methods exchange a certificate from System: Trust: Certificates for temporary credentials
+        of an IAM role, so no long-term access keys are stored on this firewall.</help>
+    </field>
+    <field>
+        <id>account.aws_certificate</id>
+        <label>Certificate</label>
+        <type>dropdown</type>
+        <style>optional_setting service_aws aws_auth_rolesanywhere aws_auth_iot</style>
+        <help>Certificate, including its private key, used to authenticate.</help>
+    </field>
+    <field>
+        <id>account.aws_region</id>
+        <label>Region</label>
+        <type>text</type>
+        <style>optional_setting service_aws aws_auth_rolesanywhere</style>
+        <help>Region of the IAM Roles Anywhere trust anchor and profile.</help>
+    </field>
+    <field>
+        <id>account.aws_trust_anchor_arn</id>
+        <label>Trust anchor ARN</label>
+        <type>text</type>
+        <style>optional_setting service_aws aws_auth_rolesanywhere</style>
+        <help>IAM Roles Anywhere trust anchor that holds the certificate authority which issued the certificate.</help>
+    </field>
+    <field>
+        <id>account.aws_profile_arn</id>
+        <label>Profile ARN</label>
+        <type>text</type>
+        <style>optional_setting service_aws aws_auth_rolesanywhere</style>
+        <help>IAM Roles Anywhere profile that lists the role.</help>
+    </field>
+    <field>
+        <id>account.aws_role_arn</id>
+        <label>Role ARN</label>
+        <type>text</type>
+        <style>optional_setting service_aws aws_auth_rolesanywhere</style>
+        <help>IAM role to assume, its permissions should be limited to updating the configured records.</help>
+    </field>
+    <field>
+        <id>account.aws_iot_endpoint</id>
+        <label>Credential provider endpoint</label>
+        <type>text</type>
+        <style>optional_setting service_aws aws_auth_iot</style>
+        <help>AWS IoT credential provider endpoint of your account, as returned by
+        "aws iot describe-endpoint --endpoint-type iot:CredentialProvider".</help>
+    </field>
+    <field>
+        <id>account.aws_iot_role_alias</id>
+        <label>Role alias</label>
+        <type>text</type>
+        <style>optional_setting service_aws aws_auth_iot</style>
+        <help>AWS IoT role alias that points to the IAM role to assume.</help>
+    </field>
+    <field>
+        <id>account.aws_iot_thing_name</id>
+        <label>Thing name</label>
+        <type>text</type>
+        <style>optional_setting service_aws aws_auth_iot</style>
+        <help>Name of the AWS IoT thing the certificate is attached to, required when policies use thing variables.</help>
+    </field>
+    <field>
         <id>account.wildcard</id>
         <label>Wildcard</label>
         <type>checkbox</type>

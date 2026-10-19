@@ -6,6 +6,10 @@ accounts on many dynamic DNS services.
 Plugin Changelog
 ================
 
+1.34
+
+* Add certificate based Route 53 authentication using IAM Roles Anywhere or the AWS IoT credential provider (contributed by Andrew Watkins)
+
 1.33
 
 * Add force refresh (contributed by claudioguareschi)
