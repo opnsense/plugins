@@ -154,7 +154,6 @@
                     <AllowDynamic>Y</AllowDynamic>
                     <filters>
                         <enable>/^(?!0).*$/</enable>
-                        <type>/^(?!group).*$/</type>
                     </filters>
                 </interfacename>
                 <passive type="BooleanField">
