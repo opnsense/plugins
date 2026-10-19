@@ -11,7 +11,9 @@
         <syslocation type="StrictTextField">
             <AllowSpaces>Y</AllowSpaces>
         </syslocation type="StrictTextField">
-        <syscontact type="StrictTextField"/>
+        <syscontact type="StrictTextField">
+            <AllowSpaces>Y</AllowSpaces>
+        </syscontact type="StrictTextField">
         <l3visibility type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
