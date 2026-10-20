@@ -1060,6 +1060,10 @@
                     </check001>
                 </Constraints>
             </sni_upstream_map>
+            <map_proxy_protocol type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </map_proxy_protocol>
             <ip_acl type="ModelRelationField">
                 <Model>
                     <template>
@@ -1084,6 +1088,10 @@
             <description type="TextField">
                 <Required>Y</Required>
             </description>
+            <enable_hostnames type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enable_hostnames>
             <data type="TextField">
                 <!-- sorry, the model relation field is broken here
           <Model>
@@ -1099,8 +1107,10 @@
             </data>
         </sni_hostname_upstream_map>
         <sni_hostname_upstream_map_item type="ArrayField">
-            <hostname type="HostnameField">
+            <hostname type="TextField">
                 <Required>Y</Required>
+                <Mask>/^(~\*?[^\s;{}]+|"~?\*?[^";{}]*"|'~?\*?[^';{}]*'|\*|(\.)?(\*\.)?[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(\.[a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*(\.\*)?)$/</Mask>
+                <ValidationMessage>Please specify a valid SNI mapping regex or hostname.</ValidationMessage>
             </hostname>
             <upstream type="ModelRelationField">
                 <Model>
