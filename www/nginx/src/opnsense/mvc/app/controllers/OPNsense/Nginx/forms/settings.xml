@@ -87,6 +87,14 @@
                 <help>List of bot user agents that will be used in bot protection. Uses a well known list by default.</help>
             </field>
             <field>
+                <id>nginx.http.bot_protection_trusted_networks</id>
+                <label>Bot protection trusted networks</label>
+                <type>select_multiple</type>
+                <style>tokenize</style>
+                <allownew>true</allownew>
+                <help>IPv4 or IPv6 addresses and CIDR networks exempt from User-Agent bot protection on all HTTP Servers. Empty means no exemptions. Uses the client address resolved by nginx according to the HTTP Server's trusted proxy settings. Other security checks still apply. Existing bans must be unlocked separately under Services: Nginx: Banned.</help>
+            </field>
+            <field>
                 <id>nginx.http.log_perm_ban</id>
                 <label>Log Banned Requests</label>
                 <type>checkbox</type>
