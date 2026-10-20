@@ -436,6 +436,7 @@
                         <dns_autodns>AutoDNS (InterNetX)</dns_autodns>
                         <dns_aws>AWS Route 53</dns_aws>
                         <dns_azure>Azure DNS</dns_azure>
+                        <dns_bhosted>bHosted.nl</dns_bhosted>
                         <dns_bunny>Bunny</dns_bunny>
                         <dns_cloudns>ClouDNS</dns_cloudns>
                         <dns_cf>CloudFlare.com</dns_cf>
@@ -601,6 +602,21 @@
                     <Default>0</Default>
                     <Required>N</Required>
                 </dns_azuredns_managedidentity>
+                <dns_bhosted_user type="TextField">
+                    <Required>N</Required>
+                </dns_bhosted_user>
+                <dns_bhosted_password type="TextField">
+                    <Required>N</Required>
+                </dns_bhosted_password>
+                <dns_bhosted_ttl type="TextField">
+                    <Required>N</Required>
+                </dns_bhosted_ttl>
+                <dns_bhosted_sld type="TextField">
+                    <Required>N</Required>
+                </dns_bhosted_sld>
+                <dns_bhosted_tld type="TextField">
+                    <Required>N</Required>
+                </dns_bhosted_tld>
                 <dns_bunny_api_key type="TextField">
                     <Required>N</Required>
                 </dns_bunny_api_key>
