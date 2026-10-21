@@ -17,12 +17,15 @@
                     "last_seen": CrowdSec.formatters.datetime,
                     "validated": CrowdSec.formatters.yesno,
                 },
+                responseHandler: CrowdSec.messageHandler($("#machines_message")),
             }
         });
 
         updateServiceControlUI('crowdsec');
     });
 </script>
+
+<div class="alert alert-info hidden" role="alert" id="machines_message"></div>
 
 <table id="cscli_machines" class="table table-condensed table-hover table-striped">
     <thead>

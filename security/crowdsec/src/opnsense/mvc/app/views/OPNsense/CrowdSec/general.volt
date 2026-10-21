@@ -1,12 +1,62 @@
 {# SPDX-License-Identifier: MIT #}
 {# SPDX-FileCopyrightText: © 2021 CrowdSec <info@crowdsec.net> #}
 
+<script src="/ui/js/CrowdSec/crowdsec-misc.js"></script>
 <script>
+    // the stored API key is never sent to the browser, only whether it is set
+    function updateKeyPlaceholder() {
+        ajaxGet("/api/crowdsec/status/key", {}, function (data, status) {
+            $('input[id="general.remote_bouncer_api_key"]').attr('placeholder',
+                status === "success" && data.set ? "{{ lang._('Key is set — leave empty to keep') }}" : '');
+        });
+    }
+
+    function formRow(field) {
+        return $('tr[id="row_general.' + field + '"]');
+    }
+
+    function isChecked(field) {
+        return $('input[id="general.' + field + '"]').is(':checked');
+    }
+
+    // show the settings relevant for the selected components, and warn
+    // about combinations where decisions are not enforced here
+    function updateSettingsForm() {
+        const manual = isChecked('lapi_manual_configuration');
+        const lapi = isChecked('lapi_enabled');
+        const bouncer = isChecked('firewall_bouncer_enabled');
+        const bouncerRemote = bouncer && $('select[id="general.bouncer_lapi"]').val() === 'remote';
+
+        formRow('bouncer_lapi').toggle(bouncer);
+        formRow('remote_lapi_url').toggle(bouncerRemote);
+        formRow('remote_bouncer_api_key').toggle(bouncerRemote);
+
+        $("#warnLapiNotEnforced").toggleClass("hidden", !(bouncerRemote && lapi && !manual));
+        $("#warnAgentWithoutLapi").toggleClass("hidden", !(isChecked('agent_enabled') && !lapi && !manual));
+    }
+
     $( document ).ready(function() {
         const data_get_map = {'frm_GeneralSettings':"/api/crowdsec/general/get"};
         mapDataToFormUI(data_get_map).done(function(data){
-            // place actions to run after load, for example update form styles.
+            $('.selectpicker').selectpicker('refresh');
+            updateSettingsForm();
         });
+        updateKeyPlaceholder();
+
+        $('#frm_GeneralSettings').on('change', 'input, select', updateSettingsForm);
+
+        // tests the applied settings, from the firewall itself
+        $('input[id="general.remote_bouncer_api_key"]').after(
+            $('<div style="margin-top: 5px;">').append(
+                $('<button class="btn btn-xs btn-default" id="testAct" type="button">')
+                    .text("{{ lang._('Test connection (applied settings)') }}")
+                    .click(function () {
+                        CrowdSec.testConnection($("#test_result"));
+                    }),
+                ' ',
+                $('<span id="test_result">')
+            )
+        );
 
         // link save button to API set action
         $("#saveAct").click(function(){
@@ -17,6 +67,8 @@
                     $("#settingsSavedMsg").html(
                         '<i class="fa fa-check text-success"></i> Settings have been saved, services restarted.'
                     ).removeClass("hidden");
+                    $('input[id="general.remote_bouncer_api_key"]').val('');
+                    updateKeyPlaceholder();
                 });
             });
         });
@@ -70,6 +122,9 @@
         <p>Please refer to the <a href="https://crowdsec.net/blog/category/tutorial/">tutorials</a> to explore
         the possibilities.</p>
 
+        <p>To block the decisions of a LAPI on another machine, set "Remediation component connects to" to
+        "Remote LAPI" on the Settings tab.</p>
+
         <p>For the latest plugin documentation, including how to use it with an external LAPI, see <a
         href="https://docs.crowdsec.net/u/getting_started/installation/opnsense">Install
         CrowdSec (OPNsense)</a></p>
@@ -90,8 +145,9 @@
             <li>
                 At the moment, the CrowdSec package for OPNsense is fully functional on the
                 command line but its web interface is limited; you can only list the installed objects and revoke
-                <a href="https://docs.crowdsec.net/docs/user_guides/decisions_mgmt/">decisions</a>. For anything else
-                you need the shell or the <a href="https://app.crowdsec.net">CrowdSec Console</a>.
+                <a href="https://docs.crowdsec.net/docs/user_guides/decisions_mgmt/">decisions</a>, see the status
+                of the components on the Overview page, and connect the remediation component to a remote LAPI.
+                For anything else you need the shell or the <a href="https://app.crowdsec.net">CrowdSec Console</a>.
             </li>
             <li>
                 Do not enable/start the agent and bouncer services with <code>sysrc</code> or <code>/etc/rc.conf</code>
@@ -132,6 +188,12 @@
             from the <a href="/ui/core/service">System > Diagnostics > Services</a> page.
         </p>
 
+        <p>
+            To only block the decisions of a LAPI on another machine, select only IPS, set "Remediation component
+            connects to" to "Remote LAPI", enter the URL of the remote LAPI and the API key of a bouncer registered
+            on it. Click Apply.
+        </p>
+
         <h1>Test the plugin</h1>
 
         <p>
@@ -159,6 +221,12 @@
             login 10 times in 30 seconds two hours before installing it.
         </p>
 
+        <p>
+            When the remediation component connects to a remote LAPI, add the test decision on that LAPI
+            instead. The address then appears under Decisions, "Blocked by this firewall", and in the blocked
+            addresses count on the Overview page.
+        </p>
+
         <div>
             <a class="btn btn-default btn-info" href="https://github.com/crowdsecurity/crowdsec">
                 GitHub
@@ -177,6 +245,12 @@
 
     <div id="settings" class="tab-pane fade active">
         <div class="alert alert-info hidden" role="alert" id="settingsSavedMsg">
+        </div>
+        <div class="alert alert-warning hidden" role="alert" id="warnLapiNotEnforced">
+            {{ lang._('The remediation component connects to a remote LAPI: the decisions of the local LAPI are not blocked by this firewall.') }}
+        </div>
+        <div class="alert alert-warning hidden" role="alert" id="warnAgentWithoutLapi">
+            {{ lang._('The log processor is enabled but the local LAPI is not. Unless you connect the log processor to a remote LAPI with "Manual LAPI configuration", it has no LAPI to send its alerts to.') }}
         </div>
         <div  class="col-md-12">
             {{ partial("layout_partials/base_form",['fields':generalForm,'id':'frm_GeneralSettings'])}}

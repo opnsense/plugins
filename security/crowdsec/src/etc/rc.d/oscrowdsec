@@ -49,17 +49,23 @@ oscrowdsec_restart () {
 }
 
 oscrowdsec_status () {
-    # return error if at least one program is not running
-    service crowdsec status
-    ret=$?
+    # return error if at least one enabled program is not running.
+    # disabled programs are not reported, i.e. when only the bouncer
+    # is enabled and connects to a remote LAPI.
+    ret=0
 
-    if ! service crowdsec_firewall enabled; then
-        return $ret
+    if service crowdsec enabled; then
+        if ! service crowdsec status; then
+            ret=1
+        fi
     fi
 
-    if ! service crowdsec_firewall status; then
-        ret=1
+    if service crowdsec_firewall enabled; then
+        if ! service crowdsec_firewall status; then
+            ret=1
+        fi
     fi
+
     return $ret
 }
 

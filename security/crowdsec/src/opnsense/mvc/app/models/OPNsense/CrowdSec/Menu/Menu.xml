@@ -1,6 +1,7 @@
 <menu>
     <Services>
       <CrowdSec cssClass="fa fa-globe fa-fw">
+        <Overview order="0" url="/ui/crowdsec/overview/index"/>
         <Settings order="1" url="/ui/crowdsec/general/index"/>
         <Machines order="2" url="/ui/crowdsec/machines/index"/>
         <Bouncers order="3" url="/ui/crowdsec/bouncers/index"/>
