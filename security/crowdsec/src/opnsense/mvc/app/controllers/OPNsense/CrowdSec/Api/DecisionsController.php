@@ -100,6 +100,10 @@ class DecisionsController extends ApiControllerBase
 
     public function delAction($decision_id): array
     {
+        if (!ctype_digit(strval($decision_id))) {
+            return ["result" => "invalid decision id"];
+        }
+
         if ($this->request->isPost()) {
             $result = (new Backend())->configdRun("crowdsec decisions-delete {$decision_id}");
             if ($result === null) {
