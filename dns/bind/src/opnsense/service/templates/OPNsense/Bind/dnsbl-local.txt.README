@@ -1,0 +1,11 @@
+The file /usr/local/etc/namedb/dnsbl-local.txt can be use to add
+a self-maintained list of to be blocked domains for Bind.
+
+This file must also be enabled at the Bind DNSBL settings.
+
+The format of the file is supposed to be like this:
+
+bad.example.com
+baddomain.com
+# hashed lines are ignored here
+evildomain.net
