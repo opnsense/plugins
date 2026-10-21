@@ -2,13 +2,12 @@
 cloudflared_enable="YES"
 cloudflared_conf="/usr/local/etc/cloudflared/config.yml"
 {% if not helpers.empty('OPNsense.Cloudflared.general.token') %}
-{% set ns = namespace(env='TUNNEL_TOKEN=' + OPNsense.Cloudflared.general.token|trim) %}
-{% if not helpers.empty('OPNsense.Cloudflared.general.edge_ip_version') %}
-{% set ns.env = ns.env + ' TUNNEL_EDGE_IP_VERSION=' + OPNsense.Cloudflared.general.edge_ip_version %}
-{% endif %}
-cloudflared_env="{{ ns.env }}"
+cloudflared_env="TUNNEL_TOKEN={{ OPNsense.Cloudflared.general.token|trim }}"
 {% endif %}
 cloudflared_mode_options="run"
+# log to syslog instead of the unrotated /var/log/cloudflared.log
+cloudflared_flags="-S -T cloudflared"
+logfile="/dev/null"
 {% else %}
 cloudflared_enable="NO"
 {% endif %}
