@@ -37,16 +37,30 @@ class DiagnosticsController extends ApiControllerBase
     public function upsstatusAction()
     {
         $mdl = new Nut();
-        $host = '127.0.0.1';
-        if (!empty((string)$mdl->netclient->address)) {
+        $targets = array();
+        foreach ($mdl->upses->ups->iterateItems() as $ups) {
+            if ((string)$ups->enabled == '1') {
+                $targets[] = (string)$ups->name;
+            }
+        }
+        if ((string)$mdl->netclient->enable == '1' && !empty((string)$mdl->netclient->address)) {
             $host = (string)$mdl->netclient->address;
+            if (strpos($host, ':') !== false) {
+                $host = '[' . $host . ']';
+            }
+            if (!empty((string)$mdl->netclient->port)) {
+                $host .= ':' . (string)$mdl->netclient->port;
+            }
+            $targets[] = (string)$mdl->netclient->name . '@' . $host;
         }
-        $upsname = 'UPSName';
-        if (!empty((string)$mdl->general->name)) {
-            $upsname = (string)$mdl->general->name;
+        $items = array();
+        if (!empty($targets)) {
+            $backend = new Backend();
+            $items = json_decode((string)$backend->configdpRun('nut upsstatus', array(implode(',', $targets))), true);
+            if (!is_array($items)) {
+                $items = array();
+            }
         }
-        $backend = new Backend();
-        $response = $backend->configdpRun('nut upsstatus', array("{$upsname}@{$host}"));
-        return array("response" => $response);
+        return array("items" => $items);
     }
 }
