@@ -31,12 +31,33 @@ namespace OPNsense\Bind\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Bind\Domain;
+use OPNsense\Bind\Record;
 use OPNsense\Core\Config;
 
 class RecordController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'record';
     protected static $internalModelClass = '\OPNsense\Bind\Record';
+
+    /**
+     * resolve the domains of the given records
+     * @param $uuids string comma separated list of record uuids
+     * @return array domain uuids
+     * @throws \OPNsense\Base\ModelException
+     * @throws \ReflectionException
+     */
+    private function getRecordDomains($uuids)
+    {
+        $domains = [];
+        $mdl = new Record();
+        foreach (explode(',', (string)$uuids) as $uuid) {
+            $record = $mdl->getRecord($uuid);
+            if ($record !== null) {
+                $domains[(string)$record->domain] = true;
+            }
+        }
+        return array_keys($domains);
+    }
 
     /**
      * update parent domain serial
@@ -49,9 +70,26 @@ class RecordController extends ApiMutableModelControllerBase
         if ($this->request->isPost()) {
             $record  = $this->getModel()->getRecord($uuid);
             if ($record !== null) {
-                (new Domain())->updateSerial((string)$record->domain)->serializeToConfig();
-                Config::getInstance()->save();
+                $this->updateDomainSerial((string)$record->domain);
             }
+        }
+    }
+
+    /**
+     * update domain serial(s)
+     * @param $domains string|array domain uuid or list of domain uuids
+     * @throws \OPNsense\Base\ModelException
+     * @throws \ReflectionException
+     */
+    private function updateDomainSerial($domains)
+    {
+        if (!empty($domains) && $this->request->isPost()) {
+            $mdl = new Domain();
+            foreach ((array)$domains as $domain) {
+                $mdl->updateSerial($domain);
+            }
+            $mdl->serializeToConfig();
+            Config::getInstance()->save();
         }
     }
 
@@ -101,18 +139,24 @@ class RecordController extends ApiMutableModelControllerBase
 
     public function delRecordAction($uuid)
     {
+        // records are gone after delBase(), resolve their domains first
+        $domains = $this->getRecordDomains($uuid);
         $result =  $this->delBase('records.record', $uuid);
         if ($result['result'] == 'deleted') {
-            $this->setDomainSerial($uuid);
+            $this->updateDomainSerial($domains);
         }
         return $result;
     }
 
     public function setRecordAction($uuid = null)
     {
+        // the record may be moved to another zone, which needs a new serial as well
+        $old_domains = $this->getRecordDomains($uuid);
         $result =  $this->setBase('record', 'records.record', $uuid);
         if ($result['result'] == 'saved') {
-            $this->setDomainSerial($uuid);
+            $this->updateDomainSerial(
+                array_unique(array_merge($old_domains, $this->getRecordDomains($uuid)))
+            );
         }
         return $result;
     }
