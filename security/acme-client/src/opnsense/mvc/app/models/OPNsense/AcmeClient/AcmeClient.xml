@@ -503,6 +503,7 @@
                         <dns_miab>MailinaBox</dns_miab>
                         <dns_mijnhost>mijn.host</dns_mijnhost>
                         <dns_mydnsjp>MyDNS.JP</dns_mydnsjp>
+                        <dns_myloc>myLoc / webtropia</dns_myloc>
                         <dns_mythic_beasts>Mythic Beasts</dns_mythic_beasts>
                         <dns_namecom>Name.com</dns_namecom>
                         <dns_namecheap>Namecheap</dns_namecheap>
@@ -960,6 +961,9 @@
                 <dns_mydnsjp_password type="TextField">
                     <Required>N</Required>
                 </dns_mydnsjp_password>
+                <dns_myloc_token type="TextField">
+                    <Required>N</Required>
+                </dns_myloc_token>
                 <dns_mythic_beasts_key type="TextField">
                     <Required>N</Required>
                 </dns_mythic_beasts_key>
