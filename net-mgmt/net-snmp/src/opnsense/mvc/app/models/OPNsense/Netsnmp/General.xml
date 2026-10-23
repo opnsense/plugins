@@ -10,10 +10,10 @@
         <community type="StrictTextField"/>
         <syslocation type="StrictTextField">
             <AllowSpaces>Y</AllowSpaces>
-        </syslocation type="StrictTextField">
+        </syslocation>
         <syscontact type="StrictTextField">
             <AllowSpaces>Y</AllowSpaces>
-        </syscontact type="StrictTextField">
+        </syscontact>
         <l3visibility type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
