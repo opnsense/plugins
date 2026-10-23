@@ -48,8 +48,10 @@ class M1_1_4 extends BaseModelMigration
         $config = Config::getInstance()->object();
         $areas = $model->getNodeByReference('areas.area');
         $areasById = [];
+        $areasByUuid = [];
         foreach ($areas->iterateItems() as $area) {
             $areasById[(string)$area->id] = $area;
+            $areasByUuid[(string)$area->getAttribute('uuid')] = $area;
         }
         $enabledPrefixlists = [];
         foreach ($model->getNodeByReference('prefixlists.prefixlist')->iterateItems() as $uuid => $prefixlist) {
@@ -73,12 +75,13 @@ class M1_1_4 extends BaseModelMigration
                     continue;
                 }
 
-                $area = $areasById[$areaId] ?? null;
+                $area = $areasByUuid[$areaId] ?? $areasById[$areaId] ?? null;
                 if ($area === null) {
                     $area = $areas->add();
                     $area->enabled = '1';
                     $area->id = $areaId;
                     $areasById[$areaId] = $area;
+                    $areasByUuid[(string)$area->getAttribute('uuid')] = $area;
                 }
 
                 if ($range !== '') {
@@ -111,12 +114,17 @@ class M1_1_4 extends BaseModelMigration
                     continue;
                 }
                 $areaId = (string)$item->area;
+                if (isset($areasByUuid[$areaId])) {
+                    // Already converted before a previous migration save failed.
+                    continue;
+                }
 
                 if (!isset($areasById[$areaId])) {
                     $area = $areas->add();
                     $area->enabled = '1';
                     $area->id = $areaId;
                     $areasById[$areaId] = $area;
+                    $areasByUuid[(string)$area->getAttribute('uuid')] = $area;
                 } elseif (!$areasById[$areaId]->enabled->isEqual('1')) {
                     // Disabled legacy areas only suppressed their special area type.
                     $areasById[$areaId]->enabled = '1';
