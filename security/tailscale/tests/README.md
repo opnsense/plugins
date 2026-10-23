@@ -45,7 +45,7 @@ same 12 files and cached image as an online preparation.
 
 The test container always runs with `--network none`, a read-only root filesystem,
 read-only plugin/core mounts, no capabilities, and the calling user's numeric
-UID/GID. Its only writable filesystem is a disposable `/tmp` tmpfs; it has no
+UID/GID. Test scratch files use a disposable `/tmp` tmpfs; it has no
 Docker socket, host `/usr/local`, configuration, service socket or credentials
 mounted. Test subprocesses and the local Unix socket used by the Backend tests
 remain inside that container. No daemon or gateway monitor is started.

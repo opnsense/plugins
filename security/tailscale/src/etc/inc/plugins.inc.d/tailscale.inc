@@ -66,12 +66,16 @@ function tailscale_network_ready()
     $success = true;
     foreach ($families as $family => $unused) {
         $version = $family == 'inet' ? 'IPv4' : 'IPv6';
-        $address = $family == 'inet' ? interfaces_primary_address($interface, $details) :
-            interfaces_primary_address6($interface, $details);
+        $address = $family == 'inet'
+            ? interfaces_primary_address($interface, $details)
+            : interfaces_primary_address6($interface, $details);
         $valid = $family == 'inet' ? is_ipaddrv4($address[0]) :
             is_ipaddrv6($address[0]) && !is_linklocal($address[0]);
         if (!$valid || $address[3] != $device) {
-            log_msg("Tailscale: no usable {$version} address on {$device}; network initialization not queued.", LOG_ERR);
+            log_msg(
+                "Tailscale: no usable {$version} address on {$device}; network initialization not queued.",
+                LOG_ERR
+            );
             $success = false;
             continue;
         }
