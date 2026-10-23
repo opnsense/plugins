@@ -1642,6 +1642,17 @@
         <type>password</type>
     </field>
     <field>
+        <label>EdgeCenter DNS</label>
+        <type>header</type>
+        <style>table_dns table_dns_edgecenter</style>
+    </field>
+    <field>
+        <id>validation.dns_edgecenter_apikey</id>
+        <label>API Key</label>
+        <type>password</type>
+        <help>EdgeCenter API Key (EDGECENTER_API_KEY)</help>
+    </field>
+    <field>
         <label>EUserv</label>
         <type>header</type>
         <style>table_dns table_dns_euserv</style>

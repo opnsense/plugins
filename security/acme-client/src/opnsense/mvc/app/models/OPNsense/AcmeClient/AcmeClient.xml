@@ -464,6 +464,7 @@
                         <dns_dynu>Dynu</dns_dynu>
                         <dns_dynv6>dynv6</dns_dynv6>
                         <dns_easydns>EasyDNS</dns_easydns>
+                        <dns_edgecenter>EdgeCenter DNS</dns_edgecenter>
                         <dns_euserv>EUserv</dns_euserv>
                         <dns_exoscale>Exoscale</dns_exoscale>
                         <dns_fornex>Fornex</dns_fornex>
@@ -1228,6 +1229,9 @@
                 <dns_easydns_apikey type="TextField">
                     <Required>N</Required>
                 </dns_easydns_apikey>
+                <dns_edgecenter_apikey type="TextField">
+                    <Required>Y</Required>
+                </dns_edgecenter_apikey>
                 <dns_euserv_user type="TextField">
                     <Required>N</Required>
                 </dns_euserv_user>
