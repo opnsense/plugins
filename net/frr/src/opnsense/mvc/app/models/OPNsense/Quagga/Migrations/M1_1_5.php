@@ -69,6 +69,11 @@ class M1_1_5 extends BaseModelMigration
                 $interface = $interfaces->add();
                 $interface->enabled = '1';
                 $interface->interfacename = $interfaceName;
+                $interface->interfacename->normalizeValue();
+                if ($interface->interfacename->isEmpty()) {
+                    $interfaces->del($interface->getAttribute('uuid'));
+                    continue;
+                }
                 $interfacesByName[$interfaceName] = $interface;
             }
             $interfacesByName[$interfaceName]->passive = '1';
