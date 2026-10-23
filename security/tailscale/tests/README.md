@@ -62,9 +62,11 @@ The real core `Backend` class is tested against a local Unix socket server which
 acknowledges submission while deliberately holding the simulated action open.
 This checks parameter escaping and the detach flag; no real configd is involved.
 
-The `includes/` files are empty include boundaries, not copies of production
-implementations. Copied/extracted core code retains its upstream licensing in the
-downloaded files. New harness code is BSD-2-Clause licensed (see `LICENSE`).
+The runner creates temporary PHP include stubs and mounts them read-only at
+`/test-includes`. These satisfy the include names used by the actual hook and core
+scripts; their simulated behaviour is implemented in `scenario.php`. No empty
+include fixtures are stored in the checkout. Downloaded core code retains its
+upstream licensing. New harness code is BSD-2-Clause licensed (see `LICENSE`).
 
 ## Coverage and expected result
 

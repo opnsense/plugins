@@ -50,7 +50,7 @@ namespace {
     $result = null;
     $plugin = dirname(__DIR__);
     $core = getenv('TAILSCALE_TEST_CORE');
-    set_include_path(__DIR__ . '/includes' . PATH_SEPARATOR . $plugin . '/src/etc/inc');
+    set_include_path('/test-includes' . PATH_SEPARATOR . $plugin . '/src/etc/inc');
     function record($kind, $value = null) { $GLOBALS['trace'][] = [$kind, $value]; }
     register_shutdown_function(static function () {
         $data = ['result' => $GLOBALS['result'], 'trace' => $GLOBALS['trace']];
@@ -165,7 +165,7 @@ namespace {
         return $result;
     }
     function plugins_scan($glob = '*') {
-        return ['dpinger' => __DIR__ . '/includes/empty.inc', 'wireguard' => __DIR__ . '/includes/empty.inc',
+        return ['dpinger' => '/test-includes/empty.inc', 'wireguard' => '/test-includes/empty.inc',
             'tailscale' => $GLOBALS['plugin'] . '/src/etc/inc/plugins.inc.d/tailscale.inc'];
     }
     load_core_functions('src/etc/inc/interfaces.inc', [

@@ -78,12 +78,18 @@ if ! docker image inspect "$image" >/dev/null 2>&1; then
 fi
 
 echo "Running isolated tests with $image"
+# Only include names matter here; scenario.php supplies their simulated behaviour.
+mkdir "$scratch/includes"
+for name in auth config empty filter interfaces system util; do
+    printf '<?php\n' > "$scratch/includes/$name.inc"
+done
 docker run --rm --pull never --network none --read-only \
     --cap-drop ALL --security-opt no-new-privileges --pids-limit 128 \
     --user "$(id -u):$(id -g)" \
     --tmpfs /tmp:rw,exec,nosuid,nodev,size=64m \
     --mount "type=bind,source=$plugin_dir,target=/plugin,readonly" \
     --mount "type=bind,source=$core_dir,target=/core,readonly" \
+    --mount "type=bind,source=$scratch/includes,target=/test-includes,readonly" \
     --env TAILSCALE_TEST_SANDBOX=1 --env TAILSCALE_TEST_CORE=/core \
     --workdir /plugin "$image" \
     php -d display_errors=stderr -d error_reporting=-1 tests/run.php
