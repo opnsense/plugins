@@ -43,6 +43,13 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
     public const CONFIG_PATH = 'validations.validation';
 
     /**
+     * Set by run() when acme.sh exited with ACME_RENEW_SKIP, i.e. it
+     * decided on its own that renewal isn't due yet. Not a failure.
+     * @var bool
+     */
+    public $skipped = false;
+
+    /**
      * The validation method cannot be properly initialized without the required
      * configuration. LeValidation returns a more or less uninitialized object
      * that first needs to be configured, and finally initialized by this function.
@@ -132,6 +139,9 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
      */
     public function run(bool $renew = false)
     {
+        // Reset in case this object is reused for another run().
+        $this->skipped = false;
+
         if (!($this->isEnabled())) {
             LeUtils::log('ignoring disabled challenge type: ' . (string)$this->config->name);
             return false;
@@ -174,6 +184,15 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
 
         // Run optional cleanup tasks.
         $this->cleanup();
+
+        // acme.sh decided on its own that this cert is not due for renewal
+        // yet (e.g. renewal interval or ACME Renewal Information not
+        // reached). This is not a failure.
+        if ($result === self::ACME_RENEW_SKIP) {
+            LeUtils::log('certificate renewal skipped by acme.sh, not due yet (' . $this->getMethod() . ')');
+            $this->skipped = true;
+            return false;
+        }
 
         // Check acme.sh result
         if ($result) {
