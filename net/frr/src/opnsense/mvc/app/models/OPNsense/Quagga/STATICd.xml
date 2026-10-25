@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/quagga/static</mount>
     <description>Staticd Routing configuration</description>
-    <version>1.0.0</version>
+    <version>1.1.5</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -28,6 +28,10 @@
                         <type>/^(?!group).*$/</type>
                     </filters>
                 </interfacename>
+                <bfd type="BooleanField">
+                    <Default>0</Default>
+                    <Required>N</Required>
+                </bfd>
             </route>
         </routes>
     </items>

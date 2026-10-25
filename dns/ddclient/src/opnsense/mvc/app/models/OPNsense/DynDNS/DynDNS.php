@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2021-2023 Deciso B.V.
+ * Copyright (C) 2021-2026 Deciso B.V.
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -41,6 +41,7 @@ class DynDNS extends BaseModel
     {
         $messages = parent::performValidation($validateFullModel);
         $validate_servers = [];
+
         foreach ($this->getFlatNodes() as $key => $node) {
             $tagName = $node->getInternalXMLTagName();
             $parentNode = $node->getParentNode();
@@ -51,27 +52,24 @@ class DynDNS extends BaseModel
                 }
             }
         }
+
         foreach ($validate_servers as $key => $node) {
-            if ((string)$node->service == 'powerdns') {
-                if (empty($srv) || filter_var($srv, FILTER_VALIDATE_URL) === false) {
-                    $messages->appendMessage(
-                        new Message(
-                            gettext("A valid URI is required."),
-                            $key . ".server"
-                        )
-                    );
-                }
-            }
-            if ((string)$node->service != 'custom') {
+            $validate_url = false;
+
+            if ($node->service->isEqual('powerdns')) {
+                $validate_url = true;
+            } elseif (!$node->service->isEqual('custom')) {
                 continue;
             }
+
             $srv = (string)$node->server;
-            if (in_array((string)$node->protocol, ['get', 'post', 'put'])) {
+
+            if (in_array((string)$node->protocol, ['get', 'post', 'put']) || $validate_url) {
                 if (empty($srv) || filter_var($srv, FILTER_VALIDATE_URL) === false) {
                     $messages->appendMessage(
                         new Message(
-                            gettext("A valid URI is required."),
-                            $key . ".server"
+                            gettext('A valid URI is required.'),
+                            $key . '.server'
                         )
                     );
                 }
@@ -79,13 +77,14 @@ class DynDNS extends BaseModel
                 if (empty($srv) || filter_var($srv, FILTER_VALIDATE_DOMAIN, FILTER_FLAG_HOSTNAME) === false) {
                     $messages->appendMessage(
                         new Message(
-                            gettext("A valid domain is required."),
-                            $key . ".server"
+                            gettext('A valid domain is required.'),
+                            $key . '.server'
                         )
                     );
                 }
             }
         }
+
         return $messages;
     }
 }

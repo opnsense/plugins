@@ -34,6 +34,7 @@ use OPNsense\Base\ApiMutableModelControllerBase;
 use OPNsense\Base\UserException;
 use OPNsense\Core\Backend;
 use OPNsense\Core\Config;
+use OPNsense\Firewall\Alias;
 
 class SettingsController extends ApiMutableModelControllerBase
 {
@@ -51,6 +52,8 @@ class SettingsController extends ApiMutableModelControllerBase
         if (strpos($res, 'EXIT OK') === false) {
             throw new UserException($res);
         }
+        /* as we register new dynamic aliases, we're also responsible for invalidating an existing cache */
+        Alias::flushCacheData();
         return ['status' => 'ok', 'output' => $res];
     }
 
@@ -106,7 +109,7 @@ class SettingsController extends ApiMutableModelControllerBase
                 foreach ($stats['feeds'] as &$feed) {
                     if (isset($feeds[$feed['name']])) {
                         $tmp = $feeds[$feed['name']];
-                        $feed['updated_at'] = $tmp['updated_at'];
+                        $feed['updated_at'] = $tmp['local_updated'];
                         $feed['next_update'] = $tmp['next_update'];
                         $feed['licensed'] = $tmp['licensed'];
                     }
@@ -121,5 +124,33 @@ class SettingsController extends ApiMutableModelControllerBase
             }
         }
         return $stats;
+    }
+
+    /**
+     * Firewall aliases
+     */
+    public function searchAliasAction()
+    {
+        return $this->searchBase("firewall.alias", null, "name");
+    }
+
+    public function addAliasAction()
+    {
+        return $this->addBase("alias", "firewall.alias");
+    }
+
+    public function setAliasAction($uuid)
+    {
+        return $this->setBase("alias", "firewall.alias", $uuid);
+    }
+
+    public function getAliasAction($uuid = null)
+    {
+        return $this->getBase("alias", "firewall.alias", $uuid);
+    }
+
+    public function delAliasAction($uuid = null)
+    {
+        return $this->delBase("firewall.alias", $uuid);
     }
 }

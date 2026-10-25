@@ -1,6 +1,7 @@
 <?php
 
 /*
+ * Copyright (C) 2026 Frank Wall
  * Copyright (C) 2022 Jan Winkler
  * All rights reserved.
  *
@@ -39,6 +40,7 @@ class DnsActive24 extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $this->acme_env['ACTIVE24_Token'] = (string)$this->config->dns_active24_token;
+        $this->acme_env['Active24_ApiKey'] = (string)$this->config->dns_active24_api_key;
+        $this->acme_env['Active24_ApiSecret'] = (string)$this->config->dns_active24_api_secret;
     }
 }

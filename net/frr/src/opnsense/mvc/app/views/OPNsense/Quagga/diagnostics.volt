@@ -1,6 +1,6 @@
 {#
 
-OPNsense® is Copyright © 2014 – 2023 by Deciso B.V.
+OPNsense® is Copyright © 2014 – 2026 by Deciso B.V.
 Copyright (C) 2023 Marc Bartelt
 Copyright (C) 2017 Fabian Franz
 Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
@@ -44,23 +44,7 @@ POSSIBILITY OF SUCH DAMAGE.
             font-style: italic;
         }
     }
-    .bootstrap-dialog-body {
-        overflow-x: auto;
-    }
-    .modal-dialog,
-    .modal-content {
-        height: 80%;
-    }
 
-    .modal-body {
-        height: calc(100% - 120px);
-        overflow-y: scroll;
-    }
-    @media (min-width: 768px) {
-        .modal-dialog {
-            width: 90%;
-        }
-    }
 </style>
 
 <script>
@@ -101,6 +85,7 @@ POSSIBILITY OF SUCH DAMAGE.
                 {% case 'ospfv3databasetable' %}
                 {% case 'ospfneighbors' %}
                 {% case 'bfdsummary' %}
+                {% case 'bfdstaticroute' %}
                     if (all_grids["{{ tab['name'] }}"] === undefined) {
                         /**
                          * initialize bootgrid table for {{ tab['tabhead'] }}
@@ -399,6 +384,22 @@ POSSIBILITY OF SUCH DAMAGE.
                                 <th data-column-id="local" data-searchable="false">{{ lang._('LocalAddress') }}</th>
                                 <th data-column-id="peer">{{ lang._('PeerAddress') }}</th>
                                 <th data-column-id="status" data-searchable="false">{{ lang._('Status') }}</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                    {% break %}
+                {% case 'bfdstaticroute' %}
+                    <div class="col-sm-12">
+                        <table id="grid-{{ tab['name'] }}" class="table table-condensed table-hover table-striped table-responsive">
+                            <thead>
+                            <tr>
+                                <th data-column-id="proto">{{ lang._('Protocol') }}</th>
+                                <th data-column-id="vrf">{{ lang._('Vrf') }}</th>
+                                <th data-column-id="peer">{{ lang._('Peer') }}</th>
+                                <th data-column-id="installed" data-formatter="boolean" data-searchable="false" data-sortable="false">{{ lang._('Installed') }}</th>
                             </tr>
                             </thead>
                             <tbody>

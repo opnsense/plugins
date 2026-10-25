@@ -40,12 +40,13 @@ class DnsTransip extends Base implements LeValidationInterface
     public function prepare()
     {
         $configdir = (string)sprintf(self::ACME_CONFIG_DIR, $this->cert_id);
-        $secret_key_filename = "{$configdir}/secret.key";
+        $secret_key_filename = "{$configdir}secret.key";
         $secret_key_data = (string)$this->config->dns_transip_key . "\n";
         file_put_contents($secret_key_filename, $secret_key_data);
 
         // Add env variables
         $this->acme_env['TRANSIP_Username'] = (string)$this->config->dns_transip_username;
         $this->acme_env['TRANSIP_Key_File'] = $secret_key_filename;
+        $this->acme_env['TRANSIP_Token_Global_Key'] = ((string)$this->config->dns_transip_token_global_key === '1') ? 'true' : 'false';
     }
 }

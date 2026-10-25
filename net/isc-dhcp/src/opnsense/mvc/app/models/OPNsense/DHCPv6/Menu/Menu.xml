@@ -1,0 +1,7 @@
+<menu>
+    <Services>
+        <ISC_DHCPv6 VisibleName="ISC DHCPv6 [legacy]" cssClass="fa fa-bullseye fa-fw">
+            <Leases order="400" url="/ui/dhcpv6/leases"/>
+        </ISC_DHCPv6>
+    </Services>
+</menu>

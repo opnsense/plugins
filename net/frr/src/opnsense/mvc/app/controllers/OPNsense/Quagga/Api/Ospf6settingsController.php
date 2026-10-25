@@ -1,49 +1,45 @@
 <?php
 
 /*
- *    Copyright (C) 2015-2024 Deciso B.V.
- *    Copyright (C) 2015 Jos Schellevis <jos@opnsense.org>
- *    Copyright (C) 2017 Fabian Franz
- *    Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
- *    All rights reserved.
+ * Copyright (C) 2015-2024 Deciso B.V.
+ * Copyright (C) 2015 Jos Schellevis <jos@opnsense.org>
+ * Copyright (C) 2017 Fabian Franz
+ * Copyright (C) 2017 Michael Muenz <m.muenz@gmail.com>
+ * All rights reserved.
  *
- *    Redistribution and use in source and binary forms, with or without
- *    modification, are permitted provided that the following conditions are met:
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- *    1. Redistributions of source code must retain the above copyright notice,
- *       this list of conditions and the following disclaimer.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
  *
- *    2. Redistributions in binary form must reproduce the above copyright
- *       notice, this list of conditions and the following disclaimer in the
- *       documentation and/or other materials provided with the distribution.
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
  *
- *    THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
- *    INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
- *    AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *    AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
- *    OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- *    SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- *    INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- *    CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- *    ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *    POSSIBILITY OF SUCH DAMAGE.
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  */
 
 namespace OPNsense\Quagga\Api;
 
-use OPNsense\Quagga\OSPF6;
-use OPNsense\Core\Config;
-use OPNsense\Base\ApiMutableModelControllerBase;
-use OPNsense\Base\UIModelGrid;
-
-class Ospf6settingsController extends ApiMutableModelControllerBase
+class Ospf6settingsController extends QuaggaControllerBase
 {
     protected static $internalModelName = 'ospf6';
     protected static $internalModelClass = '\OPNsense\Quagga\OSPF6';
+    protected static $internalModelUseSafeDelete = true;
 
-    public function searchNetworkAction()
+    public function searchAreaAction()
     {
-        return $this->searchBase('networks.network');
+        return $this->searchBase('areas.area');
     }
     public function searchInterfaceAction()
     {
@@ -57,9 +53,9 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     {
         return $this->searchBase('routemaps.routemap');
     }
-    public function getNetworkAction($uuid = null)
+    public function getAreaAction($uuid = null)
     {
-        return $this->getBase('network', 'networks.network', $uuid);
+        return $this->getBase('area', 'areas.area', $uuid);
     }
     public function getInterfaceAction($uuid = null)
     {
@@ -73,9 +69,9 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     {
         return $this->getBase('routemap', 'routemaps.routemap', $uuid);
     }
-    public function addNetworkAction()
+    public function addAreaAction()
     {
-        return $this->addBase('network', 'networks.network');
+        return $this->addBase('area', 'areas.area');
     }
     public function addInterfaceAction()
     {
@@ -89,9 +85,9 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     {
         return $this->addBase('routemap', 'routemaps.routemap');
     }
-    public function delNetworkAction($uuid)
+    public function delAreaAction($uuid)
     {
-        return $this->delBase('networks.network', $uuid);
+        return $this->delBase('areas.area', $uuid);
     }
     public function delInterfaceAction($uuid)
     {
@@ -99,15 +95,17 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     }
     public function delPrefixlistAction($uuid)
     {
+        $this->throwGroupInUse($this->getModel()->prefixlists->prefixlist, $uuid, 'name');
         return $this->delBase('prefixlists.prefixlist', $uuid);
     }
     public function delRoutemapAction($uuid)
     {
+        $this->throwGroupInUse($this->getModel()->routemaps->routemap, $uuid, 'name');
         return $this->delBase('routemaps.routemap', $uuid);
     }
-    public function setNetworkAction($uuid)
+    public function setAreaAction($uuid)
     {
-        return $this->setBase('network', 'networks.network', $uuid);
+        return $this->setBase('area', 'areas.area', $uuid);
     }
     public function setInterfaceAction($uuid)
     {
@@ -121,9 +119,9 @@ class Ospf6settingsController extends ApiMutableModelControllerBase
     {
         return $this->setBase('routemap', 'routemaps.routemap', $uuid);
     }
-    public function toggleNetworkAction($uuid)
+    public function toggleAreaAction($uuid)
     {
-        return $this->toggleBase('networks.network', $uuid);
+        return $this->toggleBase('areas.area', $uuid);
     }
     public function toggleInterfaceAction($uuid)
     {

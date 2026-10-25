@@ -23,14 +23,8 @@
             <Default>1</Default>
             <Required>N</Required>
         </disk>
-        <disk_mount_points type="TextField">
-            <Default></Default>
-            <Required>N</Required>
-        </disk_mount_points>
-        <disk_ignore_fs type="CSVListField">
-            <Default></Default>
-            <Required>N</Required>
-        </disk_ignore_fs>
+        <disk_mount_points type="TextField"/>
+        <disk_ignore_fs type="CSVListField"/>
         <diskio type="BooleanField">
             <Default>1</Default>
             <Required>N</Required>

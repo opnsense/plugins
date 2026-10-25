@@ -37,16 +37,16 @@
         </followdirsym>
         <followfilesym type="BooleanField">
             <Default>0</Default>
-	    <Required>N</Required>
-	</followfilesym>
+            <Required>N</Required>
+        </followfilesym>
         <disablecache type="TextField">
             <Default>0</Default>
-	    <Required>N</Required>
-	</disablecache>
+            <Required>N</Required>
+        </disablecache>
         <scanpe type="BooleanField">
             <Default>1</Default>
-	    <Required>N</Required>
-	</scanpe>
+            <Required>N</Required>
+        </scanpe>
         <scanelf type="BooleanField">
             <Default>1</Default>
             <Required>N</Required>
@@ -99,18 +99,18 @@
             <Default>100M</Default>
             <Required>N</Required>
         </maxscansize>
-	<maxfilesize type="TextField">
+        <maxfilesize type="TextField">
             <Default>25M</Default>
             <Required>N</Required>
         </maxfilesize>
-	<maxrecursion type="IntegerField">
+        <maxrecursion type="IntegerField">
             <Default>16</Default>
             <Required>N</Required>
         </maxrecursion>
-	<maxfiles type="IntegerField">
+        <maxfiles type="IntegerField">
             <Default>10000</Default>
             <Required>N</Required>
-	</maxfiles>
+        </maxfiles>
         <logverbose type="BooleanField">
             <Default>0</Default>
             <Required>N</Required>

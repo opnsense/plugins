@@ -13,6 +13,44 @@
         <id>connect.general.enable_unbound_bl</id>
         <label>Register domain feeds</label>
         <type>checkbox</type>
-        <help>Use domain feeds in Unbound DNS blocklist, requires blocklists to be enabled in order to have effect</help>
+        <help>Use domain feeds in Unbound DNS and DNScrypt-proxy blocklists, requires blocklists to be enabled in order to have effect</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Unbound blocklist settings</label>
+        <style>unbound_options</style>
+    </field>
+    <field>
+        <id>connect.unbound.allowlists</id>
+        <label>Allowlist Domains</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>List of domains to allow. You can use regular expressions. This allow list only applies to blocklist matches on items in this policy.</help>
+    </field>
+    <field>
+        <id>connect.unbound.source_nets</id>
+        <label>Source Net(s)</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Source networks to apply policy on. Examples are 192.168.1.0/24 or 192.168.1.1. Leave empty to apply on everything. All specified networks should use the same protocol family and have equal sizes to avoid priority issues. </help>
+    </field>
+    <field>
+        <id>connect.unbound.address</id>
+        <label>Destination Address</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>
+            Destination ip address for entries in the blocklist (leave empty to use default: 0.0.0.0).
+            Not used when "Return NXDOMAIN" is checked.
+        </help>
+    </field>
+    <field>
+        <id>connect.unbound.nxdomain</id>
+        <label>Return NXDOMAIN</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Use the DNS response code NXDOMAIN instead of a destination address.</help>
     </field>
 </form>

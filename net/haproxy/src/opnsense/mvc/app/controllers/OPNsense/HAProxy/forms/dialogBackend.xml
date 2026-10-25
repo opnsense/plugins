@@ -28,7 +28,7 @@
         <id>backend.algorithm</id>
         <label>Balancing Algorithm</label>
         <type>dropdown</type>
-        <help><![CDATA[Define the load balancing algorithm to be used in a Backend Pool. See the <a target="_blank" href="http://docs.haproxy.org/3.0/configuration.html#balance">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[Define the load balancing algorithm to be used in a Backend Pool. See the <a target="_blank" href="http://docs.haproxy.org/3.2/configuration.html#balance">HAProxy documentation</a> for a full description.]]></help>
         <hint>Choose a load balancing algorithm.</hint>
     </field>
     <field>
@@ -42,7 +42,7 @@
         <id>backend.proxyProtocol</id>
         <label>Proxy Protocol</label>
         <type>dropdown</type>
-        <help><![CDATA[Enforces use of the PROXY protocol over any connection established to the configured servers. The PROXY protocol informs the other end about the layer 3/4 addresses of the incoming connection, so that it can know the client's address or the public address it accessed to, whatever the upper layer protocol. This setting must not be used if the servers are not aware of the PROXY protocol. See the <a target="_blank" href="http://docs.haproxy.org/3.0/configuration.html#send-proxy">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[Enforces use of the PROXY protocol over any connection established to the configured servers. The PROXY protocol informs the other end about the layer 3/4 addresses of the incoming connection, so that it can know the client's address or the public address it accessed to, whatever the upper layer protocol. This setting must not be used if the servers are not aware of the PROXY protocol. See the <a target="_blank" href="http://docs.haproxy.org/3.2/configuration.html#send-proxy">HAProxy documentation</a> for a full description.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -148,6 +148,13 @@
         <help><![CDATA[Select an e-mail alert configuration. An e-mail is sent when the state of a server changes.]]></help>
     </field>
     <field>
+        <id>backend.healthCheckProxyProto</id>
+        <label>Use Proxy Protocol</label>
+        <type>dropdown</type>
+        <help><![CDATA[This option controls the emission of a PROXY protocol line with outgoing health checks. The default value is good for most situations. However, if either the server or the health check does not support the PROXY protocol, this option may be useful.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>HTTP(S) settings</label>
         <type>header</type>
         <style>mode_table table_http</style>
@@ -186,7 +193,7 @@
         <style>tokenize</style>
         <allownew>true</allownew>
         <sortable>true</sortable>
-        <help><![CDATA[This may be used to add more information to the forwarded header. Default behavior enables proto parameter and injects original client IP. See he <a target="_blank" href="http://docs.haproxy.org/3.0/configuration.html#option forwarded">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[This may be used to add more information to the forwarded header. Default behavior enables proto parameter and injects original client IP. See he <a target="_blank" href="http://docs.haproxy.org/3.2/configuration.html#option forwarded">HAProxy documentation</a> for a full description.]]></help>
     </field>
     <field>
         <id>backend.forwardFor</id>
@@ -213,7 +220,7 @@
         <id>backend.persistence_cookiemode</id>
         <label>Cookie handling</label>
         <type>dropdown</type>
-        <help><![CDATA[Usually it is better to reuse an existing cookie. In this case HAProxy prefixes the cookie with the required information. See the <a target="_blank" href="http://docs.haproxy.org/3.0/configuration.html#4.2-cookie">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[Usually it is better to reuse an existing cookie. In this case HAProxy prefixes the cookie with the required information. See the <a target="_blank" href="http://docs.haproxy.org/3.2/configuration.html#4.2-cookie">HAProxy documentation</a> for a full description.]]></help>
     </field>
     <field>
         <id>backend.persistence_cookiename</id>
@@ -228,34 +235,52 @@
         <help><![CDATA[Enable to automatically strip quotes from the cookie value. Some broken HTTP clients add quotes, which breaks persistence.]]></help>
     </field>
     <field>
-        <label>Stick-table persistence</label>
+        <label>Stick-table</label>
         <type>header</type>
     </field>
     <field>
         <id>backend.stickiness_pattern</id>
         <label>Table type</label>
         <type>dropdown</type>
-        <help><![CDATA[Choose a request pattern to associate a user to a server. See the <a target="_blank" href="http://docs.haproxy.org/3.0/configuration.html#stick on">HAProxy documentation</a> for a full description.<br/><div class="text-info"><b>NOTE:</b> Consider not using this feature in multi-process mode, it can result in random behaviours.</div>]]></help>
-        <hint>Choose a persistence type.</hint>
+        <help><![CDATA[Choose the type of data that should be stored in this stick-table. See the <a target="_blank" href="http://docs.haproxy.org/3.2/configuration.html#11.1">HAProxy documentation</a> for further information.]]></help>
     </field>
     <field>
         <id>backend.stickiness_dataTypes</id>
         <label>Stored data types</label>
         <type>select_multiple</type>
-        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. Note that this directly impacts memory usage. See the <a target="_blank" href="http://docs.haproxy.org/3.0/configuration.html#stick-table">HAProxy documentation</a> for a full description.]]></help>
+        <help><![CDATA[This is used to store additional information in the stick-table. It may be used by ACLs in order to control various criteria related to the activity of the client matching the stick-table. Note that this directly impacts memory usage. See the <a target="_blank" href="http://docs.haproxy.org/3.2/configuration.html#11.1">HAProxy documentation</a> for a full description.]]></help>
     </field>
     <field>
         <id>backend.stickiness_expire</id>
         <label>Expiration time</label>
         <type>text</type>
         <help><![CDATA[Enter a number followed by one of the supported suffixes "d" (days), "h" (hour), "m" (minute), "s" (seconds), "ms" (miliseconds). This configures the maximum duration of an entry in the stick-table since it was last created, refreshed or matched. The maximum duration is slightly above 24 days.]]></help>
-        <advanced>true</advanced>
     </field>
     <field>
         <id>backend.stickiness_size</id>
-        <label>Size</label>
+        <label>Table size</label>
         <type>text</type>
         <help><![CDATA[Enter a number followed by one of the supported suffixes "k", "m", "g". This configures the maximum number of entries that can fit in the table. This value directly impacts memory usage. Count approximately 50 bytes per entry, plus the size of a string if any.]]></help>
+    </field>
+    <field>
+        <id>backend.stickiness_length</id>
+        <label>Max. data length</label>
+        <type>text</type>
+        <help><![CDATA[Specify the maximum length for a value in the stick-table. If the value is larger than this value it will be truncated before being stored. Depending on the stick-table type this repesents either characters or bytes.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.stickiness_bytesInRatePeriod</id>
+        <label>Bytes in rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average incoming bytes rate over that period, in bytes per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.stickiness_bytesOutRatePeriod</id>
+        <label>Bytes out rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average outgoing bytes rate over that period, in bytes per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -278,10 +303,31 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <id>backend.stickiness_sessRatePeriod</id>
-        <label>Session rate period</label>
+        <id>backend.stickiness_glitchRatePeriod</id>
+        <label>Glitch rate period</label>
         <type>text</type>
-        <help><![CDATA[The length of the period over which the average is measured. It reports the average incoming session rate over that period, in sessions per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average front glitches rate over that period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.stickiness_gpcElements</id>
+        <label>GPC elements</label>
+        <type>text</type>
+        <help><![CDATA[The number of array elements that will be used for the General Purpose Counter. This is limited to a maximum of 100 elements, ranging from 0 to 99.]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.stickiness_gpcRatePeriod</id>
+        <label>GPC rate period</label>
+        <type>text</type>
+        <help><![CDATA[The length of the period over which the average is measured. Most of the time it will be used to measure the frequency of occurrence of certain events. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>backend.stickiness_gptElements</id>
+        <label>GPT elements</label>
+        <type>text</type>
+        <help><![CDATA[The number of array elements that will be used for the General Purpose Tag. This is limited to a maximum of 100 elements, ranging from 0 to 99.]]></help>
         <advanced>true</advanced>
     </field>
     <field>
@@ -299,17 +345,17 @@
         <advanced>true</advanced>
     </field>
     <field>
-        <id>backend.stickiness_bytesInRatePeriod</id>
-        <label>Bytes in rate period</label>
+        <id>backend.stickiness_httpFailRatePeriod</id>
+        <label>HTTP fail rate period</label>
         <type>text</type>
-        <help><![CDATA[The length of the period over which the average is measured. It reports the average incoming bytes rate over that period, in bytes per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average HTTP response fail error rate over that period, in requests per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
         <advanced>true</advanced>
     </field>
     <field>
-        <id>backend.stickiness_bytesOutRatePeriod</id>
-        <label>Bytes out rate period</label>
+        <id>backend.stickiness_sessRatePeriod</id>
+        <label>Session rate period</label>
         <type>text</type>
-        <help><![CDATA[The length of the period over which the average is measured. It reports the average outgoing bytes rate over that period, in bytes per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
+        <help><![CDATA[The length of the period over which the average is measured. It reports the average incoming session rate over that period, in sessions per period. Defaults to milliseconds. Optionally the unit may be specified as either "d", "h", "m", "s", "ms" or "us".]]></help>
         <advanced>true</advanced>
     </field>
     <field>

@@ -347,7 +347,7 @@
         <id>output.opentelemetry_server</id>
         <label>OpenTelemetry Server</label>
         <type>text</type>
-        <help>Set the IP and port where metrics shoud be sent to, e.g. 192.168.0.1:4317.</help>
+        <help>For gRPC, set the address and port, e.g. 192.168.0.1:4317. For HTTP, use a full URL, e.g. https://collector.example.com/v1/metrics.</help>
     </field>
     <field>
         <id>output.opentelemetry_compression</id>
@@ -366,5 +366,17 @@
         <label>Disable TLS verification</label>
         <type>checkbox</type>
         <help>This will skip chain and host verification.</help>
+    </field>
+    <field>
+        <id>output.opentelemetry_header_name</id>
+        <label>Custom Header Name</label>
+        <type>text</type>
+        <help>Name of an additional HTTP header to send with requests, e.g. Authorization.</help>
+    </field>
+    <field>
+        <id>output.opentelemetry_header_value</id>
+        <label>Custom Header Value</label>
+        <type>text</type>
+        <help>Value for the custom header, e.g. Bearer your-token-here.</help>
     </field>
 </form>

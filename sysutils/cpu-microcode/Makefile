@@ -1,9 +1,9 @@
-PLUGIN_NAME=		cpu-microcode-amd
+PLUGIN_NAME=		cpu-microcode
 PLUGIN_VERSION=		1.1
+PLUGIN_REVISION=	1
 PLUGIN_COMMENT=		CPU microcode updates
 PLUGIN_DEPENDS=		x86info
 PLUGIN_MAINTAINER=	franco@opnsense.org
-PLUGIN_TIER=		2
 PLUGIN_VARIANTS=	amd intel
 
 amd_NAME=		cpu-microcode-amd

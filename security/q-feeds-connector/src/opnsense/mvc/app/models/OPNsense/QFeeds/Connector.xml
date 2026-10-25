@@ -7,5 +7,38 @@
             <apikey type="TextField"/>
             <enable_unbound_bl type="BooleanField"/>
         </general>
+        <unbound>
+            <allowlists type="CSVListField"/>
+            <source_nets type="NetworkField">
+                <Multiple>Y</Multiple>
+                <Strict>Y</Strict>
+                <ValidationMessage>Please specify a valid network segment or address (IPv4/IPv6). If a mask is provided, please omit the host bits.</ValidationMessage>
+                <WildcardEnabled>N</WildcardEnabled>
+                <NetMaskRequired>N</NetMaskRequired>
+                <AsList>Y</AsList>
+            </source_nets>
+            <address type="NetworkField">
+                <NetMaskAllowed>N</NetMaskAllowed>
+                <AddressFamily>ipv4</AddressFamily>
+            </address>
+            <nxdomain type="BooleanField"/>
+        </unbound>
+        <firewall>
+            <alias type="ArrayField">
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^[_a-zA-Z0-9]{0,20}$/</Mask>
+                    <ValidationMessage>The name may be at most 20 characters long and only contain alfanum characters</ValidationMessage>
+                </name>
+                <include type="JsonKeyValueStoreField">
+                    <ConfigdPopulateAct>qfeeds get_ip_meta</ConfigdPopulateAct>
+                    <Multiple>Y</Multiple>
+                </include>
+                <exclude type="JsonKeyValueStoreField">
+                    <ConfigdPopulateAct>qfeeds get_ip_meta</ConfigdPopulateAct>
+                    <Multiple>Y</Multiple>
+                </exclude>
+            </alias>
+        </firewall>
     </items>
 </model>

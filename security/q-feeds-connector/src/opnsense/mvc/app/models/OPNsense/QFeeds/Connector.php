@@ -29,6 +29,7 @@
 namespace OPNsense\QFeeds;
 
 use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
 
 /**
  * Class Connector
@@ -36,4 +37,20 @@ use OPNsense\Base\BaseModel;
  */
 class Connector extends BaseModel
 {
+    public function performValidation($validateFullModel = false)
+    {
+        $messages = parent::performValidation($validateFullModel);
+        foreach ($this->firewall->alias->iterateItems() as $alias) {
+            $key = $alias->__reference;
+            if ($validateFullModel || $alias->isFieldChanged()) {
+                if ($alias->name->getInitialValue() != $alias->name->getValue()) {
+                    $messages->appendMessage(new Message(
+                        gettext("Changing the alias name is not supported"),
+                        $key . ".name"
+                    ));
+                }
+            }
+        }
+        return $messages;
+    }
 }

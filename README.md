@@ -49,15 +49,18 @@ misc/theme-rebellion -- A suitably dark theme
 misc/theme-tukan -- The tukan theme - blue/white
 misc/theme-vicuna -- The vicuna theme - blue sapphire
 net/chrony -- Chrony time synchronisation
+net/cloudflared -- Cloudflare Tunnel integration
+net/firewall-legacy -- Firewall rules legacy support
 net/freeradius -- RADIUS Authentication, Authorization and Accounting Server
 net/frr -- The FRRouting Protocol Suite
 net/ftp-proxy -- Control ftp-proxy processes
 net/google-cloud-sdk -- Google Cloud SDK
 net/haproxy -- Reliable, high performance TCP/HTTP load balancer
 net/igmp-proxy -- IGMP-Proxy Service (not maintained)
+net/isc-dhcp -- ISC DHCPv4/v6 server
 net/mdns-repeater -- Proxy multicast DNS between networks
 net/ndp-proxy-go -- IPv6 Neighbor Discovery Protocol (NDP) Proxy
-net/ndproxy -- Neighbor Discovery Proxy
+net/netflector -- Reflect link-local service discovery between interfaces (development only)
 net/ntopng -- Traffic Analysis and Flow Collection
 net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport
 net/realtek-re -- Realtek re(4) vendor driver
@@ -84,6 +87,7 @@ security/acme-client -- ACME Client
 security/clamav -- Antivirus engine for detecting malicious threats
 security/crowdsec -- Lightweight and collaborative security engine
 security/etpro-telemetry -- ET Pro Telemetry Edition
+security/intrusion-detection-content-at-antiphishing -- Anti-phishing rules
 security/intrusion-detection-content-et-open -- IDS Proofpoint full ET open ruleset complementary subset for ET Pro Telemetry edition
 security/intrusion-detection-content-et-pro -- IDS Proofpoint ET Pro ruleset (needs a valid subscription)
 security/intrusion-detection-content-pt-open -- IDS Positive Technologies ESC ruleset
@@ -100,7 +104,6 @@ security/tinc -- Tinc VPN
 security/tor -- The Onion Router
 security/wazuh-agent -- Agent for the open source security platform Wazuh
 sysutils/apcupsd -- APCUPSD - APC UPS daemon
-sysutils/apuled -- PC Engine APU LED control (development only)
 sysutils/beats -- Send logs, network, metrics and heartbeat to Elasticsearch
 sysutils/cpu-microcode -- CPU microcode updates
 sysutils/dec-hw -- Deciso hardware specific information
@@ -111,16 +114,16 @@ sysutils/hw-probe -- Collect hardware diagnostics
 sysutils/lcdproc-sdeclcd -- LCDProc for SDEC LCD devices (not maintained)
 sysutils/mail-backup -- Send configuration file backup by e-mail
 sysutils/munin-node -- Munin monitoring agent
-sysutils/nextcloud-backup -- Track config changes using NextCloud
+sysutils/nextcloud-backup -- Track config changes using NextCloud (not maintained)
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
-sysutils/puppet-agent -- Manage Puppet Agent
+sysutils/puppet-agent -- Manage Puppet/OpenVox Agent
 sysutils/sftp-backup -- Backup configurations using SFTP
 sysutils/smart -- SMART tools (not maintained)
 sysutils/virtualbox -- VirtualBox guest additions
 sysutils/vmware -- VMware tools
 sysutils/xen -- Xen guest utilities
-vendor/sunnyvalley -- Vendor Repository for Zenarmor (Enterprise Security Modules - NGFW, SSE, SASE, f.k.a Sensei)
+vendor/sunnyvalley -- Vendor Repository for Zenarmor - Enterprise SASE & SSE platform (NGFW, SWG, CASB, ZTNA, SD-WAN)
 www/OPNProxy -- OPNsense proxy additions (not maintained)
 www/c-icap -- c-icap connects the web proxy with a virus scanner
 www/cache -- Webserver cache

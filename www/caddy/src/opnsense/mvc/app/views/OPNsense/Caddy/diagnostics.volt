@@ -1,5 +1,5 @@
 {#
- # Copyright (c) 2024 Cedrik Pischem
+ # Copyright (c) 2024-2026 Cedrik Pischem
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without modification,
@@ -75,27 +75,6 @@
             a_tag.remove();  // Remove the anchor tag
         }
 
-        /**
-         * Shows a BootstrapDialog alert with custom settings.
-         *
-         * @param {string} type - Type of the dialog based on BootstrapDialog types.
-         * @param {string} title - Title of the dialog.
-         * @param {string} message - Message to be displayed in the dialog.
-         */
-        function showDialogAlert(type, title, message) {
-            BootstrapDialog.show({
-                type: type,
-                title: title,
-                message: message,
-                buttons: [{
-                    label: '{{ lang._('Close') }}',
-                    action: function(dialogRef) {
-                        dialogRef.close();
-                    }
-                }]
-            });
-        }
-
         // Fetch and display Caddyfile and JSON configuration
         fetchAndDisplay('/api/caddy/diagnostics/caddyfile', '#caddyfileDisplay');
         fetchAndDisplay('/api/caddy/diagnostics/config', '#jsonDisplay');
@@ -114,19 +93,6 @@
             let timestamp = new Date().toISOString().replace(/[-:]/g, '').replace('T', '-').split('.')[0];
             let filename = "Caddyfile_" + timestamp;
             downloadContent(content, filename, "text/plain");
-        });
-
-        // Event handler for the Validate Caddyfile button
-        $('#validateCaddyfile').click(function() {
-            ajaxGet('/api/caddy/service/validate', null, function(data, status) {
-                if (status === "success" && data && data['status'].toLowerCase() === 'ok') {
-                    showDialogAlert(BootstrapDialog.TYPE_SUCCESS, "{{ lang._('Validation Successful') }}", data['message']);
-                } else {
-                    showDialogAlert(BootstrapDialog.TYPE_WARNING, "{{ lang._('Validation Error') }}", data['message']);  // Show error message from the API
-                }
-            }).fail(function(xhr, status, error) {
-                showDialogAlert(BootstrapDialog.TYPE_DANGER, "{{ lang._('Validation Request Failed') }}", error);  // Show AJAX error
-            });
         });
 
     });
@@ -163,7 +129,6 @@
         <div class="content-box">
             <pre id="caddyfileDisplay" class="display-area"></pre>
             <button class="btn btn-primary download-btn" id="downloadCaddyfile" type="button">{{ lang._('Download') }}</button>
-            <button class="btn btn-secondary" id="validateCaddyfile" type="button">{{ lang._('Validate Caddyfile') }}</button>
             <br/><br/>
         </div>
     </div>

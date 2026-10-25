@@ -24,30 +24,26 @@
             <Required>Y</Required>
         </password>
         <servercert type="TextField">
-            <Required>N</Required>
             <Mask>/^([a-zA-Z0-9\/\+\=]){40,64}$/u</Mask>
             <ValidationMessage>Please provide a valid hash.</ValidationMessage>
         </servercert>
         <hash type="OptionField">
             <Default>sha256</Default>
             <Required>Y</Required>
-                <OptionValues>
-                    <sha256>SHA256</sha256>
-                    <sha1>SHA1</sha1>
-                    <pin-sha256>PIN-SHA256</pin-sha256>
-                </OptionValues>
+            <OptionValues>
+                <sha256>SHA256</sha256>
+                <sha1>SHA1</sha1>
+                <pin-sha256>PIN-SHA256</pin-sha256>
+            </OptionValues>
         </hash>
         <group type="TextField">
-            <Required>N</Required>
             <Mask>/^[() a-zA-Z0-9._-]{1,64}$/</Mask>
             <ValidationMessage>Please provide a valid group name. Allowed are at most 64 characters from a-zA-Z0-9._-() and space.</ValidationMessage>
         </group>
         <clientcertificate type="CertificateField">
             <Type>cert</Type>
-            <Required>N</Required>
         </clientcertificate>
         <tokenmode type="OptionField">
-            <Required>N</Required>
             <OptionValues>
                 <rsa>RSA SecurID</rsa>
                 <totp>TOTP</totp>
@@ -55,9 +51,7 @@
                 <oidc>OpenIDConnect</oidc>
             </OptionValues>
         </tokenmode>
-        <tokensecret type="TextField">
-            <Required>N</Required>
-        </tokensecret>
+        <tokensecret type="TextField"/>
         <allowinsecure type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
@@ -65,15 +59,15 @@
         <protocol type="OptionField">
             <Default>anyconnect</Default>
             <Required>Y</Required>
-                <OptionValues>
-                    <anyconnect>Cisco AnyConnect</anyconnect>
-                    <nc>Juniper</nc>
-                    <pulse>Pulse Connect Secure</pulse>
-                    <gp>Palo Alto Networks GlobalProtect</gp>
-                    <f5>F5 Big-IP</f5>
-                    <fortinet>Fortinet Fortigate</fortinet>
-                    <array>Array Networks AG</array>
-                </OptionValues>
+            <OptionValues>
+                <anyconnect>Cisco AnyConnect</anyconnect>
+                <nc>Juniper</nc>
+                <pulse>Pulse Connect Secure</pulse>
+                <gp>Palo Alto Networks GlobalProtect</gp>
+                <f5>F5 Big-IP</f5>
+                <fortinet>Fortinet Fortigate</fortinet>
+                <array>Array Networks AG</array>
+            </OptionValues>
         </protocol>
     </items>
 </model>

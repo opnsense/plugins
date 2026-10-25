@@ -1,6 +1,6 @@
 {#
 
-Copyright (C) 2016 Frank Wall
+Copyright (C) 2016-2026 Frank Wall
 OPNsense® is Copyright © 2014 – 2016 by Deciso B.V.
 All rights reserved.
 
@@ -29,7 +29,9 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script>
     $( document ).ready(function() {
-        var gridopt = {
+        'use strict';
+
+        const gridopt = {
             ajax: false,
             selection: false,
             multiSelect: false
@@ -37,118 +39,96 @@ POSSIBILITY OF SUCH DAMAGE.
         $("#grid-status").bootgrid('destroy');
         $("#grid-status").bootgrid(gridopt);
 
+        // build table rows safely from key/value data
+        function buildInfoRows(data) {
+            return Object.entries(data).map(function([key, value]) {
+                return $("<tr/>").append(
+                    $("<td/>").text(key),
+                    $("<td/>").text(value)
+                );
+            });
+        }
+
+        // build table rows from an array of objects using a field list
+        function buildGridRows(data, fields) {
+            return Object.values(data).map(function(value) {
+                const $tr = $("<tr/>");
+                fields.forEach(function(field) {
+                    $("<td/>").text(value[field] != null ? value[field] : '').appendTo($tr);
+                });
+                return $tr;
+            });
+        }
+
         // update info
         $("#update-info").click(function() {
             $('#processing-dialog').modal('show');
-            $('#updatelist').empty();
-            ajaxGet(url = "/api/haproxy/statistics/info/", sendData={},
-                    callback = function (data, status) {
-                        $("#infolist > tbody").empty();
-                        $("#infolist > thead").hide();
-                        if (status == "success") {
-                            $("#infolist > thead").show();
-                            $.each(data, function (key, value) {
-                                $('#infolist > tbody').append('<tr><td>'+key+'</td>' +
-                                "<td>"+value+"</td></tr>");
-                            });
-                        } else {
-                            $("#infolist > tbody").append("<tr><td colspan=2 style='text-align:center;'><br/>{{ lang._('The statistics could not be fetched. Is HAProxy running?') }}<br/><br/></td></tr>");
-                        }
-                        $('#processing-dialog').modal('hide');
+            ajaxGet("/api/haproxy/statistics/info/", {},
+                function (data, status) {
+                    $("#infolist > tbody").empty();
+                    $("#infolist > thead").hide();
+                    if (status == "success") {
+                        $("#infolist > thead").show();
+                        $("#infolist > tbody").append(buildInfoRows(data));
+                    } else {
+                        $("<tr/>").append(
+                            $("<td/>").attr("colspan", 2).css("text-align", "center")
+                                .html("<br/>{{ lang._('The statistics could not be fetched. Is HAProxy running?') }}<br/><br/>")
+                        ).appendTo("#infolist > tbody");
                     }
+                    $('#processing-dialog').modal('hide');
+                }
             );
         });
 
         // update status
         $("#update-status").click(function() {
             $('#processing-dialog').modal('show');
-            ajaxGet(url = "/api/haproxy/statistics/counters/", sendData={},
-                    callback = function (data, status) {
-                        if (status == "success") {
-                            // status
-                            $("#status_nav").show();
-                            $("#grid-status").bootgrid('destroy');
-                            var html = [];
-                            $.each(data, function (key, value) {
-                                var fields = ["id", "pxname", "svname", "status", "lastchg", "weight", "act", "downtime"];
-                                tr_str = '<tr>';
-                                for (var i = 0; i < fields.length; i++) {
-                                    if (value[fields[i]] != null) {
-                                        tr_str += '<td>' + value[fields[i]] + '</td>';
-                                    } else {
-                                        tr_str += '<td></td>';
-                                    }
-                                }
-                                tr_str += '</tr>';
-                                html.push(tr_str);
-                            });
-                            $("#grid-status > tbody").html(html.join(''));
-                            $("#grid-status").bootgrid(gridopt);
-                        }
-                        $('#processing-dialog').modal('hide');
+            ajaxGet("/api/haproxy/statistics/counters/", {},
+                function (data, status) {
+                    if (status == "success") {
+                        const fields = ["id", "pxname", "svname", "status", "lastchg", "weight", "act", "downtime"];
+                        $("#status_nav").show();
+                        $("#grid-status").bootgrid('destroy');
+                        $("#grid-status > tbody").empty().append(buildGridRows(data, fields));
+                        $("#grid-status").bootgrid(gridopt);
                     }
+                    $('#processing-dialog').modal('hide');
+                }
             );
         });
 
         // update counters
         $("#update-counters").click(function() {
             $('#processing-dialog').modal('show');
-            ajaxGet(url = "/api/haproxy/statistics/counters/", sendData={},
-                    callback = function (data, status) {
-                        if (status == "success") {
-                            // counters
-                            $("#counters_nav").show();
-                            $("#grid-counters").bootgrid('destroy');
-                            var html = [];
-                            $.each(data, function (key, value) {
-                                var fields = ["id", "pxname", "svname", "qcur", "qmax", "qlimit", "rate", "rate_max", "rate_lim", "scur", "smax", "slim", "stot", "bin", "bout", "dreq", "dresp", "ereq", "econ", "eresp", "wretr", "wredis"];
-                                tr_str = '<tr>';
-                                for (var i = 0; i < fields.length; i++) {
-                                    if (value[fields[i]] != null) {
-                                        tr_str += '<td>' + value[fields[i]] + '</td>';
-                                    } else {
-                                        tr_str += '<td></td>';
-                                    }
-                                }
-                                tr_str += '</tr>';
-                                html.push(tr_str);
-                            });
-                            $("#grid-counters> tbody").html(html.join(''));
-                            $("#grid-counters").bootgrid(gridopt);
-                        }
-                        $('#processing-dialog').modal('hide');
+            ajaxGet("/api/haproxy/statistics/counters/", {},
+                function (data, status) {
+                    if (status == "success") {
+                        const fields = ["id", "pxname", "svname", "qcur", "qmax", "qlimit", "rate", "rate_max", "rate_lim", "scur", "smax", "slim", "stot", "bin", "bout", "dreq", "dresp", "ereq", "econ", "eresp", "wretr", "wredis"];
+                        $("#counters_nav").show();
+                        $("#grid-counters").bootgrid('destroy');
+                        $("#grid-counters > tbody").empty().append(buildGridRows(data, fields));
+                        $("#grid-counters").bootgrid(gridopt);
                     }
+                    $('#processing-dialog').modal('hide');
+                }
             );
         });
 
         // update tables
         $("#update-tables").click(function() {
             $('#processing-dialog').modal('show');
-            ajaxGet(url = "/api/haproxy/statistics/tables/", sendData={},
-                    callback = function (data, status) {
-                        if (status == "success") {
-                            // tables
-                            $("#tables_nav").show();
-                            $("#grid-tables").bootgrid('destroy');
-                            var html = [];
-                            $.each(data, function (key, value) {
-                                var fields = ["table", "type", "size", "used"];
-                                tr_str = '<tr>';
-                                for (var i = 0; i < fields.length; i++) {
-                                    if (value[fields[i]] != null) {
-                                        tr_str += '<td>' + value[fields[i]] + '</td>';
-                                    } else {
-                                        tr_str += '<td></td>';
-                                    }
-                                }
-                                tr_str += '</tr>';
-                                html.push(tr_str);
-                            });
-                            $("#grid-tables> tbody").html(html.join(''));
-                            $("#grid-tables").bootgrid(gridopt);
-                        }
-                        $('#processing-dialog').modal('hide');
+            ajaxGet("/api/haproxy/statistics/tables/", {},
+                function (data, status) {
+                    if (status == "success") {
+                        const fields = ["table", "type", "size", "used"];
+                        $("#tables_nav").show();
+                        $("#grid-tables").bootgrid('destroy');
+                        $("#grid-tables > tbody").empty().append(buildGridRows(data, fields));
+                        $("#grid-tables").bootgrid(gridopt);
                     }
+                    $('#processing-dialog').modal('hide');
+                }
             );
         });
 

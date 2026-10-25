@@ -1,0 +1,14 @@
+metrics: localhost:2000
+no-autoupdate: true
+{% if helpers.exists('OPNsense.Cloudflared.general.post_quantum') and OPNsense.Cloudflared.general.post_quantum == '1' %}
+post-quantum: true
+{% endif %}
+{% if helpers.exists('OPNsense.Cloudflared.general.quic_disable_pmtu_discovery') and OPNsense.Cloudflared.general.quic_disable_pmtu_discovery == '1' %}
+quic-disable-pmtu-discovery: true
+{% endif %}
+{% if helpers.exists('OPNsense.Cloudflared.general.protocol') and OPNsense.Cloudflared.general.protocol != 'auto' %}
+protocol: {{ OPNsense.Cloudflared.general.protocol }}
+{% endif %}
+{% if helpers.exists('OPNsense.Cloudflared.general.log_level') and OPNsense.Cloudflared.general.log_level != 'info' %}
+loglevel: {{ OPNsense.Cloudflared.general.log_level }}
+{% endif %}

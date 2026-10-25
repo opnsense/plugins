@@ -36,7 +36,7 @@ function opnproxy_configure()
 
 function opnproxy_user_changed($unused, $username = '')
 {
-    mwexecf('/usr/local/opnsense/scripts/OPNProxy/redis_sync_users.py %', $username);
+    mwexecf('/usr/local/opnsense/scripts/OPNProxy/redis_sync_users.py %s', $username);
 }
 
 function opnproxy_webproxy($verbose = false, $action = null)

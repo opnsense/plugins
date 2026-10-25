@@ -107,7 +107,7 @@
         <id>input.ping</id>
         <label>Ping (IPv4)</label>
         <type>checkbox</type>
-        <help>Ping Hosts using IPv4 and measure the metrics.</help>
+        <help>Ping hosts using IPv4 and measure the metrics.</help>
     </field>
     <field>
         <id>input.ping_count</id>
@@ -121,13 +121,13 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help>Set the Hosts to ping using IPv4 in a CSV list.</help>
+        <help>Set the hosts to ping using IPv4 in a CSV list.</help>
     </field>
     <field>
         <id>input.ping6</id>
         <label>Ping (IPv6)</label>
         <type>checkbox</type>
-        <help>Ping Hosts using IPv6 and measure the metrics.</help>
+        <help>Ping hosts using IPv6 and measure the metrics.</help>
     </field>
     <field>
         <id>input.ping6_count</id>
@@ -141,7 +141,7 @@
         <type>select_multiple</type>
         <style>tokenize</style>
         <allownew>true</allownew>
-        <help>Set the Hosts to ping using IPv6 in a CSV list.</help>
+        <help>Set the hosts to ping using IPv6 in a CSV list.</help>
     </field>
     <field>
         <id>input.haproxy</id>
@@ -169,9 +169,9 @@
     </field>
     <field>
         <id>input.intrusion_detection_alerts</id>
-        <label>Intrusion Dectection Alerts</label>
+        <label>Intrusion Detection Alerts</label>
         <type>checkbox</type>
-        <help>Requires Intrustion detection alerts are stored locally.</help>
+        <help>Requires intrusion detection alerts are stored locally.</help>
     </field>
     <field>
         <id>input.unbound</id>

@@ -28,7 +28,7 @@
 
 namespace OPNsense\Stunnel;
 
-use OPNsense\Base\{IndexController};
+use OPNsense\Base\IndexController;
 
 class ServicesController extends IndexController
 {

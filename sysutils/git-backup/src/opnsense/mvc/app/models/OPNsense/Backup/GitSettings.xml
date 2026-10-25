@@ -16,8 +16,8 @@
             </Constraints>
         </enabled>
         <url type="TextField">
-            <Mask>/^((https)|(ssh))?:\/\/.*[^\/]$/</Mask>
-            <ValidationMessage>A valid git location must be provided. e.g. ssh://server/project.git, https://server/project.git</ValidationMessage>
+            <Mask>/^((https)|(ssh))?:\/\/[^\/@]*(\/.*)?[^\/]$/</Mask>
+            <ValidationMessage>A valid git location must be provided, without credentials. e.g. ssh://server/project.git, https://server/project.git</ValidationMessage>
             <Constraints>
                 <check001>
                     <ValidationMessage>A backup location (url) is required.</ValidationMessage>

@@ -281,6 +281,15 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
     }
 
     /**
+     * set certificate profile
+     * @param $profile string profile name
+     */
+    public function setProfile(string $profile)
+    {
+        $this->acme_args[] = LeUtils::execSafe('--cert-profile %s', $profile);
+    }
+
+    /**
      * set renewal interval
      * @param $interval int specifies the renewal interval in days
      */

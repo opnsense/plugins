@@ -9,6 +9,7 @@ Plugin Changelog
 1.4.6
 
 * Add otion to allow insecure ciphers
+* Clean up stale interface on start (contributed by Yuriy Karachev)
 
 1.4.5
 

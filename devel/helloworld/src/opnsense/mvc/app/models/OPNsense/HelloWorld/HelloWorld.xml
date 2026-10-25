@@ -1,8 +1,6 @@
 <model>
     <mount>//OPNsense/helloworld</mount>
-    <description>
-        the OPNsense "Hello World" application
-    </description>
+    <description>OPNsense "Hello World" application</description>
     <items>
         <!-- container -->
         <general>
@@ -20,7 +18,7 @@
             </FromEmail>
             <ToEmail type="EmailField">
                 <Required>Y</Required>
-                <ValidationMessage>please specify a valid email address</ValidationMessage>
+                <ValidationMessage>Please specify a valid email address.</ValidationMessage>
             </ToEmail>
             <Description type="TextField">
                 <Required>Y</Required>

@@ -4,21 +4,18 @@
     <version>1.0.1</version>
     <items>
         <domains>
-                <domain type="ArrayField">
-                        <enabled type="BooleanField">
-                                <Default>1</Default>
-                                <Required>Y</Required>
-                        </enabled>
-                        <domainname type="TextField">
-                                <Default></Default>
-                                <Required>Y</Required>
-                        </domainname>
-                        <destination type="TextField">
-                                <Default></Default>
-                                <Required>N</Required>
-                                <Mask>/^([0-9a-zA-Z.:\-\[\]]){1,64}$/u</Mask>
-                                <ValidationMessage>Only 64 of the following characters are allowed: 0-9a-zA-Z.:-[]</ValidationMessage>
-                        </destination>
+            <domain type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <domainname type="TextField">
+                    <Required>Y</Required>
+                </domainname>
+                <destination type="TextField">
+                    <Mask>/^([0-9a-zA-Z.:\-\[\]]){1,64}$/u</Mask>
+                    <ValidationMessage>Only 64 of the following characters are allowed: 0-9a-zA-Z.:-[]</ValidationMessage>
+                </destination>
             </domain>
         </domains>
     </items>

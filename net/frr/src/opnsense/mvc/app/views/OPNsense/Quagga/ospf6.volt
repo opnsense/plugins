@@ -46,13 +46,20 @@
             }
         });
 
-        $("#{{formGridEditNetwork['table_id']}}").UIBootgrid({
-            'search':'/api/quagga/ospf6settings/search_network',
-            'get':'/api/quagga/ospf6settings/get_network/',
-            'set':'/api/quagga/ospf6settings/set_network/',
-            'add':'/api/quagga/ospf6settings/add_network/',
-            'del':'/api/quagga/ospf6settings/del_network/',
-            'toggle':'/api/quagga/ospf6settings/toggle_network/'
+        $("#{{formGridEditArea['table_id']}}").UIBootgrid({
+            'search':'/api/quagga/ospf6settings/search_area',
+            'get':'/api/quagga/ospf6settings/get_area/',
+            'set':'/api/quagga/ospf6settings/set_area/',
+            'add':'/api/quagga/ospf6settings/add_area/',
+            'del':'/api/quagga/ospf6settings/del_area/',
+            'toggle':'/api/quagga/ospf6settings/toggle_area/',
+            options: {
+                formatters: {
+                    area_type: function(column, row) {
+                        return row["%" + column.id] || row[column.id] || '{{ lang._('normal') }}';
+                    }
+                }
+            }
         });
         $("#{{formGridEditInterface['table_id']}}").UIBootgrid({
             'search':'/api/quagga/ospf6settings/search_interface',
@@ -68,7 +75,17 @@
             'set':'/api/quagga/ospf6settings/set_prefixlist/',
             'add':'/api/quagga/ospf6settings/add_prefixlist/',
             'del':'/api/quagga/ospf6settings/del_prefixlist/',
-            'toggle':'/api/quagga/ospf6settings/toggle_prefixlist/'
+            'toggle':'/api/quagga/ospf6settings/toggle_prefixlist/',
+            tabulatorOptions: {
+                groupBy: "name",
+                groupHeader: (value, count, data, group) => {
+                    const icons = {
+                        name: '<i class="fa fa-fw fa-list fa-sm text-info"></i>',
+                    };
+
+                    return `${icons.name} ${value}`;
+                },
+            }
         });
         $("#{{formGridEditRouteMaps['table_id']}}").UIBootgrid({
             'search':'/api/quagga/ospf6settings/search_routemap',
@@ -76,7 +93,17 @@
             'set':'/api/quagga/ospf6settings/set_routemap/',
             'add':'/api/quagga/ospf6settings/add_routemap/',
             'del':'/api/quagga/ospf6settings/del_routemap/',
-            'toggle':'/api/quagga/ospf6settings/toggle_routemap/'
+            'toggle':'/api/quagga/ospf6settings/toggle_routemap/',
+            tabulatorOptions: {
+                groupBy: "name",
+                groupHeader: (value, count, data, group) => {
+                    const icons = {
+                        name: '<i class="fa fa-fw fa-list fa-sm text-info"></i>',
+                    };
+
+                    return `${icons.name} ${value}`;
+                },
+            }
         });
         $("#{{formGridEditRedistribution['table_id']}}").UIBootgrid({
             'search':'/api/quagga/ospf6settings/search_redistribution',
@@ -126,7 +153,7 @@
 <!-- Navigation bar -->
 <ul class="nav nav-tabs" data-tabs="tabs" id="maintabs">
     <li class="active"><a data-toggle="tab" href="#general">{{ lang._('General') }}</a></li>
-    <li><a data-toggle="tab" href="#networks">{{ lang._('Networks') }}</a></li>
+    <li><a data-toggle="tab" href="#areas">{{ lang._('Areas') }}</a></li>
     <li><a data-toggle="tab" href="#interfaces">{{ lang._('Interfaces') }}</a></li>
     <li><a data-toggle="tab" href="#prefixlists">{{ lang._('Prefix Lists') }}</a></li>
     <li><a data-toggle="tab" href="#routemaps">{{ lang._('Route Maps') }}</a></li>
@@ -137,9 +164,9 @@
         {{ partial("layout_partials/base_form",['fields':ospf6Form,'id':'frm_ospf6_settings'])}}
         {{ partial('layout_partials/base_bootgrid_table', formGridEditRedistribution)}}
     </div>
-    <!-- Tab: Networks -->
-    <div id="networks" class="tab-pane fade in">
-        {{ partial('layout_partials/base_bootgrid_table', formGridEditNetwork)}}
+    <!-- Tab: Areas -->
+    <div id="areas" class="tab-pane fade in">
+        {{ partial('layout_partials/base_bootgrid_table', formGridEditArea)}}
     </div>
     <!-- Tab: Interfaces -->
     <div id="interfaces" class="tab-pane fade in">
@@ -162,7 +189,7 @@
         'data_change_message_content': lang._('Apply will reload the service without causing interruptions. Some changes will need a full restart with the available service control buttons.')
     }
 ) }}
-{{ partial("layout_partials/base_dialog",['fields':formDialogEditNetwork,'id':formGridEditNetwork['edit_dialog_id'],'label':lang._('Edit Network')])}}
+{{ partial("layout_partials/base_dialog",['fields':formDialogEditArea,'id':formGridEditArea['edit_dialog_id'],'label':lang._('Edit Area')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditInterface,'id':formGridEditInterface['edit_dialog_id'],'label':lang._('Edit Interface')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditPrefixLists,'id':formGridEditPrefixLists['edit_dialog_id'],'label':lang._('Edit Prefix Lists')])}}
 {{ partial("layout_partials/base_dialog",['fields':formDialogEditRouteMaps,'id':formGridEditRouteMaps['edit_dialog_id'],'label':lang._('Edit Route Maps')])}}

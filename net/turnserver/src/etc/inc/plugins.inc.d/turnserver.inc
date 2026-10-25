@@ -48,7 +48,7 @@ function turnserver_services()
 
     $services[] = array(
         'description' => gettext('coturn STUN/TURN Server'),
-        'pidfile' => '/var/run/turnserver.pid',
+        'pidfile' => '/var/run/turnserver/turnserver.pid',
         'configd' => array(
             'restart' => array('turnserver restart'),
             'start' => array('turnserver start'),

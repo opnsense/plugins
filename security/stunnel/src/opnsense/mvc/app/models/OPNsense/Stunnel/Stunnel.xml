@@ -1,9 +1,7 @@
 <model>
     <mount>//OPNsense/Stunnel</mount>
     <version>1.0.4</version>
-    <description>
-        Stunnel TLS encryption proxy
-    </description>
+    <description>Stunnel TLS encryption proxy</description>
     <items>
         <general>
             <enabled type="BooleanField">
@@ -28,7 +26,7 @@
                 <accept_port type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
-                    <ValidationMessage>port needs to be an integer value between 1 and 65535</ValidationMessage>
+                    <ValidationMessage>Port needs to be an integer value between 1 and 65535.</ValidationMessage>
                     <Required>Y</Required>
                 </accept_port>
                 <accept_address type="NetworkField">
@@ -42,7 +40,7 @@
                 <connect_port type="IntegerField">
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>65535</MaximumValue>
-                    <ValidationMessage>port needs to be an integer value between 1 and 65535</ValidationMessage>
+                    <ValidationMessage>Port needs to be an integer value between 1 and 65535.</ValidationMessage>
                     <Required>Y</Required>
                 </connect_port>
                 <protocol type="OptionField">
@@ -53,13 +51,10 @@
                         <pop3>POP3</pop3>
                         <smtp>SMTP</smtp>
                     </OptionValues>
-                    <Required>N</Required>
                 </protocol>
                 <cacert type="CertificateField">
-                    <Required>N</Required>
                     <Multiple>Y</Multiple>
                     <Type>ca</Type>
-                    <ValidationMessage>Please select a valid certificate from the list</ValidationMessage>
                 </cacert>
                 <enableCRL type="BooleanField">
                     <Default>0</Default>
@@ -74,17 +69,15 @@
                     <Required>Y</Required>
                     <Multiple>Y</Multiple>
                     <ConfigdPopulateAct>stunnel ssl ciphers</ConfigdPopulateAct>
-                    <ValidationMessage>Please specify valid tls ciphers.</ValidationMessage>
+                    <ValidationMessage>Please specify valid TLS ciphers.</ValidationMessage>
                 </ciphers>
                 <servercert type="CertificateField">
                     <Required>Y</Required>
                     <Type>cert</Type>
-                    <ValidationMessage>Please select a valid certificate from the list</ValidationMessage>
                 </servercert>
                 <description type="TextField">
-                    <Required>N</Required>
                     <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){0,255}$/u</Mask>
-                    <ValidationMessage>Description should be a string between 1 and 255 characters</ValidationMessage>
+                    <ValidationMessage>Description should be a string between 1 and 255 characters.</ValidationMessage>
                 </description>
             </service>
         </services>

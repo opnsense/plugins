@@ -36,6 +36,14 @@
         <help>Upper bound of the UDP relay endpoints (Default: 65535).</help>
     </field>
     <field>
+        <id>turnserver.settings.ExternalIP</id>
+        <label>External IP</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>If the TURN service is behind a NAT, it's external IP address should be specified. When using multiple external IP addresses, IP Mappings should be used instead, i.e. 60.70.80.91/172.17.19.101 (public-ip/private-ip).</help>
+    </field>
+    <field>
         <label>TLS Support</label>
         <type>header</type>
     </field>

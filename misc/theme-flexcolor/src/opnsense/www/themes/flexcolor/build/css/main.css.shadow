@@ -119,10 +119,14 @@ input::-moz-focus-inner {
   padding: 0; }
 input {
   line-height: normal; }
-input[type=checkbox],
+input[type=checkbox] {
+  box-sizing: border-box;
+  padding: 0;
+  accent-color: var(--colorcheckbox); }
 input[type=radio] {
   box-sizing: border-box;
-  padding: 0; }
+  padding: 0;
+  accent-color: var(--colorradio); }
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
   height: auto; }
@@ -3996,14 +4000,11 @@ a.thumbnail:focus,
 a.thumbnail.active {
   border-color: var(--primary); }
 .alert {
-  background-color: var(--pback);
-  color: var(--pfore);
   padding: 15px;
+  background-color: var(--alertback);
   margin-bottom: 20px;
-  border: 2px solid transparent;
-  border-radius: 3px;
-  -webkit-box-shadow: inset 0 1px 0 var(--boxshadow), 0 1px 0 var(--boxshadow);
-  box-shadow: inset 0 1px 0 var(--boxshadow), 0 1px 0 var(--boxshadow); }
+  border: 2px solid var(--alertborder);
+  border-radius: 3px; }
 .alert h4 {
   margin-top: 0;
   color: inherit; }
@@ -4024,25 +4025,33 @@ a.thumbnail.active {
   right: -21px;
   color: inherit; }
 .alert-success {
-  border-color: var(--success); }
+  color: var(--alertsuccessfore);
+  background-color: var(--alertsuccessback);
+  border-color: var(--alertsuccessborder); }
 .alert-success hr {
   border-top-color: var(--pfore); }
 .alert-success .alert-link {
   color: var(--primary); }
 .alert-info {
-  border-color: var(--info); }
+  color: var(--alertinfofore);
+  background-color: var(--alertinfoback);
+  border-color: var(--alertinfoborder); }
 .alert-info hr {
   border-top-color: var(--pfore); }
 .alert-info .alert-link {
   color: var(--info); }
 .alert-warning {
-  border-color: var(--warning); }
+  color: var(--alertwarningfore);
+  background-color: var(--alertwarningback);
+  border-color: var(--alertwarningborder); }
 .alert-warning hr {
   border-top-color: var(--pfore); }
 .alert-warning .alert-link {
   color: var(--primary); }
 .alert-danger {
-  border-color: var(--danger); }
+  color: var(--alertdangerfore);
+  background-color: var(--alertdangerback);
+  border-color: var(--alertdangerborder); }
 .alert-danger hr {
   border-top-color: var(--pfore); }
 .alert-danger .alert-link {

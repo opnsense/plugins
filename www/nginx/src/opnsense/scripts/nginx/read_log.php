@@ -38,22 +38,22 @@ use OPNsense\Nginx\StreamAccessLogParser;
 $log_prefix = '/var/log/nginx/';
 $log_suffix = '.log';
 
-if ($_SERVER['argc'] < 6) {
+if ($argc < 6) {
     die('{"error": "Incorrect amount of parameters given"}');
 }
 
 // first parameter: error|access
-$mode = $_SERVER['argv'][1];
+$mode = $argv[1];
 // second parameter: uuid of server
-$server = $_SERVER['argv'][2];
+$server = $argv[2];
 // third parameter: file number
-$file_no = (strlen($_SERVER['argv'][3]) > 0) ? max(intval($_SERVER['argv'][3]), -1) : -1;
+$file_no = (strlen($argv[3]) > 0) ? max(intval($argv[3]), -1) : -1;
 // third parameter: current page
-$page = max(intval($_SERVER['argv'][4]), 0);
+$page = max(intval($argv[4]), 0);
 // fourth parameter: lines per page
-$per_page = max(intval($_SERVER['argv'][5]), 0);
+$per_page = max(intval($argv[5]), 0);
 // fifth parameter: filter query
-$query = json_decode(base64_decode($_SERVER['argv'][6]), true);
+$query = json_decode(base64_decode($argv[6]), true);
 $nginx = new Nginx();
 
 if (!is_array($query)) {

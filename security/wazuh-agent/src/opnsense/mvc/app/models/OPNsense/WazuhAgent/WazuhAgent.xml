@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/WazuhAgent</mount>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <description>Wazuh Agent</description>
     <items>
         <general>
@@ -13,7 +13,6 @@
                 <IpAllowed>Y</IpAllowed>
             </server_address>
             <agent_name type="HostnameField">
-                <Required>N</Required>
                 <IpAllowed>N</IpAllowed>
             </agent_name>
             <protocol type="OptionField">
@@ -58,9 +57,7 @@
                 <Required>Y</Required>
             </remote_commands>
             <syslog_programs type="JsonKeyValueStoreField">
-                <Required>N</Required>
                 <Multiple>Y</Multiple>
-                <Default>filterlog,openvpn,unbound,audit,sshd</Default>
                 <ConfigdPopulateAct>syslog list applications</ConfigdPopulateAct>
                 <SourceFile>/tmp/syslog_applications.json</SourceFile>
                 <ConfigdPopulateTTL>20</ConfigdPopulateTTL>
@@ -110,8 +107,11 @@
                         </filters>
                     </alias>
                 </Model>
-                <Required>N</Required>
             </fw_alias_ignore>
+            <repeated_offenders type="TextField">
+                <Mask>/^([0-9]+)(,[0-9]+)*$/</Mask>
+                <ValidationMessage>Enter comma-separated timeout values in minutes (e.g., 30,60,120,240).</ValidationMessage>
+            </repeated_offenders>
         </active_response>
     </items>
 </model>

@@ -1,44 +1,44 @@
 <model>
-  <mount>//OPNsense/tor/exitpolicy</mount>
-  <description>ACL for Socks port</description>
-  <items>
-    <policy type="ArrayField">
-      <enabled type="BooleanField">
-        <Default>1</Default>
-        <Required>Y</Required>
-      </enabled>
-      <type type="OptionField">
-        <Default>both</Default>
-        <Required>Y</Required>
-        <OptionValues>
-          <both>both</both>
-          <v4>IPv4</v4>
-          <v6>IPv6</v6>
-        </OptionValues>
-      </type>
-      <network type="NetworkField">
-        <Required>Y</Required>
-      </network>
-      <startport type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-        <MaximumValue>65535</MaximumValue>
-        <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
-      </startport>
-      <endport type="IntegerField">
-        <MinimumValue>1</MinimumValue>
-        <Required>N</Required>
-        <MaximumValue>65535</MaximumValue>
-        <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
-      </endport>
-      <action type="OptionField">
-          <Default>accept</Default>
-          <Required>Y</Required>
-          <OptionValues>
-            <accept>Accept</accept>
-            <reject>Reject</reject>
-          </OptionValues>
-      </action>
-    </policy>
-  </items>
+    <mount>//OPNsense/tor/exitpolicy</mount>
+    <description>ACL for Socks port</description>
+    <items>
+        <policy type="ArrayField">
+            <enabled type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enabled>
+            <type type="OptionField">
+                <Default>both</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <both>both</both>
+                    <v4>IPv4</v4>
+                    <v6>IPv6</v6>
+                </OptionValues>
+            </type>
+            <network type="NetworkField">
+                <Required>Y</Required>
+            </network>
+            <startport type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <Required>N</Required>
+                <MaximumValue>65535</MaximumValue>
+                <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+            </startport>
+            <endport type="IntegerField">
+                <MinimumValue>1</MinimumValue>
+                <Required>N</Required>
+                <MaximumValue>65535</MaximumValue>
+                <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+            </endport>
+            <action type="OptionField">
+                <Default>accept</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <accept>Accept</accept>
+                    <reject>Reject</reject>
+                </OptionValues>
+            </action>
+        </policy>
+    </items>
 </model>

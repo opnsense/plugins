@@ -35,6 +35,7 @@ function rfc2136_configure()
         'bootup' => ['rfc2136_configure_do'],
         'local' => ['rfc2136_configure_do'],
         'newwanip' => ['rfc2136_configure_do:2'],
+        'updateip' => ['rfc2136_configure_do:2'],
     ];
 }
 
@@ -84,7 +85,10 @@ function rfc2136_cache_file($dnsupdate, $ipver = 4)
 {
     $ipver = $ipver == 6 ? '_v6' : '';
 
-    return "/var/cache/rfc2136_{$dnsupdate['interface']}_{$dnsupdate['host']}_{$dnsupdate['server']}{$ipver}.cache";
+    /* rawurlencode is identity on the LDH+underscore set is_domain() accepts; only "*." gets encoded */
+    $host = rawurlencode($dnsupdate['host']);
+
+    return "/var/cache/rfc2136_{$dnsupdate['interface']}_{$host}_{$dnsupdate['server']}{$ipver}.cache";
 }
 
 function rfc2136_configure_do($verbose = false, $int = null, $updatehost = '', $forced = false)
@@ -239,7 +243,6 @@ function get_rfc2136_ip_address($int, $ipver = 4)
             log_error('Aborted IPv4 detection: ' . curl_error($ip_ch));
             $ip_address = '';
         }
-        curl_close($ip_ch);
     } elseif ($ipver == 6 && is_linklocal($ip_address)) {
         log_error('Aborted IPv6 detection: cannot bind to link-local address');
         $ip_address = '';

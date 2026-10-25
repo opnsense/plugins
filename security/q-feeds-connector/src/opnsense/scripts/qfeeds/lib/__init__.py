@@ -1,5 +1,5 @@
 """
-    Copyright (c) 2025 Deciso B.V.
+    Copyright (c) 2025-2026 Deciso B.V.
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -25,10 +25,12 @@
 """
 import os
 import subprocess
+import tempfile
 import time
 import ujson
-from datetime import datetime
-from lib.api import Api
+from datetime import datetime, UTC
+from lib.api import Api, QFeedsConfig
+from lib.db import DB
 from lib.log import PFLogCrawler
 from lib.file import LockedFile
 
@@ -47,9 +49,11 @@ class QFeedsActions:
             'firewall_load',
             'unbound_load',
             'dnscryptproxy_load',
+            'db_update',
             'update',
             'stats',
-            'logs'
+            'logs',
+            'get_ip_meta'
         ]
 
     @property
@@ -63,12 +67,19 @@ class QFeedsActions:
             list(self.fetch_index())
         elif not os.path.exists(self.index_file):
             return {}
-        data = ujson.load(open(self.index_file)) or {}
+        try:
+            data = ujson.load(open(self.index_file)) or {}
+        except ujson.JSONDecodeError:
+            data = {}
         if type(data) is dict:
             for feed in data.get('feeds', []):
-                feed['local_filename'] = "%s/%s.txt" % (self._target_dir, feed['feed_type'])
+                feed['local_filename'] = "%s/%s.json" % (self._target_dir, feed['feed_type'])
+                feed['meta_filename'] = "%s/%s.meta.json" % (self._target_dir, feed['feed_type'])
                 feed['updated_at_dt'] = datetime.fromisoformat(feed['updated_at']).timestamp()
                 feed['next_update_dt'] = datetime.fromisoformat(feed['next_update']).timestamp()
+                feed['local_updated'] = datetime.fromtimestamp(
+                    self._file_stat(feed['local_filename']), UTC
+                ).isoformat().replace("+00:00", "Z")
 
         return data
 
@@ -92,32 +103,84 @@ class QFeedsActions:
     def fetch(self):
         for feed in self.index.get('feeds', []):
             if feed['licensed'] and feed['updated_at_dt'] != self._file_stat(feed['local_filename']):
+                entries = 0
                 with LockedFile(feed['local_filename']) as f:
-                    counter = 0
-                    for entry in Api().fetch(feed['feed_type']):
-                        if counter == 0:
-                            f.truncate()
-                        f.write("%s\n" % entry)
-                        counter += 1
+                    f.truncate()
+                    for block in Api().fetch(feed['feed_type']):
+                        f.write("%s" % block)
+                    f.seek(0)
+                    # we expect a valid json file after processing, collect total number of iocs for logging
+                    data = ujson.load(f.handle())
+                    data = data if type(data) is dict else {}
+                    entries = len(data['iocs']) if data.get('iocs') else 0
+
                 os.utime(feed['local_filename'], (feed['updated_at_dt'], feed['updated_at_dt']))
-                yield "downloaded %d entries into %s [%s]" % (counter, feed['local_filename'], feed['updated_at'])
+                yield "downloaded %d entries into %s [%s]" % (entries, feed['local_filename'], feed['updated_at'])
             elif feed['licensed']:
                 yield "skipped %s [%s]" % (feed['local_filename'], feed['updated_at'])
 
     def firewall_load(self):
+        fhandles = {}
+        conf = QFeedsConfig()
         for feed in self.index.get('feeds', []):
             if feed['licensed'] and os.path.exists(feed['local_filename']) and feed['type'] == 'ip':
-                table_name = '__qfeeds_%s' % feed['feed_type']
-                sp = subprocess.run(
-                    ['/sbin/pfctl', '-t', table_name, '-T', 'replace', '-f', feed['local_filename']],
-                    capture_output=True,
-                    text=True
-                )
-                yield 'load feed %s [%s]' % (feed['feed_type'], sp.stderr.strip().replace("\n", " "))
+                with open(feed['local_filename'], 'r') as f_in:
+                    data = ujson.load(f_in)
+                    if type(data) is not dict or not data.get('iocs'):
+                        continue
+                    # XXX: default alias, might be optional when items are defined in "Firewall aliases"
+                    table_name = '__qfeeds_%s' % feed['feed_type']
+                    fhandles[table_name] = tempfile.TemporaryFile('a+')
+                    fhandles[table_name].write("\n".join(data['iocs'].keys()))
+                    # construct meta map
+                    meta_map = {}
+                    for _, meta_items in data.get('meta', {}).items():
+                        for meta_name, meta_opts in meta_items.items():
+                            if type(meta_opts.get('id')) is int:
+                                meta_map[meta_name] = meta_opts.get('id')
+
+                    # flush all configured aliases to temp
+                    for table_name, conf_opts in conf.fw_aliases.items():
+                        if table_name not in fhandles:
+                            fhandles[table_name] = tempfile.TemporaryFile('a+')
+                        this_inc = set()
+                        this_excl = set()
+                        for item in conf_opts['include'].split(','):
+                            if item in meta_map:
+                                this_inc.add(meta_map[item])
+                        for item in conf_opts['exclude'].split(','):
+                            if item in meta_map:
+                                this_excl.add(meta_map[item])
+
+                        for ioc, ioc_meta in data['iocs'].items():
+                            if len(this_inc) > 0 and len(set(ioc_meta.get('m', [])) & this_inc) == 0:
+                                continue # include selected
+                            if len(set(ioc_meta.get('m', [])) & this_excl) > 0:
+                                continue # exclude selected
+                            fhandles[table_name].write("%s\n"%ioc)
+
+        # dump all collected aliases
+        for table_name, fhandle in fhandles.items():
+            fhandle.seek(0)
+            sp = subprocess.run(
+                ['/sbin/pfctl', '-t', table_name, '-T', 'replace', '-f', '/dev/stdin'],
+                input=fhandle.read(),
+                capture_output=True,
+                text=True
+            )
+
+            yield 'load feed %s [%s]' % (table_name, sp.stderr.strip().replace("\n", " "))
 
     def unbound_load(self):
         bl_conf = '/usr/local/etc/unbound/qfeeds-blocklists.conf'
-        if os.path.exists(bl_conf) and os.path.getsize(bl_conf) > 20:
+        bl_configured = os.path.exists(bl_conf) and os.path.getsize(bl_conf) > 20
+        bl_stat = '/tmp/qfeeds-unbound-bl.stat'
+        if bl_configured or os.path.exists(bl_stat):
+            # when de-configuring domain lists, we need to reconfigure unbound on deselect, track an empty file to
+            # detect that event (written by the unbound helper).
+            if os.path.exists(bl_stat):
+                os.remove(bl_stat)
+
             # when qfeeds-blocklists.conf is ~empty, skip updates
             subprocess.run(['/usr/local/sbin/configctl', 'unbound', 'dnsbl'])
             yield 'update unbound blocklist'
@@ -129,7 +192,7 @@ class QFeedsActions:
             subprocess.run([script_path], capture_output=True, text=True)
             # Trigger dnscrypt-proxy DNSBL update to merge blacklist-qfeeds.txt
             # Only if DNSCrypt-proxy is installed (directory exists)
-            result = subprocess.run(['/usr/local/sbin/configctl', 'dnscryptproxy', 'dnsbl'], 
+            result = subprocess.run(['/usr/local/sbin/configctl', 'dnscryptproxy', 'dnsbl'],
                                   capture_output=True, text=True)
             if result.returncode == 0:
                 yield 'update dnscrypt-proxy blocklist'
@@ -139,6 +202,19 @@ class QFeedsActions:
             yield 'dnscrypt-proxy not installed'
         else:
             yield 'dnscrypt-proxy blocklist script not found'
+
+    def db_update(self):
+        last_updated = 0
+        for feed in self.index.get('feeds', []):
+            if feed['licensed']:
+                last_updated = max(self._file_stat(feed['local_filename']), last_updated)
+
+        db = DB(self._target_dir, False)
+        if int(last_updated) != int(db.last_updated()):
+            db.load()
+            yield 'database sync executed'
+        else:
+            yield 'database sync skipped, no new data'
 
     def update(self):
         update_sleep = 99999
@@ -155,7 +231,9 @@ class QFeedsActions:
         if do_update:
                 if 0 < update_sleep <= 300:
                     time.sleep(update_sleep)
-                for action in ['fetch_index', 'fetch', 'firewall_load', 'unbound_load', 'dnscryptproxy_load']:
+                for action in [
+                    'fetch_index', 'fetch', 'db_update', 'firewall_load', 'unbound_load', 'dnscryptproxy_load'
+                ]:
                     yield from getattr(self, action)()
 
     def stats(self):
@@ -196,6 +274,9 @@ class QFeedsActions:
         }
 
         yield  ujson.dumps(result)
+
+    def get_ip_meta(self):
+        yield ujson.dumps(DB(self._target_dir).get_ip_meta())
 
     def logs(self):
         feeds = []

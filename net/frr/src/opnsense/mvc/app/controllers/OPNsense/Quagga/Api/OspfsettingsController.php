@@ -30,12 +30,11 @@
 
 namespace OPNsense\Quagga\Api;
 
-use OPNsense\Base\ApiMutableModelControllerBase;
-
-class OspfsettingsController extends ApiMutableModelControllerBase
+class OspfsettingsController extends QuaggaControllerBase
 {
     protected static $internalModelName = 'ospf';
     protected static $internalModelClass = '\OPNsense\Quagga\OSPF';
+    protected static $internalModelUseSafeDelete = true;
 
     public function searchNeighborAction()
     {
@@ -145,10 +144,12 @@ class OspfsettingsController extends ApiMutableModelControllerBase
     }
     public function delPrefixlistAction($uuid)
     {
+        $this->throwGroupInUse($this->getModel()->prefixlists->prefixlist, $uuid, 'name');
         return $this->delBase('prefixlists.prefixlist', $uuid);
     }
     public function delRoutemapAction($uuid)
     {
+        $this->throwGroupInUse($this->getModel()->routemaps->routemap, $uuid, 'name');
         return $this->delBase('routemaps.routemap', $uuid);
     }
     public function setNetworkAction($uuid)

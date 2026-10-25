@@ -9,6 +9,7 @@ Plugin Changelog
 1.1
 
 * Add a force-push option (contributed by Hleb Shauchenka)
+* Do not accept credentials in the backup URL (contributed by François Maymil)
 
 1.0
 

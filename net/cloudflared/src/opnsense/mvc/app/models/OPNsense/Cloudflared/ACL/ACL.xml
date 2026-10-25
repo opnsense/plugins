@@ -1,0 +1,16 @@
+<acl>
+    <page-cloudflared-general>
+        <name>Services: Cloudflare Tunnel</name>
+        <patterns>
+            <pattern>ui/cloudflared/*</pattern>
+            <pattern>api/cloudflared/*</pattern>
+        </patterns>
+    </page-cloudflared-general>
+    <page-cloudflared-log>
+        <name>Services: Cloudflare Tunnel: Log File</name>
+        <patterns>
+            <pattern>ui/diagnostics/log/core/cloudflared/*</pattern>
+            <pattern>api/diagnostics/log/core/cloudflared/*</pattern>
+        </patterns>
+    </page-cloudflared-log>
+</acl>

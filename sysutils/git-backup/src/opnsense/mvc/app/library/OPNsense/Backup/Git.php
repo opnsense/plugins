@@ -142,7 +142,7 @@ class Git extends Base implements IBackupProvider
             mkdir($targetdir);
         }
 
-        if (!is_dir('{$targetdir}/.git')) {
+        if (!is_dir("{$targetdir}/.git")) {
             Shell::run_safe('/usr/local/bin/git init %s', $targetdir);
         }
 
@@ -179,7 +179,7 @@ class Git extends Base implements IBackupProvider
             $gitfrmt[] = '--force';
         }
         $gitfrmt[] = 'origin %s && echo "__exit_ok__") 2>&1';
-        $pushtxt = Shell::shell_safe($gitfrmt, "master:{$mdl->branch}");
+        $pushtxt = Shell::shell_safe($gitfrmt, [$targetdir, "master:{$mdl->branch}"]);
 
         if (strpos($pushtxt, '__exit_ok__')) {
             $error_type = null;

@@ -1,93 +1,93 @@
 <model>
-  <mount>//OPNsense/tor/relay</mount>
-  <version>1.0.0</version>
-  <description>Tor Relay configuration</description>
-  <items>
-    <enabled type="BooleanField">
-      <Default>0</Default>
-      <Required>Y</Required>
-    </enabled>
-    <dir_frontpage type="BooleanField">
-      <Default>0</Default>
-      <Required>Y</Required>
-    </dir_frontpage>
-    <host type="TextField">
-      <Required>N</Required>
-      <Mask>/^([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])$/</Mask>
-    </host>
-    <hostv6 type="TextField">
-      <Required>N</Required>
-      <Mask>/^[a-f0-9:]{2,}$/i</Mask>
-    </hostv6>
-    <outboundbind type="TextField">
-      <Required>N</Required>
-      <Mask>/^([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])$/</Mask>
-    </outboundbind>
-    <outboundbindv6 type="TextField">
-      <Required>N</Required>
-      <Mask>/^[a-f0-9:]{2,}$/i</Mask>
-    </outboundbindv6>
-    <port type="IntegerField">
-      <Default>9001</Default>
-      <MinimumValue>0</MinimumValue>
-      <Required>Y</Required>
-      <MaximumValue>65535</MaximumValue>
-      <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
-    </port>
-    <directory_port type="IntegerField">
-      <MinimumValue>1</MinimumValue>
-      <Required>N</Required>
-      <MaximumValue>65535</MaximumValue>
-      <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
-    </directory_port>
-    <address type="TextField">
-      <Required>N</Required>
-      <!-- hostname -->
-      <Mask>/^[a-z0-9.-]+$/i</Mask>
-    </address>
-    <nick type="TextField">
-      <Required>N</Required>
-      <!-- by docs -->
-      <Mask>/^[a-zA-Z0-9]+$/</Mask>
-    </nick>
-    <contact_info type="TextField">
-      <Required>N</Required>
-      <Mask><![CDATA[/^[a-zA-Z0-9 !§$%\/\(\)\\@,;.:_\-#+~*\?&<>]+$/]]></Mask>
-    </contact_info>
-    <family type="TextField">
-      <Required>N</Required>
-      <!-- series of hex arrays -->
-      <Mask>/^[a-fA-F0-9,]+$/</Mask>
-    </family>
-    <bandwithrate type="IntegerField">
-      <Required>N</Required>
-    </bandwithrate>
-    <bandwithburst type="IntegerField">
-      <Required>N</Required>
-    </bandwithburst>
-    <relay type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-    </relay>
-    <exitrejectprivateip type="BooleanField">
-        <Default>1</Default>
-        <Required>Y</Required>
-    </exitrejectprivateip>
-    <publish type="BooleanField">
-        <Default>0</Default>
-        <Required>Y</Required>
-    </publish>
-    <exitenabled type="BooleanField">
-      <Default>0</Default>
-      <Required>Y</Required>
-    </exitenabled>
-    <exitipv6 type="BooleanField">
-      <Default>0</Default>
-      <Required>N</Required>
-    </exitipv6>
-    <exitrejectlocalif type="BooleanField">
-        <Default>1</Default>
-        <Required>Y</Required>
-    </exitrejectlocalif>
-  </items>
+    <mount>//OPNsense/tor/relay</mount>
+    <version>1.0.0</version>
+    <description>Tor Relay configuration</description>
+    <items>
+        <enabled type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </enabled>
+        <dir_frontpage type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </dir_frontpage>
+        <host type="TextField">
+            <Required>N</Required>
+            <Mask>/^([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])$/</Mask>
+        </host>
+        <hostv6 type="TextField">
+            <Required>N</Required>
+            <Mask>/^[a-f0-9:]{2,}$/i</Mask>
+        </hostv6>
+        <outboundbind type="TextField">
+            <Required>N</Required>
+            <Mask>/^([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])\.([1-9]?\d|1\d\d|2[0-4]\d|25[0-5])$/</Mask>
+        </outboundbind>
+        <outboundbindv6 type="TextField">
+            <Required>N</Required>
+            <Mask>/^[a-f0-9:]{2,}$/i</Mask>
+        </outboundbindv6>
+        <port type="IntegerField">
+            <Default>9001</Default>
+            <MinimumValue>0</MinimumValue>
+            <Required>Y</Required>
+            <MaximumValue>65535</MaximumValue>
+            <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+        </port>
+        <directory_port type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <Required>N</Required>
+            <MaximumValue>65535</MaximumValue>
+            <ValidationMessage>A valid Port number must be specified.</ValidationMessage>
+        </directory_port>
+        <address type="TextField">
+            <Required>N</Required>
+            <!-- hostname -->
+            <Mask>/^[a-z0-9.-]+$/i</Mask>
+        </address>
+        <nick type="TextField">
+            <Required>N</Required>
+            <!-- by docs -->
+            <Mask>/^[a-zA-Z0-9]+$/</Mask>
+        </nick>
+        <contact_info type="TextField">
+            <Required>N</Required>
+            <Mask><![CDATA[/^[a-zA-Z0-9 !§$%\/\(\)\\@,;.:_\-#+~*\?&<>]+$/]]></Mask>
+        </contact_info>
+        <family type="TextField">
+            <Required>N</Required>
+            <!-- series of hex arrays -->
+            <Mask>/^[a-fA-F0-9,]+$/</Mask>
+        </family>
+        <bandwithrate type="IntegerField">
+            <Required>N</Required>
+        </bandwithrate>
+        <bandwithburst type="IntegerField">
+            <Required>N</Required>
+        </bandwithburst>
+        <relay type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </relay>
+        <exitrejectprivateip type="BooleanField">
+            <Default>1</Default>
+            <Required>Y</Required>
+        </exitrejectprivateip>
+        <publish type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </publish>
+        <exitenabled type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </exitenabled>
+        <exitipv6 type="BooleanField">
+            <Default>0</Default>
+            <Required>N</Required>
+        </exitipv6>
+        <exitrejectlocalif type="BooleanField">
+            <Default>1</Default>
+            <Required>Y</Required>
+        </exitrejectlocalif>
+    </items>
 </model>

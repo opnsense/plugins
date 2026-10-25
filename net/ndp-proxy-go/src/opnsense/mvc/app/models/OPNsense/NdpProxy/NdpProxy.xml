@@ -1,14 +1,21 @@
 <model>
     <mount>//OPNsense/ndpproxy</mount>
     <description>NDP Proxy model</description>
-    <version>1.0</version>
+    <version>1.1</version>
     <items>
         <general>
             <enabled type="BooleanField">
                 <Default>0</Default>
                 <Required>Y</Required>
             </enabled>
-            <upstream type="InterfaceField"/>
+            <upstream type="InterfaceField">
+                <Default>wan</Default>
+                <Required>Y</Required>
+            </upstream>
+            <respond_prefix type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </respond_prefix>
             <downstream type="InterfaceField">
                 <Multiple>Y</Multiple>
             </downstream>
@@ -43,6 +50,21 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </debug>
+            <carp_depend_on type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </carp_depend_on>
+            <static_prefix type="NetworkField">
+                <NetMaskRequired>Y</NetMaskRequired>
+                <AddressFamily>ipv6</AddressFamily>
+                <AsList>Y</AsList>
+                <Strict>Y</Strict>
+            </static_prefix>
+            <static_router type="NetworkField">
+                <NetMaskAllowed>N</NetMaskAllowed>
+                <AddressFamily>ipv6</AddressFamily>
+                <AsList>Y</AsList>
+            </static_router>
         </general>
         <aliases>
             <alias type="ArrayField">

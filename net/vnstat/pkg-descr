@@ -5,9 +5,13 @@ provided by the kernel as information source. This means
 that vnStat won't actually be sniffing any traffic and also
 ensures light use of system resources.
 
-
 Plugin Changelog
 ================
+
+1.4
+
+* Add Month Rotate option to UI (contributed by Greg Pfountz)
+* Add dashboard widget (contributed by Joe Roback)
 
 1.3
 
@@ -27,6 +31,3 @@ Plugin Changelog
 1.0
 
 * Initial release
-
-
-WWW: https://humdi.net/vnstat/

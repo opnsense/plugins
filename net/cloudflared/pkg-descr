@@ -1,0 +1,7 @@
+Integrates the Cloudflare Tunnel daemon (cloudflared) into OPNsense,
+allowing self-hosted services to be exposed through Cloudflare Zero Trust
+without requiring inbound firewall rules or a public IP address.
+
+WWW: https://developers.cloudflare.com/cloudflare-one/connections/connect-networks/
+
+Inspired by original work by Alan Martines <alancpmartines@hotmail.com>.

@@ -1,8 +1,6 @@
 <model>
     <mount>//OPNsense/GridExample</mount>
-    <description>
-        the OPNsense "GridExample" application
-    </description>
+    <description>OPNsense "GridExample" application</description>
     <items>
         <addresses>
             <address type="ArrayField">
@@ -10,6 +8,15 @@
                     <Default>1</Default>
                     <Required>Y</Required>
                 </enabled>
+                <schedule type="OptionField">
+                    <Default>wly</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <dly>Daily</dly>
+                        <wly>Weekly</wly>
+                        <mly>Monthly</mly>
+                    </OptionValues>
+                </schedule>
                 <email type="EmailField">
                     <Required>Y</Required>
                 </email>

@@ -16,7 +16,6 @@
             </Constraints>
         </enabled>
         <url type="TextField">
-            <Required>N</Required>
             <Mask>/^((sftp))?:\/\/.*[^\/]$/</Mask>
             <ValidationMessage>A valid location must be provided.</ValidationMessage>
             <Constraints>
@@ -30,7 +29,6 @@
             </Constraints>
         </url>
         <privkey type="TextField">
-            <Required>N</Required>
             <Constraints>
                 <check001>
                     <ValidationMessage>A private key is required.</ValidationMessage>
@@ -48,9 +46,6 @@
             <Required>Y</Required>
             <MinimumValue>0</MinimumValue>
         </backupcount>
-        <prefixhostname type="BooleanField">
-            <Default>0</Default>
-            <Required>N</Required>
-        </prefixhostname>
+        <prefixhostname type="BooleanField"/>
     </items>
 </model>

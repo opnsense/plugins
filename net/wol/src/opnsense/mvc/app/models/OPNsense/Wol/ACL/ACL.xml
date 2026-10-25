@@ -4,6 +4,7 @@
         <patterns>
             <pattern>ui/wol/*</pattern>
             <pattern>api/wol/wol/*</pattern>
+            <pattern>api/diagnostics/interface/get_arp*</pattern>
         </patterns>
     </page-services-wakeonlan>
 </acl>

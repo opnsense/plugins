@@ -1,0 +1,21 @@
+<acl>
+    <page-services-dhcpserverv6-editstaticmapping>
+        <name>Services: ISC DHCPv6: Edit</name>
+        <patterns>
+            <pattern>services_dhcpv6_edit.php*</pattern>
+        </patterns>
+    </page-services-dhcpserverv6-editstaticmapping>
+    <page-services-dhcpv6server>
+        <name>Services: ISC DHCPv6</name>
+        <patterns>
+            <pattern>services_dhcpv6.php*</pattern>
+        </patterns>
+    </page-services-dhcpv6server>
+    <page-status-dhcpv6leases>
+        <name>Status: ISC DHCPv6: Leases</name>
+        <patterns>
+            <pattern>ui/dhcpv6/leases</pattern>
+            <pattern>api/dhcpv6/leases/*</pattern>
+        </patterns>
+    </page-status-dhcpv6leases>
+</acl>

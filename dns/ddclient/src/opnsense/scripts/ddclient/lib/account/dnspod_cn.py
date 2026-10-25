@@ -61,11 +61,11 @@ class DNSPod_CN(BaseAccount):
     def _sign(key, msg):
         """
         Generate HMAC-SHA256 signature.
-        
+
         Args:
             key (bytes): Signing key
             msg (str): Message to sign
-        
+
         Returns:
             bytes: Signature digest
         """
@@ -74,21 +74,21 @@ class DNSPod_CN(BaseAccount):
     def generate_signature(self, action, payload="{}"):
         """
         Generate signature and headers for a Tencent Cloud API request.
-        
+
         Args:
             action (str): API action name
             payload (str or dict, optional): Request payload. Defaults to "{}".
-        
+
         Returns:
             tuple: Request headers and canonical request
         """
         # Ensure payload is a string
         payload = json.dumps(payload) if isinstance(payload, dict) else payload
-        
+
         # Get current timestamp
         timestamp = int(time.time())
         date = datetime.utcfromtimestamp(timestamp).strftime("%Y-%m-%d")
-        
+
         # Step 1: Create Canonical Request
         http_request_method = "POST"
         canonical_uri = "/"
@@ -97,7 +97,7 @@ class DNSPod_CN(BaseAccount):
         canonical_headers = f"content-type:{ct}\nhost:{self._services[self.settings.get('service')]}\nx-tc-action:{action.lower()}\n"
         signed_headers = "content-type;host;x-tc-action"
         hashed_request_payload = hashlib.sha256(payload.encode("utf-8")).hexdigest()
-        
+
         canonical_request = (
             f"{http_request_method}\n"
             f"{canonical_uri}\n"
@@ -106,25 +106,25 @@ class DNSPod_CN(BaseAccount):
             f"{signed_headers}\n"
             f"{hashed_request_payload}"
         )
-        
+
         # Step 2: Create String to Sign
         algorithm = "TC3-HMAC-SHA256"
         credential_scope = f"{date}/{self.service}/tc3_request"
         hashed_canonical_request = hashlib.sha256(canonical_request.encode("utf-8")).hexdigest()
-        
+
         string_to_sign = (
             f"{algorithm}\n"
             f"{timestamp}\n"
             f"{credential_scope}\n"
             f"{hashed_canonical_request}"
         )
-        
+
         # Step 3: Calculate Signature
         secret_date = self._sign(("TC3" + self.settings.get('password')).encode("utf-8"), date)
         secret_service = self._sign(secret_date, self.service)
         secret_signing = self._sign(secret_service, "tc3_request")
         signature = hmac.new(secret_signing, string_to_sign.encode("utf-8"), hashlib.sha256).hexdigest()
-        
+
         # Step 4: Create Authorization Header
         authorization = (
             f"{algorithm} "
@@ -132,7 +132,7 @@ class DNSPod_CN(BaseAccount):
             f"SignedHeaders={signed_headers}, "
             f"Signature={signature}"
         )
-        
+
         # Prepare headers
         headers = {
             "Authorization": authorization,
@@ -143,53 +143,53 @@ class DNSPod_CN(BaseAccount):
             "X-TC-Version": "2021-03-23",
             'User-Agent': 'OPNsense-dyndns',
         }
-        
+
         return headers, payload
 
     def send_request(self, action, payload="{}", region="", token=""):
         """
         Send a request to the Tencent Cloud API.
-        
+
         Args:
             action (str): API action name
             payload (str or dict, optional): Request payload. Defaults to "{}".
             region (str, optional): Optional region parameter
             token (str, optional): Optional token parameter
-        
+
         Returns:
             dict: API response JSON
         """
         # Get headers and prepared payload
         headers, payload = self.generate_signature(action, payload)
-        
+
         # Add optional headers
         if region:
             headers["X-TC-Region"] = region
         if token:
             headers["X-TC-Token"] = token
-        
+
         try:
             # Send request using requests library
             response = requests.post(
-                url=f"https://{self._services[self.settings.get('service')]}", 
-                headers=headers, 
+                url=f"https://{self._services[self.settings.get('service')]}",
+                headers=headers,
                 data=payload,
                 timeout=10
             )
-            
+
             # Raise an exception for bad responses
             response.raise_for_status()
-            
+
             # Return JSON response
             return response
-        
+
         except requests.RequestException as err:
             print(f"Request error: {err}")
-            
+
             # If there's a response, print its content for debugging
             if hasattr(err, 'response') and err.response is not None:
                 print(f"Response content: {err.response.text}")
-            
+
             return None
 
 
@@ -205,7 +205,7 @@ class DNSPod_CN(BaseAccount):
                     subdomains.append('@')
                 else:
                     subdomains.append(_subdomain.replace(f".{self.settings.get('zone')}", ''))
-            
+
             if len(subdomains) < 1:
                 syslog.syslog(
                         syslog.LOG_ERR,
@@ -277,7 +277,7 @@ class DNSPod_CN(BaseAccount):
                     "Account %s failed to set new ip %s [%s]" % (self.description, self.current_address, response.text)
                 )
                 return False
-            
+
             record_list = payload['Response']['DetailList'][0].get('RecordList', False)
             if record_list and len(record_list) == len(subdomains):
                 syslog.syslog(

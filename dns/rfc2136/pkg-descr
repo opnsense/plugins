@@ -3,6 +3,16 @@ Support for RFC-2136 based dynamic DNS updates using Bind
 Plugin Changelog
 ================
 
+1.10
+
+* Allow a leading "*." in the hostname to update a wildcard record
+
+1.9
+
+* Add support for interface map in newwanip event
+* Remove obsolete legacy dashboard widget
+* Safe command execution changes
+
 1.8
 
 * Add support for choosing hash algorithm used by nsupdate command

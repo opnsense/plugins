@@ -1,0 +1,11 @@
+Suricata ruleset julioliraup/Antiphishing for protect against
+phishing attack. This rule is built using malicious URLs and
+domains involved in phishing attacks. We utilize some community
+APIs to construct these rules, and with them, we create TLS,
+DNS, and HTTP rules.
+
+Our rule updates frequently and includes SIDs that take other
+rulesets into consideration. Range: 6000000 - 6100000.
+
+LICENSE: https://github.com/julioliraup/Antiphishing?tab=GPL-3.0-1-ov-file
+WWW: https://julioliraup.github.io/AT/

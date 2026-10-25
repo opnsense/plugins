@@ -5370,7 +5370,7 @@ tbody.collapse.in {
     height: 1px;
     margin: 9px 0;
     overflow: hidden;
-    background-color: #e5e5e5;
+    background-color: #191919;
   }
 
   > {
@@ -6242,8 +6242,6 @@ a:focus {
 }
 
 .navbar-header {
-  padding-top: 12px;
-
   &:before {
     content: " ";
     display: table;
@@ -6384,6 +6382,27 @@ a:focus {
   bottom: 0;
   margin-bottom: 0;
   border-width: 1px 0 0;
+}
+
+.navbar-brand {
+  float: left;
+  padding: 15px 20px;
+  font-size: 18px;
+  height: 50px;
+
+  &:hover, &:focus {
+    text-decoration: none;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
+    margin-left: -20px;
+  }
+}
+
+.navbar-brand {
+  padding: 10px 20px;
 }
 
 .navbar-brand img {
@@ -10352,7 +10371,6 @@ textarea#update_status {
 
 .fa-info-circle::before, .fa-question-circle::before {
   content: "\f059";
-  cursor: pointer;
 }
 
 div.container-fluid > {
@@ -10414,6 +10432,10 @@ h3 {
 .fa {
   &.fa-exclamation.fa-fw.text-muted, &.fa-arrows-h.fa-fw.text-muted, &.fa-long-arrow-left, &.fa-info-circle.text-muted {
     color: #eac80a !important;
+  }
+
+  &.fa-info-circle.text-primary {
+    color: #dd630d !important;
   }
 
   &.fa-times-circle.text-muted, &.fa-times.text-muted {
@@ -10629,6 +10651,11 @@ ul.jqtree-tree {
 
 .table.border {
   border: 1px solid #191919 !important;
+}
+
+.rule.text-muted {
+  background-color: #242424 !important;
+  opacity: 0.4;
 }
 
 .rule.text-muted > td {

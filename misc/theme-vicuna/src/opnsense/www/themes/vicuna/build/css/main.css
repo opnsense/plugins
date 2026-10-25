@@ -3184,7 +3184,7 @@ tbody.collapse.in {
     height: 1px;
     margin: 9px 0;
     overflow: hidden;
-    background-color: #e5e5e5; }
+    background-color: #191919; }
   .dropdown-menu > li > a {
     display: block;
     padding: 3px 20px;
@@ -3235,7 +3235,7 @@ tbody.collapse.in {
   padding: 3px 20px;
   font-size: 12px;
   line-height: 1.428571429;
-  color: #191919;
+  color: #999;
   white-space: nowrap; }
 
 .dropdown-backdrop {
@@ -3704,9 +3704,6 @@ tbody.collapse.in {
 @media (min-width: 768px) {
   .navbar-header {
     float: left; } }
-.navbar-header {
-  padding-top: 12px;
-}
 .navbar-collapse {
   overflow-x: visible;
   padding-right: 20px;
@@ -3907,7 +3904,20 @@ tbody.collapse.in {
       margin-right: 20px; }
       .navbar-text.navbar-right:last-child {
         margin-right: 0; } }
+.navbar-brand {
+  float: left;
+  padding: 15px 20px;
+  font-size: 18px;
+  height: 50px; }
+  .navbar-brand:hover, .navbar-brand:focus {
+    text-decoration: none; }
 
+@media (min-width: 768px) {
+  .navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
+    margin-left: -20px; } }
+
+.navbar-brand {
+  padding: 10px 20px; }
 .navbar-default {
   background-color: transparent;
   border-color: none; }

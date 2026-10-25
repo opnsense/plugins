@@ -1,0 +1,28 @@
+<acl>
+    <page-diagnostics-logs-dhcp>
+        <name>Services: ISC DHCPv4: Log File</name>
+        <patterns>
+            <pattern>ui/diagnostics/log/core/dhcpd/*</pattern>
+            <pattern>api/diagnostics/log/core/dhcpd/*</pattern>
+        </patterns>
+    </page-diagnostics-logs-dhcp>
+    <page-status-dhcpleases>
+        <name>Services: ISC DHCPv4: Leases</name>
+        <patterns>
+            <pattern>ui/dhcpv4/leases</pattern>
+            <pattern>api/dhcpv4/leases/*</pattern>
+        </patterns>
+    </page-status-dhcpleases>
+    <page-services-dhcpserver-editstaticmapping>
+        <name>Services: ISC DHCPv4: Edit</name>
+        <patterns>
+            <pattern>services_dhcp_edit.php*</pattern>
+        </patterns>
+    </page-services-dhcpserver-editstaticmapping>
+    <page-services-dhcpserver>
+        <name>Services: ISC DHCPv4</name>
+        <patterns>
+            <pattern>services_dhcp.php*</pattern>
+        </patterns>
+    </page-services-dhcpserver>
+</acl>
