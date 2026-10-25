@@ -2,12 +2,17 @@
 
 import logging
 import json
+import os
 import subprocess
 import urllib.parse
 from typing import cast, Any
 import yaml
 
 logging.basicConfig(level=logging.INFO)
+
+# connection settings (url, api key) of the bouncer for the local LAPI, kept
+# while it connects to a remote LAPI. The directory is only readable by root.
+LOCAL_BOUNCER_SETTINGS_PATH = '/usr/local/etc/crowdsec/opnsense/local_bouncer.json'
 
 
 def is_ipv6(ip: str) -> bool:
@@ -36,15 +41,23 @@ def get_netloc(settings: dict[str, str]):
     return '{}:{}'.format(listen_address, listen_port)
 
 
+def with_trailing_slash(url: str) -> str:
+    # client lapi requires a trailing slash for the path part
+    # and no, query and fragment don't make much sense
+    url_tuple = urllib.parse.urlsplit(url)
+    if not url_tuple.query and not url_tuple.fragment and not url.endswith('/'):
+        url += '/'
+    return url
+
+
 def get_new_url(old_url: str, settings: dict[str, str]):
     old_tuple = urllib.parse.urlsplit(old_url)
     new_tuple = old_tuple._replace(netloc=get_netloc(settings))
-    new_url = urllib.parse.urlunsplit(new_tuple)
-    # client lapi requires a trailing slash for the path part
-    # and no, query and fragment don't make much sense
-    if not new_tuple.query and not new_tuple.fragment and not new_url.endswith('/'):
-        new_url += '/'
-    return new_url
+    return with_trailing_slash(urllib.parse.urlunsplit(new_tuple))
+
+
+def bouncer_uses_remote_lapi(settings: dict[str, str]) -> bool:
+    return settings.get('bouncer_lapi', 'local') == 'remote'
 
 
 def configure_agent(settings: dict[str, str]):
@@ -84,6 +97,22 @@ def configure_lapi_credentials(settings: dict[str, str]):
     save_config(config_path, config)
 
 
+def write_secret(filename: str, content: dict[str, Any]):
+    fd = os.open(filename, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
+    with os.fdopen(fd, 'w') as fout:
+        json.dump(content, fout)
+
+
+def local_bouncer_settings(config: dict[str, Any], settings: dict[str, str]) -> dict[str, Any]:
+    # the current connection is kept only if it points to the local LAPI.
+    # Otherwise (e.g. switching from a manual configuration to a remote
+    # LAPI) the key is for another LAPI: restore the placeholder instead,
+    # so the rc script registers the bouncer on the local LAPI again.
+    if config.get('api_url') == get_new_url(config.get('api_url', ''), settings):
+        return {'api_url': config['api_url'], 'api_key': config.get('api_key', '')}
+    return {'api_url': with_trailing_slash('http://' + get_netloc(settings)), 'api_key': '${API_KEY}'}
+
+
 def configure_bouncer(settings: dict[str, str]):
     config_path = '/usr/local/etc/crowdsec/bouncers/crowdsec-firewall-bouncer.yaml'
     config = load_config(config_path)
@@ -95,9 +124,23 @@ def configure_bouncer(settings: dict[str, str]):
     config['pf'] = {'anchor_name': ''}
 
     if not int(settings.get('lapi_manual_configuration', '0')):
-        config['api_url'] = get_new_url(config['api_url'], settings)
+        if bouncer_uses_remote_lapi(settings):
+            # keep the bouncer registration on the local LAPI, to restore it
+            # when switching back
+            if not os.path.exists(LOCAL_BOUNCER_SETTINGS_PATH):
+                write_secret(LOCAL_BOUNCER_SETTINGS_PATH, local_bouncer_settings(config, settings))
+            config['api_url'] = with_trailing_slash(settings.get('remote_lapi_url', ''))
+            config['api_key'] = settings.get('remote_bouncer_api_key', '')
+        else:
+            if os.path.exists(LOCAL_BOUNCER_SETTINGS_PATH):
+                with open(LOCAL_BOUNCER_SETTINGS_PATH) as fin:
+                    config.update(json.load(fin))
+                os.remove(LOCAL_BOUNCER_SETTINGS_PATH)
+            config['api_url'] = get_new_url(config['api_url'], settings)
 
     save_config(config_path, config)
+    # the file contains the api key
+    os.chmod(config_path, 0o600)
 
 
 def enroll(settings: dict[str, str]):
