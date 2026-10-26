@@ -2076,6 +2076,31 @@
         <type>password</type>
     </field>
     <field>
+        <label>RcodeZero</label>
+        <type>header</type>
+        <style>table_dns table_dns_rcode0</style>
+    </field>
+    <field>
+        <id>validation.dns_rcode0_api_token</id>
+        <label>API Token</label>
+        <type>password</type>
+        <help>The ACME API token, it can be generated at https://my.rcodezero.at/enableapi.</help>
+    </field>
+    <field>
+        <id>validation.dns_rcode0_url</id>
+        <label>API URL</label>
+        <type>text</type>
+        <help>The URL of the RcodeZero API. Usually there is no need to change this value.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>validation.dns_rcode0_ttl</id>
+        <label>TTL</label>
+        <type>text</type>
+        <help>The TTL in seconds for the TXT record that is created for validation.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <label>mijn.host</label>
         <type>header</type>
         <style>table_dns table_dns_mijnhost</style>
