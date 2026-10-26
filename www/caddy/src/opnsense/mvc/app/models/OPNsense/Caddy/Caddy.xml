@@ -9,6 +9,7 @@
                 <Required>Y</Required>
             </enabled>
             <EnableLayer4 type="BooleanField"/>
+            <StrictSniHost type="BooleanField"/>
             <HttpPort type="PortField"/>
             <HttpsPort type="PortField"/>
             <TlsEmail type="EmailField"/>
