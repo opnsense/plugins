@@ -1,0 +1,37 @@
+<model>
+    <mount>//OPNsense/autorollback</mount>
+    <version>1.0.0</version>
+    <description>Auto Rollback configuration</description>
+    <items>
+        <general>
+            <!-- Master enable/disable for the entire plugin -->
+            <Enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </Enabled>
+
+            <!-- Safe Mode Settings -->
+            <SafeModeTimeout type="IntegerField">
+                <Default>120</Default>
+                <MinimumValue>30</MinimumValue>
+                <MaximumValue>3600</MaximumValue>
+                <ValidationMessage>Timeout must be between 30 and 3600 seconds.</ValidationMessage>
+            </SafeModeTimeout>
+
+            <!-- What to do when rolling back -->
+            <RollbackMethod type="OptionField">
+                <Default>reboot</Default>
+                <OptionValues>
+                    <reboot>Full reboot (most reliable, recommended)</reboot>
+                    <reload>Service reload (faster, may miss kernel tunables)</reload>
+                </OptionValues>
+            </RollbackMethod>
+
+            <!-- Notification: log rollback events to syslog -->
+            <LogRollbacks type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </LogRollbacks>
+        </general>
+    </items>
+</model>

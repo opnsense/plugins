@@ -1,0 +1,5 @@
+<menu>
+    <System order="95">
+        <AutoRollback VisibleName="Auto Rollback" cssClass="fa fa-undo" url="/ui/autorollback"/>
+    </System>
+</menu>
