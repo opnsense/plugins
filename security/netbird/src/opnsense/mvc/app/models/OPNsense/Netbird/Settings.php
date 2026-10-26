@@ -46,7 +46,8 @@ class Settings extends BaseModel
 
         $config["WgPort"] = (int)$this->general->wireguardPort->__toString();
         $config["ServerSSHAllowed"] = $this->ssh->enable->__toString() == 1;
-        $config["IpMapping"] = $this->general->ipmapping->__toString();
+        $config["NATExternalIPs"] = $this->general->ipmapping->getValues();
+        unset($config["IpMapping"]);
         $config["EnableSSHRoot"] = $this->ssh->enableRoot->__toString() == 1;
         $config["EnableSSHSFTP"] = $this->ssh->enableSFTP->__toString() == 1;
         $config["EnableSSHLocalPortForwarding"] = $this->ssh->enableLocalPortForwarding->__toString() == 1;
