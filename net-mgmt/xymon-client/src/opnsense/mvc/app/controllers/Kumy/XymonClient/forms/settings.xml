@@ -1,0 +1,16 @@
+<form>
+    <field>
+        <id>xymonclient.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>xymonclient.XYMSERVERS</id>
+        <label>Server addresses</label>
+        <type>select_multiple</type>
+        <allownew>true</allownew>
+        <separator> </separator>
+        <style>tokenize</style>
+        <help>Xymon server addresses.</help>
+    </field>
+ </form>

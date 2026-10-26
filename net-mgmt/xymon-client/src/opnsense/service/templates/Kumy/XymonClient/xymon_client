@@ -1,0 +1,1 @@
+xymon_client_enable={% if not helpers.empty('kumy.xymon.client.enabled') and not helpers.empty('kumy.xymon.client.XYMSERVERS') %}YES{% else %}NO{% endif %}
