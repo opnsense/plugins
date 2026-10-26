@@ -1,0 +1,41 @@
+#!/bin/sh
+
+board_id=$(smbmsg -f /dev/smb1 -s 0x62 -c 0x00 -i 1 | cut -c 4-5)
+conf_file=/usr/local/etc/vep1400/vep1400.conf
+
+if [ -f $conf_file ]; then 
+    . $conf_file
+else
+    RED=0x00
+    GREEN=0xff
+    BLUE=0x00
+    FANCONTROL=0
+    FANDUTY=0
+fi
+
+if [ -z "$RED" ]; then
+    RED=0x00
+    GREEN=0xff
+    BLUE=0x00
+    FANCONTROL=0
+    FANDUTY=0
+fi
+
+if [ ! -z "$board_id" ]; then
+    # set front LED to green (or custom color if settings have been saved)
+    # format is -c (red) -o 2 (green) (blue) (some models lack a blue led)
+    smbmsg -f /dev/smb1 -s 0x40 -c $RED -o 2 $GREEN $BLUE
+
+    if [ x"$board_id" != x"0" ] && [ x"$board_id" != x"1" ]; then
+        # set fan speed. At address 36 is a TC654
+        # set control register to allow SMBus control of duty cycle
+        if [ "$FANCONTROL" == "0" ]; then
+            smbmsg -f $ismt_dev -s 0x36 -c 0x04 -o 1 0x14
+        elif [ "$FANCONTROL" == "1" ]; then
+            smbmsg -f $ismt_dev -s 0x36 -c 0x04 -o 1 0x34
+            # set duty cycle, range is 0x00 to 0x0f
+            # 0x0d is 90.67% duty cycle per datasheet
+            smbmsg -f $ismt_dev -s 0x36 -c 0x06 -o 1 $FANDUTY
+        fi
+    fi
+fi

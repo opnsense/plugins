@@ -1,0 +1,16 @@
+<metadata>
+    <dechw>
+        <filename>Vep1400HW.js</filename>
+        <endpoints>
+            <endpoint>/api/vep1400hw/info/fanstatus</endpoint>
+        </endpoints>
+        <translations>
+            <title>VEP1400 Hardware Information</title>
+            <nofan>Fan speed not available.</nofan>
+            <fan>Fan</fan>
+            <temp>Temperature</temp>
+            <boardid>Board ID</boardid>
+            <boarderror>Not a VEP1400 board or unable to read CPLD.</boarderror>
+        </translations>
+    </dechw>
+</metadata>
