@@ -73,6 +73,23 @@ class Caddy extends BaseModel
         }
     }
 
+    // Check edited hostnames without blocking unrelated changes to legacy configurations.
+    private function checkSubdomainHostnames($messages)
+    {
+        foreach ($this->reverseproxy->subdomain->iterateItems() as $item) {
+            if (
+                $item->FromDomain->isFieldChanged() &&
+                !$item->FromDomain->isEmpty() &&
+                !str_contains(rtrim($item->FromDomain->getValue(), '.'), '.')
+            ) {
+                $messages->appendMessage(new Message(
+                    gettext('Enter a full hostname, for example "host.example.com".'),
+                    $item->__reference . '.FromDomain'
+                ));
+            }
+        }
+    }
+
     // Prevent the usage of conflicting options when TLS is deactivated for a Domain
     private function checkDisableTlsConflicts($messages)
     {
@@ -314,6 +331,7 @@ class Caddy extends BaseModel
         $messages = parent::performValidation($validateFullModel);
 
         $this->checkForUniquePortCombos($messages);
+        $this->checkSubdomainHostnames($messages);
         $this->checkDisableTlsConflicts($messages);
         $this->checkSuperuserPorts($messages);
         $this->checkLayer4Matchers($messages);
