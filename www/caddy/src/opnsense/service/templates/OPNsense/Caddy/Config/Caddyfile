@@ -75,6 +75,9 @@
 
     servers {
         protocols {{ generalSettings.HttpVersions.split(',') | join(' ') }}
+        {% if generalSettings.StrictSniHost|default("0") == "1" %}
+            strict_sni_host on
+        {% endif %}
         {% if accessList %}
             trusted_proxies static {{ accessList.clientIps.split(',') | join(' ') }}
         {% endif %}

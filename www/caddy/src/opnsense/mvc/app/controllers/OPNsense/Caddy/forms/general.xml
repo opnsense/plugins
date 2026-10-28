@@ -65,6 +65,12 @@
             <label>Server Settings</label>
         </field>
         <field>
+            <id>caddy.general.StrictSniHost</id>
+            <label>Strict SNI Host</label>
+            <type>checkbox</type>
+            <help>Reject TLS requests with HTTP status 421 when the Host header does not match the Server Name Indication (SNI). This can prevent HTTP/2 connection coalescing from bypassing Layer4 SNI routing.</help>
+        </field>
+        <field>
             <id>caddy.general.accesslist</id>
             <label>Trusted Proxies</label>
             <type>dropdown</type>
