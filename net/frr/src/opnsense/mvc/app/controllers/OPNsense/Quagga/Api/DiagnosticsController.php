@@ -304,20 +304,7 @@ class DiagnosticsController extends ApiControllerBase
 
     public function bfdsummaryAction(): array
     {
-        $records = [];
-        $payload = (new Backend())->configdpRun('quagga diagnostics bfd_summary');
-        foreach (explode("\n", $payload) as $line) {
-            $parts = preg_split('/\s+/', trim($line));
-            if (count($parts) == 4 && filter_var($parts[0], FILTER_VALIDATE_INT) !== false) {
-                $records[] = [
-                    'id' => $parts[0],
-                    'local' => $parts[1],
-                    'peer' => $parts[2],
-                    'status' => $parts[3]
-                ];
-            }
-        }
-        return $this->searchRecordsetBase($records);
+        return $this->searchRecordsetBase($this->configdJson('bfd', 'summary'));
     }
 
     public function bfdneighborsAction(): array
