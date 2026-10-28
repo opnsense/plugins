@@ -32,8 +32,6 @@
 require_once("config.inc");
 require_once("certs.inc");
 
-use OPNsense\Core\Config;
-
 // Our template systems stores the ca certid into /usr/local/etc/squid/ca.pem.id
 // Which makes it easier for the setup script to detect cert changes (which should flush the stored cache)
 if (is_file('/usr/local/etc/squid/ca.pem.id')) {

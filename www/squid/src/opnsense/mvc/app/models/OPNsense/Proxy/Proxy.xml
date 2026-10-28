@@ -515,7 +515,7 @@
                         <DIRECT>Direct Connection (no Proxy)</DIRECT>
                         <HTTP>HTTP Proxy</HTTP>
                         <HTTPS>HTTPS Proxy</HTTPS>
-                        <SOCKS>SOCKS</SOCKS>
+                        <SOCKS>SOCKS Proxy</SOCKS>
                         <SOCKS4>SOCKS Version 4</SOCKS4>
                         <SOCKS5>SOCKS Version 5</SOCKS5>
                     </OptionValues>
