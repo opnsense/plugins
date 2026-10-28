@@ -33,3 +33,12 @@ function qfeeds_cron()
         ['autocron' => ['/usr/local/sbin/configctl -df qfeeds stats', '*/15']],
     ];
 }
+
+function qfeeds_xmlrpc_sync()
+{
+    return [[
+        'description' => gettext('Q-Feeds Connect'),
+        'section' => 'OPNsense.QFeedsConnector',
+        'id' => 'qfeeds',
+    ]];
+}
