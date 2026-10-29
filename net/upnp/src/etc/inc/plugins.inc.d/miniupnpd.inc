@@ -295,6 +295,12 @@ function miniupnpd_configure_do($verbose = false)
             $config_text .= "lease_file=/var/run/miniupnpd.leases\n";
             $config_text .= "lease_file6=/var/run/miniupnpd.leases-ipv6\n";
 
+            if (!empty($upnp_config['default_min_port'])) {
+                $config_text .= "default_min_port=" . $upnp_config['default_min_port'] . "\n";
+            } else {
+                $config_text .= "default_min_port=1\n";
+            }
+
             /* write out the configuration */
             file_put_contents('/var/etc/miniupnpd.conf', $config_text);
 
