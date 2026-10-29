@@ -12,6 +12,7 @@ Plugin Changelog
 
 * Fix active response duplicate key causing false aborts (contributed by Michael Bedworth)
 * Add repeated_offenders config and fix template issues (contributed by Michael Bedworth)
+* Fix setting wazuh_command.remote_commands
 
 1.2
 
