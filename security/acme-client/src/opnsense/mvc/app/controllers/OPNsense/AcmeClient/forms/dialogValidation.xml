@@ -1167,6 +1167,21 @@
         <type>text</type>
     </field>
     <field>
+        <label>OpenProvider.com</label>
+        <type>header</type>
+        <style>table_dns table_dns_openprovider_rest</style>
+    </field>
+    <field>
+        <id>validation.dns_openprovider_rest_username</id>
+        <label>Account Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_openprovider_rest_password</id>
+        <label>Account Password</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>opnsense</label>
         <type>header</type>
         <style>table_dns table_dns_opnsense</style>
