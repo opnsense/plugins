@@ -13,7 +13,6 @@
                     <Required>Y</Required>
                 </ldapgroupname>
                 <vlan type="IntegerField">
-                    <Required>N</Required>
                     <MinimumValue>1</MinimumValue>
                     <MaximumValue>4096</MaximumValue>
                 </vlan>
