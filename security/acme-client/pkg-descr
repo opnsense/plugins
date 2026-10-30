@@ -8,6 +8,11 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+4.18
+
+Added:
+* add support for deploy hook "trunes_websocat" (#5660)
+
 4.17
 
 Added:
