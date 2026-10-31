@@ -540,6 +540,7 @@
                         <dns_vscale>Vscale</dns_vscale>
                         <dns_vultr>Vultr</dns_vultr>
                         <dns_websupport>Websupport.sk</dns_websupport>
+                        <dns_wedos>WEDOS</dns_wedos>
                         <dns_world4you>World4You</dns_world4you>
                         <dns_yandex>Yandex PDD</dns_yandex>
                         <dns_zilore>Zilore</dns_zilore>
@@ -1335,6 +1336,12 @@
                 <dns_websupport_api_secret type="TextField">
                     <Required>N</Required>
                 </dns_websupport_api_secret>
+                <dns_wedos_username type="TextField">
+                    <Required>N</Required>
+                </dns_wedos_username>
+                <dns_wedos_wapipass type="TextField">
+                    <Required>N</Required>
+                </dns_wedos_wapipass>
                 <dns_world4you_username type="TextField">
                     <Required>N</Required>
                 </dns_world4you_username>

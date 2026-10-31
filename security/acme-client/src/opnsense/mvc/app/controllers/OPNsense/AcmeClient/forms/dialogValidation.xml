@@ -1931,6 +1931,21 @@
         <type>password</type>
     </field>
     <field>
+        <label>WEDOS</label>
+        <type>header</type>
+        <style>table_dns table_dns_wedos</style>
+    </field>
+    <field>
+        <id>validation.dns_wedos_username</id>
+        <label>WAPI Login (Account Email)</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_wedos_wapipass</id>
+        <label>WAPI Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>World4You</label>
         <type>header</type>
         <style>table_dns table_dns_world4you</style>
