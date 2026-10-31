@@ -1,0 +1,1 @@
+rm -f /etc/rc.conf.d/newt /usr/local/etc/newt/config.json

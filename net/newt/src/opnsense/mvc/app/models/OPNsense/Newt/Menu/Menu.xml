@@ -1,0 +1,8 @@
+<menu>
+    <VPN>
+        <Newt VisibleName="Pangolin Newt" cssClass="fa fa-exchange fa-fw" order="80">
+            <Settings VisibleName="Settings" order="10" url="/ui/newt/"/>
+            <Log VisibleName="Log File" order="20" url="/ui/diagnostics/log/core/newt"/>
+        </Newt>
+    </VPN>
+</menu>
