@@ -1329,14 +1329,10 @@
         <style>table_dns table_dns_selfhost</style>
     </field>
     <field>
-        <id>validation.dns_selfhost_user</id>
-        <label>User</label>
-        <type>text</type>
-    </field>
-    <field>
-        <id>validation.dns_selfhost_password</id>
-        <label>Password</label>
+        <id>validation.dns_selfhost_apikey</id>
+        <label>API Key</label>
         <type>password</type>
+        <help>Create a DNS-01 API key in the Selfhost portal (menu "Entwickler"). The legacy username/password authentication is no longer supported by Selfhost.</help>
     </field>
     <field>
         <id>validation.dns_selfhost_map</id>

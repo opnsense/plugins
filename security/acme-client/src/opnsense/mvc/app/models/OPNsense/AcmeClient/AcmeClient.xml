@@ -1106,12 +1106,9 @@
                 <dns_sl_password type="TextField">
                     <Required>N</Required>
                 </dns_sl_password>
-                <dns_selfhost_user type="TextField">
+                <dns_selfhost_apikey type="TextField">
                     <Required>N</Required>
-                </dns_selfhost_user>
-                <dns_selfhost_password type="TextField">
-                    <Required>N</Required>
-                </dns_selfhost_password>
+                </dns_selfhost_apikey>
                 <dns_selfhost_map type="TextField">
                     <Required>N</Required>
                 </dns_selfhost_map>
