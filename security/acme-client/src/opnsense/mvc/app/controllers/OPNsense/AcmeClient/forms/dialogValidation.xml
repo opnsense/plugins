@@ -1939,6 +1939,7 @@
         <id>validation.dns_wedos_username</id>
         <label>WAPI Login (Account Email)</label>
         <type>text</type>
+        <help>First activate the WAPI interface in WEDOS administration and set the WAPI password. Set the protocol to JSON and add the public IP addresses of this OPNsense instance to the allowed IP addresses. Note that requests from any other IP are rejected, so whitelist the address the server actually uses for outgoing connections — on dual-stack OPNsense this is usually the IPv6 address.</help>
     </field>
     <field>
         <id>validation.dns_wedos_wapipass</id>
