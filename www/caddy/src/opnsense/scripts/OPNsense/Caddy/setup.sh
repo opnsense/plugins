@@ -54,5 +54,8 @@ ${CADDY_LOG_CUSTOM_DIR}
 mkdir -p ${CADDY_DIRS}
 chown -R "${CADDY_USER}:${CADDY_GROUP}" ${CADDY_DIRS}
 
+# remove old syslog-ng config snippet
+rm /usr/local/etc/syslog-ng.conf.d/caddy.conf
+
 # Regenerate template explicitely, since caddy fmt restructures result
 /usr/local/sbin/pluginctl -c caddy_sync
