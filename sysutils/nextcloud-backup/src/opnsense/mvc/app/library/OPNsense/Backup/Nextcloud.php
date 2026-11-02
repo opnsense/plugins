@@ -88,8 +88,8 @@ class Nextcloud extends Base implements IBackupProvider
             array(
                 "name" => "strategy",
                 "type" => "checkbox",
-                "help" => gettext("Select this one to back up to a file named config-YYYYMMDD instead of syncing contents of /conf/backup"),
-                "label" => gettext("Daily file instead of sync all"),
+                "help" => gettext("Select this one to back up to a file named config-YYYYMMDD (based on UTC time) instead of syncing contents of /conf/backup"),
+                "label" => gettext("Daily file (UTC time) instead of sync all"),
             ),
             array(
                 "name" => "addhostname",
