@@ -389,6 +389,8 @@ eap {
 {% if not restricted or 'peap' in allowed %}
         peap {
 {% if restricted %}
+                #  FreeRADIUS 3 defaults PEAP's inner-proxy authentication
+                #  dispatch to eap; use the separate inner instance instead.
                 inner_eap_module = inner-eap
 {% endif %}
                 #  Which tls-config section the TLS negotiation parameters

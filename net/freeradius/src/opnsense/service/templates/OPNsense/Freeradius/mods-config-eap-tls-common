@@ -1,4 +1,7 @@
 {% if helpers.exists('OPNsense.freeradius.general.enabled') and OPNsense.freeradius.general.enabled == '1' %}
+        #  FreeRADIUS 3 TLS configuration shared by both EAP instances.
+        #  Revisit TLS configuration, certificate authorization and session
+        #  caching when eventually migrating to FreeRADIUS 4.
         tls-config tls-common {
 {% if helpers.exists('OPNsense.freeradius.eap.enable_client_cert') and OPNsense.freeradius.eap.enable_client_cert == '1' %}
 {%   if helpers.exists('OPNsense.freeradius.eap.certificate') and OPNsense.freeradius.eap.certificate != '' %}
