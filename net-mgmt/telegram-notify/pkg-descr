@@ -1,0 +1,7 @@
+Telegram notification manager for OPNsense.
+
+This plugin provides a simple UI to configure a Telegram bot token,
+destination chat and optional send settings, then test notification
+delivery directly from the OPNsense web interface.
+
+WWW: <https://core.telegram.org/bots/api>

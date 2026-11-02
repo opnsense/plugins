@@ -1,0 +1,35 @@
+<model>
+    <mount>//OPNsense/TopologyMap</mount>
+    <version>1.0.0</version>
+    <description>Topology mapper settings</description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </enabled>
+            <useLldp type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </useLldp>
+            <useArp type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </useArp>
+            <useNdp type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </useNdp>
+            <maxNodes type="IntegerField">
+                <Default>500</Default>
+                <MinimumValue>50</MinimumValue>
+                <MaximumValue>5000</MaximumValue>
+                <Required>Y</Required>
+            </maxNodes>
+            <showGeoMap type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </showGeoMap>
+        </general>
+    </items>
+</model>

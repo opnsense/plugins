@@ -1,0 +1,6 @@
+Network topology mapper for OPNsense.
+
+This plugin discovers local network nodes and links using LLDP, ARP and NDP,
+then exposes a topology view and API endpoints suitable for dashboard summaries.
+
+WWW: <https://opnsense.org>
