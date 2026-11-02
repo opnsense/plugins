@@ -52,7 +52,15 @@ class EapController extends ApiControllerBase
         if ($this->request->isPost()) {
             // load model and update with provided data
             $mdlEAP = new EAP();
-            $mdlEAP->setNodes($this->request->getPost("eap"));
+            $settings = $this->request->getPost("eap");
+            if (is_array($settings)) {
+                $restricted = (string)($settings['restrict_outer_eap_methods'] ?? $mdlEAP->restrict_outer_eap_methods);
+                // Preserve the inactive allowlist if its disabled control is omitted or submitted empty.
+                if ($restricted !== '1') {
+                    unset($settings['allowed_outer_eap_types']);
+                }
+                $mdlEAP->setNodes($settings);
+            }
 
             // perform validation
             $valMsgs = $mdlEAP->performValidation();

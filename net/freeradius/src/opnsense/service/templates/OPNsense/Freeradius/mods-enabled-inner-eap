@@ -1,0 +1,37 @@
+{% if helpers.exists('OPNsense.freeradius.general.enabled') and OPNsense.freeradius.general.enabled == '1' %}
+{%   if helpers.exists('OPNsense.freeradius.eap.restrict_outer_eap_methods') and OPNsense.freeradius.eap.restrict_outer_eap_methods == '1' %}
+
+eap inner-eap {
+        default_eap_type = mschapv2
+        timer_expire = 60
+        max_sessions = ${max_requests}
+        ignore_unknown_eap_types = no
+
+        #  Inner sessions must not use the outer TLS session cache.
+        tls_cache_enable = no
+        $INCLUDE ${modconfdir}/eap/tls-common.conf
+
+        md5 {
+        }
+        gtc {
+                auth_type = PAP
+        }
+        mschapv2 {
+        }
+{%     if OPNsense.freeradius.eap.enable_pwd == '1' %}
+        pwd {
+                server_id = {{ OPNsense.freeradius.eap.pwd_serverid }}
+        }
+{%     endif %}
+        tls {
+                tls = tls-common
+{%     if helpers.exists('OPNsense.freeradius.eap.enable_client_cert') and OPNsense.freeradius.eap.enable_client_cert == '1' %}
+{%       if helpers.exists('OPNsense.freeradius.eap.check_tls_names') and OPNsense.freeradius.eap.check_tls_names == '1' %}
+                virtual_server = check-eap-tls
+{%       endif %}
+{%     endif %}
+        }
+}
+
+{%   endif %}
+{% endif %}
