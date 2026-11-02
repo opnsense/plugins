@@ -40,7 +40,7 @@ class EapController extends ApiControllerBase
         // define list of configurable settings
         $result = array();
         if ($this->request->isGet()) {
-            $mdlEAP = new EAP();
+            $mdlEAP = new Eap();
             $result['eap'] = $mdlEAP->getNodes();
         }
         return $result;
