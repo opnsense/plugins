@@ -40,7 +40,7 @@ class EapController extends ApiControllerBase
         // define list of configurable settings
         $result = array();
         if ($this->request->isGet()) {
-            $mdlEAP = new EAP();
+            $mdlEAP = new Eap();
             $result['eap'] = $mdlEAP->getNodes();
         }
         return $result;
@@ -51,7 +51,7 @@ class EapController extends ApiControllerBase
         $result = array("result" => "failed");
         if ($this->request->isPost()) {
             // load model and update with provided data
-            $mdlEAP = new EAP();
+            $mdlEAP = new Eap();
             $settings = $this->request->getPost("eap");
             if (is_array($settings)) {
                 $restricted = (string)($settings['restrict_outer_eap_methods'] ?? $mdlEAP->restrict_outer_eap_methods);
