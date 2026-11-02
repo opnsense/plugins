@@ -59,8 +59,8 @@ class EapController extends ApiControllerBase
                 if ($restricted !== '1') {
                     unset($settings['allowed_outer_eap_types']);
                 }
-                $mdlEAP->setNodes($settings);
             }
+            $mdlEAP->setNodes($settings);
 
             // perform validation
             $valMsgs = $mdlEAP->performValidation();
