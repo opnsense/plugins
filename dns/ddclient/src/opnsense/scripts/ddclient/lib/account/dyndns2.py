@@ -40,7 +40,6 @@ class DynDNS2(BaseAccount):
         'dynu': 'api.dynu.com',
         'he-net': 'dyn.dns.he.net',
         'he-net-tunnel': 'ipv4.tunnelbroker.net',
-        'inwx': 'dyndns.inwx.com',
         'loopia': 'dyndns.loopia.se',
         'nsupdatev4': 'ipv4.nsupdate.info',
         'nsupdatev6': 'ipv6.nsupdate.info',
