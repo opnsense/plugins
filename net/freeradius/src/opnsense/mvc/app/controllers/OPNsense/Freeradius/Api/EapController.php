@@ -51,7 +51,7 @@ class EapController extends ApiControllerBase
         $result = array("result" => "failed");
         if ($this->request->isPost()) {
             // load model and update with provided data
-            $mdlEAP = new EAP();
+            $mdlEAP = new Eap();
             $mdlEAP->setNodes($this->request->getPost("eap"));
 
             // perform validation
