@@ -1270,6 +1270,9 @@
                 <dns_1984hosting_password type="TextField">
                     <Required>N</Required>
                 </dns_1984hosting_password>
+                <dns_1984hosting_totp_secret type="TextField">
+                    <Required>N</Required>
+                </dns_1984hosting_totp_secret>
                 <dns_kas_login type="TextField">
                     <Required>N</Required>
                 </dns_kas_login>
