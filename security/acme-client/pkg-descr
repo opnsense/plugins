@@ -9,6 +9,7 @@ Plugin Changelog
 ================
 
 Added:
+* add support for deploy hook "trunes_websocat" (#5660)
 * new automation to upload certificate to JetKVM (#5726)
 
 4.17
