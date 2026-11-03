@@ -63,7 +63,10 @@ abstract class LeCommon
     // acme.sh internals
     public const ACME_DEPLOY_HOOK_STRING = 'Le_DeployHook=';
     // acme.sh exit code indicating a renewal was skipped because it is not
-    // due yet (its own $RENEW_SKIP constant). Not an error.
+    // due yet. acme.sh uses the RENEW_SKIP constant internally for multiple
+    // cases, but we ignore these other cases, because they should not apply
+    // under normal circumstances. The acme.sh log still contains information
+    // about the real error condition in these cases.
     public const ACME_RENEW_SKIP = 2;
 
     // Runtime parameters for acme.sh
