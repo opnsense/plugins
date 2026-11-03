@@ -1742,7 +1742,6 @@
                 <acme_ruckus_pass type="TextField">
                     <Required>N</Required>
                 </acme_ruckus_pass>
-                <!-- TODO: old "truenas" with REST API (without websocket like midctl or websocat) is deprecated and will be removed in TrueNas 26 -->
                 <acme_truenas_apikey type="TextField">
                     <Required>N</Required>
                     <Mask>/^.{1,1024}$/u</Mask>
