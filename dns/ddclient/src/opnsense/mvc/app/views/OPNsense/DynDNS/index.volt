@@ -110,11 +110,17 @@ POSSIBILITY OF SUCH DAMAGE.
               updateServiceControlUI('dyndns');
           }
         });
-        $("#account\\.service").change(function(){
-            let service = $(this).val();
+        function toggle_account_settings() {
+            let service = $("#account\\.service").val();
+            let aws_auth = $("#account\\.aws_auth").val();
             $("#frm_DialogAccount .optional_setting").each(function(){
                 let this_item = $(this);
-                if (this_item.hasClass("service_"+service)) {
+                let visible = this_item.hasClass("service_"+service);
+                if (visible && this_item.is('[class*="aws_auth_"]')) {
+                    // settings that only apply to a specific AWS authentication method
+                    visible = this_item.hasClass("aws_auth_"+aws_auth);
+                }
+                if (visible) {
                     this_item.prop( "disabled", false );
                     this_item.closest("tr").show();
                 } else {
@@ -122,9 +128,13 @@ POSSIBILITY OF SUCH DAMAGE.
                     this_item.prop( "disabled", true );
                 }
             });
-        });
+            // certificate based AWS authentication doesn't use a username or password
+            let aws_certificate_auth = service === 'aws' && aws_auth !== 'access_key';
+            $("#account\\.username, #account\\.password").closest("tr").toggle(!aws_certificate_auth);
+        }
+        $("#account\\.service, #account\\.aws_auth").change(toggle_account_settings);
         $('#DialogAccount').on('shown.bs.modal', function (e) {
-            $("#account\\.service").change();
+            toggle_account_settings();
         });
 
         $("#ddclient\\.general\\.checkip").change(function(){

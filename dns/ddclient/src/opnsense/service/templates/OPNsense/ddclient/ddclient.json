@@ -26,6 +26,17 @@
             "checkip_timeout": {{ account.checkip_timeout }},
             "force_ssl": {{ "true" if account.force_ssl == '1' else "false"}},
             "ttl": "{{ account.ttl }}",
+{%     if account.service == 'aws' %}
+            "aws_auth": "{{ account.aws_auth|default('access_key') }}",
+            "aws_certificate": {{ account.aws_certificate | default('') | tojson }},
+            "aws_region": {{ account.aws_region | default('') | tojson }},
+            "aws_trust_anchor_arn": {{ account.aws_trust_anchor_arn | default('') | tojson }},
+            "aws_profile_arn": {{ account.aws_profile_arn | default('') | tojson }},
+            "aws_role_arn": {{ account.aws_role_arn | default('') | tojson }},
+            "aws_iot_endpoint": {{ account.aws_iot_endpoint | default('') | tojson }},
+            "aws_iot_role_alias": {{ account.aws_iot_role_alias | default('') | tojson }},
+            "aws_iot_thing_name": {{ account.aws_iot_thing_name | default('') | tojson }},
+{%     endif %}
             "description": {{ account.description | default('') | tojson }}
         }{{ "," if not loop.last else ""}}
 {%   endfor %}

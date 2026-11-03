@@ -30,6 +30,7 @@
 
 use OPNsense\Base\BaseModel;
 use OPNsense\Base\Messages\Message;
+use OPNsense\Core\Config;
 
 /**
  * Class DynDNS
@@ -37,10 +38,59 @@ use OPNsense\Base\Messages\Message;
  */
 class DynDNS extends BaseModel
 {
+    /**
+     * fields required per AWS certificate based authentication method
+     */
+    private const AWS_AUTH_REQUIRED = [
+        'rolesanywhere' => ['aws_certificate', 'aws_region', 'aws_trust_anchor_arn', 'aws_profile_arn', 'aws_role_arn'],
+        'iot' => ['aws_certificate', 'aws_iot_endpoint', 'aws_iot_role_alias'],
+    ];
+
+    /**
+     * @param string $refid certificate reference
+     * @return bool true when the certificate exists and holds a private key
+     */
+    private function certificateHasKey($refid)
+    {
+        foreach (Config::getInstance()->object()->cert as $cert) {
+            if ((string)$cert->refid === $refid) {
+                return !empty((string)$cert->prv);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * validate AWS certificate based authentication settings
+     * @param string $key account reference
+     * @param \OPNsense\Base\FieldTypes\BaseField $node account node
+     * @param \OPNsense\Base\Messages\MessageCollection $messages validation messages
+     */
+    private function validateAwsAuth($key, $node, $messages)
+    {
+        $method = (string)$node->aws_auth;
+        if (!$node->service->isEqual('aws') || !isset(self::AWS_AUTH_REQUIRED[$method])) {
+            return;
+        }
+        foreach (self::AWS_AUTH_REQUIRED[$method] as $field) {
+            if ($node->$field->isEmpty()) {
+                $messages->appendMessage(
+                    new Message(gettext('This field is required for the selected authentication.'), $key . '.' . $field)
+                );
+            }
+        }
+        if (!$node->aws_certificate->isEmpty() && !$this->certificateHasKey((string)$node->aws_certificate)) {
+            $messages->appendMessage(
+                new Message(gettext('The selected certificate has no private key.'), $key . '.aws_certificate')
+            );
+        }
+    }
+
     public function performValidation($validateFullModel = false)
     {
         $messages = parent::performValidation($validateFullModel);
         $validate_servers = [];
+        $validate_aws = [];
 
         foreach ($this->getFlatNodes() as $key => $node) {
             $tagName = $node->getInternalXMLTagName();
@@ -50,7 +100,17 @@ class DynDNS extends BaseModel
                     $parentKey = $parentNode->__reference;
                     $validate_servers[$parentKey] = $parentNode;
                 }
+                if (
+                    $parentNode->getInternalXMLTagName() === 'account' &&
+                    ($tagName === 'service' || str_starts_with($tagName, 'aws_'))
+                ) {
+                    $validate_aws[$parentNode->__reference] = $parentNode;
+                }
             }
+        }
+
+        foreach ($validate_aws as $key => $node) {
+            $this->validateAwsAuth($key, $node, $messages);
         }
 
         foreach ($validate_servers as $key => $node) {

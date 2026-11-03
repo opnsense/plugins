@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/DynDNS</mount>
-    <version>1.5.1</version>
+    <version>1.6.0</version>
     <description>Dynamic DNS client</description>
     <items>
         <general>
@@ -135,6 +135,54 @@
                     <Required>N</Required>
                     <IpAllowed>N</IpAllowed>
                 </zone>
+                <aws_auth type="OptionField">
+                    <Required>Y</Required>
+                    <Default>access_key</Default>
+                    <OptionValues>
+                        <access_key>Access key</access_key>
+                        <rolesanywhere>IAM Roles Anywhere (certificate)</rolesanywhere>
+                        <iot>AWS IoT credential provider (certificate)</iot>
+                    </OptionValues>
+                </aws_auth>
+                <aws_certificate type="CertificateField">
+                    <Required>N</Required>
+                </aws_certificate>
+                <aws_region type="TextField">
+                    <Required>N</Required>
+                    <Default>us-east-1</Default>
+                    <Mask>/^[a-z]{2}(-[a-z]+)+-[0-9]+$/</Mask>
+                    <ValidationMessage>Please specify a valid AWS region (e.g. us-east-1).</ValidationMessage>
+                </aws_region>
+                <aws_trust_anchor_arn type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^arn:aws[a-z-]*:rolesanywhere:[a-z0-9-]+:[0-9]{12}:trust-anchor\/[0-9a-f-]{36}$/</Mask>
+                    <ValidationMessage>Please specify a valid IAM Roles Anywhere trust anchor ARN.</ValidationMessage>
+                </aws_trust_anchor_arn>
+                <aws_profile_arn type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^arn:aws[a-z-]*:rolesanywhere:[a-z0-9-]+:[0-9]{12}:profile\/[0-9a-f-]{36}$/</Mask>
+                    <ValidationMessage>Please specify a valid IAM Roles Anywhere profile ARN.</ValidationMessage>
+                </aws_profile_arn>
+                <aws_role_arn type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^arn:aws[a-z-]*:iam::[0-9]{12}:role\/[\w+=,.@\/-]{1,512}$/</Mask>
+                    <ValidationMessage>Please specify a valid IAM role ARN.</ValidationMessage>
+                </aws_role_arn>
+                <aws_iot_endpoint type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^([a-z0-9-]+\.)+amazonaws\.com(\.cn)?$/</Mask>
+                    <ValidationMessage>Please specify the AWS IoT credential provider endpoint of your account.</ValidationMessage>
+                </aws_iot_endpoint>
+                <aws_iot_role_alias type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^[\w=,@-]{1,128}$/</Mask>
+                    <ValidationMessage>Please specify a valid AWS IoT role alias.</ValidationMessage>
+                </aws_iot_role_alias>
+                <aws_iot_thing_name type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^[a-zA-Z0-9:_-]{1,128}$/</Mask>
+                    <ValidationMessage>Please specify a valid AWS IoT thing name.</ValidationMessage>
+                </aws_iot_thing_name>
                 <checkip type=".\CheckipField">
                     <Required>Y</Required>
                     <Default>web_dyndns</Default>
