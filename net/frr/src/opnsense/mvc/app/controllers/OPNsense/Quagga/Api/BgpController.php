@@ -30,9 +30,7 @@
 
 namespace OPNsense\Quagga\Api;
 
-use OPNsense\Base\ApiMutableModelControllerBase;
-
-class BgpController extends ApiMutableModelControllerBase
+class BgpController extends QuaggaControllerBase
 {
     protected static $internalModelName = 'bgp';
     protected static $internalModelClass = '\OPNsense\Quagga\BGP';
@@ -80,6 +78,7 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function delAspathAction($uuid)
     {
+        $this->throwGroupInUse($this->getModel()->aspaths->aspath, $uuid, 'number');
         return $this->delBase('aspaths.aspath', $uuid);
     }
 
@@ -105,6 +104,7 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function delPrefixlistAction($uuid)
     {
+        $this->throwGroupInUse($this->getModel()->prefixlists->prefixlist, $uuid, 'name');
         return $this->delBase('prefixlists.prefixlist', $uuid);
     }
 
@@ -130,6 +130,7 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function delCommunitylistAction($uuid)
     {
+        $this->throwGroupInUse($this->getModel()->communitylists->communitylist, $uuid, 'number');
         return $this->delBase('communitylists.communitylist', $uuid);
     }
 
@@ -155,6 +156,7 @@ class BgpController extends ApiMutableModelControllerBase
 
     public function delRoutemapAction($uuid)
     {
+        $this->throwGroupInUse($this->getModel()->routemaps->routemap, $uuid, 'name');
         return $this->delBase('routemaps.routemap', $uuid);
     }
 

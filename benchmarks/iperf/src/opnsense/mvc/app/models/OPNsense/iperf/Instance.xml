@@ -1,0 +1,13 @@
+<model>
+    <mount>:memory:</mount>
+    <version>1.0.0</version>
+    <description>iperf server instance</description>
+    <items>
+        <port type="IntegerField">
+            <Default>0</Default>
+            <Required>Y</Required>
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>65535</MaximumValue>
+        </port>
+    </items>
+</model>

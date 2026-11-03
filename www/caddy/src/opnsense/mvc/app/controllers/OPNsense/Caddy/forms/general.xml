@@ -65,6 +65,12 @@
             <label>Server Settings</label>
         </field>
         <field>
+            <id>caddy.general.StrictSniHost</id>
+            <label>Strict SNI Host</label>
+            <type>checkbox</type>
+            <help>Reject TLS requests with HTTP status 421 when the Host header does not match the Server Name Indication (SNI). This can prevent HTTP/2 connection coalescing from bypassing Layer4 SNI routing.</help>
+        </field>
+        <field>
             <id>caddy.general.accesslist</id>
             <label>Trusted Proxies</label>
             <type>dropdown</type>
@@ -145,7 +151,7 @@
             <id>caddy.general.LogAccessPlain</id>
             <label>Log HTTP Access in JSON Format</label>
             <type>checkbox</type>
-            <help>Log HTTP access in a standard JSON logfile per domain. Use this option combined with "HTTP Access Log" in a "Domain". Enabling this will make the HTTP Access Log disappear from the standard Log File. Logs can be found in the filesystem at "/var/log/caddy/access/".</help>
+            <help>Log HTTP access in a standard JSON logfile per domain in addition to the standard Log File. Use this option combined with "HTTP Access Log" in a "Domain". JSON logs can be found in the filesystem at "/var/log/caddy/access/".</help>
         </field>
         <field>
             <id>caddy.general.LogAccessPlainKeep</id>

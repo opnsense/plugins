@@ -13,6 +13,8 @@ Plugin Changelog
 Fixed:
 * fix false "validation failed" status when acme.sh skips a renewal that
   is not due yet (#4908)
+Added:
+* new automation to upload certificate to JetKVM (#5726)
 
 4.17
 

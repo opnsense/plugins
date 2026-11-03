@@ -60,6 +60,7 @@ net/igmp-proxy -- IGMP-Proxy Service (not maintained)
 net/isc-dhcp -- ISC DHCPv4/v6 server
 net/mdns-repeater -- Proxy multicast DNS between networks
 net/ndp-proxy-go -- IPv6 Neighbor Discovery Protocol (NDP) Proxy
+net/netflector -- Reflect link-local service discovery between interfaces
 net/ntopng -- Traffic Analysis and Flow Collection
 net/radsecproxy -- RADIUS proxy provides both RADIUS UDP and TCP/TLS (RadSec) transport
 net/realtek-re -- Realtek re(4) vendor driver
@@ -116,7 +117,7 @@ sysutils/munin-node -- Munin monitoring agent
 sysutils/nextcloud-backup -- Track config changes using NextCloud (not maintained)
 sysutils/node_exporter -- Prometheus exporter for machine metrics
 sysutils/nut -- Network UPS Tools
-sysutils/puppet-agent -- Manage Puppet Agent
+sysutils/puppet-agent -- Manage Puppet/OpenVox Agent
 sysutils/sftp-backup -- Backup configurations using SFTP
 sysutils/smart -- SMART tools (not maintained)
 sysutils/virtualbox -- VirtualBox guest additions

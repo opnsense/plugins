@@ -110,9 +110,9 @@ def checkip(service, proto='https', timeout='10', interface=None, dynipv6host=No
         :param dynipv6host: optional partial ipv6 address
         :return: str
     """
-    if service.lstrip('web_') in checkip_service_list:
+    if service.removeprefix('web_') in checkip_service_list:
         # configuration name, strip web_ part
-        service = service.lstrip('web_')
+        service = service.removeprefix('web_')
         params = ['/usr/local/bin/curl', '-m', timeout]
         if interface is not None:
             params.append("--interface")
@@ -139,8 +139,8 @@ def checkip(service, proto='https', timeout='10', interface=None, dynipv6host=No
                             return str(address)
                     except ValueError:
                         continue
-    elif service.lstrip('dns_') in checkip_dns_list:
-        svc_info = checkip_dns_list[service.lstrip('dns_')]
+    elif service.removeprefix('dns_') in checkip_dns_list:
+        svc_info = checkip_dns_list[service.removeprefix('dns_')]
         resolve_params = svc_info['resolve_params']
         dns_resolver = dns.resolver.Resolver()
         dns_resolver.nameservers = svc_info['nameservers']

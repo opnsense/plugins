@@ -9,6 +9,13 @@ WWW:  https://puppet.com/docs/puppet/latest/man/agent.html
 Plugin Changelog
 ================
 
+2.0
+
+Changed:
+* switch to OpenVox Agent
+* replace opn-cli with opn_api
+* modernize UI template
+
 1.2
 
 Changed:
