@@ -138,7 +138,14 @@ abstract class Base extends \OPNsense\AcmeClient\LeCommon
         // use it on the next run. This information must be removed from the
         // configuration file. Otherwise it would be impossible to disable
         // or remove a deploy hook from the GUI.
-        foreach (glob(self::ACME_HOME_DIR . '/*/*.conf') as $filename) {
+        // Domain configuration files are located below --cert-home (this
+        // includes ECC certificates, which use a "_ecc" suffix directory),
+        // but the legacy location below --home must still be covered.
+        $conf_files = array_merge(
+            glob(self::ACME_HOME_DIR . '/*/*.conf') ?: [],
+            glob(sprintf(self::ACME_CERT_HOME_DIR, '*') . '/*/*.conf') ?: []
+        );
+        foreach ($conf_files as $filename) {
             // Skip openssl config files.
             if (preg_match('/.*.csr.conf/i', $filename)) {
                 continue;
