@@ -6,6 +6,11 @@ DOC: https://docs.opnsense.org/manual/ndp-proxy-go.html
 Plugin Changelog
 ================
 
+1.5
+
+* Add prefix responder support
+* Allow operation without downstream interfaces
+
 1.4
 
 * Add static-prefix and static-router flags

@@ -47,6 +47,12 @@ class LockedFile:
     def write(self, data):
         self._fh.write(data)
 
+    def seek(self, offset):
+        self._fh.seek(offset)
+
+    def handle(self):
+        return self._fh
+
     @property
     def filename(self):
         return self._filename

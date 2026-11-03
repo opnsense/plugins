@@ -1742,6 +1742,12 @@
         <type>password</type>
     </field>
     <field>
+        <id>validation.dns_1984hosting_totp_secret</id>
+        <label>TOTP Secret</label>
+        <type>password</type>
+        <help>When 2FA is enabled, the Base32 TOTP secret must be provided. Note that this feature requires the package oath-toolkit, which must be installed manually.</help>
+    </field>
+    <field>
         <label>All-Inkl.com domain API</label>
         <type>header</type>
         <style>table_dns table_dns_kas</style>
@@ -1760,6 +1766,16 @@
         <id>validation.dns_kas_authtype</id>
         <label>KAS Authtype</label>
         <type>dropdown</type>
+    </field>
+    <field>
+        <label>DNSMint API</label>
+        <type>header</type>
+        <style>table_dns table_dns_dnsmint</style>
+    </field>
+    <field>
+        <id>validation.dns_dnsmint_api_key</id>
+        <label>DNSMint API key</label>
+        <type>password</type>
     </field>
     <field>
         <label>deSEC.io API</label>

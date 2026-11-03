@@ -48,9 +48,20 @@
         format json {
             time_format rfc3339
         }
+        exclude http.log.access
         {% if generalSettings.LogLevel %}
             level {{ generalSettings.LogLevel }}
         {% endif %}
+    }
+
+    {# Send HTTP access logs to syslog once, independent of their per-domain output. #}
+    log access {
+        output net unixgram//var/run/caddy/log.sock {
+        }
+        format json {
+            time_format rfc3339
+        }
+        include http.log.access
     }
 
     {# Change default ports on demand #}
@@ -75,6 +86,9 @@
 
     servers {
         protocols {{ generalSettings.HttpVersions.split(',') | join(' ') }}
+        {% if generalSettings.StrictSniHost|default("0") == "1" %}
+            strict_sni_host on
+        {% endif %}
         {% if accessList %}
             trusted_proxies static {{ accessList.clientIps.split(',') | join(' ') }}
         {% endif %}

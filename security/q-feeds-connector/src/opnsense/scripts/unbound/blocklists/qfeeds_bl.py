@@ -30,6 +30,7 @@ import os
 import re
 import syslog
 import uuid
+import ujson
 from . import BaseBlocklistHandler
 
 class QFeedsBlocklistHandler(BaseBlocklistHandler):
@@ -58,8 +59,11 @@ class QFeedsBlocklistHandler(BaseBlocklistHandler):
             bl_shortcode = "qf_%s" % os.path.splitext(os.path.basename(filename).strip())[0]
             if os.path.exists(filename):
                 with open(filename, 'r') as f_in:
-                    for line in f_in:
-                        result[line.strip()] = {'bl': bl_shortcode, 'wildcard': False}
+                    data = ujson.load(f_in)
+                    if type(data) is dict and data.get('iocs'):
+                        for ioc in data['iocs']:
+                            result[ioc] = {'bl': bl_shortcode, 'wildcard': False}
+
         return result
 
     def get_passlist_patterns(self):

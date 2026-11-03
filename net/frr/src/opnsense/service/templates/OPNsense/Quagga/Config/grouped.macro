@@ -1,0 +1,8 @@
+{# Collect logical group keys which contain at least one enabled entry. #}
+{% macro collect_enabled_groups(items, group_field, groups) %}
+{%   for item in items %}
+{%     if item.enabled == '1' and item[group_field] not in groups %}
+{%       do groups.append(item[group_field]) %}
+{%     endif %}
+{%   endfor %}
+{% endmacro %}

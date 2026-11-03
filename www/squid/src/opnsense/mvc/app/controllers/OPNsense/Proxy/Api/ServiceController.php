@@ -144,4 +144,51 @@ class ServiceController extends ApiMutableServiceControllerBase
             return array("response" => array());
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function reconfigureAction()
+    {
+        $ret = ['status' => 'failed'];
+
+        if ($this->request->isPost()) {
+            $restart = $this->reconfigureForceRestart();
+            $enabled = $this->serviceEnabled();
+            $backend = new Backend();
+            $action = 'stop';
+            $result = 'OK';
+
+            if ($restart || !$enabled) {
+                $result = trim($backend->configdRun(escapeshellarg(static::$internalServiceName) . ' ' . $action));
+            }
+
+            if ($this->invokeInterfaceRegistration()) {
+                $this->runInterfaceRegistration();
+            }
+
+            if ($this->invokeFirewallReload()) {
+                $backend->configdRun('filter reload skip_alias');
+            }
+
+            if (!empty(static::$internalServiceTemplate)) {
+                $template_result = trim($backend->configdpRun('template reload', [static::$internalServiceTemplate]));
+                if ($template_result !== 'OK') {
+                    throw new UserException(sprintf(
+                        gettext('Template generation failed for internal service "%s". See backend log for details.'),
+                        static::$internalServiceName
+                    ), gettext('Configuration exception'));
+                }
+            }
+
+            if ($enabled) {
+                $action = $restart || $this->statusAction()['status'] != 'running' ? 'start' : 'reload';
+                $result = trim($backend->configdRun(escapeshellarg(static::$internalServiceName) . ' ' . $action));
+            }
+
+            $ret['status'] = 'ok';
+        }
+
+        return $ret;
+    }
 }

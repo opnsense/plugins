@@ -8,7 +8,14 @@
                 <Default>0</Default>
                 <Required>Y</Required>
             </enabled>
-            <upstream type="InterfaceField"/>
+            <upstream type="InterfaceField">
+                <Default>wan</Default>
+                <Required>Y</Required>
+            </upstream>
+            <respond_prefix type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </respond_prefix>
             <downstream type="InterfaceField">
                 <Multiple>Y</Multiple>
             </downstream>

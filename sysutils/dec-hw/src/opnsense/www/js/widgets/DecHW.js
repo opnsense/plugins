@@ -56,9 +56,12 @@ export default class DecHW extends BaseWidget {
             }
         `;
 
-        const styleSheet = document.createElement("style");
-        styleSheet.innerText = styles;
-        document.head.appendChild(styleSheet);
+        if (!document.getElementById('dechw-widget-styles')) {
+            const styleSheet = document.createElement('style');
+            styleSheet.id = 'dechw-widget-styles';
+            styleSheet.innerText = styles;
+            document.head.appendChild(styleSheet);
+        }
 
         return $(`
             <div id="status"></div>

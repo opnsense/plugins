@@ -5,6 +5,11 @@ content serving applications.
 Plugin Changelog
 ================
 
+1.5
+
+* Update to Squid 7.7
+* Implement custom reconfigureAction() since service actions are script_output
+
 1.4
 
 * Make email_err_data static due to SQUID-2025:2 CVE 10.0 (contributed by m.a.x. it)

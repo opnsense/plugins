@@ -38,15 +38,6 @@ class NdpProxy extends BaseModel
     private function checkConfiguration($messages)
     {
         if ($this->general->enabled->isEqual('1')) {
-            foreach (['upstream', 'downstream'] as $field) {
-                if ($this->general->$field->isEmpty()) {
-                    $messages->appendMessage(new Message(
-                        gettext('Interface is required.'),
-                        "general.$field"
-                    ));
-                }
-            }
-
             $upstream = $this->general->upstream->getValue();
             $downstreamList = array_filter(explode(',', $this->general->downstream->getValue()));
 

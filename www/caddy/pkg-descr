@@ -6,6 +6,10 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+2.2.2
+
+* Add: Strict SNI Host in general settings
+
 2.2.1
 
 * Add: Proxy protocol sources can be selected in general settings

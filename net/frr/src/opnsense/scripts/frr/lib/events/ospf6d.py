@@ -1,5 +1,5 @@
 """
-    Copyright (c) 2022 Ad Schellevis <ad@opnsense.org>
+    Copyright (c) 2022-2026 Ad Schellevis <ad@opnsense.org>
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -57,24 +57,11 @@ class Ospf6dEventHandler(BaseEventHandler):
 
     def execute(self):
         if os.path.isfile(self._config):
-            # parse ospf6 interface data, keep structure similar to what ospf offers when using json output
-            ospf_interfaces = {
-                'interfaces': {}
-            }
-            this_interface = None
-            for line in self.vtysh.execute('show ipv6 ospf6 interface', translate=None).decode().split('\n'):
-                if len(line) > 0 and line[0] != ' ':
-                    this_interface  = line.split()[0]
-                    ospf_interfaces['interfaces'][this_interface] = {}
-                elif this_interface is not None:
-                    if line.find('Area ID') > 0 and line.split()[-1].isdigit():
-                        # Area ID X.X.X.X, Cost XXXX
-                        ospf_interfaces['interfaces'][this_interface]['cost'] = int(line.split()[-1])
-
+            ospf_interfaces = self.vtysh.execute('show ipv6 ospf6 interface json')
             config_interfaces = self._read_config()
             for intf in config_interfaces:
-                if 'interfaces' in ospf_interfaces and intf in ospf_interfaces['interfaces']:
-                    ospf_intf_cost = ospf_interfaces['interfaces'][intf]['cost']
+                if intf in ospf_interfaces:
+                    ospf_intf_cost = ospf_interfaces[intf]['cost']
                     is_intf_master = self.ifstatus.address_status(config_interfaces[intf]['carp_depend_on']) == 'master'
                     is_ospf_dem = ospf_intf_cost == config_interfaces[intf]['demoted_cost']
                     if is_intf_master and is_ospf_dem:

@@ -30,11 +30,16 @@ namespace OPNsense\Quagga\Migrations;
 
 use OPNsense\Base\BaseModelMigration;
 use OPNsense\Core\Config;
+use OPNsense\Quagga\BGP;
 
 class M1_1_3 extends BaseModelMigration
 {
     public function run($model)
     {
+        if (!$model instanceof BGP) {
+            return;
+        }
+
         $neighbors = $model->getNodeByReference('neighbors.neighbor');
 
         if ($neighbors === null) {
