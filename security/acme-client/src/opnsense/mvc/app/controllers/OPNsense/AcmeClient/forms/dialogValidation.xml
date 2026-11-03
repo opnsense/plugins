@@ -238,6 +238,40 @@
         <help><![CDATA[When System Assigned Managed Identity is enabled the Tenant ID, APP ID and Client Secret settings are ignored by the acme client. Access tokens are obtained using the Azure Instance Metadata Service for the System Assigned Managed Identity. See <a target="_blank" href="https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token">documentation</a>.]]></help>
     </field>
     <field>
+        <label>bHosted.nl</label>
+        <type>header</type>
+        <style>table_dns table_dns_bhosted</style>
+    </field>
+    <field>
+        <id>validation.dns_bhosted_user</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_bhosted_password</id>
+        <label>Password</label>
+        <type>password</type>
+        <help>API password (MD5 hash like bHosted.nl web services example)</help>
+    </field>
+    <field>
+        <id>validation.dns_bhosted_ttl</id>
+        <label>TTL</label>
+        <type>text</type>
+        <help>Optional override TTL for TXT record (default: 300)</help>
+    </field>
+    <field>
+        <id>validation.dns_bhosted_sld</id>
+        <label>SLD</label>
+        <type>text</type>
+        <help>Optional override (useful for multi-part TLDs like co.uk)</help>
+    </field>
+    <field>
+        <id>validation.dns_bhosted_tld</id>
+        <label>TLD</label>
+        <type>text</type>
+        <help>Optional override (useful for multi-part TLDs like co.uk)</help>
+    </field>
+    <field>
         <label>Bunny</label>
         <type>header</type>
         <style>table_dns table_dns_bunny</style>
