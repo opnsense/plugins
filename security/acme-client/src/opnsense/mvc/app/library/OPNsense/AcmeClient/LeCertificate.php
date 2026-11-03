@@ -374,7 +374,7 @@ class LeCertificate extends LeCommon
         } elseif (!empty($this->validation->skipped)) {
             // acme.sh decided renewal isn't due yet. Not an error, leave
             // the certificate's current status untouched.
-            LeUtils::log('renewal skipped, not due yet for certificate: ' . (string)$this->config->name);
+            LeUtils::log('renewal skipped by acme.sh, not due yet for certificate: ' . (string)$this->config->name);
             return false;
         } else {
             LeUtils::log_error('validation for certificate failed: ' . (string)$this->config->name);
