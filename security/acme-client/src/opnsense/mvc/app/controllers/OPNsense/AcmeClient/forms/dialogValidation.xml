@@ -248,6 +248,16 @@
         <type>text</type>
     </field>
     <field>
+        <label>Calrissia</label>
+        <type>header</type>
+        <style>table_dns table_dns_calrissia</style>
+    </field>
+    <field>
+        <id>validation.dns_calrissia_token</id>
+        <label>Personal access token</label>
+        <type>text</type>
+    </field>
+    <field>
         <label>Cloudflare</label>
         <type>header</type>
         <style>table_dns table_dns_cf</style>
