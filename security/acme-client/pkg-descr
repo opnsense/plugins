@@ -15,6 +15,9 @@ Added:
 * add support for deploy hook "trunes_websocat" (#5660)
 * new automation to upload certificate to JetKVM (#5726)
 
+Fixed:
+* fix command injection in Google Cloud DNS validation (reported by @cppghoul)
+
 4.17
 
 Added:
