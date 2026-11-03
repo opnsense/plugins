@@ -29,6 +29,7 @@
 namespace OPNsense\AcmeClient\LeValidation;
 
 use OPNsense\AcmeClient\LeValidationInterface;
+use OPNsense\AcmeClient\LeUtils;
 use OPNsense\Core\Config;
 
 /**
@@ -41,5 +42,12 @@ class Dns1984hosting extends Base implements LeValidationInterface
     {
         $this->acme_env['One984HOSTING_Username'] = (string)$this->config->dns_1984hosting_user;
         $this->acme_env['One984HOSTING_Password'] = (string)$this->config->dns_1984hosting_password;
+        if (!empty((string)$this->config->dns_1984hosting_totp_secret)) {
+            if ((string)$this->model->isPackageInstalled('oath-toolkit') != '1') {
+                LeUtils::log_error('Required package oath-toolkit is NOT installed. Please install the package or remove the 1984Hosting TOTP Secret.');
+                return false;
+            }
+            $this->acme_env['One984HOSTING_TOTP_Secret'] = (string)$this->config->dns_1984hosting_totp_secret;
+        }
     }
 }
