@@ -35,7 +35,7 @@ use OPNsense\Core\Config;
  * OpenProvider.com (REST) API
  * @package OPNsense\AcmeClient
  */
-class DnsOpenProvider extends Base implements LeValidationInterface
+class DnsOpenproviderRest extends Base implements LeValidationInterface
 {
     public function prepare()
     {
