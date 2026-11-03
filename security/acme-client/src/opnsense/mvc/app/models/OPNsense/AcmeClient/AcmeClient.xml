@@ -464,7 +464,7 @@
                         <dns_dynu>Dynu</dns_dynu>
                         <dns_dynv6>dynv6</dns_dynv6>
                         <dns_easydns>EasyDNS</dns_easydns>
-                        <dns_edgecenter>EdgeCenter DNS</dns_edgecenter>
+                        <dns_edgecenter>EdgeCenter</dns_edgecenter>
                         <dns_euserv>EUserv</dns_euserv>
                         <dns_exoscale>Exoscale</dns_exoscale>
                         <dns_fornex>Fornex</dns_fornex>
