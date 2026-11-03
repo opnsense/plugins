@@ -25,109 +25,203 @@
     ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 """
 import syslog
+from typing import Any
+
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
+
 from . import BaseAccount
+
+
+_POST_TIMEOUT = 30
 
 
 class Porkbun(BaseAccount):
     @staticmethod
-    def known_services():
+    def known_services() -> dict[str, str]:
         return {'porkbun': 'Porkbun'}
 
     @staticmethod
-    def match(account):
+    def match(account: dict[str, Any]) -> bool:
         return account.get('service') == 'porkbun'
 
-    def log(self, level, message):
+    def log(self, level: int, message: Any) -> None:
         syslog.syslog(level, f'Account {self.description} {message}')
 
-    def execute(self):
-        if super().execute():
-            # IPv4/IPv6
-            recordType = 'AAAA' if ':' in self.current_address else 'A'
+    def _get_hostnames(self) -> list[str]:
+        hostnames = self.settings.get('hostnames') or ''
+        return [h.strip() for h in hostnames.split(',') if h.strip()]
 
-            # use Session object to store constant API request headers
-            s = requests.Session()
+    def _get_zone(self, hostname: str) -> str:
+        """Return the DNS zone for a hostname (from config or derived).
+
+        If 'zone' is not explicitly configured, a best-effort fallback is used
+        by stripping the leftmost label from hostnames containing more than two
+        dot-separated parts.
+
+        Note:
+            The fallback is a string-splitting heuristic and can fail in:
+            - Multi-level subdomains: 'app.router.example.com' incorrectly
+              derives 'router.example.com' instead of 'example.com'.
+            - Apex domains on multi-part TLDs: 'example.co.uk' incorrectly
+              derives 'co.uk' instead of 'example.co.uk'.
+
+            In these scenarios, the 'zone' field must be explicitly set in the
+            account configuration.
+        """
+        zone = (self.settings.get('zone') or '').strip().rstrip('.')
+        if zone:
+            return zone
+        parts = hostname.split('.')
+        if len(parts) > 2:
+            return '.'.join(parts[1:])
+        return hostname
+
+    @staticmethod
+    def _get_label(hostname: str, zone: str) -> str:
+        """Return the record label (left of zone) for a hostname."""
+        if hostname == zone:
+            return ''
+        if hostname.endswith('.' + zone):
+            return hostname[:-len(zone) - 1]
+        return hostname.split('.')[0]
+
+    def _create_record(
+        self, s: requests.Session, domain: str, subdomain: str,
+        record_type: str, hostname: str
+    ) -> bool:
+        """Fallback method to create a DNS record if editing fails."""
+        create_url = f'https://api.porkbun.com/api/json/v3/dns/create/{domain}'
+        create_payload: dict[str, str] = {
+            'name': subdomain,
+            'type': record_type,
+            'content': self.current_address,
+            'ttl': '600'
+        }
+
+        try:
+            create_resp = s.post(create_url, json=create_payload,
+                                 timeout=_POST_TIMEOUT)
+        except requests.exceptions.RequestException as e:
+            self.log(syslog.LOG_ERR,
+                     f'network error creating record for {hostname}: {e}')
+            return False
+
+        try:
+            create_json = create_resp.json()
+        except requests.exceptions.JSONDecodeError:
+            self.log(
+                syslog.LOG_ERR,
+                f'error parsing create JSON response '
+                f'(host: {hostname}): body {create_resp.text}'
+            )
+            return False
+
+        if not isinstance(create_json, dict):
+            self.log(
+                syslog.LOG_ERR,
+                f'unexpected non-dict JSON response for create '
+                f'(host: {hostname}): type {type(create_json).__name__}'
+            )
+            return False
+
+        if create_json.get('status') != 'SUCCESS':
+            err_msg = create_json.get("message", "unknown create error")
+            self.log(
+                syslog.LOG_ERR,
+                f'failed to create {record_type} for {hostname}: {err_msg}'
+            )
+            return False
+
+        self.log(
+            syslog.LOG_NOTICE,
+            f'created new {record_type} record {self.current_address} '
+            f'for hostname {hostname}'
+        )
+
+        return True
+
+    def execute(self) -> bool:
+        if not super().execute():
+            return False  # Current address unchanged, or error getting address
+
+        record_type = 'AAAA' if ':' in self.current_address else 'A'
+
+        edit_payload = {
+            'content': self.current_address,
+            'type': record_type,
+        }
+
+        with requests.Session() as s:
+            retries = Retry(
+                total=4,
+                backoff_factor=1,
+                status_forcelist=[429],  # Too many requests (rate limit)
+                allowed_methods=['POST']
+            )
+            s.mount('https://', HTTPAdapter(max_retries=retries))
+
             s.headers['User-Agent'] = 'OPNsense-dyndns'
-            s.headers['X-API-Key'] = self.settings.get('username')
-            s.headers['X-Secret-API-Key'] = self.settings.get('password')
+            s.headers['X-API-Key'] = self.settings.get('username') or ''
+            s.headers['X-Secret-API-Key'] = self.settings.get('password') or ''
 
-            # keep track of which records to update
-            updates = []
+            for hostname in self._get_hostnames():
 
-            # get record IDs for each domain to update
-            for hostname in self.settings["hostnames"].split(","):
-                # split off domain from subdomain, if present
-                split_domain = hostname.rsplit('.', 2)
-                if len(split_domain) == 3:
-                    subdomain, middle, tld = split_domain
-                    domain = f'{middle}.{tld}'
-                else:
-                    subdomain = ''
-                    domain = hostname
+                domain: str = self._get_zone(hostname)
+                subdomain: str = self._get_label(hostname, domain)
 
-                # fetch subdomain A records
-                fetch_url = f'https://api.porkbun.com/api/json/v3/dns/retrieveByNameType/{domain}/{recordType}/{subdomain}'
-                fetch_resp = s.post(fetch_url)
+                subdomain_path = f'/{subdomain}' if subdomain else ''
+                edit_url = (
+                    f'https://api.porkbun.com/api/json/v3/dns/'
+                    f'editByNameType/{domain}/{record_type}{subdomain_path}'
+                )
 
                 try:
-                    records_json = fetch_resp.json()
-                except requests.exceptions.JSONDecodeError:
-                    self.log(syslog.LOG_ERR, f'error when parsing record IDs JSON response (host: {hostname}): body {fetch_resp.text}')
-                    return False
-
-                if records_json.get('status') != 'SUCCESS':
+                    edit_resp = s.post(edit_url, json=edit_payload,
+                                       timeout=_POST_TIMEOUT)
+                except requests.exceptions.RequestException as e:
                     self.log(
                         syslog.LOG_ERR,
-                        f'error fetching {recordType} records for hostname {hostname}: {records_json["message"]}'
+                        f'network error editing record for {hostname}: {e}'
                     )
                     return False
-
-                if not records_json['records']:
-                    self.log(
-                        syslog.LOG_ERR,
-                        f'error no {recordType} records found for host {hostname}'
-                    )
-                    return False
-
-                # arbitrarily choose first record if exists
-                record_id = records_json['records'][0]['id']
-                updates.append((domain, hostname, record_id))
-
-            # all records have same type (A/AAAA) and new value (IP)
-            # NOTE: ttl is explicitly omitted as it caused errors when trying to edit records in testing
-            edit_payload = {
-                'content': self.current_address,
-                'type': recordType,
-            }
-
-            # update each record based on ID
-            for domain, hostname, record_id in updates:
-                edit_url = f'https://api.porkbun.com/api/json/v3/dns/edit/{domain}/{record_id}'
-                edit_resp = s.post(edit_url, json=edit_payload)
 
                 try:
                     edit_json = edit_resp.json()
                 except requests.exceptions.JSONDecodeError:
                     self.log(
                         syslog.LOG_ERR,
-                        f'error when parsing edit JSON response (host: {hostname}): body {edit_resp.text}'
+                        f'error when parsing edit JSON response '
+                        f'(host: {hostname}): body {edit_resp.text}'
+                    )
+                    return False
+
+                if not isinstance(edit_json, dict):
+                    self.log(
+                        syslog.LOG_ERR,
+                        f'unexpected non-dict JSON response for edit '
+                        f'(host: {hostname}): type {type(edit_json).__name__}'
                     )
                     return False
 
                 if edit_json.get('status') != 'SUCCESS':
+                    err_msg: Any = edit_json.get("message", "unknown error")
                     self.log(
-                        syslog.LOG_ERR,
-                        f'error response when updating {recordType} record for hostname {hostname}: {edit_json["message"]}'
+                        syslog.LOG_NOTICE,
+                        f'edit failed for {hostname} ({err_msg}), '
+                        f'attempting creation...'
                     )
-                    return False
+                    if not self._create_record(
+                        s, domain, subdomain, record_type, hostname
+                    ):
+                        return False
                 else:
                     self.log(
                         syslog.LOG_NOTICE,
-                        f'set new IP {self.current_address} for hostname {hostname}'
+                        f'set new IP {self.current_address} '
+                        f'for hostname {hostname}'
                     )
 
-            self.update_state(address=self.current_address)
-            return True
-
-        return False
+        self.update_state(address=self.current_address)
+        return True
