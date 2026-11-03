@@ -8,6 +8,9 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+Fixed:
+* fix false "validation failed" status when acme.sh skips a renewal that
+  is not due yet (#4908)
 Added:
 * add support for deploy hook "trunes_websocat" (#5660)
 * new automation to upload certificate to JetKVM (#5726)
