@@ -32,7 +32,7 @@ use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
 
 /**
- * Ali DNS API
+ * Edgecenter DNS API
  * @package OPNsense\AcmeClient
  */
 class DnsEdgecenter extends Base implements LeValidationInterface
