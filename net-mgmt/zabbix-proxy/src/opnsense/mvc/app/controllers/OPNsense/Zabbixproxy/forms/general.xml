@@ -88,6 +88,12 @@
         <help>The number of pre-forked instances of Zabbix agent pollers.</help>
     </field>
     <field>
+        <id>general.startsnmppollers</id>
+        <label>Start SNMP Pollers</label>
+        <type>text</type>
+        <help>The number of pre-forked instances of SNMP pollers.</help>
+    </field>
+    <field>
         <id>general.starttrappers</id>
         <label>Start Trappers</label>
         <type>text</type>
