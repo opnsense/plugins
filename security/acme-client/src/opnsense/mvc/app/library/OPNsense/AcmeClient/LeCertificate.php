@@ -368,6 +368,12 @@ class LeCertificate extends LeCommon
             return false; // validation method is invalid
         }
 
+        // acme.sh would re-run a recorded deploy hook during --renew, i.e. before
+        // the certificate is imported. Remove stale hooks to avoid failed renewals.
+        if ($renew) {
+            $this->clearRecordedDeployHooks();
+        }
+
         // Let's start certificate validation...
         if ($this->validation->run($renew)) {
             LeUtils::log('successfully issued/renewed certificate: ' . (string)$this->config->name);

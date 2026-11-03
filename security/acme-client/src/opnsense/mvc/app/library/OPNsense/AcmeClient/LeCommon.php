@@ -276,4 +276,44 @@ abstract class LeCommon
     {
         $this->uuid = $uuid;
     }
+
+    /**
+     * Remove the deploy hook recorded by acme.sh from all domain config files.
+     * acme.sh stores the last used deploy hook (Le_DeployHook) and would run
+     * it again on the next --renew or --deploy, even if the automation has
+     * been removed in the meantime.
+     * Domain configs are located below --cert-home (including ECC certs,
+     * which use a "_ecc" suffix directory). The legacy location below --home
+     * is still covered for setups that keep their domain configs there.
+     * @return void
+     */
+    protected function clearRecordedDeployHooks()
+    {
+        $conf_files = array_merge(
+            glob(self::ACME_HOME_DIR . '/*/*.conf') ?: [],
+            glob(sprintf(self::ACME_CERT_HOME_DIR, '*') . '/*/*.conf') ?: []
+        );
+        foreach ($conf_files as $filename) {
+            // Skip openssl config files.
+            if (preg_match('/.*.csr.conf/i', $filename)) {
+                continue;
+            }
+
+            // Read contents from file.
+            $contents = file_get_contents($filename);
+
+            // Check if deploy hook string can be found.
+            if (strpos($contents, self::ACME_DEPLOY_HOOK_STRING) !== false) {
+                // Replace the whole line with an empty string.
+                $contents = preg_replace('(' . self::ACME_DEPLOY_HOOK_STRING . '.*)', '', $contents);
+
+                // Write changes to the file.
+                if (!file_put_contents($filename, $contents)) {
+                    LeUtils::log_error('clearing recorded deploy hook from acme.sh failed (' . $filename . ')');
+                } else {
+                    LeUtils::log_debug('cleared recorded deploy hook from acme.sh (' . $filename . ')');
+                }
+            }
+        }
+    }
 }
