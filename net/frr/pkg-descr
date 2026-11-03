@@ -11,6 +11,10 @@ switching and routing, Internet access routers, and Internet peering.
 Plugin Changelog
 ================
 
+2.1
+
+* BGP: Add per-neighbor local-as no-prepend/replace-as options (contributed by clarkchentw)
+
 2.0
 
 * Report failed configuration reloads and include frr-reload.log in the log file (debug level) (d8d9b66e0)
