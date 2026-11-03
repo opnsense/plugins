@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>4.4.0</version>
+    <version>4.5.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -1257,7 +1257,7 @@
                     <Required>N</Required>
                 </dns_easydns_apikey>
                 <dns_edgecenter_apikey type="TextField">
-                    <Required>Y</Required>
+                    <Required>N</Required>
                 </dns_edgecenter_apikey>
                 <dns_euserv_user type="TextField">
                     <Required>N</Required>
