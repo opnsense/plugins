@@ -8,6 +8,9 @@ WWW: https://github.com/acmesh-official/acme.sh
 Plugin Changelog
 ================
 
+Added:
+* new automation to upload certificate to JetKVM (#5726)
+
 4.17
 
 Added:
