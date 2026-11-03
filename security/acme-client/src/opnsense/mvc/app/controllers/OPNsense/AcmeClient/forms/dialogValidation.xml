@@ -1762,6 +1762,16 @@
         <type>dropdown</type>
     </field>
     <field>
+        <label>DNSMint API</label>
+        <type>header</type>
+        <style>table_dns table_dns_dnsmint</style>
+    </field>
+    <field>
+        <id>validation.dns_dnsmint_api_key</id>
+        <label>DNSMint API key</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>deSEC.io API</label>
         <type>header</type>
         <style>table_dns table_dns_desec</style>
