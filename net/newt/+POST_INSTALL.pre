@@ -1,0 +1,2 @@
+install -d -m 700 /usr/local/etc/newt
+/usr/local/bin/php /usr/local/opnsense/scripts/OPNsense/Newt/migrate.php

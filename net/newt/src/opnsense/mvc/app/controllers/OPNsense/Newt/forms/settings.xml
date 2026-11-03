@@ -1,0 +1,11 @@
+<form>
+    <field><type>header</type><label>Pangolin Newt</label><static>true</static></field>
+    <field><id>newt.general.enabled</id><label>Enable</label><type>checkbox</type><help>Start Newt automatically and connect this firewall to your Pangolin site.</help></field>
+    <field><id>newt.general.endpoint</id><label>Pangolin URL</label><type>text</type><help>HTTPS address of your Pangolin server.</help></field>
+    <field><id>newt.general.siteId</id><label>Site ID</label><type>text</type><help>Newt ID from the site configuration in Pangolin.</help></field>
+    <field><id>newt.general.secret</id><label>Site Secret</label><type>password</type><help>Site secret from Pangolin. Keep the existing value when continuing to use this site.</help></field>
+    <field><id>newt.general.logLevel</id><label>Log Level</label><type>dropdown</type><help>Use Info for normal operation and Debug for troubleshooting.</help></field>
+    <field><id>newt.general.mtu</id><label>MTU</label><type>text</type><advanced>true</advanced><help>Tunnel packet size. Keep 1280 unless your network requires another value.</help></field>
+    <field><id>newt.general.port</id><label>Client Tunnel Port</label><type>text</type><advanced>true</advanced><help>Optional fixed UDP listening port. Leave empty to choose automatically.</help></field>
+    <field><id>newt.general.dns</id><label>DNS Server</label><type>text</type><advanced>true</advanced><help>Optional DNS server for Newt to resolve its destinations. Leave empty to use the Newt default.</help></field>
+</form>

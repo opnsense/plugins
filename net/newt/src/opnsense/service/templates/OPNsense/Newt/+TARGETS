@@ -1,0 +1,2 @@
+rc.conf.d:/etc/rc.conf.d/newt
+config.json:/usr/local/etc/newt/config.json

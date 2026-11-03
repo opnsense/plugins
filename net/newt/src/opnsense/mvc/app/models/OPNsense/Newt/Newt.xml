@@ -1,0 +1,33 @@
+<model>
+    <mount>//OPNsense/Newt</mount>
+    <version>1.0.0</version>
+    <description>Pangolin Newt site connector</description>
+    <items>
+        <general>
+            <enabled type="BooleanField"><Default>0</Default><Required>Y</Required></enabled>
+            <endpoint type="TextField">
+                <Required>Y</Required>
+                <Mask>#^https://(?:\[[0-9A-Fa-f:]+\]|[A-Za-z0-9.-]+)(?::[0-9]{1,5})?/?$#D</Mask>
+                <ValidationMessage>Enter an HTTPS Pangolin server address, for example https://pangolin.example.com.</ValidationMessage>
+            </endpoint>
+            <siteId type="TextField">
+                <Required>Y</Required><Mask>#^[A-Za-z0-9_-]{1,128}$#D</Mask>
+                <ValidationMessage>Enter the Newt site ID from Pangolin.</ValidationMessage>
+            </siteId>
+            <secret type="TextField">
+                <Required>Y</Required><Mask>#^\S{1,512}$#D</Mask>
+                <ValidationMessage>Enter the site secret without whitespace (up to 512 characters).</ValidationMessage>
+            </secret>
+            <logLevel type="OptionField">
+                <Default>INFO</Default><Required>Y</Required>
+                <OptionValues><INFO>Info</INFO><WARN>Warning</WARN><ERROR>Error</ERROR><DEBUG>Debug</DEBUG></OptionValues>
+            </logLevel>
+            <mtu type="IntegerField">
+                <Default>1280</Default><Required>Y</Required><MinimumValue>1280</MinimumValue><MaximumValue>9000</MaximumValue>
+                <ValidationMessage>MTU must be between 1280 and 9000.</ValidationMessage>
+            </mtu>
+            <port type="IntegerField"><Required>N</Required><MinimumValue>1</MinimumValue><MaximumValue>65535</MaximumValue></port>
+            <dns type="NetworkField"><Required>N</Required><AddressFamily>ipv4,ipv6</AddressFamily><NetMaskAllowed>N</NetMaskAllowed></dns>
+        </general>
+    </items>
+</model>
