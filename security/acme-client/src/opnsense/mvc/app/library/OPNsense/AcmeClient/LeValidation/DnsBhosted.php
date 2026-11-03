@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2020-2025 Erwin Witbreuk
+ * Copyright (C) 2026 Erwin Witbreuk
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
