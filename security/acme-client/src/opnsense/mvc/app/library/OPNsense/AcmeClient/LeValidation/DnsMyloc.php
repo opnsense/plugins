@@ -30,7 +30,7 @@ namespace OPNsense\AcmeClient\LeValidation;
 use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
 
-class Dnsmyloc extends Base implements LeValidationInterface
+class DnsMyloc extends Base implements LeValidationInterface
 {
     public function prepare()
     {
