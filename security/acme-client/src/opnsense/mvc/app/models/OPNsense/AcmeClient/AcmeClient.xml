@@ -1445,8 +1445,8 @@
                         <acme_ruckus>Upload certificate to Ruckus controller</acme_ruckus>
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
-                        <acme_truenas>Deprecated - Upload certificate to TrueNAS Server</acme_truenas>
-                        <acme_truenas_ws>Upload certificate to TrueNAS Server (python midctl/websocket)</acme_truenas_ws>
+                        <acme_truenas>Upload certificate to TrueNAS Server (deprecated; old API)</acme_truenas>
+                        <acme_truenas_ws>Upload certificate to TrueNAS Server (deprecated; midctl/websocket)</acme_truenas_ws>
                         <acme_truenas_websocat>Upload certificate to TrueNAS Server (websocat binary)</acme_truenas_websocat>
                         <acme_zyxel_gs1900>Upload certificate to Zyxel GS1900 series switches</acme_zyxel_gs1900>
                         <acme_unifi>Update local Unifi keystore</acme_unifi>
