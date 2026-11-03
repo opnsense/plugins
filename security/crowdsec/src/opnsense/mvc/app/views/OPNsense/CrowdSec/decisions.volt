@@ -11,11 +11,27 @@
             search: '/api/crowdsec/decisions/search/',
             del: '/api/crowdsec/decisions/del/',
             datakey: "id",
+            options: {
+                responseHandler: CrowdSec.messageHandler($("#decisions_message")),
+            },
+        });
+
+        ajaxGet("/api/crowdsec/general/get", {}, function (data, status) {
+            const general = (status === "success" && data.general) || {};
+            const bouncerRemote = general.firewall_bouncer_enabled === "1" &&
+                general.lapi_manual_configuration !== "1" &&
+                ((general.bouncer_lapi || {}).remote || {}).selected === 1;
+            $("#msg_not_enforced").toggleClass("hidden", !bouncerRemote);
         });
 
         updateServiceControlUI('crowdsec');
     });
 </script>
+
+<div class="alert alert-warning hidden" role="alert" id="msg_not_enforced">
+    {{ lang._('The remediation component connects to a remote LAPI: these decisions of the local LAPI are not blocked by this firewall.') }}
+</div>
+<div class="alert alert-info hidden" role="alert" id="decisions_message"></div>
 
 Note: the decisions coming from the CAPI (signals collected by the CrowdSec users) do not appear here.
 To show them, use <code>cscli decisions list -a</code> in a shell.

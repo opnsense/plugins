@@ -12,4 +12,16 @@ class Util
         }
         return $local_path;
     }
+
+    /**
+     * message for a list that cscli could not retrieve
+     * @return string
+     */
+    public static function noDataMessage(): string
+    {
+        if (!(new General())->lapi_enabled->isEqual('1')) {
+            return gettext('No data: the local LAPI is disabled.');
+        }
+        return 'unable to retrieve data';
+    }
 }

@@ -15,7 +15,9 @@
     <label>Enable LAPI</label>
     <type>checkbox</type>
     <help>Enable/disable the CrowdSec Local API. Keep this enabled unless you
-      connect to a LAPI on another machine.</help>
+      connect to a LAPI on another machine. To connect the remediation
+      component to a LAPI on another machine, set "Remediation component
+      connects to" to "Remote LAPI".</help>
   </field>
 
   <!-- firewall_bouncer_enabled -->
@@ -25,6 +27,35 @@
     <type>checkbox</type>
     <help>Enable/disable the remediation component. Keep this enabled to block
       packets from the attacking IP addresses.</help>
+  </field>
+
+  <!-- bouncer_lapi -->
+  <field>
+    <id>general.bouncer_lapi</id>
+    <label>Remediation component connects to</label>
+    <type>dropdown</type>
+    <help>The LAPI that provides the decisions to block. "Local LAPI" is the
+      LAPI running on this firewall. Choose "Remote LAPI" to block the
+      decisions of a LAPI on another machine, for example a central CrowdSec
+      server. The local LAPI can then be disabled, or keep serving other
+      machines; its decisions are then not blocked by this firewall.</help>
+  </field>
+
+  <!-- remote_lapi_url -->
+  <field>
+    <id>general.remote_lapi_url</id>
+    <label>Remote LAPI URL</label>
+    <type>text</type>
+    <help>URL of the remote LAPI, for example http://192.168.1.10:8080/</help>
+  </field>
+
+  <!-- remote_bouncer_api_key -->
+  <field>
+    <id>general.remote_bouncer_api_key</id>
+    <label>Remote LAPI API key</label>
+    <type>password</type>
+    <help>API key of a bouncer registered on the remote LAPI. For security the
+      stored key is never shown; leave the field empty to keep it.</help>
   </field>
 
   <!-- enroll_key  -->
@@ -43,9 +74,11 @@
     <help>Avoid overwriting LAPI settings for config.yaml,
       local_api_credentials.yaml, crowdsec-firewall-bouncer.yaml. The next
       two configuration options (lapi_listen_address, lapi_listen_port) will
-      be ignored. Allows unsupported configurations like linking together
-      multiple opnsense instances or connecting to an existing crowdsec
-      multi-server setup.</help>
+      be ignored, as well as the remote LAPI settings of the remediation
+      component. Allows configurations not covered by these settings, like
+      linking together multiple opnsense instances, connecting the log
+      processor to an existing crowdsec multi-server setup, or TLS client
+      certificates.</help>
   </field>
 
   <!-- lapi_listen_address -->
@@ -58,7 +91,8 @@
       agents/machines and bouncers.
 
       This is written in /usr/local/etc/crowdsec/config.yaml,
-      local_api_credentials.yaml and bouncers/crowdsec-firewall-bouncer.yaml.
+      local_api_credentials.yaml and, when the remediation component connects
+      to the local LAPI, bouncers/crowdsec-firewall-bouncer.yaml.
       To enable TLS, add the certificate information to config.yaml and change
       http to https in the other two files. Comments in YAML will not be
       preserved.</help>
