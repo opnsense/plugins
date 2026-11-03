@@ -24,6 +24,7 @@
                 <hpf>hpHosts FSA</hpf>
                 <hpp>hpHosts PSH</hpp>
                 <hup>hpHosts PUP</hup>
+                <loc>Local file dnsbl-local.txt</loc>
                 <mw>Malwaredomain List</mw>
                 <nc>NoCoin List</nc>
                 <pt>PornTop1M List</pt>
