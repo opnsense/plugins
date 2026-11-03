@@ -1,6 +1,7 @@
 {#
 
     Copyright (C) 2017 Fabian Franz
+    Copyright (C) 2026 txr13
     All rights reserved.
 
     Redistribution and use in source and binary forms, with or without
@@ -46,8 +47,8 @@ function reload_handler() {
 
 $( document ).ready(function() {
     var data_get_map = {
-        'general': '/api/tor/general/get',
-        'relay': '/api/tor/relay/get'
+        'frm_general': '/api/tor/general/get',
+        'frm_relay': '/api/tor/relay/get'
     };
     mapDataToFormUI(data_get_map).done(function(data){
         formatTokenizersUI();
@@ -56,8 +57,8 @@ $( document ).ready(function() {
 
     // link save button to API set action
     [
-      {'selector': '#generalsaveAct', 'endpoint': '/api/tor/general/set', 'formid': 'general'},
-      {'selector': '#relaysaveAct', 'endpoint': '/api/tor/relay/set', 'formid': 'relay'}
+      {'selector': '#generalsaveAct', 'endpoint': '/api/tor/general/set', 'formid': 'frm_general'},
+      {'selector': '#relaysaveAct', 'endpoint': '/api/tor/relay/set', 'formid': 'frm_relay'}
     ].forEach(function (cfg) {
         $(cfg.selector).click(function(){
             saveFormToEndpoint(url=cfg.endpoint, formid=cfg.formid,callback_ok=function(){
@@ -140,7 +141,7 @@ $( document ).ready(function() {
 
 <div class="tab-content content-box tab-content" style="padding-bottom: 1.5em;">
     <div id="general" class="tab-pane fade in active">
-        {{ partial("layout_partials/base_form",['fields': general,'id':'general'])}}
+        {{ partial("layout_partials/base_form",['fields': general,'id':'frm_general'])}}
         <div class="col-md-12">
             <hr />
             <button class="btn btn-primary" id="generalsaveAct" type="button"><b>{{ lang._('Save') }}</b> <i class="saveAct_progress"></i></button>
@@ -249,7 +250,7 @@ $( document ).ready(function() {
         </table>
     </div>
     <div id="relay" class="tab-pane fade in">
-        {{ partial("layout_partials/base_form",['fields': relay,'id':'relay'])}}
+        {{ partial("layout_partials/base_form",['fields': relay,'id':'frm_relay'])}}
         <div class="col-md-12">
             <hr />
             <button class="btn btn-primary" id="relaysaveAct" type="button"><b>{{ lang._('Save') }}</b> <i class="saveAct_progress"></i></button>
