@@ -63,13 +63,6 @@ porntop() {
 	rm ${WORKDIR}/porntop-raw
 }
 
-emdlist() {
-	# EMD
-	${FETCH} https://hosts-file.net/emd.txt -o ${WORKDIR}/emdlist-raw
-	sed "/\.$/d" ${WORKDIR}/emdlist-raw | sed "/^#/d" | sed "/\_/d" | sed "/^[[:space:]]*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/emdlist
-	rm ${WORKDIR}/emdlist-raw
-}
-
 adguard() {
 	# AdGuard
 	${FETCH} https://justdomains.github.io/blocklists/lists/adguarddns-justdomains.txt -o ${WORKDIR}/adguard-raw
@@ -77,25 +70,18 @@ adguard() {
 	rm ${WORKDIR}/adguard-raw
 }
 
+netapi() {
+	# NetAPI compromised domains: domains reported by public threat feeds in the last 24 hours
+	${FETCH} "https://netapi.com/api2/?method=compromised&dataset_type=url" -o ${WORKDIR}/netapi-raw
+	sed "/\.$/d" ${WORKDIR}/netapi-raw | sed "/^#/d" | sed "/\_/d" | sed "/^[[:space:]]*$/d" | sed "/\.\./d" | sed "s/^\.//g" | tr -d '\r' > ${WORKDIR}/netapi
+	rm ${WORKDIR}/netapi-raw
+}
+
 nocoin() {
 	# NoCoin
 	${FETCH} https://justdomains.github.io/blocklists/lists/nocoin-justdomains.txt -o ${WORKDIR}/nocoin-raw
 	sed "/\.$/d" ${WORKDIR}/nocoin-raw | sed "/^#/d" | sed "/\_/d" | sed "/^[[:space:]]*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/nocoin
 	rm ${WORKDIR}/nocoin-raw
-}
-
-rwtracker() {
-	# RansomWare Tracker abuse.ch
-	${FETCH} https://ransomwaretracker.abuse.ch/downloads/RW_DOMBL.txt -o ${WORKDIR}/rwtracker-raw
-	sed "/\.$/d" ${WORKDIR}/rwtracker-raw | sed "/^#/d" | sed "/\_/d" | sed "/^[[:space:]]*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/rwtracker
-	rm ${WORKDIR}/rwtracker-raw
-}
-
-mwdomains() {
-	# MalwareDomains
-	${FETCH} http://malwaredomains.lehigh.edu/files/justdomains -o ${WORKDIR}/malwaredomains-raw
-	sed "/\.$/d" ${WORKDIR}/malwaredomains-raw | sed "/^#/d" | sed "/\_/d" | sed "/^[[:space:]]*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/malwaredomains
-	rm ${WORKDIR}/malwaredomains-raw
 }
 
 windowsspyblockerspy() {
@@ -168,34 +154,6 @@ blocklistphishing() {
         rm ${WORKDIR}/blocklistphishing-raw
 }
 
-hphosts-ads() {
-        # hphosts-ads
-        ${FETCH} https://hosts-file.net/ad_servers.txt -o ${WORKDIR}/hphosts-ads-raw
-        sed "/\.$/d" ${WORKDIR}/hphosts-ads-raw | sed "/^#/d" | sed "/\_/d" | sed "/^[[:space:]]*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/hphosts-ads
-        rm ${WORKDIR}/hphosts-ads-raw
-}
-
-hphosts-fsa() {
-        # hphosts-fsa
-        ${FETCH} https://hosts-file.net/fsa.txt -o ${WORKDIR}/hphosts-fsa-raw
-        sed "/\.$/d" ${WORKDIR}/hphosts-fsa-raw | sed "/^#/d" | sed "/\_/d" | sed "/^[[:space:]]*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/hphosts-fsa
-        rm ${WORKDIR}/hphosts-fsa-raw
-}
-
-hphosts-psh() {
-        # hphosts-psh
-        ${FETCH} https://hosts-file.net/psh.txt -o ${WORKDIR}/hphosts-psh-raw
-        sed "/\.$/d" ${WORKDIR}/hphosts-psh-raw | sed "/^#/d" | sed "/\_/d" | sed "/^[[:space:]]*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/hphosts-psh
-        rm ${WORKDIR}/hphosts-psh-raw
-}
-
-hphosts-pup() {
-        # hphosts-pup
-        ${FETCH} https://hosts-file.net/pup.txt -o ${WORKDIR}/hphosts-pup-raw
-        sed "/\.$/d" ${WORKDIR}/hphosts-pup-raw | sed "/^#/d" | sed "/\_/d" | sed "/^[[:space:]]*$/d" | sed "/\.\./d" | sed "s/^\.//g" | sed "/localhost/d" | sed "/255\.255\.255\.255/d" | sed "/\:\:1/d" | sed "/fe80\:\:1/d" | sed "/ff00\:\:/d" | sed "/ff02\:\:/d" | sed "/0\.0\.0\.0 0\.0\.0\.0/d" | tr -d '\r' | awk 'BEGIN{FS=OFS=" ";}{print $2;}' > ${WORKDIR}/hphosts-pup
-        rm ${WORKDIR}/hphosts-pup-raw
-}
-
 simplead() {
 	# Simple Ad List
 	${FETCH} https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt -o ${WORKDIR}/simplead-raw
@@ -254,29 +212,11 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 	ep)
 		easyprivacy
 		;;
-	emd)
-		emdlist
-		;;
-	hpa)
-		hphosts-ads
-		;;
-	hpf)
-		hphosts-fsa
-		;;
-	hpp)
-		hphosts-psh
-		;;
-	hup)
-		hphosts-pup
+	na)
+		netapi
 		;;
 	nc)
 		nocoin
-		;;
-	rw)
-		rwtracker
-		;;
-	mw)
-		mwdomains
 		;;
 	pa)
 		#pornall
