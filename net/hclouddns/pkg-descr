@@ -1,0 +1,16 @@
+Hetzner Cloud DNS Management Plugin for OPNsense
+
+Features:
+- Multi-account support (multiple Hetzner API tokens)
+- Multi-zone DNS management
+- Dynamic DNS with automatic failover between WAN interfaces
+- IPv4 and IPv6 (Dual-Stack) support
+- DNS record templates for quick setup
+- Direct DNS management (view/edit/delete records)
+- Change history with undo functionality
+- Notifications (Email, Webhook, Ntfy)
+- Configuration backup/restore
+
+Supports both Hetzner Cloud API and legacy DNS Console API.
+
+WWW: https://github.com/ArcanConsulting/os-hclouddns
