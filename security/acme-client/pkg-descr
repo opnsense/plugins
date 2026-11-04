@@ -26,11 +26,17 @@ Added:
 Changed:
 * switch Selfhost to API key (#5856)
 * add 2FA support for 1984Hosting DNS API (#5866)
+* import each certificate of the ACME CA chain as a separate CA and link
+  it to its issuer (#5876)
 
 Fixed:
 * fix command injection in Google Cloud DNS validation (reported by @cppghoul)
 * fix "validation failed" status when renewal is not due yet (#5719)
 * fix unexpected re-run of deploy hooks (#5871, #3120)
+* fix duplicate CA certificates in the certificate chain when an ACME CA
+  was linked to another CA (#5876)
+* fix editing ACME CAs that contain multiple certificates in
+  System: Trust: Authorities (#5876)
 
 4.17
 
