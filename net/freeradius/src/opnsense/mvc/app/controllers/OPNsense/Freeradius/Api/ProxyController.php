@@ -67,6 +67,7 @@ class ProxyController extends ApiMutableModelControllerBase
             }
             // serialize model to config and save
             if ($valMsgs->count() == 0) {
+                $this->throwReadOnly();
                 $mdlProxy->serializeToConfig();
                 Config::getInstance()->save();
                 $result["result"] = "saved";
@@ -118,6 +119,7 @@ class ProxyController extends ApiMutableModelControllerBase
             if (count($result['validations']) == 0) {
                 unset($result['validations']);
                 // save config if validated correctly
+                $this->throwReadOnly();
                 $mdlRealm->serializeToConfig();
                 Config::getInstance()->save();
                 unset($result['validations']);
@@ -134,6 +136,7 @@ class ProxyController extends ApiMutableModelControllerBase
             $mdlRealm = $this->getModel();
             if ($uuid != null) {
                 if ($mdlRealm->realms->realm->del($uuid)) {
+                    $this->throwReadOnly();
                     $mdlRealm->serializeToConfig();
                     Config::getInstance()->save();
                     $result['result'] = 'deleted';
@@ -162,6 +165,7 @@ class ProxyController extends ApiMutableModelControllerBase
                     }
                     if (count($result['validations']) == 0) {
                         // save config if validated correctly
+                        $this->throwReadOnly();
                         $mdlSetting->serializeToConfig();
                         Config::getInstance()->save();
                         $result = array("result" => "saved");
@@ -189,6 +193,7 @@ class ProxyController extends ApiMutableModelControllerBase
                         $node->enabled = "1";
                     }
                     // if item has toggled, serialize to config and save
+                    $this->throwReadOnly();
                     $mdlSetting->serializeToConfig();
                     Config::getInstance()->save();
                 }
@@ -243,6 +248,7 @@ class ProxyController extends ApiMutableModelControllerBase
             if (count($result['validations']) == 0) {
                 unset($result['validations']);
                 // save config if validated correctly
+                $this->throwReadOnly();
                 $mdlHomeserver->serializeToConfig();
                 Config::getInstance()->save();
                 unset($result['validations']);
@@ -259,6 +265,7 @@ class ProxyController extends ApiMutableModelControllerBase
             $mdlHomeserver = $this->getModel();
             if ($uuid != null) {
                 if ($mdlHomeserver->homeservers->homeserver->del($uuid)) {
+                    $this->throwReadOnly();
                     $mdlHomeserver->serializeToConfig();
                     Config::getInstance()->save();
                     $result['result'] = 'deleted';
@@ -287,6 +294,7 @@ class ProxyController extends ApiMutableModelControllerBase
                     }
                     if (count($result['validations']) == 0) {
                         // save config if validated correctly
+                        $this->throwReadOnly();
                         $mdlSetting->serializeToConfig();
                         Config::getInstance()->save();
                         $result = array("result" => "saved");
@@ -344,6 +352,7 @@ class ProxyController extends ApiMutableModelControllerBase
             if (count($result['validations']) == 0) {
                 unset($result['validations']);
                 // save config if validated correctly
+                $this->throwReadOnly();
                 $mdlHomeserverpool->serializeToConfig();
                 Config::getInstance()->save();
                 unset($result['validations']);
@@ -360,6 +369,7 @@ class ProxyController extends ApiMutableModelControllerBase
             $mdlHomeserverpool = $this->getModel();
             if ($uuid != null) {
                 if ($mdlHomeserverpool->homeserverpools->homeserverpool->del($uuid)) {
+                    $this->throwReadOnly();
                     $mdlHomeserverpool->serializeToConfig();
                     Config::getInstance()->save();
                     $result['result'] = 'deleted';
@@ -388,6 +398,7 @@ class ProxyController extends ApiMutableModelControllerBase
                     }
                     if (count($result['validations']) == 0) {
                         // save config if validated correctly
+                        $this->throwReadOnly();
                         $mdlSetting->serializeToConfig();
                         Config::getInstance()->save();
                         $result = array("result" => "saved");
