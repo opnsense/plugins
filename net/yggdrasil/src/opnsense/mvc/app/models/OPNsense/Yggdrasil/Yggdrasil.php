@@ -29,7 +29,38 @@
 namespace OPNsense\Yggdrasil;
 
 use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
 
 class Yggdrasil extends BaseModel
 {
+    public function performValidation($validateFullModel = false)
+    {
+        $messages = parent::performValidation($validateFullModel);
+
+        if ((string)$this->general->IfNameMode === 'custom') {
+            $name = (string)$this->general->IfNameCustom;
+
+            if (!preg_match('/\A[a-zA-Z0-9_.-]+\z/', $name)) {
+                $messages->appendMessage(new Message(
+                    gettext('Enter an interface name containing only letters, digits, underscores, dots or hyphens.'),
+                    'general.IfNameCustom'
+                ));
+            }
+        }
+
+        $nodeInfo = (string)$this->general->NodeInfo;
+
+        if ($nodeInfo !== '') {
+            $decoded = json_decode($nodeInfo);
+
+            if (json_last_error() !== JSON_ERROR_NONE || !is_object($decoded)) {
+                $messages->appendMessage(new Message(
+                    gettext('Node information must be a valid JSON object.'),
+                    'general.NodeInfo'
+                ));
+            }
+        }
+
+        return $messages;
+    }
 }
