@@ -125,6 +125,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SESSION['Username'] != 'root') {
+        $user = getUserEntry($_SESSION['Username']);
+        if (is_array($user) && userHasPrivilege($user, 'user-config-readonly')) {
+            http_response_code(403);
+            exit;
+        }
+    }
     if (isset($_POST['id']) && isset($a_server[$_POST['id']])) {
         $id = $_POST['id'];
     }
