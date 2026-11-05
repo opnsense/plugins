@@ -65,6 +65,7 @@ class EapController extends ApiControllerBase
 
             // serialize model to config and save
             if ($valMsgs->count() == 0) {
+                $this->throwReadOnly();
                 $mdlEAP->serializeToConfig();
                 Config::getInstance()->save();
                 $result["result"] = "saved";
