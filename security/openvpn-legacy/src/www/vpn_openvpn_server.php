@@ -158,6 +158,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         // action add/update
         $input_errors = array();
         $pconfig = $_POST;
+        $single_line_fields = $pconfig;
+        unset($single_line_fields['custom_options'], $single_line_fields['shared_key'], $single_line_fields['tls']);
+        $has_line_break = false;
+        array_walk_recursive($single_line_fields, function ($value) use (&$has_line_break) {
+            if (is_string($value) && strpbrk($value, "\r\n") !== false) {
+                $has_line_break = true;
+            }
+        });
+        if ($has_line_break) {
+            $input_errors[] = gettext('Line breaks are only allowed in key material and Advanced options.');
+        }
 
         $vpnid = (isset($id) && $a_server[$id]) ? $a_server[$id]['vpnid'] : 0;
         $tls_mode = ($pconfig['mode'] != "p2p_shared_key");
