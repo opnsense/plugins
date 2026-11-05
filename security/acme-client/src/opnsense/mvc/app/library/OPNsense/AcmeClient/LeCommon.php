@@ -69,6 +69,9 @@ abstract class LeCommon
     // about the real error condition in these cases.
     public const ACME_RENEW_SKIP = 2;
 
+    // Trust storage
+    public const ACME_TRUST_DESCR_SUFFIX = ' (ACME Client)';
+
     // Runtime parameters for acme.sh
     protected $acme_args = array(); # command line arguments to be passed to acme.sh
     protected $acme_env = array();  # environment variables to be used when running acme.sh
