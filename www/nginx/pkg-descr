@@ -12,6 +12,7 @@ Plugin Changelog
 
 * Add optional HTTP/3 support with dynamic Alt-Svc (contributed by Jan Chlouba)
 * Fix HTTP/3 reuseport duplicates (contributed by Jan Chlouba)
+* Make upstream client-address headers configurable (X-Forwarded-For, Forwarded, CF-/True-Client-IP)
 
 1.35
 
