@@ -1836,7 +1836,7 @@
                         <ws>ws [default]</ws>
                         <wss>wss</wss>
                     </OptionValues>
-                </acme_truenas_ws_protocol>     
+                </acme_truenas_ws_protocol>
                 <acme_truenas_websocat_apikey type="TextField">
                     <Required>N</Required>
                     <Mask>/^.{1,1024}$/u</Mask>
@@ -1878,7 +1878,7 @@
                         <no>no [default]</no>
                         <yes>yes</yes>
                     </OptionValues>
-                </acme_truenas_websocat_update_apps>             
+                </acme_truenas_websocat_update_apps>
                 <!-- TODO: old "truenasws" values kept for model migration, should be removed in version 5.0.0 -->
                 <acme_truenasws_apikey type="TextField">
                     <Required>N</Required>
