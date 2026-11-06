@@ -41,6 +41,12 @@
                 <type>text</type>
                 <help>Set the password for monitoring user "monuser".</help>
             </field>
+            <field>
+                <id>nut.account.client_password</id>
+                <label>Client Password</label>
+                <type>text</type>
+                <help>Set the password for the secondary monitoring user "monclient", for remote clients. It can monitor the UPS but cannot send a forced shutdown (FSD) to the other clients. Leave empty to disable this user.</help>
+            </field>
         </subtab>
     </tab>
     <tab id="nut-ups-type" description="UPS Type">

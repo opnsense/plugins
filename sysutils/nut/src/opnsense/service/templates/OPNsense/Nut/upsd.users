@@ -16,5 +16,10 @@ instcmds=all
 password={{ OPNsense.Nut.account.mon_password }}
 upsmon master
 {%     endif %}
+{%     if helpers.exists('OPNsense.Nut.account.client_password') and OPNsense.Nut.account.client_password != '' %}
+[monclient]
+password={{ OPNsense.Nut.account.client_password }}
+upsmon slave
+{%     endif %}
 {%   endif %}
 {% endif %}
