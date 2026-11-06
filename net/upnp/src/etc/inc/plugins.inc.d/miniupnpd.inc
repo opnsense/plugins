@@ -246,8 +246,7 @@ function miniupnpd_configure_do($verbose = false)
 
             /* enable system uptime instead of miniupnpd uptime */
             if (!empty($upnp_config['sysuptime'])) {
-                /* Disable system uptime to workaround daemon bug with PCP/NAT-PMP epoch on BSD */
-                //$config_text .= "system_uptime=yes\n";
+                $config_text .= "system_uptime=yes\n";
             }
 
             /* set webgui url */
@@ -296,6 +295,12 @@ function miniupnpd_configure_do($verbose = false)
 
             $config_text .= "lease_file=/var/run/miniupnpd.leases\n";
             $config_text .= "lease_file6=/var/run/miniupnpd.leases-ipv6\n";
+
+            if (!empty($upnp_config['default_min_port'])) {
+                $config_text .= "default_min_port=" . $upnp_config['default_min_port'] . "\n";
+            } else {
+                $config_text .= "default_min_port=1024\n";
+            }
 
             /* write out the configuration */
             file_put_contents('/var/etc/miniupnpd.conf', $config_text);
