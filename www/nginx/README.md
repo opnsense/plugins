@@ -1,5 +1,24 @@
 # The nginx plugin
 
+## Bot protection trusted networks
+
+Under **General Settings → Global HTTP Settings**, **Bot protection trusted
+networks** accepts IPv4/IPv6 addresses and CIDR networks. It is empty by default;
+no networks are trusted automatically. Keep bot protection enabled on servers
+that should still block matching User-Agents from other clients.
+
+The check uses the current **Bots User Agents** expression and nginx's resolved
+client address (`$remote_addr`). Forwarding headers affect this address only
+according to the HTTP Server's real-IP/trusted proxy configuration. NAXSI, ACLs,
+authentication, honeypots and other security checks still apply.
+
+Save the global settings to regenerate the configuration. The GUI and
+`/api/nginx/settings/get` and `/api/nginx/settings/set` use
+`nginx.http.bot_protection_trusted_networks`, stored as a comma-separated list
+under `OPNsense/Nginx/http` in `config.xml`.
+**Existing bans remain in effect and must be unlocked separately under
+Services → Nginx → Banned.** Adding a trusted network does not clear bans.
+
 ## Frontend Development
 
 The nginx plugin is special in its implementation because it needs
@@ -58,3 +77,30 @@ converting an unix socket to TCP etc.) but do not want to serve themself.
 Just create a directory called `UUID_pre` or `UUID_post` in the nginx
 configuration directory and place a file ending with `.conf` in it.
 UUID is the UUID of the server object.
+
+## Bot protection tests
+
+From the repository root, with Python 3, Jinja2 and nginx with the HTTP real-IP
+module installed:
+
+```sh
+python3 -m unittest discover -s www/nginx/tests -v
+```
+
+The tests render the actual HTTP template with multiple servers, run `nginx -t`,
+and check responses and permanent-ban logging. They use temporary paths and
+omit unrelated Brotli/njs directives and the OPNsense TLS handshake log format
+so they also run with stock nginx. No system nginx configuration is changed.
+
+Run the model validation and XML persistence checks with OPNsense's PHP runtime
+(including Phalcon) and MVC classes:
+
+```sh
+php www/nginx/tests/test_model.php
+```
+
+For a core source checkout, set `OPNSENSE_MVC` to its `src/opnsense/mvc` directory.
+The model test uses a temporary `config.xml`, including an existing ban, and
+checks address/prefix validation, GUI/API list data, save/reload and clearing.
+On an OPNsense test system, also save the field in the GUI, reload the page,
+check the settings API, and apply the configuration with the installed modules.

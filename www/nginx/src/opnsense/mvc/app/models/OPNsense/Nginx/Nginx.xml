@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/Nginx</mount>
-    <version>1.35.2</version>
+    <version>1.35.3</version>
     <description>nginx web server, reverse proxy and waf</description>
     <items>
         <general>
@@ -66,6 +66,10 @@
                 <Required>Y</Required>
                 <Default>Python-urllib,Nmap,python-requests,libwww-perl,MJ12bot,Jorgee,fasthttp,libwww,Telesphoreo,A6-Indexer,ltx71,okhttp,ZmEu,sqlmap,LMAO/2.0,l9explore,l9tcpid,Masscan,zgrab,Ronin/2.0,Hakai/2.0,Indy\sLibrary,^Mozilla/[\d\.]+$,Morfeus\sFucking\sScanner,MSIE\s[0-6]\.\d+</Default>
             </bots_ua>
+            <bot_protection_trusted_networks type="NetworkField">
+                <AsList>Y</AsList>
+                <WildcardEnabled>N</WildcardEnabled>
+            </bot_protection_trusted_networks>
             <headers_more_enable type="BooleanField"/>
         </http>
         <userlist type="ArrayField">
