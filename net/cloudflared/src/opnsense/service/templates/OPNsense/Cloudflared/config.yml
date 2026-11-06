@@ -1,4 +1,6 @@
-metrics: localhost:2000
+{% if not helpers.empty('OPNsense.Cloudflared.general.metrics_address') %}
+metrics: "{{ OPNsense.Cloudflared.general.metrics_address }}"
+{% endif %}
 no-autoupdate: true
 {% if helpers.exists('OPNsense.Cloudflared.general.post_quantum') and OPNsense.Cloudflared.general.post_quantum == '1' %}
 post-quantum: true
@@ -11,4 +13,7 @@ protocol: {{ OPNsense.Cloudflared.general.protocol }}
 {% endif %}
 {% if helpers.exists('OPNsense.Cloudflared.general.log_level') and OPNsense.Cloudflared.general.log_level != 'info' %}
 loglevel: {{ OPNsense.Cloudflared.general.log_level }}
+{% endif %}
+{% if not helpers.empty('OPNsense.Cloudflared.general.edge_ip_version') %}
+edge-ip-version: "{{ OPNsense.Cloudflared.general.edge_ip_version }}"
 {% endif %}

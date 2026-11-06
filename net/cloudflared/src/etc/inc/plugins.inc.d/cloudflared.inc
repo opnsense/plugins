@@ -26,6 +26,14 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+function cloudflared_enabled()
+{
+    global $config;
+
+    return isset($config['OPNsense']['Cloudflared']['general']['enabled']) &&
+        $config['OPNsense']['Cloudflared']['general']['enabled'] == '1';
+}
+
 function cloudflared_configure()
 {
     return [
@@ -35,19 +43,18 @@ function cloudflared_configure()
 
 function cloudflared_configure_newwanip($verbose = false)
 {
+    if (!cloudflared_enabled()) {
+        return;
+    }
+
     (new \OPNsense\Core\Backend())->configdRun('cloudflared start');
 }
 
 function cloudflared_services()
 {
-    global $config;
-
     $services = [];
 
-    if (
-        isset($config['OPNsense']['Cloudflared']['general']['enabled']) &&
-        $config['OPNsense']['Cloudflared']['general']['enabled'] == '1'
-    ) {
+    if (cloudflared_enabled()) {
         $services[] = [
             'description' => gettext('Cloudflare Tunnel'),
             'configd' => [
