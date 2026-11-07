@@ -6,4 +6,20 @@
          <pattern>api/dnscryptproxy/*</pattern>
       </patterns>
    </page-dnscryptproxy-config>
+   <page-dnscryptproxy-logs>
+      <name>Services: dnscrypt-proxy: Log File</name>
+      <patterns>
+         <pattern>ui/diagnostics/log/dnscryptproxy/dnscrypt-proxy/*</pattern>
+         <pattern>api/diagnostics/log/dnscryptproxy/dnscrypt-proxy/*</pattern>
+      </patterns>
+   </page-dnscryptproxy-logs>
+   <page-dnscryptproxy-logs-queries>
+      <name>Services: dnscrypt-proxy: Query Logs</name>
+      <patterns>
+         <pattern>ui/diagnostics/log/dnscryptproxy/query/*</pattern>
+         <pattern>api/diagnostics/log/dnscryptproxy/query/*</pattern>
+         <pattern>ui/diagnostics/log/dnscryptproxy/nx/*</pattern>
+         <pattern>api/diagnostics/log/dnscryptproxy/nx/*</pattern>
+      </patterns>
+   </page-dnscryptproxy-logs-queries>
 </acl>
