@@ -59,6 +59,9 @@ class LeValidationFactory
             case 'dns01':
                 $search_name = $obj->dns_service;
                 break;
+            case 'dnspersist01':
+                $search_name = "DnsPersist01";
+                break;
             case 'http01':
                 $search_name = "http_" . $obj->http_service;
                 break;

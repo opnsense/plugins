@@ -354,6 +354,7 @@
                         <http01>HTTP-01</http01>
                         <dns01>DNS-01</dns01>
                         <tlsalpn01>TLS-ALPN-01</tlsalpn01>
+                        <dnspersist01>DNS-PERSIST-01</dnspersist01>
                     </OptionValues>
                 </method>
                 <http_service type="OptionField">
