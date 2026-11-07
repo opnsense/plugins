@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/AcmeClient</mount>
-    <version>4.4.0</version>
+    <version>4.5.0</version>
     <description>A secure ACME Client plugin</description>
     <items>
         <settings>
@@ -436,6 +436,7 @@
                         <dns_autodns>AutoDNS (InterNetX)</dns_autodns>
                         <dns_aws>AWS Route 53</dns_aws>
                         <dns_azure>Azure DNS</dns_azure>
+                        <dns_bhosted>bHosted.nl</dns_bhosted>
                         <dns_bunny>Bunny</dns_bunny>
                         <dns_cloudns>ClouDNS</dns_cloudns>
                         <dns_cf>CloudFlare.com</dns_cf>
@@ -452,6 +453,7 @@
                         <dns_dnsexit>DNSExit</dns_dnsexit>
                         <dns_dnshome>dnsHome</dns_dnshome>
                         <dns_dnsimple>DNSimple</dns_dnsimple>
+                        <dns_dnsmint>DNSMint</dns_dnsmint>
                         <dns_dnsservices>DNS.Services</dns_dnsservices>
                         <dns_domeneshop>Domeneshop</dns_domeneshop>
                         <dns_me>DNSMadeEasy.com</dns_me>
@@ -464,6 +466,7 @@
                         <dns_dynu>Dynu</dns_dynu>
                         <dns_dynv6>dynv6</dns_dynv6>
                         <dns_easydns>EasyDNS</dns_easydns>
+                        <dns_edgecenter>EdgeCenter</dns_edgecenter>
                         <dns_euserv>EUserv</dns_euserv>
                         <dns_exoscale>Exoscale</dns_exoscale>
                         <dns_fornex>Fornex</dns_fornex>
@@ -503,6 +506,7 @@
                         <dns_miab>MailinaBox</dns_miab>
                         <dns_mijnhost>mijn.host</dns_mijnhost>
                         <dns_mydnsjp>MyDNS.JP</dns_mydnsjp>
+                        <dns_myloc>myLoc / webtropia</dns_myloc>
                         <dns_mythic_beasts>Mythic Beasts</dns_mythic_beasts>
                         <dns_namecom>Name.com</dns_namecom>
                         <dns_namecheap>Namecheap</dns_namecheap>
@@ -514,6 +518,7 @@
                         <dns_nsone>NS1.com</dns_nsone>
                         <dns_nsupdate>nsupdate (RFC 2136)</dns_nsupdate>
                         <dns_online>online.net</dns_online>
+                        <dns_openprovider_rest>OpenProvider.com</dns_openprovider_rest>
                         <dns_opnsense>OPNsense BIND Plugin</dns_opnsense>
                         <dns_oci>Oracle Cloud Infrastructure (OCI)</dns_oci>
                         <dns_ovh>OVH, kimsufi, soyoustart and runabove</dns_ovh>
@@ -523,6 +528,7 @@
                         <dns_porkbun>Porkbun</dns_porkbun>
                         <dns_rackspace>Rackspace</dns_rackspace>
                         <dns_rage4>rage4</dns_rage4>
+                        <dns_rcode0>RcodeZero</dns_rcode0>
                         <dns_regru>RegRu</dns_regru>
                         <dns_scaleway>Scaleway</dns_scaleway>
                         <dns_schlundtech>SchlundTech</dns_schlundtech>
@@ -540,6 +546,7 @@
                         <dns_vscale>Vscale</dns_vscale>
                         <dns_vultr>Vultr</dns_vultr>
                         <dns_websupport>Websupport.sk</dns_websupport>
+                        <dns_wedos>WEDOS</dns_wedos>
                         <dns_world4you>World4You</dns_world4you>
                         <dns_yandex>Yandex PDD</dns_yandex>
                         <dns_zilore>Zilore</dns_zilore>
@@ -601,6 +608,21 @@
                     <Default>0</Default>
                     <Required>N</Required>
                 </dns_azuredns_managedidentity>
+                <dns_bhosted_user type="TextField">
+                    <Required>N</Required>
+                </dns_bhosted_user>
+                <dns_bhosted_password type="TextField">
+                    <Required>N</Required>
+                </dns_bhosted_password>
+                <dns_bhosted_ttl type="TextField">
+                    <Required>N</Required>
+                </dns_bhosted_ttl>
+                <dns_bhosted_sld type="TextField">
+                    <Required>N</Required>
+                </dns_bhosted_sld>
+                <dns_bhosted_tld type="TextField">
+                    <Required>N</Required>
+                </dns_bhosted_tld>
                 <dns_bunny_api_key type="TextField">
                     <Required>N</Required>
                 </dns_bunny_api_key>
@@ -960,6 +982,9 @@
                 <dns_mydnsjp_password type="TextField">
                     <Required>N</Required>
                 </dns_mydnsjp_password>
+                <dns_myloc_token type="TextField">
+                    <Required>N</Required>
+                </dns_myloc_token>
                 <dns_mythic_beasts_key type="TextField">
                     <Required>N</Required>
                 </dns_mythic_beasts_key>
@@ -1027,6 +1052,12 @@
                 <dns_online_key type="TextField">
                     <Required>N</Required>
                 </dns_online_key>
+                <dns_openprovider_rest_username type="TextField">
+                    <Required>N</Required>
+                </dns_openprovider_rest_username>
+                <dns_openprovider_rest_password type="TextField">
+                    <Required>N</Required>
+                </dns_openprovider_rest_password>
                 <dns_opnsense_host type="TextField">
                     <Required>N</Required>
                     <Default>localhost</Default>
@@ -1106,12 +1137,9 @@
                 <dns_sl_password type="TextField">
                     <Required>N</Required>
                 </dns_sl_password>
-                <dns_selfhost_user type="TextField">
+                <dns_selfhost_apikey type="TextField">
                     <Required>N</Required>
-                </dns_selfhost_user>
-                <dns_selfhost_password type="TextField">
-                    <Required>N</Required>
-                </dns_selfhost_password>
+                </dns_selfhost_apikey>
                 <dns_selfhost_map type="TextField">
                     <Required>N</Required>
                 </dns_selfhost_map>
@@ -1228,6 +1256,9 @@
                 <dns_easydns_apikey type="TextField">
                     <Required>N</Required>
                 </dns_easydns_apikey>
+                <dns_edgecenter_apikey type="TextField">
+                    <Required>N</Required>
+                </dns_edgecenter_apikey>
                 <dns_euserv_user type="TextField">
                     <Required>N</Required>
                 </dns_euserv_user>
@@ -1270,6 +1301,9 @@
                 <dns_1984hosting_password type="TextField">
                     <Required>N</Required>
                 </dns_1984hosting_password>
+                <dns_1984hosting_totp_secret type="TextField">
+                    <Required>N</Required>
+                </dns_1984hosting_totp_secret>
                 <dns_kas_login type="TextField">
                     <Required>N</Required>
                 </dns_kas_login>
@@ -1284,6 +1318,9 @@
                         <sha1>SHA1 (deprecated in December 2022)</sha1>
                     </OptionValues>
                 </dns_kas_authtype>
+                <dns_dnsmint_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_dnsmint_api_key>
                 <dns_desec_token type="TextField">
                     <Required>N</Required>
                 </dns_desec_token>
@@ -1335,6 +1372,12 @@
                 <dns_websupport_api_secret type="TextField">
                     <Required>N</Required>
                 </dns_websupport_api_secret>
+                <dns_wedos_username type="TextField">
+                    <Required>N</Required>
+                </dns_wedos_username>
+                <dns_wedos_wapipass type="TextField">
+                    <Required>N</Required>
+                </dns_wedos_wapipass>
                 <dns_world4you_username type="TextField">
                     <Required>N</Required>
                 </dns_world4you_username>
@@ -1396,6 +1439,19 @@
                 <dns_rage4_user type="TextField">
                     <Required>N</Required>
                 </dns_rage4_user>
+                <dns_rcode0_api_token type="TextField">
+                    <Required>N</Required>
+                </dns_rcode0_api_token>
+                <dns_rcode0_url type="TextField">
+                    <Required>N</Required>
+                    <Default>https://my.rcodezero.at</Default>
+                </dns_rcode0_url>
+                <dns_rcode0_ttl type="IntegerField">
+                    <Required>N</Required>
+                    <Default>60</Default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>86400</MaximumValue>
+                </dns_rcode0_ttl>
                 <dns_mijnhost_api_key type="TextField">
                     <Required>N</Required>
                 </dns_mijnhost_api_key>
@@ -1445,10 +1501,12 @@
                         <acme_ruckus>Upload certificate to Ruckus controller</acme_ruckus>
                         <acme_vault>Upload certificate to HashiCorp Vault</acme_vault>
                         <acme_synology_dsm>Upload certificate to Synology DSM</acme_synology_dsm>
-                        <acme_truenas>Upload certificate to TrueNAS Server (deprecated API)</acme_truenas>
-                        <acme_truenas_ws>Deprecated - Upload certificate to TrueNAS Server (midctl/websocket)</acme_truenas_ws>
+                        <acme_truenas>Upload certificate to TrueNAS Server (deprecated; old API)</acme_truenas>
+                        <acme_truenas_ws>Upload certificate to TrueNAS Server (deprecated; midctl/websocket)</acme_truenas_ws>
+                        <acme_truenas_websocat>Upload certificate to TrueNAS Server (websocat binary)</acme_truenas_websocat>
                         <acme_zyxel_gs1900>Upload certificate to Zyxel GS1900 series switches</acme_zyxel_gs1900>
                         <acme_unifi>Update local Unifi keystore</acme_unifi>
+                        <acme_jetkvm>Upload certificate to JetKVM (SSH)</acme_jetkvm>
                         <configd_generic>System or Plugin Command</configd_generic>
                     </OptionValues>
                 </type>
@@ -1779,6 +1837,48 @@
                         <wss>wss</wss>
                     </OptionValues>
                 </acme_truenas_ws_protocol>
+                <acme_truenas_websocat_apikey type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_truenas_websocat_apikey>
+                <acme_truenas_websocat_hostname type="HostnameField">
+                    <Default>localhost</Default>
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_truenas_websocat_hostname>
+                <acme_truenas_websocat_protocol type="OptionField">
+                    <Default>ws</Default>
+                    <Required>N</Required>
+                    <OptionValues>
+                        <ws>ws [default]</ws>
+                        <wss>wss</wss>
+                    </OptionValues>
+                </acme_truenas_websocat_protocol>
+                <acme_truenas_websocat_port type="IntegerField">
+                    <Required>N</Required>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>65535</MaximumValue>
+                    <Default>80</Default>
+                    <ValidationMessage>Should be a valid port number between 1 and 65535.</ValidationMessage>
+                </acme_truenas_websocat_port>
+                <acme_truenas_websocat_update_ftp type="OptionField">
+                    <Default>no</Default>
+                    <Required>N</Required>
+                    <OptionValues>
+                        <no>no [default]</no>
+                        <yes>yes</yes>
+                    </OptionValues>
+                </acme_truenas_websocat_update_ftp>
+                <acme_truenas_websocat_update_apps type="OptionField">
+                    <Default>no</Default>
+                    <Required>N</Required>
+                    <OptionValues>
+                        <no>no [default]</no>
+                        <yes>yes</yes>
+                    </OptionValues>
+                </acme_truenas_websocat_update_apps>
                 <!-- TODO: old "truenasws" values kept for model migration, should be removed in version 5.0.0 -->
                 <acme_truenasws_apikey type="TextField">
                     <Required>N</Required>
@@ -1842,6 +1942,23 @@
                     <Default>0</Default>
                     <Required>N</Required>
                 </acme_zyxel_gs1900_reboot>
+                <acme_jetkvm_host type="HostnameField">
+                    <Required>N</Required>
+                    <Mask>/^.{1,1024}$/u</Mask>
+                    <ValidationMessage>Should be a string between 1 and 1024 characters.</ValidationMessage>
+                </acme_jetkvm_host>
+                <acme_jetkvm_user type="TextField">
+                    <Default>root</Default>
+                    <Required>N</Required>
+                </acme_jetkvm_user>
+                <acme_jetkvm_port type="PortField">
+                    <Default>22</Default>
+                    <Required>N</Required>
+                </acme_jetkvm_port>
+                <acme_jetkvm_reboot type="BooleanField">
+                    <Default>1</Default>
+                    <Required>N</Required>
+                </acme_jetkvm_reboot>
             </action>
         </actions>
     </items>

@@ -15,9 +15,7 @@
                 <secret type="TextField">
                     <Required>Y</Required>
                 </secret>
-                <ip type="NetworkField">
-                    <Required>N</Required>
-                </ip>
+                <ip type="NetworkField"/>
                 <require_ma type="BooleanField">
                     <Default>0</Default>
                     <Required>Y</Required>

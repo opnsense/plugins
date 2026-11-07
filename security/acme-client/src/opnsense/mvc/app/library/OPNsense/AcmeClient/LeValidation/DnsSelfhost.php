@@ -39,8 +39,7 @@ class DnsSelfhost extends Base implements LeValidationInterface
 {
     public function prepare()
     {
-        $this->acme_env['SELFHOSTDNS_USERNAME'] = (string)$this->config->dns_selfhost_user;
-        $this->acme_env['SELFHOSTDNS_PASSWORD'] = (string)$this->config->dns_selfhost_password;
+        $this->acme_env['SELFHOSTDNS_APIKEY'] = (string)$this->config->dns_selfhost_apikey;
         $this->acme_env['SELFHOSTDNS_MAP'] = (string)$this->config->dns_selfhost_map;
     }
 }

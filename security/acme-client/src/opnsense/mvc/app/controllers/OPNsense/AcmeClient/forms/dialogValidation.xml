@@ -238,6 +238,40 @@
         <help><![CDATA[When System Assigned Managed Identity is enabled the Tenant ID, APP ID and Client Secret settings are ignored by the acme client. Access tokens are obtained using the Azure Instance Metadata Service for the System Assigned Managed Identity. See <a target="_blank" href="https://learn.microsoft.com/en-us/entra/identity/managed-identities-azure-resources/how-to-use-vm-token">documentation</a>.]]></help>
     </field>
     <field>
+        <label>bHosted.nl</label>
+        <type>header</type>
+        <style>table_dns table_dns_bhosted</style>
+    </field>
+    <field>
+        <id>validation.dns_bhosted_user</id>
+        <label>Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_bhosted_password</id>
+        <label>Password</label>
+        <type>password</type>
+        <help>API password (MD5 hash like bHosted.nl web services example)</help>
+    </field>
+    <field>
+        <id>validation.dns_bhosted_ttl</id>
+        <label>TTL</label>
+        <type>text</type>
+        <help>Optional override TTL for TXT record (default: 300)</help>
+    </field>
+    <field>
+        <id>validation.dns_bhosted_sld</id>
+        <label>SLD</label>
+        <type>text</type>
+        <help>Optional override (useful for multi-part TLDs like co.uk)</help>
+    </field>
+    <field>
+        <id>validation.dns_bhosted_tld</id>
+        <label>TLD</label>
+        <type>text</type>
+        <help>Optional override (useful for multi-part TLDs like co.uk)</help>
+    </field>
+    <field>
         <label>Bunny</label>
         <type>header</type>
         <style>table_dns table_dns_bunny</style>
@@ -1024,6 +1058,16 @@
         <type>password</type>
     </field>
     <field>
+        <label>myLoc / webtropia</label>
+        <type>header</type>
+        <style>table_dns table_dns_myloc</style>
+    </field>
+    <field>
+        <id>validation.dns_myloc_token</id>
+        <label>API Token</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>Mythic Beasts</label>
         <type>header</type>
         <style>table_dns table_dns_mythic_beasts</style>
@@ -1164,6 +1208,21 @@
     <field>
         <id>validation.dns_online_key</id>
         <label>API key</label>
+        <type>text</type>
+    </field>
+    <field>
+        <label>OpenProvider.com</label>
+        <type>header</type>
+        <style>table_dns table_dns_openprovider_rest</style>
+    </field>
+    <field>
+        <id>validation.dns_openprovider_rest_username</id>
+        <label>Account Username</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>validation.dns_openprovider_rest_password</id>
+        <label>Account Password</label>
         <type>text</type>
     </field>
     <field>
@@ -1329,14 +1388,10 @@
         <style>table_dns table_dns_selfhost</style>
     </field>
     <field>
-        <id>validation.dns_selfhost_user</id>
-        <label>User</label>
-        <type>text</type>
-    </field>
-    <field>
-        <id>validation.dns_selfhost_password</id>
-        <label>Password</label>
+        <id>validation.dns_selfhost_apikey</id>
+        <label>API Key</label>
         <type>password</type>
+        <help>Create a DNS-01 API key in the Selfhost portal (menu "Entwickler"). The legacy username/password authentication is no longer supported by Selfhost.</help>
     </field>
     <field>
         <id>validation.dns_selfhost_map</id>
@@ -1642,6 +1697,16 @@
         <type>password</type>
     </field>
     <field>
+        <label>EdgeCenter</label>
+        <type>header</type>
+        <style>table_dns table_dns_edgecenter</style>
+    </field>
+    <field>
+        <id>validation.dns_edgecenter_apikey</id>
+        <label>API Key</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>EUserv</label>
         <type>header</type>
         <style>table_dns table_dns_euserv</style>
@@ -1742,6 +1807,12 @@
         <type>password</type>
     </field>
     <field>
+        <id>validation.dns_1984hosting_totp_secret</id>
+        <label>TOTP Secret</label>
+        <type>password</type>
+        <help>When 2FA is enabled, the Base32 TOTP secret must be provided. Note that this feature requires the package oath-toolkit, which must be installed manually.</help>
+    </field>
+    <field>
         <label>All-Inkl.com domain API</label>
         <type>header</type>
         <style>table_dns table_dns_kas</style>
@@ -1760,6 +1831,16 @@
         <id>validation.dns_kas_authtype</id>
         <label>KAS Authtype</label>
         <type>dropdown</type>
+    </field>
+    <field>
+        <label>DNSMint API</label>
+        <type>header</type>
+        <style>table_dns table_dns_dnsmint</style>
+    </field>
+    <field>
+        <id>validation.dns_dnsmint_api_key</id>
+        <label>DNSMint API key</label>
+        <type>password</type>
     </field>
     <field>
         <label>deSEC.io API</label>
@@ -1931,6 +2012,22 @@
         <type>password</type>
     </field>
     <field>
+        <label>WEDOS</label>
+        <type>header</type>
+        <style>table_dns table_dns_wedos</style>
+    </field>
+    <field>
+        <id>validation.dns_wedos_username</id>
+        <label>WAPI Login (Account Email)</label>
+        <type>text</type>
+        <help>First activate the WAPI interface in WEDOS administration and set the WAPI password. Set the protocol to JSON and add the public IP addresses of this OPNsense instance to the allowed IP addresses. Note that requests from any other IP are rejected, so whitelist the address the server actually uses for outgoing connections — on dual-stack OPNsense this is usually the IPv6 address.</help>
+    </field>
+    <field>
+        <id>validation.dns_wedos_wapipass</id>
+        <label>WAPI Password</label>
+        <type>password</type>
+    </field>
+    <field>
         <label>World4You</label>
         <type>header</type>
         <style>table_dns table_dns_world4you</style>
@@ -2074,6 +2171,31 @@
         <id>validation.dns_rage4_token</id>
         <label>Token</label>
         <type>password</type>
+    </field>
+    <field>
+        <label>RcodeZero</label>
+        <type>header</type>
+        <style>table_dns table_dns_rcode0</style>
+    </field>
+    <field>
+        <id>validation.dns_rcode0_api_token</id>
+        <label>API Token</label>
+        <type>password</type>
+        <help>The ACME API token, it can be generated at https://my.rcodezero.at/enableapi.</help>
+    </field>
+    <field>
+        <id>validation.dns_rcode0_url</id>
+        <label>API URL</label>
+        <type>text</type>
+        <help>The URL of the RcodeZero API. Usually there is no need to change this value.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
+        <id>validation.dns_rcode0_ttl</id>
+        <label>TTL</label>
+        <type>text</type>
+        <help>The TTL in seconds for the TXT record that is created for validation.</help>
+        <advanced>true</advanced>
     </field>
     <field>
         <label>mijn.host</label>
