@@ -14,7 +14,7 @@ BREAKING CHANGE: Selfhost DNS API now requires an API key, credentials must be e
 
 Added:
 * add support for deploy hook "truenas_websocat" (#5742)
-* new automation to upload certificate to JetKVM (#5726)
+* add support for deploy hook "jetkvm" (#5726)
 * add support for DNSMint DNS API (#5727)
 * add support for myloc DNS API (#5781)
 * add support for EdgeCenter DNS API (#5783)
@@ -37,6 +37,8 @@ Fixed:
   was linked to another CA (#5876)
 * fix editing ACME CAs that contain multiple certificates in
   System: Trust: Authorities (#5876)
+* reset accepts tokenless GET requests (#5884)
+* reset bypasses Deny config write (#5885)
 
 4.17
 
