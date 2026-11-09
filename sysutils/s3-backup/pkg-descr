@@ -1,0 +1,12 @@
+Adds S3-compatible object storage as a backup option under System > Configuration > Backups: AWS S3, Backblaze B2, Cloudflare R2, Wasabi, MinIO and other services with an S3 API.
+
+Backups are sent with rclone, which applies the chosen service's own settings.
+
+Each backup is encrypted with the backup encryption before it leaves the firewall, so the storage provider only holds ciphertext, and it can be restored on the same page with the password. Old backups are removed beyond a set count.
+
+Plugin Changelog
+================
+
+1.0
+
+* Initial release
