@@ -438,6 +438,7 @@
                         <dns_azure>Azure DNS</dns_azure>
                         <dns_bhosted>bHosted.nl</dns_bhosted>
                         <dns_bunny>Bunny</dns_bunny>
+                        <dns_calrissia>Calrissia</dns_calrissia>
                         <dns_cloudns>ClouDNS</dns_cloudns>
                         <dns_cf>CloudFlare.com</dns_cf>
                         <dns_cx>CloudXNS.com</dns_cx>
@@ -626,6 +627,9 @@
                 <dns_bunny_api_key type="TextField">
                     <Required>N</Required>
                 </dns_bunny_api_key>
+                <dns_calrissia_token type="TextField">
+                    <Required>N</Required>
+                </dns_calrissia_token>
                 <dns_cf_email type="TextField">
                     <Required>N</Required>
                 </dns_cf_email>
