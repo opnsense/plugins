@@ -195,4 +195,26 @@
         <advanced>true</advanced>
         <help>The base64-encoded RNDC key. This requires a restart of the Bind Service.</help>
     </field>
+    <field>
+        <type>header</type>
+        <label>DNS over TLS (Incoming)</label>
+    </field>
+    <field>
+        <id>general.dotenable</id>
+        <label>Enable DNS over TLS</label>
+        <type>checkbox</type>
+        <help>Accept incoming DNS-over-TLS (port 853) connections. Requires BIND 9.18+ and a valid certificate. The same listen addresses used for plain DNS are also used for DoT.</help>
+    </field>
+    <field>
+        <id>general.dotport</id>
+        <label>DNS over TLS Port</label>
+        <type>text</type>
+        <help>Port to listen on for DNS-over-TLS connections. Default is 853.</help>
+    </field>
+    <field>
+        <id>general.dotcertificate</id>
+        <label>Certificate</label>
+        <type>dropdown</type>
+        <help>TLS certificate to present to DNS-over-TLS clients. Select a certificate from System &gt; Trust &gt; Certificates.</help>
+    </field>
 </form>
