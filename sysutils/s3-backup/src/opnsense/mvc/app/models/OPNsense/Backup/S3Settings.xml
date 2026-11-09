@@ -1,0 +1,130 @@
+<model>
+    <mount>//system/backup/s3</mount>
+    <version>1.0.0</version>
+    <description>S3 compatible storage backup settings</description>
+    <items>
+        <enabled type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+            <Constraints>
+                <check001>
+                    <reference>endpoint.check001</reference>
+                </check001>
+                <check002>
+                    <reference>bucket.check001</reference>
+                </check002>
+                <check003>
+                    <reference>prefix.check001</reference>
+                </check003>
+                <check004>
+                    <reference>accessKey.check001</reference>
+                </check004>
+                <check005>
+                    <reference>secretKey.check001</reference>
+                </check005>
+                <check006>
+                    <reference>password.check001</reference>
+                </check006>
+            </Constraints>
+        </enabled>
+        <endpoint type="IPPortField">
+            <HostnameAllowed>Y</HostnameAllowed>
+            <PortOptional>Y</PortOptional>
+            <ValidationMessage>Enter the host name of the S3 endpoint, optionally with a port, e.g. s3.eu-central-1.amazonaws.com.</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>Enter the S3 endpoint.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </endpoint>
+        <provider type="TextField">
+            <Default>Other</Default>
+            <Required>Y</Required>
+            <Mask>/^[A-Za-z0-9]{1,32}$/D</Mask>
+            <ValidationMessage>Choose the S3 provider from the list.</ValidationMessage>
+        </provider>
+        <region type="TextField">
+            <Default>us-east-1</Default>
+            <Required>Y</Required>
+            <Mask>/^[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?$/D</Mask>
+            <ValidationMessage>Enter the region in letters, digits and hyphens, e.g. us-east-1, or auto for Cloudflare R2.</ValidationMessage>
+        </region>
+        <bucket type="TextField">
+            <Mask>/^[A-Za-z0-9][A-Za-z0-9._-]{1,253}[A-Za-z0-9]$/D</Mask>
+            <ValidationMessage>Enter a bucket name of 3 to 255 letters, digits, dots, underscores and hyphens.</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>Enter the bucket.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </bucket>
+        <prefix type="TextField">
+            <Mask>/^[0-9A-Za-z_-]+(\/[0-9A-Za-z_-]+)*$/D</Mask>
+            <ValidationMessage>Enter folder names of letters, digits, underscores and hyphens, separated by slashes.</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>Enter a folder for this firewall.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </prefix>
+        <accessKey type="TextField">
+            <Mask>/^[\x21-\x2b\x2d-\x7e]{1,128}$/D</Mask>
+            <ValidationMessage>Enter the access key ID in printable ASCII characters, without spaces or commas.</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>Enter the access key ID.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </accessKey>
+        <secretKey type="UpdateOnlyTextField">
+            <Mask>/^[^\x00-\x1f\x7f\x{fffe}\x{ffff}]*$/Du</Mask>
+            <ValidationMessage>Enter the secret access key without control characters.</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>Enter the secret access key.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </secretKey>
+        <password type="UpdateOnlyTextField">
+            <Mask>/^[^\x00-\x1f\x7f\x{fffe}\x{ffff}]*$/Du</Mask>
+            <ValidationMessage>Enter a password without control characters.</ValidationMessage>
+            <Constraints>
+                <check001>
+                    <ValidationMessage>Enter a password to encrypt the backups with; they are only sent encrypted.</ValidationMessage>
+                    <type>DependConstraint</type>
+                    <addFields>
+                        <field1>enabled</field1>
+                    </addFields>
+                </check001>
+            </Constraints>
+        </password>
+        <passwordconfirm type="UpdateOnlyTextField" volatile="true"/>
+        <backupcount type="IntegerField">
+            <Default>60</Default>
+            <Required>Y</Required>
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Enter how many backups to keep, up to 1000, or 0 to keep them all.</ValidationMessage>
+        </backupcount>
+    </items>
+</model>
