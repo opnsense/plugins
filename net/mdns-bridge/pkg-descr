@@ -1,0 +1,24 @@
+mdns-bridge is a multicast DNS forwarding daemon developed by
+Denny Page.
+
+Unlike traditional mDNS repeaters, mdns-bridge supports
+service filtering and interface-specific forwarding policies.
+
+This plugin integrates mdns-bridge into OPNsense by providing:
+
+- Web GUI configuration
+- Service management
+- Configuration generation
+- Interface selection
+- Future service filtering controls
+
+The plugin is intended to simplify deployment of multicast DNS
+service discovery across segmented networks such as IoT,
+Guest, and User VLANs.
+
+Plugin Changelog
+================
+
+0.1
+
+* Initial release

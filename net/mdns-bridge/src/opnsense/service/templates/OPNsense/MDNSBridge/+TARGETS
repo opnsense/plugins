@@ -1,0 +1,2 @@
+mdnsbridge:/usr/local/etc/mdns-bridge.conf
+mdnsbridge_rc:/etc/rc.conf.d/mdns_bridge
