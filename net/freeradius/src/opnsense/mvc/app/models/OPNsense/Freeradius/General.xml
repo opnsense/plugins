@@ -7,6 +7,11 @@
             <Default>0</Default>
             <Required>Y</Required>
         </enabled>
+        <listen_addresses type="NetworkField">
+            <Required>N</Required>
+            <AsList>Y</AsList>
+            <NetMaskAllowed>N</NetMaskAllowed>
+        </listen_addresses>
         <vlanassign type="BooleanField">
             <Default>0</Default>
             <Required>N</Required>
