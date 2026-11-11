@@ -31,6 +31,7 @@ namespace OPNsense\AcmeClient\LeValidation;
 use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\AcmeClient\LeUtils;
 use OPNsense\Core\Config;
+use OPNsense\Core\Shell;
 
 /**
  * Google Cloud DNS API
@@ -75,11 +76,11 @@ class DnsGcloud extends Base implements LeValidationInterface
         $proc_env['CLOUDSDK_CORE_PROJECT'] = $gcloud_project;
 
         // Ensure that a working gcloud config exists.
-        LeUtils::run_shell_command("/usr/local/bin/gcloud --quiet config configurations create {$gcloud_config}", $proc_env);
-        LeUtils::run_shell_command("/usr/local/bin/gcloud --quiet config configurations activate {$gcloud_config}", $proc_env);
-        LeUtils::run_shell_command("/usr/local/bin/gcloud --quiet auth activate-service-account --key-file={$gcloud_key_file}", $proc_env);
-        LeUtils::run_shell_command("/usr/local/bin/gcloud --quiet config set account {$gcloud_account}", $proc_env);
-        LeUtils::run_shell_command("/usr/local/bin/gcloud --quiet config set project {$gcloud_project}", $proc_env);
+        LeUtils::run_shell_command(Shell::exec_safe('/usr/local/bin/gcloud --quiet config configurations create %s', $gcloud_config), $proc_env);
+        LeUtils::run_shell_command(Shell::exec_safe('/usr/local/bin/gcloud --quiet config configurations activate %s', $gcloud_config), $proc_env);
+        LeUtils::run_shell_command(Shell::exec_safe('/usr/local/bin/gcloud --quiet auth activate-service-account --key-file=%s', $gcloud_key_file), $proc_env);
+        LeUtils::run_shell_command(Shell::exec_safe('/usr/local/bin/gcloud --quiet config set account %s', $gcloud_account), $proc_env);
+        LeUtils::run_shell_command(Shell::exec_safe('/usr/local/bin/gcloud --quiet config set project %s', $gcloud_project), $proc_env);
 
         // Save config for acme client.
         $this->acme_env['CLOUDSDK_PYTHON'] = '/usr/local/bin/python3';

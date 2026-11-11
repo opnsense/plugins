@@ -105,6 +105,148 @@ class LeCertificate extends LeCommon
     }
 
     /**
+     * Split PEM encoded data into a list of PEM encoded certificates.
+     * @param string $pem PEM encoded certificates
+     * @return array list of PEM encoded certificates
+     */
+    public static function splitCaChain(string $pem)
+    {
+        // Keep certificate sections only, the split result also contains the data between them
+        return array_values(array_filter(
+            CertStore::splitCerts($pem),
+            fn($item) => str_starts_with($item, '-----BEGIN CERTIFICATE-----')
+        ));
+    }
+
+    /**
+     * Check if a CA item was imported by the ACME Client.
+     * @param mixed $ca_item CA item
+     * @return bool
+     */
+    public static function isAcmeCa(mixed $ca_item)
+    {
+        return str_ends_with((string)$ca_item->descr, self::ACME_TRUST_DESCR_SUFFIX);
+    }
+
+    /**
+     * Compare subject to issuer (subject fits within issuer DN).
+     * @param array $subject to find
+     * @param array $issuer to match on
+     * @return bool
+     */
+    private static function compareIssuer(array $subject, array $issuer): bool
+    {
+        return empty(array_diff(
+            array_map('serialize', $subject),
+            array_map('serialize', $issuer)
+        ));
+    }
+
+    /**
+     * Store each certificate of a CA chain as a separate CA item and link the
+     * items to their issuers via caref.
+     * Existing CA items are matched by subject and issuer of their first certificate.
+     * The certificate of a matching item is replaced only when the item was
+     * imported by the ACME Client and contains more than one certificate.
+     * @param Ca $caModel CA model to update
+     * @param string $chain PEM encoded CA certificates, issuer of the end-entity certificate first
+     * @param mixed $first_item optional CA item that stores the first certificate of the chain
+     * @return string|bool refid of the CA item storing the first certificate, false on error
+     */
+    public static function importCaChain(Ca $caModel, string $chain, mixed $first_item = null)
+    {
+        // Parse all certificates before the model is modified
+        $chain_certs = [];
+        foreach (self::splitCaChain($chain) as $ca_content) {
+            $ca_details = CertStore::parseX509($ca_content);
+            $ca_x509 = openssl_x509_parse($ca_content);
+            if ($ca_details === false || $ca_x509 === false) {
+                return false;
+            }
+            $chain_certs[] = ['content' => $ca_content, 'details' => $ca_details, 'x509' => $ca_x509];
+        }
+        if (empty($chain_certs)) {
+            return false;
+        }
+
+        // Find or create one CA item per certificate
+        $chain_items = [];
+        foreach ($chain_certs as $idx => $chain_cert) {
+            $ca_content = $chain_cert['content'];
+            $ca_details = $chain_cert['details'];
+            $ca_x509 = $chain_cert['x509'];
+            $ca_subject = $ca_details['name'];
+            $ca_cn = $ca_details['commonname'] ?? '';
+            $ca_issuer = implode(",", $ca_details['issuer'] ?? []);
+            $ca_descr = (string)$ca_cn . self::ACME_TRUST_DESCR_SUFFIX;
+
+            $ca_item = null;
+            if ($idx == 0 && $first_item !== null) {
+                $ca_item = $first_item;
+            } else {
+                // Check if CA was previously imported
+                foreach ($caModel->ca->iterateItems() as $cacrt) {
+                    $cacrt_details = CertStore::parseX509(base64_decode((string)$cacrt->crt));
+                    if ($cacrt_details === false) {
+                        continue;
+                    }
+                    $cacrt_subject = $cacrt_details['name'];
+                    $cacrt_issuer = implode(",", $cacrt_details['issuer'] ?? []);
+                    if (($ca_subject === $cacrt_subject) and ($ca_issuer === $cacrt_issuer)) {
+                        $ca_item = $cacrt;
+                        break;
+                    }
+                }
+            }
+
+            if ($ca_item === null) {
+                // Create new CA
+                $ca_item = $caModel->ca->Add();
+                $ca_item->refid = uniqid();
+                $ca_item->descr = $ca_descr;
+                $ca_item->crt = base64_encode($ca_content);
+                LeUtils::log("imported ACME CA: {$ca_cn} ({$ca_item->refid})");
+            } else {
+                // Update existing CA
+                if (
+                    self::isAcmeCa($ca_item) &&
+                    count(self::splitCaChain(base64_decode((string)$ca_item->crt))) > 1
+                ) {
+                    $ca_item->crt = base64_encode($ca_content);
+                    LeUtils::log("updated ACME CA: {$ca_cn} ({$ca_item->refid})");
+                }
+                if ($idx == 0) {
+                    $ca_item->descr = $ca_descr;
+                }
+            }
+            $chain_items[] = ['item' => $ca_item, 'x509' => $ca_x509];
+        }
+
+        // Link each CA item to its issuer from the same chain
+        foreach ($chain_items as $child_idx => $child) {
+            if ($child['x509']['issuer'] == $child['x509']['subject']) {
+                // self-signed
+                continue;
+            }
+            $issuer_refid = null;
+            foreach ($chain_items as $parent_idx => $parent) {
+                if (
+                    $parent_idx != $child_idx &&
+                    self::compareIssuer($parent['x509']['subject'], $child['x509']['issuer'])
+                ) {
+                    $issuer_refid = (string)$parent['item']->refid;
+                    break;
+                }
+            }
+            if ($issuer_refid !== null) {
+                $child['item']->caref = $issuer_refid;
+            }
+        }
+
+        return (string)$chain_items[0]['item']->refid;
+    }
+
+    /**
      * Import the certificate into OPNsense's trust storage.
      * @param bool $skip_validation try to import even if some checks fail
      * @return bool
@@ -144,53 +286,26 @@ class LeCertificate extends LeCommon
 
         // Read contents from CA file
         $ca_content = @file_get_contents($this->cert_chain_file);
-        if ($ca_content != false) {
-            $ca_details = CertStore::parseX509($ca_content);
-            $ca_subject = $ca_details['name'];
-            $ca_serial = $ca_details['serialNumber'];
-            $ca_cn = $ca_details['commonname'];
-            $ca_issuer = implode(",", $ca_details['issuer']);
-        } else {
+        if ($ca_content == false) {
             LeUtils::log_error('unable to read CA certificate content from file');
             Config::getInstance()->unlock();
             return false;
         }
 
-        // Prepare CA
+        // Store each CA certificate of the chain as a separate CA item
         $caModel = new Ca();
         $ca = array();
-        $ca['refid'] = uniqid();
-        $ca['descr'] = (string)$ca_cn . ' (ACME Client)';
-        $ca_found = false;
-
-        // Check if CA was previously imported
-        foreach ($caModel->ca->iterateItems() as $cacrt) {
-            $cacrt_content = base64_decode((string)$cacrt->crt);
-            $cacrt_details = CertStore::parseX509($cacrt_content);
-            $cacrt_subject = $cacrt_details['name'];
-            $cacrt_issuer = implode(",", $cacrt_details['issuer']);
-            if (($ca_subject === $cacrt_subject) and ($ca_issuer === $cacrt_issuer)) {
-                // Use old refid instead of generating a new one
-                $ca['refid'] = (string)$cacrt->refid;
-                // Update existing CA
-                $cacrt->descr = $ca['descr'];
-                $ca_found = true;
-                break;
-            }
-        }
-
-        // Create new CA
-        if ($ca_found == false) {
-            LeUtils::log("imported ACME CA: {$ca_cn} ({$ca['refid']})");
-            $newca = $caModel->ca->Add();
-            foreach (array_keys($ca) as $cacfg) {
-                $newca->$cacfg = (string)$ca[$cacfg];
-            }
-            $newca->crt = base64_encode($ca_content);
+        $ca['refid'] = self::importCaChain($caModel, $ca_content);
+        if ($ca['refid'] === false) {
+            LeUtils::log_error('unable to import CA certificate chain for ' . (string)$this->config->name);
+            Config::getInstance()->unlock();
+            return false;
         }
 
         // Serialize to config and save
-        $caModel->serializeToConfig();
+        // Skip validation because the current in-memory model may not
+        // know about the CA items that were just created and linked.
+        $caModel->serializeToConfig(false, true);
         Config::getInstance()->save();
 
         /**
@@ -225,7 +340,7 @@ class LeCertificate extends LeCommon
         $cert = array();
         $cert['refid'] = uniqid();
         $cert['caref'] = (string)$ca['refid'];
-        $cert['descr'] = (string)$this->config->name . ' (ACME Client)';
+        $cert['descr'] = (string)$this->config->name . self::ACME_TRUST_DESCR_SUFFIX;
         $import_log_message = 'imported';
         $cert_found = false;
 
@@ -368,9 +483,20 @@ class LeCertificate extends LeCommon
             return false; // validation method is invalid
         }
 
+        // acme.sh would re-run a recorded deploy hook during --renew, i.e. before
+        // the certificate is imported. Remove stale hooks to avoid failed renewals.
+        if ($renew) {
+            $this->clearRecordedDeployHooks();
+        }
+
         // Let's start certificate validation...
         if ($this->validation->run($renew)) {
             LeUtils::log('successfully issued/renewed certificate: ' . (string)$this->config->name);
+        } elseif (!empty($this->validation->skipped)) {
+            // acme.sh decided renewal isn't due yet. Not an error, leave
+            // the certificate's current status untouched.
+            LeUtils::log('renewal skipped by acme.sh, not due yet for certificate: ' . (string)$this->config->name);
+            return false;
         } else {
             LeUtils::log_error('validation for certificate failed: ' . (string)$this->config->name);
             $this->setStatus(400);
