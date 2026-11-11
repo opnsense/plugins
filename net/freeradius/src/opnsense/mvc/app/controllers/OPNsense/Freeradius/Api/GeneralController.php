@@ -65,6 +65,7 @@ class GeneralController extends ApiControllerBase
 
             // serialize model to config and save
             if ($valMsgs->count() == 0) {
+                $this->throwReadOnly();
                 $mdlGeneral->serializeToConfig();
                 Config::getInstance()->save();
                 $result["result"] = "saved";

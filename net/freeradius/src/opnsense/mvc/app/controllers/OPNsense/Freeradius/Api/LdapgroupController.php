@@ -67,6 +67,7 @@ class LdapgroupController extends ApiMutableModelControllerBase
             }
             // serialize model to config and save
             if ($valMsgs->count() == 0) {
+                $this->throwReadOnly();
                 $mdlLdapgroup->serializeToConfig();
                 Config::getInstance()->save();
                 $result["result"] = "saved";
@@ -117,6 +118,7 @@ class LdapgroupController extends ApiMutableModelControllerBase
             if (count($result['validations']) == 0) {
                 unset($result['validations']);
                 // save config if validated correctly
+                $this->throwReadOnly();
                 $mdlLdapgroup->serializeToConfig();
                 Config::getInstance()->save();
                 unset($result['validations']);
@@ -133,6 +135,7 @@ class LdapgroupController extends ApiMutableModelControllerBase
             $mdlLdapgroup = $this->getModel();
             if ($uuid != null) {
                 if ($mdlLdapgroup->ldapgroups->ldapgroup->del($uuid)) {
+                    $this->throwReadOnly();
                     $mdlLdapgroup->serializeToConfig();
                     Config::getInstance()->save();
                     $result['result'] = 'deleted';
@@ -161,6 +164,7 @@ class LdapgroupController extends ApiMutableModelControllerBase
                     }
                     if (count($result['validations']) == 0) {
                         // save config if validated correctly
+                        $this->throwReadOnly();
                         $mdlSetting->serializeToConfig();
                         Config::getInstance()->save();
                         $result = array("result" => "saved");
@@ -188,6 +192,7 @@ class LdapgroupController extends ApiMutableModelControllerBase
                         $node->enabled = "1";
                     }
                     // if item has toggled, serialize to config and save
+                    $this->throwReadOnly();
                     $mdlSetting->serializeToConfig();
                     Config::getInstance()->save();
                 }
