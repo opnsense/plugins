@@ -108,6 +108,18 @@
         <help>If enabled it allows you to use SMTPS.</help>
     </field>
     <field>
+        <id>general.submission_enabled</id>
+        <label>Enable Submission Port (587)</label>
+        <type>checkbox</type>
+        <help>Enable the SMTP submission service on port 587. Clients must authenticate via SASL. Intended for mail user agents and automated senders such as monitoring systems. Port-level access should be restricted at the firewall.</help>
+    </field>
+    <field>
+        <id>general.submission_sasl_local_domain</id>
+        <label>Submission SASL Local Domain</label>
+        <type>text</type>
+        <help>Sets smtpd_sasl_local_domain for the submission service. Required when using Cyrus SASL with realm-based authentication (e.g. smtp.example.com). Leave empty to use the server hostname as the SASL realm.</help>
+    </field>
+    <field>
         <id>general.certificate</id>
         <label>Server Certificate</label>
         <type>dropdown</type>
