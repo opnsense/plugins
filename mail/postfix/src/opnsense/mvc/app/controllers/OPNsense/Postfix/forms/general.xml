@@ -253,4 +253,11 @@
         <type>text</type>
         <help>Time until we send a notification to the sender if mail is delayed (in hours) - 0 or empty to disable.</help>
     </field>
+    <field>
+        <id>general.disable_vrfy_command</id>
+        <label>Disable VRFY Command</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Disable the SMTP VRFY command. This stops some techniques used to harvest email addresses.</help>
+    </field>
 </form>

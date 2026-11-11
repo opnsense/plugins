@@ -167,5 +167,9 @@
             <MaximumValue>24</MaximumValue>
             <ValidationMessage>Choose a value between 1 and 24 to activate - 0 or empty to disable.</ValidationMessage>
         </delay_warning_time>
+        <disable_vrfy_command type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </disable_vrfy_command>
     </items>
 </model>
