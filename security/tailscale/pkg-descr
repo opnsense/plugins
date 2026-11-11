@@ -6,6 +6,10 @@ https://tailscale.com/
 Plugin Changelog
 ================
 
+1.5
+
+* pass --snat-subnet-routes=false when "Disable SNAT" is set, so source addresses are preserved
+
 1.4
 
 * set pre-auth key field in UI to optional, enables registration via pre-auth key or AuthURL from status page

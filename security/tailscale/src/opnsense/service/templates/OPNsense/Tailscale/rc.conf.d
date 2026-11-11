@@ -36,6 +36,11 @@ tailscaled_port="{{ OPNsense.tailscale.settings.listenPort }}"
 {%    else %}
 {%      do up_args.append("--ssh=false") %}
 {%    endif %}
+{%    if helpers.exists('OPNsense.tailscale.settings.disableSNAT') and OPNsense.tailscale.settings.disableSNAT|default("0") == "1" %}
+{%      do up_args.append("--snat-subnet-routes=false") %}
+{%    else %}
+{%      do up_args.append("--snat-subnet-routes=true") %}
+{%    endif %}
 {%    if helpers.exists('OPNsense.tailscale.authentication.loginServer') %}
 {%      do up_args.append("--login-server=" + OPNsense.tailscale.authentication.loginServer) %}
 {%    endif %}
