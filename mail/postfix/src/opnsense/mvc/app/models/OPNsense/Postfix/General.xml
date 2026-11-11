@@ -171,5 +171,14 @@
             <Default>0</Default>
             <Required>Y</Required>
         </disable_vrfy_command>
+        <smtpd_etrn_restrictions type="OptionField">
+            <Default>permit</Default>
+            <Required>Y</Required>
+            <OptionValues>
+                <permit>Allow all clients (default)</permit>
+                <mynetworks>Trusted networks only</mynetworks>
+                <reject>Reject all</reject>
+            </OptionValues>
+        </smtpd_etrn_restrictions>
     </items>
 </model>

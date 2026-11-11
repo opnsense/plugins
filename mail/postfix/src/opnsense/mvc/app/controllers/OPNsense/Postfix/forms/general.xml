@@ -260,4 +260,11 @@
         <advanced>true</advanced>
         <help>Disable the SMTP VRFY command. This stops some techniques used to harvest email addresses.</help>
     </field>
+    <field>
+        <id>general.smtpd_etrn_restrictions</id>
+        <label>ETRN Restrictions</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Optional restrictions that the Postfix SMTP server applies in the context of a client ETRN command.</help>
+    </field>
 </form>

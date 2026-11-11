@@ -237,6 +237,13 @@ delay_warning_time = {{ OPNsense.postfix.general.delay_warning_time }}h
 {% if helpers.exists('OPNsense.postfix.general.disable_vrfy_command') and OPNsense.postfix.general.disable_vrfy_command == '1' %}
 disable_vrfy_command = yes
 {% endif %}
+{% if helpers.exists('OPNsense.postfix.general.smtpd_etrn_restrictions') %}
+{%   if OPNsense.postfix.general.smtpd_etrn_restrictions == 'mynetworks' %}
+smtpd_etrn_restrictions = permit_mynetworks, reject
+{%   elif OPNsense.postfix.general.smtpd_etrn_restrictions == 'reject' %}
+smtpd_etrn_restrictions = reject
+{%   endif %}
+{% endif %}
 
 smtpd_helo_required = yes
 
