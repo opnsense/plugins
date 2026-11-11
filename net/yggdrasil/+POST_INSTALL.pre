@@ -1,0 +1,1 @@
+/usr/bin/install -d -o root -g wheel -m 0700 /usr/local/etc/yggdrasil || exit 1

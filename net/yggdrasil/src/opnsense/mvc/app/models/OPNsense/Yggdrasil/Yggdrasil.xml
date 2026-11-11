@@ -67,13 +67,13 @@
               </Interface>
             </MulticastInterfaces>
             <AllowedPublicKeys>
-                <AllowedPublickey type="ArrayField">
+                <AllowedPublicKey type="ArrayField">
                     <PublicKey type="TextField">
                         <Required>Y</Required>
                         <Mask>/^[a-fA-F0-9]{64}$/</Mask>
                         <ValidationMessage>Public keys must contain exactly 64 hexadecimal characters.</ValidationMessage>
                     </PublicKey>
-                </AllowedPublickey>
+                </AllowedPublicKey>
             </AllowedPublicKeys>
             <IfNameMode type="OptionField">
                 <Default>auto</Default>

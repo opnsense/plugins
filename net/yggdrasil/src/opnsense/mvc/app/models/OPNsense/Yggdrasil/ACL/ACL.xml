@@ -1,0 +1,9 @@
+<acl>
+    <page-yggdrasil-general>
+        <name>Services: Yggdrasil</name>
+        <patterns>
+            <pattern>ui/yggdrasil/*</pattern>
+            <pattern>api/yggdrasil/*</pattern>
+        </patterns>
+    </page-yggdrasil-general>
+</acl>

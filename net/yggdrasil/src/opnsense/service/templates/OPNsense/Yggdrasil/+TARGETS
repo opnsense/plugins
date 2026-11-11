@@ -1,2 +1,2 @@
 rc.conf.d:/etc/rc.conf.d/yggdrasil
-yggdrasil.conf:/usr/local/etc/yggdrasil.conf
+yggdrasil.conf:/usr/local/etc/yggdrasil/yggdrasil.conf

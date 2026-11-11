@@ -1,0 +1,55 @@
+<form>
+    <field>
+        <type>header</type>
+        <label>General Settings</label>
+        <static>true</static>
+    </field>
+    <field>
+        <id>yggdrasil.general.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable Yggdrasil.</help>
+    </field>
+    <field>
+        <id>yggdrasil.general.PrivateKey</id>
+        <label>Private Key</label>
+        <type>password</type>
+        <help>The node's private key. Changing it changes the node's identity and IPv6 address.</help>
+    </field>
+    <field>
+        <id>yggdrasil.general.IfNameMode</id>
+        <label>Interface Mode</label>
+        <type>dropdown</type>
+        <help>Choose automatic interface naming, disable the TUN interface, or specify a custom name.</help>
+    </field>
+    <field>
+        <id>yggdrasil.general.IfNameCustom</id>
+        <label>Interface Name</label>
+        <type>text</type>
+        <help>Interface name to use when Custom is selected.</help>
+    </field>
+    <field>
+        <id>yggdrasil.general.IfMTU</id>
+        <label>Interface MTU</label>
+        <type>text</type>
+        <help>Interface MTU in bytes, between 1280 and 32767.</help>
+    </field>
+    <field>
+        <id>yggdrasil.general.GroupPassword</id>
+        <label>Group Password</label>
+        <type>password</type>
+        <help>Optional group password.</help>
+    </field>
+    <field>
+        <id>yggdrasil.general.NodeInfoPrivacy</id>
+        <label>Node Information Privacy</label>
+        <type>checkbox</type>
+        <help>Omit the default platform and version information. Explicitly configured node information is still published.</help>
+    </field>
+    <field>
+        <id>yggdrasil.general.NodeInfo</id>
+        <label>Node Information</label>
+        <type>textbox</type>
+        <help>Information to publish as a JSON object. Use {} for an empty object. Do not include secrets.</help>
+    </field>
+</form>

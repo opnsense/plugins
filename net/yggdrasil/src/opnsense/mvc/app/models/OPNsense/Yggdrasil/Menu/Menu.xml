@@ -1,0 +1,7 @@
+<menu>
+    <Services>
+        <Yggdrasil VisibleName="Yggdrasil" cssClass="fa fa-network-wired fa-fw">
+            <Settings order="10" url="/ui/yggdrasil/"/>
+        </Yggdrasil>
+    </Services>
+</menu>

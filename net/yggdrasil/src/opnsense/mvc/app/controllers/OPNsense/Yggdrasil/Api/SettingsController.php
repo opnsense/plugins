@@ -25,11 +25,12 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  */
+
 namespace OPNsense\Yggdrasil\Api;
 
- use OPNsense\Base\ApiMutableModelControllerBase;
+use OPNsense\Base\ApiMutableModelControllerBase;
 
-class SettingsController extends ApiMutableControllerBase
+class SettingsController extends ApiMutableModelControllerBase
 {
   protected static $internalModelName = 'yggdrasil';
   protected static $internalModelClass = '\OPNsense\Yggdrasil\Yggdrasil';
@@ -64,7 +65,7 @@ class SettingsController extends ApiMutableControllerBase
     return $this->searchBase('general.InterfacePeers.Peer', ['Interface', 'URI']);
   }
 
-  public function getInterfacePeerAction($uuid=null)
+  public function getInterfacePeerAction($uuid = null)
   {
     return $this->getBase('interfacepeer', 'general.InterfacePeers.Peer', $uuid);
   }
@@ -81,7 +82,7 @@ class SettingsController extends ApiMutableControllerBase
 
   public function delInterfacePeerAction($uuid)
   {
-    return $this->delBase('interfacepeer', 'general.InterfacePeers.Peer', $uuid);
+    return $this->delBase('general.InterfacePeers.Peer', $uuid);
   }
 
   public function searchListenerAction()
@@ -89,19 +90,19 @@ class SettingsController extends ApiMutableControllerBase
     return $this->searchBase('general.Listen.Listener', ['URI']);
   }
 
-  public function getListernerAction($uuid = null)
+  public function getListenerAction($uuid = null)
   {
-    return $this->getBase('Listener', 'general.Listen.Listener', $uuid);
+    return $this->getBase('listener', 'general.Listen.Listener', $uuid);
   }
 
   public function addListenerAction()
   {
-    return $this->addBase('Listener', 'general.Listen.Listener');
+    return $this->addBase('listener', 'general.Listen.Listener');
   }
 
   public function setListenerAction($uuid)
   {
-    return $this->setBase('Listener', 'general.Listen.Listener', $uuid);
+    return $this->setBase('listener', 'general.Listen.Listener', $uuid);
   }
 
   public function delListenerAction($uuid)

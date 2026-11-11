@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>listener.URI</id>
+        <label>Listen URI</label>
+        <type>text</type>
+        <help>URI on which to accept incoming peer connections, including the transport, local address, and port.</help>
+    </field>
+</form>
