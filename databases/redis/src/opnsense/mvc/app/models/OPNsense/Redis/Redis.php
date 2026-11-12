@@ -29,7 +29,26 @@
 namespace OPNsense\Redis;
 
 use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
 
 class Redis extends BaseModel
 {
+    public function performValidation($validateFullModel = false)
+    {
+        $messages = parent::performValidation($validateFullModel);
+
+        $password = (string)$this->security->password;
+
+        if (!empty($password) && (strpos($password, '\\') !== false || strpos($password, '`') !== false)) {
+            $message = new Message(
+                gettext(
+                    "Password cannot contain backslash (\\) or backtick (`) characters",
+                ),
+                "security.password"
+            );
+            $messages->appendMessage($message);
+        }
+
+        return $messages;
+    }
 }
