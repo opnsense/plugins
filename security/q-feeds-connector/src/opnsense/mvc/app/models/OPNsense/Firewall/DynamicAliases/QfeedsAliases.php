@@ -53,7 +53,7 @@ class QfeedsAliases
                 }
             }
         }
-        foreach ((new Connector)->firewall->alias->iterateItems() as $alias) {
+        foreach ((new Connector())->firewall->alias->iterateItems() as $alias) {
             $name = '__qfeeds_' . $alias->name->getValue();
             $result[$name] = [
                 'enabled' => '1',

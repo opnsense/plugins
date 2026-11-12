@@ -117,11 +117,13 @@ function miniupnpd_configure()
     ];
 }
 
-function miniupnpd_uuid()
+/* XXX "wan" is a very arbitrary choice which may not exist */
+function miniupnpd_uuid($interface = 'wan')
 {
-    /* md5 hash of wan mac */
-    $uuid = md5(get_interface_mac(get_real_interface("wan")));
-    /* put uuid in correct format 8-4-4-4-12 */
+    $ifcfg = config_read_array('interfaces', $interface, false);
+    $ppp_parents = interface_ppps_hardware($ifcfg['if']);
+    $uuid = md5(get_interface_mac($ppp_parents[0] ?? $ifcfg['if']));
+    /* XXX offsets are wrong but would shift the stable UUID: 9 -> 8, 13 -> 12, 17 -> 16, 21 -> 20 */
     return substr($uuid, 0, 8) . '-' . substr($uuid, 9, 4) . '-' . substr($uuid, 13, 4) . '-' . substr($uuid, 17, 4) . '-' . substr($uuid, 21, 12);
 }
 
@@ -244,8 +246,7 @@ function miniupnpd_configure_do($verbose = false)
 
             /* enable system uptime instead of miniupnpd uptime */
             if (!empty($upnp_config['sysuptime'])) {
-                /* Disable system uptime to workaround daemon bug with PCP/NAT-PMP epoch on BSD */
-                //$config_text .= "system_uptime=yes\n";
+                $config_text .= "system_uptime=yes\n";
             }
 
             /* set webgui url */
@@ -294,6 +295,12 @@ function miniupnpd_configure_do($verbose = false)
 
             $config_text .= "lease_file=/var/run/miniupnpd.leases\n";
             $config_text .= "lease_file6=/var/run/miniupnpd.leases-ipv6\n";
+
+            //if (!empty($upnp_config['default_min_port'])) {
+            //    $config_text .= "default_min_port=" . $upnp_config['default_min_port'] . "\n";
+            //} else {
+            //    $config_text .= "default_min_port=1024\n";
+            //}
 
             /* write out the configuration */
             file_put_contents('/var/etc/miniupnpd.conf', $config_text);

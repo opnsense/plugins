@@ -77,6 +77,15 @@
                 <mdns type="BooleanField">
                     <Default>0</Default>
                     <Required>Y</Required>
+                    <Constraints>
+                        <check001>
+                            <type>DependConstraint</type>
+                            <addFields>
+                                <field1>mdns_services</field1>
+                            </addFields>
+                            <ValidationMessage>Service types only apply when mDNS is enabled.</ValidationMessage>
+                        </check001>
+                    </Constraints>
                 </mdns>
                 <ssdp type="BooleanField">
                     <Default>0</Default>
@@ -105,11 +114,15 @@
                 </macs>
                 <wol_ports type=".\PortListField">
                     <AsList>Y</AsList>
-                    <ValidationMessage>Enter the UDP ports magic packets arrive on, as numbers between 1 and 65535. The daemon defaults to 7 and 9.</ValidationMessage>
+                    <ValidationMessage>"%s" is not a UDP port. Enter the UDP ports magic packets arrive on, as numbers between 1 and 65535. The daemon defaults to 7 and 9.</ValidationMessage>
                 </wol_ports>
+                <mdns_services type=".\ServiceTypeField">
+                    <AsList>Y</AsList>
+                    <ValidationMessage>[%s] is not a DNS-SD service type, such as _ipp._tcp or _airplay._tcp.</ValidationMessage>
+                </mdns_services>
                 <udp_ports type=".\PortListField">
                     <AsList>Y</AsList>
-                    <ValidationMessage>Enter the UDP ports to relay, as numbers between 1 and 65535.</ValidationMessage>
+                    <ValidationMessage>"%s" is not a UDP port. Enter the UDP ports to relay, as numbers between 1 and 65535.</ValidationMessage>
                     <Constraints>
                         <check001>
                             <type>DependConstraint</type>

@@ -48,6 +48,17 @@
         </grid_view>
     </field>
     <field>
+        <id>reflector.mdns_services</id>
+        <label>mDNS services</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>DNS-SD service types to reflect, such as _ipp._tcp for printers or _airplay._tcp for AirPlay. Leave empty to reflect every service.</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
         <id>reflector.ssdp</id>
         <label>SSDP</label>
         <type>checkbox</type>
@@ -60,7 +71,7 @@
         <id>reflector.dial</id>
         <label>DIAL</label>
         <type>checkbox</type>
-        <help>Casting to a TV ("Discovery And Launch"). Needs SSDP, and is IPv4-only, so it cannot be used on an IPv6-only reflector.</help>
+        <help>Casting to a TV ("Discovery And Launch"). Needs SSDP, and is IPv4-only.</help>
         <grid_view>
             <formatter>boolean</formatter>
         </grid_view>

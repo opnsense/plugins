@@ -379,7 +379,7 @@
     </field>
     <field>
         <id>action.acme_truenas_apikey</id>
-        <label>TrueNAS API key</label>
+        <label>TrueNAS API key (DEPRECATED)</label>
         <type>text</type>
         <help>API key generated in the TrueNAS web UI.</help>
     </field>
@@ -418,6 +418,47 @@
         <type>dropdown</type>
         <help>Connection scheme that will be used when uploading certificates to TrueNAS Server.</help>
     </field>
+	<field>
+		<label>Required Parameters</label>
+		<type>header</type>
+		<style>method_table method_table_acme_truenas_websocat</style>
+	</field>
+	<field>
+		<id>action.acme_truenas_websocat_apikey</id>
+		<label>TrueNAS API key</label>
+		<type>text</type>
+		<help>API key generated in the TrueNAS web UI.</help>
+	</field>
+	<field>
+		<id>action.acme_truenas_websocat_hostname</id>
+		<label>TrueNAS hostname</label>
+		<type>text</type>
+		<help>Hostname or IP address of TrueNAS Server.</help>
+	</field>
+	<field>
+		<id>action.acme_truenas_websocat_protocol</id>
+		<label>TrueNAS protocol</label>
+		<type>dropdown</type>
+		<help>Connection scheme that will be used when uploading certificates to TrueNAS Server.</help>
+	</field>
+	<field>
+		<id>action.acme_truenas_websocat_port</id>
+		<label>TrueNAS port</label>
+		<type>text</type>
+		<help>Port of TrueNAS HTTP Server.</help>
+	</field>
+	<field>
+		<id>action.acme_truenas_websocat_update_ftp</id>
+		<label>TrueNAS Update FTP</label>
+		<type>dropdown</type>
+		<help>Upload certificate to TrueNAS FTP Server.</help>
+	</field>
+	<field>
+		<id>action.acme_truenas_websocat_update_apps</id>
+		<label>TrueNAS Update ix-Apps</label>
+		<type>dropdown</type>
+		<help>Upload certificate to TrueNAS Server ix-Apps.</help>
+	</field>
     <field>
         <label>Required Parameters</label>
         <type>header</type>
@@ -428,13 +469,11 @@
         <label>Ruckus Host</label>
         <type>text</type>
     </field>
-
     <field>
         <id>action.acme_ruckus_user</id>
         <label>Ruckus User</label>
         <type>text</type>
     </field>
-
     <field>
         <id>action.acme_ruckus_pass</id>
         <label>Ruckus Password</label>
@@ -514,5 +553,46 @@
         <label>Restart Switch</label>
         <type>checkbox</type>
         <help>If checked the switch will be rebooted once the certificate has been successfully installed.</help>
+    </field>
+    <field>
+        <label>Required Parameters</label>
+        <type>header</type>
+        <style>method_table method_table_acme_jetkvm</style>
+    </field>
+    <field>
+        <id>action.acme_jetkvm_host</id>
+        <label>JetKVM Host</label>
+        <type>text</type>
+        <help>IP address or hostname of the JetKVM device. Required first: the device must already have "HTTPS
+              Mode" set to "Custom" in its own web UI (Settings &gt; Network) -- this automation only writes the
+              certificate/key files (and optionally reboots); it does not switch HTTPS mode for you, and the
+              deploy will fail if it isn't already set (check the ACME Client log for the exact reason). Also
+              requires SSH access to already work non-interactively as the configured user (JetKVM only supports
+              key-based SSH authentication -- enable "Developer Mode" on the device and paste this firewall's SSH
+              public key, e.g. from /root/.ssh/id_rsa.pub, into its "SSH Keys" field under Settings &gt; Advanced).
+              Leaving this blank does not fail validation -- it falls back to the certificate's own domain name,
+              which is almost never the device's address, so set it explicitly.</help>
+    </field>
+    <field>
+        <id>action.acme_jetkvm_user</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>The username to login to the JetKVM device via SSH. JetKVM only supports the "root" account for SSH
+              access. Defaults to "root".</help>
+    </field>
+    <field>
+        <id>action.acme_jetkvm_port</id>
+        <label>SSH Port</label>
+        <type>text</type>
+        <help>SSH server port on the JetKVM device. Defaults to "22".</help>
+    </field>
+    <field>
+        <id>action.acme_jetkvm_reboot</id>
+        <label>Reboot After Upload</label>
+        <type>checkbox</type>
+        <help>JetKVM does not hot-reload a new "Custom" certificate -- a full device reboot is required to apply
+              it, which briefly drops any active KVM-over-IP session. If checked (default), the device is
+              rebooted automatically right after the certificate is uploaded, so an unattended renewal actually
+              takes effect. Uncheck to upload only and apply/verify manually instead.</help>
     </field>
 </form>

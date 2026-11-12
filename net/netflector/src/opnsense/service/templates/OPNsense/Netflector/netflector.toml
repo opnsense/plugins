@@ -23,6 +23,9 @@ wol = {{ 'true' if entry.wol|default('0') == '1' else 'false' }}
 wol_ports = [{{ entry.wol_ports.split(',') | join(', ') }}]
 {%       endif %}
 mdns = {{ 'true' if entry.mdns|default('0') == '1' else 'false' }}
+{%       if entry.mdns|default('0') == '1' and entry.mdns_services %}
+mdns_services = [{% for service in entry.mdns_services.split(',') %}"{{ service }}"{% if not loop.last %}, {% endif %}{% endfor %}]
+{%       endif %}
 ssdp = {{ 'true' if entry.ssdp|default('0') == '1' else 'false' }}
 dial = {{ 'true' if entry.dial|default('0') == '1' else 'false' }}
 wsd = {{ 'true' if entry.wsd|default('0') == '1' else 'false' }}

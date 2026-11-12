@@ -3,7 +3,7 @@
         <id>netflector.general.enabled</id>
         <label>Enable</label>
         <type>checkbox</type>
-        <help>Run netflector. The daemon needs at least one enabled reflector below, so the service stays stopped until you add one.</help>
+        <help>Run netflector. The daemon needs at least one enabled reflector on the Reflectors tab, so the service stays stopped until you add one.</help>
     </field>
     <field>
         <id>netflector.general.log_level</id>

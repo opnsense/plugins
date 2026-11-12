@@ -190,6 +190,11 @@ class ServiceController extends ApiControllerBase
      */
     public function resetAction()
     {
+        if (!$this->request->isPost()) {
+            return array("result" => "failed");
+        }
+        $this->throwReadOnly();
+
         $model = new AcmeClient();
         // reset certificate states
         foreach ($model->getNodeByReference('certificates.certificate')->iterateItems() as $cert) {

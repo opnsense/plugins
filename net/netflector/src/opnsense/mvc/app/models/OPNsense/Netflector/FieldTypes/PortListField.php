@@ -37,15 +37,9 @@ use OPNsense\Base\Validators\CallbackValidator;
  */
 class PortListField extends BaseSetField
 {
-    public function setValue($value)
-    {
-        $items = array_map('trim', explode($this->internalFieldSeparator, (string)$value));
-        parent::setValue(implode($this->internalFieldSeparator, array_unique($items)));
-    }
-
     protected function defaultValidationMessage()
     {
-        return gettext('Please specify valid port numbers (1-65535).');
+        return gettext('"%s" is not a port number between 1 and 65535.');
     }
 
     public function getValidators()
@@ -53,10 +47,15 @@ class PortListField extends BaseSetField
         $validators = parent::getValidators();
         if ($this->isSet()) {
             $validators[] = new CallbackValidator(["callback" => function ($data) {
+                $seen = [];
                 foreach ($this->iterateInput($data) as $port) {
                     if (!ctype_digit($port) || str_starts_with($port, '0') || (int)$port > 65535) {
-                        return [$this->getValidationMessage()];
+                        return [$this->getValidationMessage($port)];
                     }
+                    if (isset($seen[$port])) {
+                        return [sprintf(gettext('"%s" is listed twice: list each port once.'), $port)];
+                    }
+                    $seen[$port] = true;
                 }
                 return [];
             }]);

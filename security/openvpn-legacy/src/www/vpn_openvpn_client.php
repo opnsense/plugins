@@ -114,6 +114,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
     }
 } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SESSION['Username'] != 'root') {
+        $user = getUserEntry($_SESSION['Username']);
+        if (is_array($user) && userHasPrivilege($user, 'user-config-readonly')) {
+            http_response_code(403);
+            exit;
+        }
+    }
     $pconfig = $_POST;
     $input_errors = array();
     if (isset($_POST['id']) && isset($a_client[$_POST['id']])) {

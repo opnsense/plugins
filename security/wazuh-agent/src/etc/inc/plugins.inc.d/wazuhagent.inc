@@ -54,8 +54,8 @@ function wazuhagent_services()
 
 function wazuhagent_firewall($fw)
 {
-    global $config;
-    $defaults = ['block' => ['type' => 'block', 'log' => !isset($config['syslog']['nologdefaultblock'])]];
+    $settings = $fw->getSettings();
+    $defaults = ['block' => ['type' => 'block', 'log' => !empty($settings['logging']['default_block'])]];
     if ((new \OPNsense\WazuhAgent\WazuhAgent())->general->enabled == '1') {
         //$fw->registerFilterRule();
         $fw->registerFilterRule(
