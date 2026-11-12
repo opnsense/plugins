@@ -1,3 +1,11 @@
+# Sunset
+
+I'm sunsetting this:
+
+Seems there was not a lot of interest. Even some pushback. Further, I've made the switch to VyOs.
+
+PRs are welcome, or someone can fork it. Otherwise I will soon archive this.
+
 # Resolver Plugins for OPNsense
 
 Community-maintained OPNsense plugins, based on the upstream OPNsense
