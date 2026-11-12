@@ -167,5 +167,18 @@
             <MaximumValue>24</MaximumValue>
             <ValidationMessage>Choose a value between 1 and 24 to activate - 0 or empty to disable.</ValidationMessage>
         </delay_warning_time>
+        <disable_vrfy_command type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </disable_vrfy_command>
+        <smtpd_etrn_restrictions type="OptionField">
+            <Default>permit</Default>
+            <Required>Y</Required>
+            <OptionValues>
+                <permit>Allow all clients (default)</permit>
+                <mynetworks>Trusted networks only</mynetworks>
+                <reject>Reject all</reject>
+            </OptionValues>
+        </smtpd_etrn_restrictions>
     </items>
 </model>
