@@ -1,0 +1,10 @@
+<acl>
+    <page-newt-settings>
+        <name>VPN: Pangolin Newt: Settings and Service</name>
+        <patterns><pattern>ui/newt/*</pattern><pattern>api/newt/*</pattern></patterns>
+    </page-newt-settings>
+    <page-newt-log>
+        <name>VPN: Pangolin Newt: Log File</name>
+        <patterns><pattern>ui/diagnostics/log/core/newt/*</pattern><pattern>api/diagnostics/log/core/newt/*</pattern></patterns>
+    </page-newt-log>
+</acl>
