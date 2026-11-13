@@ -114,7 +114,8 @@ DEFAULT Ldap-Group == "{{ ldapgroup_list.ldapgroupname }}"
 {%  endif %}
 
 {%  if OPNsense.freeradius.general.fallbackvlan_enabled == '1' %}
-DEFAULT Service-Type == Call-Check, Auth-Type := Accept
+# Fallback VLAN: restricted to Service-Type Call-Check (RFC 2865 5.6) unless "Apply VLAN fallback to all requests" is set
+DEFAULT {% if OPNsense.freeradius.general.fallbackvlan_any_service != '1' %}Service-Type == Call-Check, {% endif %}Auth-Type := Accept
        Tunnel-Type = VLAN,
        Tunnel-Medium-Type = IEEE-802,
 {%  if helpers.exists('OPNsense.freeradius.general.fallbackvlan_id') and OPNsense.freeradius.general.fallbackvlan_id != '' %}
