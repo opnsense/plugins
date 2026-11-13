@@ -1,0 +1,176 @@
+<form>
+    <field>
+        <id>pppoeserver.general.enabled</id>
+        <label>Enable PPPoE Server</label>
+        <type>checkbox</type>
+        <help>Enable the PPPoE Access Concentrator service. Configuration changes restart the daemon and drop active sessions (mpd5 cannot reload).</help>
+    </field>
+    <field>
+        <id>pppoeserver.general.authmethod</id>
+        <label>Authentication method</label>
+        <type>dropdown</type>
+        <help>Authentication protocol offered to clients.</help>
+    </field>
+    <field>
+        <id>pppoeserver.general.servicename</id>
+        <label>Default service name</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Default PPPoE service name. Empty accepts any service name requested by the client.</help>
+    </field>
+    <field>
+        <id>pppoeserver.general.mtu</id>
+        <label>MTU</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Default MTU for PPP links (1492 for standard PPPoE).</help>
+    </field>
+    <field>
+        <id>pppoeserver.general.mru</id>
+        <label>MRU</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Default MRU for PPP links.</help>
+    </field>
+    <field>
+        <id>pppoeserver.general.ipv6</id>
+        <label>Enable IPv6 (IPv6CP)</label>
+        <type>checkbox</type>
+        <help>Negotiate IPv6CP so sessions get an IPv6 link-local address. Hand out a global prefix with Router Advertisements (Services → Router Advertisements) on the PPPoE interface group for SLAAC.</help>
+    </field>
+    <field>
+        <id>pppoeserver.general.dns1</id>
+        <label>DNS server 1</label>
+        <type>text</type>
+        <help>Primary DNS server handed to clients via IPCP.</help>
+    </field>
+    <field>
+        <id>pppoeserver.general.dns2</id>
+        <label>DNS server 2</label>
+        <type>text</type>
+        <help>Secondary DNS server handed to clients via IPCP.</help>
+    </field>
+    <field>
+        <id>pppoeserver.general.maxsessions</id>
+        <label>Maximum sessions</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Global cap on concurrent PPPoE sessions.</help>
+    </field>
+    <field>
+        <id>pppoeserver.general.maxsessionsperuser</id>
+        <label>Sessions per username</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Maximum simultaneous logins per username.</help>
+    </field>
+    <field>
+        <id>pppoeserver.general.carpdependent</id>
+        <label>CARP failover interlock</label>
+        <type>checkbox</type>
+        <help>Run the PPPoE server only while this node is CARP MASTER: the service stops on transition to BACKUP and starts on transition to MASTER. PPPoE sessions are not synchronized between nodes — clients reconnect after a failover.</help>
+    </field>
+    <field>
+        <id>pppoeserver.general.radiusauth</id>
+        <label>RADIUS authentication</label>
+        <type>checkbox</type>
+        <help>Authenticate PPPoE clients against the configured RADIUS servers instead of only the local user database.</help>
+    </field>
+    <field>
+        <id>pppoeserver.general.radiusacct</id>
+        <label>RADIUS accounting</label>
+        <type>checkbox</type>
+        <help>Send Accounting-Start/Interim/Stop records to the configured RADIUS servers.</help>
+    </field>
+    <field>
+        <id>pppoeserver.general.acctinterval</id>
+        <label>Interim accounting interval (s)</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Interval for Accounting Interim-Update records; 0 disables interim updates.</help>
+    </field>
+    <field>
+        <id>pppoeserver.radius.options.timeout</id>
+        <label>RADIUS timeout (s)</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Timeout per RADIUS request.</help>
+    </field>
+    <field>
+        <id>pppoeserver.radius.options.retries</id>
+        <label>RADIUS retries</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Retries per RADIUS server before trying the next one.</help>
+    </field>
+    <field>
+        <id>pppoeserver.radius.options.srcaddr</id>
+        <label>RADIUS source address</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Source IPv4 address for RADIUS requests on multihomed systems.</help>
+    </field>
+    <field>
+        <id>pppoeserver.radius.options.nasip</id>
+        <label>NAS-IP-Address</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Value for the NAS-IP-Address attribute. Empty uses the system default.</help>
+    </field>
+    <field>
+        <id>pppoeserver.radius.options.nasid</id>
+        <label>NAS-Identifier</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Value for the NAS-Identifier attribute. Empty uses the local hostname.</help>
+    </field>
+    <field>
+        <id>pppoeserver.radius.options.messageauth</id>
+        <label>Message-Authenticator</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Add the Message-Authenticator attribute to Access-Requests (recommended).</help>
+    </field>
+    <field>
+        <id>pppoeserver.general.localshaping</id>
+        <label>Local user shaping (ext-auth)</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Authenticate local users through an external-auth backend instead of the secrets file, so per-user upload/download limits (set on each Local User) are applied via mpd5 rate limiters. Leave off if you do not shape local users; RADIUS shaping works independently.</help>
+    </field>
+    <field>
+        <id>pppoeserver.radius.coa.enabled</id>
+        <label>RADIUS CoA / Disconnect</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>Enable the RFC 5176 listener so a RADIUS server or billing system can disconnect active subscribers. Requires a shared secret and an allowed-client list below.</help>
+    </field>
+    <field>
+        <id>pppoeserver.radius.coa.port</id>
+        <label>CoA port</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>UDP port for Disconnect/CoA requests (default 3799).</help>
+    </field>
+    <field>
+        <id>pppoeserver.radius.coa.secret</id>
+        <label>CoA shared secret</label>
+        <type>password</type>
+        <advanced>true</advanced>
+        <help>Shared secret used to authenticate Disconnect requests.</help>
+    </field>
+    <field>
+        <id>pppoeserver.radius.coa.allowedclients</id>
+        <label>CoA allowed clients</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Comma-separated list of source IPv4/IPv6 addresses or CIDRs allowed to send Disconnect requests. Requests from any other source are dropped.</help>
+    </field>
+    <field>
+        <id>pppoeserver.general.loglevel</id>
+        <label>Log level</label>
+        <type>dropdown</type>
+        <advanced>true</advanced>
+        <help>Daemon log verbosity (debug enables per-protocol tracing).</help>
+    </field>
+</form>
