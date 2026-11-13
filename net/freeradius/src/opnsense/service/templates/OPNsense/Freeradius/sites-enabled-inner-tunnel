@@ -213,7 +213,19 @@ authenticate {
         #  in the 'authorize' section supplies a password.  The
         #  password can be clear-text, or encrypted.
         Auth-Type PAP {
+{%   if helpers.exists('OPNsense.freeradius.ldap.innertunnel') and OPNsense.freeradius.ldap.innertunnel == '1' %}
+                #  EAP-GTC hands the password to this section. Use pap when a
+                #  known good password was found, otherwise bind against LDAP
+                #  for directories that never reveal passwords.
+                if (&control:Cleartext-Password || &control:Password-With-Header || &control:NT-Password) {
+                        pap
+                }
+                else {
+                        ldap
+                }
+{%   else %}
                 pap
+{%   endif %}
         }
 
         #

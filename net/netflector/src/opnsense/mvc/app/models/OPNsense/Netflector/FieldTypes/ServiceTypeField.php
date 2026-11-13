@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright (C) 2026 cayossarian (Bill Flood)
+ * Copyright (C) 2026 Bill Flood
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without

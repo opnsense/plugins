@@ -114,7 +114,7 @@ DEFAULT Ldap-Group == "{{ ldapgroup_list.ldapgroupname }}"
 {%  endif %}
 
 {%  if OPNsense.freeradius.general.fallbackvlan_enabled == '1' %}
-DEFAULT Auth-Type := Accept
+DEFAULT Service-Type == Call-Check, Auth-Type := Accept
        Tunnel-Type = VLAN,
        Tunnel-Medium-Type = IEEE-802,
 {%  if helpers.exists('OPNsense.freeradius.general.fallbackvlan_id') and OPNsense.freeradius.general.fallbackvlan_id != '' %}
