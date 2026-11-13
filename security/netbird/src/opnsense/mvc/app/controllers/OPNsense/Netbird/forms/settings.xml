@@ -19,8 +19,8 @@
         <id>settings.general.ipmapping</id>
         <label>Force IP Mapping</label>
         <type>text</type>
-        <hint>12.34.56.78</hint>
-        <help>Forces external IPs maps between local addresses and interfaces. You can specify a comma-separated list with the following: a single IP (12.34.56.78), IP/IP (12.34.56.78/10.0.0.1) or IP/device (12.34.56.80/em1). Leave empty for automatic mapping.</help>
+        <hint>198.51.100.10</hint>
+        <help>Forces external IPv4 mappings for local addresses and interfaces. Specify a comma-separated list of external IPs (198.51.100.10), external/local IP pairs (198.51.100.10/192.0.2.2) or external IP/interface pairs (203.0.113.20/em1). Leave empty for automatic mapping.</help>
         <advanced>true</advanced>
     </field>
     <field>
