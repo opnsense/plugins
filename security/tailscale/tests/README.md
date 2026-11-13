@@ -1,97 +1,75 @@
 # Tailscale startup regression tests
 
-From the root of a checkout of this branch, run:
+From the root of this checkout, run:
 
 ```sh
 sh security/tailscale/tests/run.sh
 ```
 
-From another directory, pass the absolute path to `tests/run.sh` instead.
-The harness resolves the plugin under test relative to the script; it needs no
-developer workspace layout, installed OPNsense system or firewall credentials.
+The runner also accepts an absolute path from another directory. It needs a
+POSIX shell, Docker with Linux containers, curl and sha256sum, shasum or FreeBSD
+sha256. No host PHP, Composer or firewall credentials are needed. Run it on a
+development machine, not a firewall.
 
-Requirements: a POSIX shell, Docker with Linux containers, `curl`, and one of
-`sha256sum`, `shasum` or FreeBSD `sha256`. No host PHP or Composer installation is
-needed. Run this on a development machine, not on a firewall.
+## References and isolation
 
-## Preparation and offline execution
+Preparation downloads seven public files from opnsense/core at commit
+`228ab68d54513046f79bc36d7f583936922d1951` (26.7.9), verifying every file against
+`core.sha256`. The PHP 8.5 image is also pinned by digest. Downloaded references
+and generated include stubs live in a temporary directory removed on exit;
+the checkout is not modified. No empty include fixtures are committed.
 
-The preparation step downloads 12 public files from `opnsense/core` at commit
-`cdd7a38717b67ce90b673bd528ddaf2b2b42d8d7`. Every file is checked against
-`core.sha256` before its code is loaded. A missing or mismatched reference fails
-the run. The PHP 8.5 CLI image is also pinned by digest in `run.sh` and downloaded
-only if it is not cached. Network access is needed for this preparation only.
-Downloaded references go into a temporary directory removed when the script exits.
-The checkout is not modified.
-
-An existing core checkout can supply the references instead. Its files must match
-the pinned hashes; the script never checks out or edits that directory:
-
-```sh
-sh security/tailscale/tests/run.sh --core /path/to/opnsense-core
-```
-
-For a completely offline run, first obtain that core revision and cache the PHP
-image specified in `run.sh`, then run:
+An existing core checkout can supply the references instead. The same hashes
+are required. With that checkout and the PHP image cached, run offline:
 
 ```sh
 sh security/tailscale/tests/run.sh --core /path/to/opnsense-core --offline
 ```
 
-`--offline` refuses to download either references or an image. This requires the
-same 12 files and cached image as an online preparation.
+`--offline` refuses to download either references or an image. Without
+`--offline`, `--core` still uses the supplied files without changing them.
 
-## Isolation and implementation
+The test container always uses `--network none`, a read-only root and read-only
+plugin/core/include mounts, no capabilities, the calling user's numeric UID/GID,
+and a disposable /tmp tmpfs. No Docker socket, host service paths, configuration
+or credentials are mounted. No daemon or monitor is actually started.
 
-The test container always runs with `--network none`, a read-only root filesystem,
-read-only plugin/core mounts, no capabilities, and the calling user's numeric
-UID/GID. Test scratch files use a disposable `/tmp` tmpfs; it has no
-Docker socket, host `/usr/local`, configuration, service socket or credentials
-mounted. Test subprocesses and the local Unix socket used by the Backend tests
-remain inside that container. No daemon or gateway monitor is started.
+## What runs
 
-`run.php` executes the current plugin include, actual PHP boot hook and commands
-read from `actions_tailscale.conf`. `scenario.php` provides synthetic configuration,
-gateway-model and runtime-interface boundaries. It extracts named functions from
-the hash-verified core sources with PHP's tokenizer and executes them unchanged;
-the real `rc.newwanip`/`rc.newwanipv6` scripts run with their includes and system
-effects intercepted. Command execution, process signalling, routing, resolver,
-firewall reload and VPN notifications become trace events asserted by the tests.
+The current production shell hook runs with only its pluginctl executable path
+redirected to `scenario.php`. That fixture executes the full pinned pluginctl,
+the current plugin include, and unchanged function bodies extracted with PHP's
+tokenizer from the core dispatcher, interface helpers and dpinger plugin.
+Models and interface/process state are synthetic; host-route updates, process
+signals and commands are intercepted. A full interface-renewal request fails
+the test. No configd socket simulator or renewal-script fixtures are needed.
 
-The real core `Backend` class is tested against a local Unix socket server which
-acknowledges submission while deliberately holding the simulated action open.
-This checks parameter escaping and the detach flag; no real configd is involved.
+Start/Restart tests read the actual configd action command, substitute a native
+service boundary with a chosen exit code, and execute the same shell hook.
+The core gateway model and FreeBSD runtime are not emulated in full.
 
-The runner creates temporary PHP include stubs and mounts them read-only at
-`/test-includes`. These satisfy the include names used by the actual hook and core
-scripts; their simulated behaviour is implemented in `scenario.php`. No empty
-include fixtures are stored in the checkout. Downloaded core code retains its
-upstream licensing. New harness code is BSD-2-Clause licensed (see `LICENSE`).
+## Coverage
 
-## Coverage and expected result
+- Scoped monitor startup, IPv4/IPv6 and dual-stack sources, one watcher HUP.
+- Disabled plugin/interface/gateways, monitor_disable, missing assignment and
+  empty selection without touching WAN/WireGuard monitors.
+- Different logical assignments, multiple gateways, inactive gateways, global
+  IPv6 disable, ULA/GUA and unavailable or unusable IPv6 sources.
+- Native Start/Restart failures preserving distinct exit codes and bypassing
+  the callback; successful native calls executing the actual hook.
+- Repeated calls, original boot ordering, production syntax and hook permissions.
 
-Expected result with this revision: **57 passed, 0 failed, 57 total**, exit status
-zero. A failed assertion prints its test name and exits nonzero. No test is skipped.
+Unavailable addresses follow the native dpinger contract: monitors are skipped
+and logged, while pluginctl can return success. These tests deliberately assert
+that behavior rather than the previous helper's explicit readiness failure.
 
-- Disabled/unassigned interfaces; disabled or unmonitored gateways; empty selection.
-- IPv4, IPv6 and dual-stack; partial readiness; ULA and documentation GUA;
-  tentative, detached, deprecated and link-local IPv6; global IPv6 disable.
-- One request per selected family, forced renewal with an unchanged address,
-  invalid/empty/error acknowledgements and exceptions, independent family failures,
-  bounded repeated calls and no recursive callback.
-- Native Start/Restart failures preserving distinct error codes, successful native
-  calls invoking the actual hook, callback errors and no-op exit status.
-- Core monitor selection by interface/family, source-address selection,
-  `monitor_disable`, empty monitor maps, firewall/resolver/VPN effects, IPv4 cache
-  behaviour/state deletion, IPv6 DAD invocation, routing input and boot order.
-- Actual Backend request framing, syntax of both production PHP files and the
-  boot hook's executable permission.
+Expected result: **30 passed, 0 failed, 30 total**, exit status zero. A failed
+assertion prints its name and exits nonzero. No checks are skipped. This standalone
+runner is separate from the repository's PHPUnit-oriented `make test` target.
 
-This suite covers the submitted plugin code. Trial installation, rollback and
-evidence collection tools are outside this PR and are not counted here.
-
-These are isolated regressions against one pinned core revision. The gateway model,
-configuration and FreeBSD interface data are simulated. They do not establish real
-boot readiness, dpinger connectivity, live IPv6 behaviour, uninterrupted traffic,
-or the effect of both notifications on a real dual-stack firewall. Separate real
-IPv4 tests described in the PR do not extend the scope of these simulations.
+The suite does not establish real boot readiness, connectivity, IPv6 runtime
+behavior, LAN forwarding, failover or uninterrupted traffic. It does not model
+later gateway-watcher alarms. The separate real IPv4 Restart/boot evidence in
+the PR applies only to the stated environment. Deployment and cleanup tools
+are outside this PR. New harness code is BSD-2-Clause licensed (see LICENSE);
+downloaded core code retains its upstream licensing.

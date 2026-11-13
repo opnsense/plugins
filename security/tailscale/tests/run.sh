@@ -5,7 +5,7 @@ set -eu
 
 test_dir=$(CDPATH= cd "$(dirname "$0")" && pwd -P)
 plugin_dir=$(dirname "$test_dir")
-core_commit=cdd7a38717b67ce90b673bd528ddaf2b2b42d8d7
+core_commit=228ab68d54513046f79bc36d7f583936922d1951
 image=php@sha256:01a109229f4465bc9ef042d9198f09a4d9da7775a825dbd8572dcdbd8756c4d3
 core_dir=
 offline=no
