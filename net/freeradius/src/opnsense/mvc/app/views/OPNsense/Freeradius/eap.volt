@@ -37,22 +37,46 @@ POSSIBILITY OF SUCH DAMAGE.
 
 <script>
     $( document ).ready(function () {
+        var outerSelectionInitialized = false;
         var data_get_map = {'frm_eap_settings':"/api/freeradius/eap/get"};
         mapDataToFormUI(data_get_map).done(function (data) {
             formatTokenizersUI();
             $('.selectpicker').selectpicker('refresh');
-            toggleTtlsInner();
+            outerSelectionInitialized = $("#eap\\.restrict_outer_eap_methods").is(':checked') ||
+                ($("#eap\\.allowed_outer_eap_types").val() || []).length > 0;
+            toggleEapSettings();
         });
 
-        // the inner EAP type only applies to TTLS
-        function toggleTtlsInner() {
-            if ($("#eap\\.default_eap_type").val() === 'ttls') {
+        // Show settings for the restriction state and enabled tunnel methods.
+        function toggleEapSettings() {
+            var restricted = $("#eap\\.restrict_outer_eap_methods").is(':checked');
+            var allowed = $("#eap\\.allowed_outer_eap_types").val() || [];
+            $("#eap\\.allowed_outer_eap_types").prop('disabled', !restricted).selectpicker('refresh');
+            // Native multiselect helper links must not modify disabled selections.
+            $("#clear-options_eap\\.allowed_outer_eap_types, #select-options_eap\\.allowed_outer_eap_types")
+                .css('visibility', restricted ? 'visible' : 'hidden');
+            // Restrictions may allow TTLS even when another method is the outer default.
+            if ((restricted && allowed.indexOf('ttls') !== -1) || (!restricted && $("#eap\\.default_eap_type").val() === 'ttls')) {
                 $(".ttls_inner").closest('tr').show();
             } else {
                 $(".ttls_inner").closest('tr').hide();
             }
         }
-        $("#eap\\.default_eap_type").change(toggleTtlsInner);
+        $("#eap\\.restrict_outer_eap_methods").change(function () {
+            // Seed only the first restricted selection; never repopulate a cleared list.
+            if ($("#eap\\.restrict_outer_eap_methods").is(':checked') && !outerSelectionInitialized) {
+                $("#eap\\.allowed_outer_eap_types").val([$("#eap\\.default_eap_type").val()]);
+                outerSelectionInitialized = true;
+            }
+            toggleEapSettings();
+        });
+        $("#eap\\.allowed_outer_eap_types, #eap\\.default_eap_type").change(toggleEapSettings);
+        // Native bulk-selection links refresh the widget without emitting change.
+        // Delegate to the form so their direct click handlers finish first.
+        $("#frm_eap_settings").on('click',
+            "#clear-options_eap\\.allowed_outer_eap_types, #select-options_eap\\.allowed_outer_eap_types",
+            toggleEapSettings);
+        toggleEapSettings();
         updateServiceControlUI('freeradius');
 
         // link save button to API set action
@@ -63,7 +87,7 @@ POSSIBILITY OF SUCH DAMAGE.
                     updateServiceControlUI('freeradius');
                     $("#saveAct_progress").removeClass("fa fa-spinner fa-pulse");
                 });
-            });
+            }, false, toggleEapSettings);
         });
     });
 </script>
