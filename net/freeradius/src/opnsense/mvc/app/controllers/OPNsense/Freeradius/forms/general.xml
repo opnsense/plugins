@@ -16,7 +16,14 @@
         <label>Enable VLAN fallback assignment</label>
         <type>checkbox</type>
         <advanced>true</advanced>
-        <help>This allows you to define a fallback VLAN-Group-ID. Warning: Setting this option will send an accepted RADIUS reply even if the authentication attempt fails.</help>
+        <help>This allows you to define a fallback VLAN-Group-ID. Warning: Setting this option will send an accepted RADIUS reply even if the authentication attempt fails. By default, this only applies to MAC address authentication; see "Apply VLAN fallback to all requests".</help>
+    </field>
+    <field>
+        <id>general.fallbackvlan_any_service</id>
+        <label>Apply VLAN fallback to all requests</label>
+        <type>checkbox</type>
+        <advanced>true</advanced>
+        <help>By default, the fallback VLAN only applies to MAC address authentication requests. These are requests the access point sends with Service-Type set to "Call Check" (RFC 2865, section 5.6). Some access points do MAC authentication without sending this value, so their unknown devices are rejected. Tick this box to apply the fallback to every request that matches no user, whatever Service-Type it carries. Note: any failed login is then accepted too, including 802.1X and username/password attempts, and gets the fallback VLAN.</help>
     </field>
     <field>
         <id>general.fallbackvlan_id</id>
