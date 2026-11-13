@@ -9,9 +9,8 @@
                 <Required>Y</Required>
             </enabled>
             <token type="TextField">
-                <Required>Y</Required>
-                <Mask>/^[a-zA-Z0-9\._\-=]+$/</Mask>
-                <ValidationMessage>Token may only contain letters, digits, dots, underscores, equal signs, and hyphens.</ValidationMessage>
+                <Mask>/^[a-zA-Z0-9\._\-=+\/]+$/</Mask>
+                <ValidationMessage>Token may only contain letters, digits, dots, underscores, equal signs, plus signs, slashes, and hyphens.</ValidationMessage>
             </token>
             <protocol type="OptionField">
                 <Default>auto</Default>
@@ -31,12 +30,18 @@
                 <Required>Y</Required>
             </quic_disable_pmtu_discovery>
             <edge_ip_version type="OptionField">
-                <BlankDesc>auto</BlankDesc>
+                <BlankDesc>Default (IPv4)</BlankDesc>
                 <OptionValues>
                     <ipv4 value="4">IPv4</ipv4>
                     <ipv6 value="6">IPv6</ipv6>
+                    <auto value="auto">Auto</auto>
                 </OptionValues>
             </edge_ip_version>
+            <metrics_address type="TextField">
+                <Default>localhost:2000</Default>
+                <Mask>/^([a-zA-Z0-9\.\-]+|\[[0-9a-fA-F:]+\]):[0-9]{1,5}$/</Mask>
+                <ValidationMessage>Enter the metrics address as host:port, e.g. localhost:2000.</ValidationMessage>
+            </metrics_address>
             <log_level type="OptionField">
                 <Default>info</Default>
                 <Required>Y</Required>
