@@ -33,6 +33,12 @@
         <help>Define the Fallback VLAN Tunnel-Password. Allowed characters are 0-9, a-z, A-Z, and ,._-!$%/()+#=: with up to 128 characters.</help>
     </field>
     <field>
+        <id>general.description_as_username</id>
+        <label>Send description as User-Name</label>
+        <type>checkbox</type>
+        <help>Return the description of a user as User-Name in the Access-Accept, so switches and wireless controllers can show a readable name instead of a MAC address for MAC authentication sessions. Users without a description are not affected, and a User-Name set through linked AV pairs takes precedence. Leave this off if a NAS uses the returned User-Name for accounting or CoA lookups.</help>
+    </field>
+    <field>
         <id>general.ldap_enabled</id>
         <label>Enable LDAP</label>
         <type>checkbox</type>

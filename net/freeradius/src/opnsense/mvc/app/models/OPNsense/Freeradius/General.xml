@@ -27,6 +27,10 @@
         <fallback_tunnel_password type="TextField">
             <Mask>/^([0-9a-zA-Z._\-\!\$\%\/\(\)\+\#\=\{\}:]){1,128}$/u</Mask>
         </fallback_tunnel_password>
+        <description_as_username type="BooleanField">
+            <Default>0</Default>
+            <Required>N</Required>
+        </description_as_username>
         <ldap_enabled type="BooleanField">
             <Default>0</Default>
             <Required>N</Required>
