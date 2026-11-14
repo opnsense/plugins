@@ -1,0 +1,174 @@
+<model>
+    <mount>//OPNsense/xproxy</mount>
+    <version>1.0.0</version>
+    <description>Xproxy multi-protocol proxy client</description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <active_server type="ModelRelationField">
+                <Model>
+                    <servers>
+                        <source>OPNsense.Xproxy.Xproxy</source>
+                        <items>servers.server</items>
+                        <display>description</display>
+                    </servers>
+                </Model>
+                <BlankDesc>-- Select Server --</BlankDesc>
+                <Required>N</Required>
+            </active_server>
+            <socks_port type="PortField">
+                <Default>10808</Default>
+                <Required>Y</Required>
+            </socks_port>
+            <http_port type="PortField">
+                <Default>10809</Default>
+                <Required>Y</Required>
+            </http_port>
+            <socks_listen type="TextField">
+                <Default>127.0.0.1</Default>
+                <Required>Y</Required>
+                <Mask>/^(\*|0\.0\.0\.0|::|127\.0\.0\.1|::1|localhost|[0-9a-fA-F:.%\[\]]+)$/</Mask>
+                <ValidationMessage>Enter a valid bind address (IPv4, IPv6, 0.0.0.0, ::, localhost, or *).</ValidationMessage>
+            </socks_listen>
+            <http_listen type="TextField">
+                <Default>127.0.0.1</Default>
+                <Required>Y</Required>
+                <Mask>/^(\*|0\.0\.0\.0|::|127\.0\.0\.1|::1|localhost|[0-9a-fA-F:.%\[\]]+)$/</Mask>
+                <ValidationMessage>Enter a valid bind address (IPv4, IPv6, 0.0.0.0, ::, localhost, or *).</ValidationMessage>
+            </http_listen>
+            <policy_route_lan type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </policy_route_lan>
+            <route_interfaces type="InterfaceField">
+                <Multiple>Y</Multiple>
+                <Required>N</Required>
+                <AllowDynamic>Y</AllowDynamic>
+            </route_interfaces>
+            <tun_device type="TextField">
+                <Default>tun9</Default>
+                <Required>Y</Required>
+                <Mask>/^tun[0-9]{1,3}$/</Mask>
+                <ValidationMessage>Use a TUN device name such as tun0–tun999 (e.g. tun9).</ValidationMessage>
+            </tun_device>
+            <tun_address type="TextField">
+                <Default>10.255.0.1</Default>
+                <Required>Y</Required>
+                <Mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/</Mask>
+                <ValidationMessage>Enter a valid IPv4 address for the TUN interface.</ValidationMessage>
+            </tun_address>
+            <tun_gateway type="TextField">
+                <Default>10.255.0.2</Default>
+                <Required>Y</Required>
+                <Mask>/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/</Mask>
+                <ValidationMessage>Enter a valid IPv4 gateway for the TUN interface.</ValidationMessage>
+            </tun_gateway>
+            <bypass_ips type="TextField">
+                <Default>10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,127.0.0.0/8</Default>
+                <Required>N</Required>
+                <Mask>/^(\s*(([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,2})?)\s*(,\s*(([0-9]{1,3}\.){3}[0-9]{1,3}(\/[0-9]{1,2})?)\s*)*)?$/</Mask>
+                <ValidationMessage>Enter a comma-separated list of IPv4 CIDRs (e.g. 10.0.0.0/8,192.168.0.0/16).</ValidationMessage>
+            </bypass_ips>
+            <metrics_exporter type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </metrics_exporter>
+        </general>
+        <servers>
+            <server type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^([\t\n\v\f\r 0-9a-zA-Z.\-,_\x{00A0}-\x{FFFF}]){0,255}$/u</Mask>
+                    <ValidationMessage>Description should be a string between 0 and 255 characters.</ValidationMessage>
+                </description>
+                <protocol type="OptionField">
+                    <Default>vless</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <vless>VLESS</vless>
+                        <vmess>VMess</vmess>
+                        <shadowsocks>Shadowsocks</shadowsocks>
+                        <trojan>Trojan</trojan>
+                    </OptionValues>
+                </protocol>
+                <address type="HostnameField">
+                    <Required>Y</Required>
+                    <IpAllowed>Y</IpAllowed>
+                </address>
+                <port type="PortField">
+                    <Default>443</Default>
+                    <Required>Y</Required>
+                </port>
+                <user_id type="TextField">
+                    <Required>N</Required>
+                </user_id>
+                <password type="TextField">
+                    <Required>N</Required>
+                </password>
+                <encryption type="TextField">
+                    <Default>none</Default>
+                    <Required>N</Required>
+                </encryption>
+                <flow type="OptionField">
+                    <Required>N</Required>
+                    <BlankDesc>None</BlankDesc>
+                    <OptionValues>
+                        <xtls_rprx_vision>xtls-rprx-vision</xtls_rprx_vision>
+                    </OptionValues>
+                </flow>
+                <transport type="OptionField">
+                    <Default>tcp</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <tcp>TCP</tcp>
+                        <ws>WebSocket</ws>
+                        <grpc>gRPC</grpc>
+                        <h2>HTTP/2</h2>
+                        <httpupgrade>HTTPUpgrade</httpupgrade>
+                    </OptionValues>
+                </transport>
+                <transport_host type="TextField">
+                    <Required>N</Required>
+                </transport_host>
+                <transport_path type="TextField">
+                    <Required>N</Required>
+                </transport_path>
+                <security type="OptionField">
+                    <Default>none</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <none>None</none>
+                        <tls>TLS</tls>
+                        <reality>Reality</reality>
+                    </OptionValues>
+                </security>
+                <sni type="TextField">
+                    <Required>N</Required>
+                </sni>
+                <fingerprint type="TextField">
+                    <Default>chrome</Default>
+                    <Required>N</Required>
+                </fingerprint>
+                <alpn type="TextField">
+                    <Required>N</Required>
+                </alpn>
+                <reality_pubkey type="TextField">
+                    <Required>N</Required>
+                </reality_pubkey>
+                <reality_short_id type="TextField">
+                    <Required>N</Required>
+                </reality_short_id>
+                <raw_uri type="TextField">
+                    <Required>N</Required>
+                </raw_uri>
+            </server>
+        </servers>
+    </items>
+</model>
