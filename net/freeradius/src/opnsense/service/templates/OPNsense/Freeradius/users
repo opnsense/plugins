@@ -85,6 +85,9 @@
 {%           endif %}
 {%         endfor %}
 {%       endif %}
+{%       if helpers.exists('OPNsense.freeradius.general.description_as_username') and OPNsense.freeradius.general.description_as_username == '1' and user_list.description|default("") != "" %}
+       User-Name = '{{ user_list.description|replace("\\", "\\\\")|replace("'", "\\'")|replace("\n", " ")|replace("\r", " ") }}',
+{%       endif %}
        Framed-Protocol = PPP
 
 {%       endif %}
