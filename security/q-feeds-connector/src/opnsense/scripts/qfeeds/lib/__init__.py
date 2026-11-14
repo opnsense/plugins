@@ -73,8 +73,9 @@ class QFeedsActions:
             data = {}
         if type(data) is dict:
             for feed in data.get('feeds', []):
-                feed['local_filename'] = "%s/%s.json" % (self._target_dir, feed['feed_type'])
-                feed['meta_filename'] = "%s/%s.meta.json" % (self._target_dir, feed['feed_type'])
+                feed_name = os.path.basename(feed['feed_type'])
+                feed['local_filename'] = "%s/%s.json" % (self._target_dir, feed_name)
+                feed['meta_filename'] = "%s/%s.meta.json" % (self._target_dir, feed_name)
                 feed['updated_at_dt'] = datetime.fromisoformat(feed['updated_at']).timestamp()
                 feed['next_update_dt'] = datetime.fromisoformat(feed['next_update']).timestamp()
                 feed['local_updated'] = datetime.fromtimestamp(
