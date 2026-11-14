@@ -32,6 +32,7 @@ require_once('config.inc');
 require_once('util.inc');
 require_once('interfaces.inc');
 
+/** @var \OPNsense\MDNSBridge\MDNSBridge $mdl */
 $mdl = new \OPNsense\MDNSBridge\MDNSBridge();
 if ((string)$mdl->enabled != '1' || (string)$mdl->enablecarp != '1') {
     exit(0);
@@ -39,7 +40,7 @@ if ((string)$mdl->enabled != '1' || (string)$mdl->enablecarp != '1') {
 
 $subsystem = !empty($argv[1]) ? $argv[1] : '';
 $type = !empty($argv[2]) ? $argv[2] : '';
-if (($type != 'MASTER' && $type != 'BACKUP') || !strstr($subsystem, '@')) {
+if (($type !== 'MASTER' && $type !== 'BACKUP') || strpos($subsystem, '@') === false) {
     exit(1);
 }
 

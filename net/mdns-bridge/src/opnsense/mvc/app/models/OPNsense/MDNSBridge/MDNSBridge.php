@@ -31,6 +31,14 @@ namespace OPNsense\MDNSBridge;
 use OPNsense\Base\BaseModel;
 use OPNsense\Base\Messages\Message;
 
+/**
+ * @property mixed $enabled
+ * @property mixed $enablecarp
+ * @property mixed $interfaces
+ * @property mixed $disableipv4
+ * @property mixed $disableipv6
+ */
+
 class MDNSBridge extends BaseModel
 {
     public function performValidation($validateFullModel = false)

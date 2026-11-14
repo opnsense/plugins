@@ -10,7 +10,7 @@ This plugin integrates mdns-bridge into OPNsense by providing:
 - Service management
 - Configuration generation
 - Interface selection
-- Future service filtering controls
+- Service filtering controls
 
 The plugin is intended to simplify deployment of multicast DNS
 service discovery across segmented networks such as IoT,
