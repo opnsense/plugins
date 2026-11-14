@@ -1,0 +1,9 @@
+<acl>
+    <page-services-mdnsbridge>
+        <name>Services: mDNS Bridge</name>
+        <patterns>
+            <pattern>ui/mdnsbridge/*</pattern>
+            <pattern>api/mdnsbridge/*</pattern>
+        </patterns>
+    </page-services-mdnsbridge>
+</acl>

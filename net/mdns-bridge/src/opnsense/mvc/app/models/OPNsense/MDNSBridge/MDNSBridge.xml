@@ -1,0 +1,64 @@
+<model>
+    <mount>//OPNsense/MDNSBridge</mount>
+    <version>0.1.1</version>
+    <description>mDNS Bridge settings</description>
+
+    <items>
+        <enabled type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </enabled>
+
+        <enablecarp type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </enablecarp>
+
+        <interfaces type="InterfaceField">
+            <Default>lan</Default>
+            <Required>Y</Required>
+            <Multiple>Y</Multiple>
+        </interfaces>
+
+        <disableipv4 type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </disableipv4>
+
+        <disableipv6 type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </disableipv6>
+
+        <inboundfilterpresets type="OptionField">
+            <Required>N</Required>
+            <Multiple>Y</Multiple>
+            <OptionValues>
+                <airplay>AirPlay</airplay>
+                <raop>AirPlay Audio / RAOP</raop>
+                <googlecast>Google Cast</googlecast>
+                <hap>HomeKit Accessory Protocol</hap>
+                <homekit>HomeKit legacy service</homekit>
+                <companionlink>Apple Companion Link</companionlink>
+                <sleepproxy>Apple Sleep Proxy</sleepproxy>
+                <ipp>IPP Printing</ipp>
+                <ipps>Secure IPP Printing</ipps>
+                <printer>Legacy Network Printer</printer>
+                <pdldatastream>PDL Data Stream Printing</pdldatastream>
+                <scanner>Network Scanner</scanner>
+                <smb>SMB File Sharing</smb>
+                <ssh>Secure Shell</ssh>
+                <http>HTTP Web Service</http>
+                <https>HTTPS Web Service</https>
+                <workstation>Workstation Discovery</workstation>
+            </OptionValues>
+        </inboundfilterpresets>
+
+        <allowinboundfilters type="CSVListField">
+            <Required>N</Required>
+            <MaskPerItem>Y</MaskPerItem>
+            <Mask>/^[A-Za-z0-9_-]+(\.[A-Za-z0-9_-]+)*$/</Mask>
+            <ValidationMessage>Use dot-separated labels made of letters, digits, underscores or hyphens, for example _matter or _matter._tcp.</ValidationMessage>
+        </allowinboundfilters>
+    </items>
+</model>

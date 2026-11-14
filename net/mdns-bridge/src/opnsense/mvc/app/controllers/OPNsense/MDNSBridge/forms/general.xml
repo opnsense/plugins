@@ -1,0 +1,59 @@
+<form>
+
+    <field>
+        <type>header</type>
+        <label>General Settings</label>
+    </field>
+
+    <field>
+        <id>mdnsbridge.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Enable the mDNS Bridge service.</help>
+    </field>
+
+    <field>
+        <id>mdnsbridge.enablecarp</id>
+        <label>Enable CARP Failover</label>
+        <type>checkbox</type>
+        <help>For CARP high-availability pairs only. When checked, the service runs only while this firewall is CARP master. On a firewall without CARP, the service will not start if this is checked.</help>
+    </field>
+
+    <field>
+        <id>mdnsbridge.interfaces</id>
+        <label>Interfaces</label>
+        <type>select_multiple</type>
+        <help>Select the interfaces that participate in mDNS forwarding. At least two interfaces must be selected.</help>
+    </field>
+
+    <field>
+        <id>mdnsbridge.inboundfilterpresets</id>
+        <label>Common Inbound Services</label>
+        <type>select_multiple</type>
+        <help>Select common DNS-SD services that may be received and forwarded by the bridge. These selections are combined with any custom services entered below. Leave both fields empty to allow all inbound services.</help>
+    </field>
+
+    <field>
+        <id>mdnsbridge.allowinboundfilters</id>
+        <label>Custom Inbound Services</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Enter additional DNS-SD service names, for example _matter or _hue. The ._tcp and .local suffixes are optional. Names are case-sensitive. Custom values are combined with the common services selected above. Leave both fields empty to allow all inbound services.</help>
+    </field>
+    
+    <field>
+        <id>mdnsbridge.disableipv4</id>
+        <label>Disable IPv4</label>
+        <type>checkbox</type>
+        <help>Disable mDNS forwarding for IPv4 traffic.</help>
+    </field>
+
+    <field>
+        <id>mdnsbridge.disableipv6</id>
+        <label>Disable IPv6</label>
+        <type>checkbox</type>
+        <help>Disable mDNS forwarding for IPv6 traffic. IPv4 and IPv6 cannot both be disabled.</help>
+    </field>
+
+</form>
