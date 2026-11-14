@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>interfacepeer.Interface</id>
+        <label>Interface</label>
+        <type>text</type>
+        <help>Local network interface to use for this peer connection.</help>
+    </field>
+    <field>
+        <id>interfacepeer.URI</id>
+        <label>Peer URI</label>
+        <type>text</type>
+        <help>Full connection URI, including the transport, hostname or IP address, and port.</help>
+    </field>
+</form>

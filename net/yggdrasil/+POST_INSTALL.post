@@ -1,0 +1,3 @@
+/usr/local/bin/php /usr/local/opnsense/scripts/OPNsense/Yggdrasil/setup.php || exit 1
+/usr/local/sbin/configctl template reload OPNsense/Yggdrasil || exit 1
+/usr/local/opnsense/scripts/OPNsense/Yggdrasil/install-config.sh || exit 1
