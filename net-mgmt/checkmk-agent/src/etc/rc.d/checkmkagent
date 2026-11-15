@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# PROVIDE: checkmkagent
+# REQUIRE: LOGIN
+# KEYWORD: shutdown
+
+. /etc/rc.subr
+
+name=checkmkagent
+rcvar=checkmkagent_enable
+
+load_rc_config ${name}
+
+: ${checkmkagent_enable:="NO"}
+
+pidfile=/var/run/${name}.pid
+procname=/usr/local/bin/socat
+command=/usr/sbin/daemon
+command_args="-f -p ${pidfile} ${procname} -t 30 TCP6-LISTEN:6556,ipv6only=0,reuseaddr,fork,max-children=4 EXEC:/usr/local/opnsense/scripts/checkmkagent/agent"
+
+run_rc_command "$1"

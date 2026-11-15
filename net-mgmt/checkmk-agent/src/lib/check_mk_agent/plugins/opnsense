@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# Host labels for Checkmk: marks the host as OPNsense with its version.
+
+echo '<<<labels:sep(0)>>>'
+printf '{"opnsense": "yes", "opnsense/version": "%s"}\n' "$(/usr/local/sbin/opnsense-version -v)"

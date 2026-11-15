@@ -1,0 +1,16 @@
+<model>
+    <mount>//OPNsense/CheckmkAgent</mount>
+    <version>1.0.0</version>
+    <description>Checkmk agent settings</description>
+    <items>
+        <enabled type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </enabled>
+        <encryption type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </encryption>
+        <secret type="UpdateOnlyTextField"/>
+    </items>
+</model>

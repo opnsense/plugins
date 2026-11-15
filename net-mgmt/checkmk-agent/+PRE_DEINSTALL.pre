@@ -1,0 +1,4 @@
+#!/bin/sh
+
+/usr/local/etc/rc.d/checkmkagent onestop >/dev/null 2>&1 || true
+rm -rf /usr/local/etc/checkmkagent

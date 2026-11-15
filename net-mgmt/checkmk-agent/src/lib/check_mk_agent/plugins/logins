@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# Number of logged-in users, evaluated by Checkmk's built-in check
+# "Logins".
+
+echo '<<<logins>>>'
+who | wc -l | tr -d ' '

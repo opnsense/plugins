@@ -1,0 +1,12 @@
+#!/bin/sh
+
+# Effective configuration of the OPNsense SSH daemon, evaluated by
+# Checkmk's built-in check "SSH daemon configuration".
+
+SSHD=/usr/local/sbin/sshd
+
+[ -x "${SSHD}" ] || exit 0
+config=$(${SSHD} -T 2>/dev/null) || exit 0
+
+echo '<<<sshd_config>>>'
+echo "${config}"

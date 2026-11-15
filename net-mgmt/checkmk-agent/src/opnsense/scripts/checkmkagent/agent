@@ -1,0 +1,85 @@
+#!/bin/sh
+
+# Copyright (C) 2026 Christian Wirtz <doc@snowheaven.de>
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# 1. Redistributions of source code must retain the above copyright notice,
+#    this list of conditions and the following disclaimer.
+#
+# 2. Redistributions in binary form must reproduce the above copyright
+#    notice, this list of conditions and the following disclaimer in the
+#    documentation and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+# INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+# AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+# AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+# OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+# POSSIBILITY OF SUCH DAMAGE.
+
+# Runs the Checkmk agent for one query from the Checkmk server and
+# encrypts its output if encryption is enabled. The format is the one
+# of Checkmk's Linux agent ("05"): PBKDF2-SHA256 (600000 iterations)
+# derives key and IV, AES-256-CBC encrypts, HMAC-SHA256 signs IV and
+# ciphertext. Output: "05", salt, HMAC, ciphertext.
+# The steps follow encrypt_then_mac() in Checkmk's Linux agent, using
+# only the base system's openssl and sh.
+
+AGENT=/usr/local/bin/check_mk_agent
+SECRET_FILE=/usr/local/etc/checkmkagent/secret
+
+# not an SSH session, even if the service was started from one
+unset SSH_CLIENT SSH_CONNECTION SSH_TTY
+
+panic()
+{
+	printf '<<<check_mk>>>\nEncryptionPanic: true\n'
+	exit 1
+}
+
+# only the service (root) can read the secret; never fall back to plain text
+[ "$(id -u)" -eq 0 ] || panic
+
+line=$(grep '^secret=' "${SECRET_FILE}" 2>/dev/null)
+if [ -z "${line}" ]; then
+	exec ${AGENT}
+fi
+
+hex_decode()
+{
+	hex=${1}
+	while [ -n "${hex}" ]; do
+		rest=${hex#??}
+		printf "\\$(printf '%03o' "0x${hex%"${rest}"}")"
+		hex=${rest}
+	done
+}
+
+secret=${line#secret=}
+[ -n "${secret}" ] || panic
+
+kdf=$(openssl enc -aes-256-cbc -md sha256 -pbkdf2 -iter 600000 -pass fd:3 -P 3<<EOF2
+${secret}
+EOF2
+) || panic
+salt=$(echo "${kdf}" | sed -n 's/^salt=//p')
+key=$(echo "${kdf}" | sed -n 's/^key=//p')
+iv=$(echo "${kdf}" | sed -n 's/^iv *=//p')
+[ ${#salt} -eq 16 ] && [ ${#key} -eq 64 ] && [ ${#iv} -eq 32 ] || panic
+
+tmp=$(mktemp -d /tmp/checkmkagent.XXXXXX) || panic
+trap 'rm -rf "${tmp}"' EXIT
+${AGENT} | openssl enc -aes-256-cbc -K "${key}" -iv "${iv}" > "${tmp}/data" || panic
+hex_decode "${iv}" > "${tmp}/iv"
+
+printf '05'
+hex_decode "${salt}"
+cat "${tmp}/iv" "${tmp}/data" | openssl dgst -sha256 -mac HMAC -macopt "hexkey:${key}" -binary
+cat "${tmp}/data"

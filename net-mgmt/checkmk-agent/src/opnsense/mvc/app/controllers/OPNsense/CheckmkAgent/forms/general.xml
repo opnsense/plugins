@@ -1,0 +1,20 @@
+<form>
+    <field>
+        <id>checkmkagent.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Run the Checkmk agent on TCP port 6556 for queries from a Checkmk server. Use firewall rules to make sure that only the Checkmk server can reach this port.</help>
+    </field>
+    <field>
+        <id>checkmkagent.encryption</id>
+        <label>Encryption</label>
+        <type>checkbox</type>
+        <help>Encrypt the agent output with the secret below. On the Checkmk server, enter the same secret in the rule "Symmetric encryption (Linux, Windows)".</help>
+    </field>
+    <field>
+        <id>checkmkagent.secret</id>
+        <label>Encryption secret</label>
+        <type>password</type>
+        <help>The secret is stored in the configuration and is never shown again. Leave this field empty to keep the current secret.</help>
+    </field>
+</form>
