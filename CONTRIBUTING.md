@@ -21,7 +21,7 @@ When creating bug reports, please make sure you provide the following:
 * A list of steps to replicate the bug
 * The current OPNsense version used
 
-All issues reported will have to be triaged and prioritised.  As we
+All issues reported will have to be triaged and prioritized.  As we
 are a small team and outside contributors we may not always have the
 time to implement and help, but reporting an issue may help others
 to fill in.
