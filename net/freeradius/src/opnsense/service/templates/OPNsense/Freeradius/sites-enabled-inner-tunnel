@@ -9,6 +9,9 @@
 #
 ######################################################################
 
+{% set restricted = helpers.exists('OPNsense.freeradius.eap.restrict_outer_eap_methods') and OPNsense.freeradius.eap.restrict_outer_eap_methods == '1' %}
+{% set eap_instance = 'inner-eap' if restricted else 'eap' %}
+
 server inner-tunnel {
 
 #
@@ -132,7 +135,7 @@ authorize {
         #  for the many packets that go back and forth to set up TTLS
         #  or PEAP.  The load on those servers will therefore be reduced.
         #
-        eap {
+        {{ eap_instance }} {
                 ok = return
         }
 
@@ -271,7 +274,7 @@ authenticate {
 
         #
         #  Allow EAP authentication.
-        eap
+        {{ eap_instance }}
 }
 
 ######################################################################
@@ -450,7 +453,7 @@ post-proxy {
         #  hidden inside of the EAP packet, and the end server will
         #  reject the EAP request.
         #
-        eap
+        {{ eap_instance }}
 }
 
 } # inner-tunnel server block

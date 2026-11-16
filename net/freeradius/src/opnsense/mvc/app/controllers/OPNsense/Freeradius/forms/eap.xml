@@ -6,10 +6,22 @@
         <help>Set the default EAP type.</help>
     </field>
     <field>
+        <id>eap.restrict_outer_eap_methods</id>
+        <label>Restrict Outer EAP Methods</label>
+        <type>checkbox</type>
+        <help>When enabled, only the selected outer EAP methods are permitted for EAP authentication terminated locally. RADIUS proxy behavior is unchanged. When disabled, FreeRADIUS uses its normal EAP configuration. Inner authentication within PEAP or EAP-TTLS is unaffected.</help>
+    </field>
+    <field>
+        <id>eap.allowed_outer_eap_types</id>
+        <label>Allowed Outer EAP Methods</label>
+        <type>select_multiple</type>
+        <help>Select the permitted outer EAP methods. The Default EAP Type must be included. Methods must also satisfy their other configuration requirements, such as enabling EAP-PWD.</help>
+    </field>
+    <field>
         <id>eap.default_eap_ttls_type</id>
         <label>Default EAP Type inside TTLS</label>
         <type>dropdown</type>
-        <help>EAP method used inside the EAP-TTLS tunnel, applied only when the client starts an EAP conversation inside the tunnel. Non-EAP inner methods such as PAP or MSCHAPv2 are handled by the inner-tunnel virtual server and are not affected by this setting. Choose GTC for EAP-TTLS-GTC against an LDAP backend.</help>
+        <help>EAP method used inside the EAP-TTLS tunnel, applied only when the client starts an EAP conversation inside the tunnel. Non-EAP inner methods such as PAP or MSCHAPv2 are handled by the inner-tunnel virtual server and are not affected by this setting. Choose GTC for EAP-TTLS-GTC against an LDAP backend. Outer EAP method restrictions do not affect this setting.</help>
         <style>ttls_inner</style>
     </field>
     <field>
@@ -40,7 +52,7 @@
         <id>eap.enable_pwd</id>
         <label>Enable EAP-PWD</label>
         <type>checkbox</type>
-        <help>This enables EAP-PWD authentication</help>
+        <help>This enables EAP-PWD authentication. When outer EAP methods are restricted, also select EAP-PWD under Allowed Outer EAP Methods to allow clients to use it outside a tunnel.</help>
     </field>
     <field>
         <id>eap.pwd_serverid</id>
