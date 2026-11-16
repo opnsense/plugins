@@ -11,4 +11,48 @@
         <type>text</type>
         <help>Local Description to help identify this network</help>
     </field>
+    <field>
+        <id>network.allowManaged</id>
+        <label>Allow Managed</label>
+        <type>checkbox</type>
+        <help>Allow ZeroTier to set IP Addresses and Routes (local/private ranges only)</help>
+        <grid_view>
+            <visible>false</visible>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>network.allowGlobal</id>
+        <label>Allow Global</label>
+        <type>checkbox</type>
+        <help>Allow ZeroTier to set Global/Public/Not-Private range IPs and Routes</help>
+        <grid_view>
+            <visible>false</visible>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>network.allowDefault</id>
+        <label>Allow Default</label>
+        <type>checkbox</type>
+        <help>Allow ZeroTier to set the Default Route on the system</help>
+        <grid_view>
+            <visible>false</visible>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
+    </field>
+    <field>
+        <id>network.allowDNS</id>
+        <label>Allow DNS</label>
+        <type>checkbox</type>
+        <help>Allow ZeroTier to set DNS servers</help>
+        <grid_view>
+            <visible>false</visible>
+            <type>boolean</type>
+            <formatter>boolean</formatter>
+        </grid_view>
+    </field>
 </form>
