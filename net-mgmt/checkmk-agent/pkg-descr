@@ -1,32 +1,12 @@
-Runs the Checkmk agent on OPNsense, so that a Checkmk server can
-monitor the firewall like any other host. Checkmk's built-in checks
-evaluate the agent data: CPU load and utilization, memory, file
-systems and ZFS, network interfaces, TCP connections, processes,
-uptime and NTP.
+The Checkmk agent provides operating system data such as CPU,
+memory, file systems, ZFS, network interfaces and processes to a
+Checkmk server, which evaluates them with its built-in checks.
 
-Features:
-
-* Enable the agent in the GUI under Services: Checkmk Agent
-* The agent listens on TCP port 6556 (IPv4 and IPv6)
-* Optional symmetric encryption, compatible with Checkmk's rule
-  "Symmetric encryption (Linux, Windows)"
-* Host labels "opnsense" and "opnsense/version" for Checkmk rules
-* Agent plugins for the SSH daemon configuration and logged-in users
-* Own agent plugins and local checks in
-  /usr/local/lib/check_mk_agent/plugins and .../local
-
-Use firewall rules to allow port 6556 only from the Checkmk server.
-
-For OPNsense-specific data from the REST API (firmware and updates,
-services, SMART), combine this plugin with the Checkmk special agent
-"opnsense" (link below).
+This plugin runs the agent from the check_mk_agent package on TCP
+port 6556, with optional encryption. Use firewall rules to allow
+the port only from the Checkmk server.
 
 I did not develop this plugin officially as an employee of Checkmk
 GmbH, but rather as a private individual.
 
-Documentation, screenshots, tested versions, questions and issues:
-
-WWW: https://github.com/doctore74/opnsense_checkmk_agent
-
-Checkmk special agent "opnsense" for data from the OPNsense REST API:
-https://github.com/Gulaschcowboy/checkmk_extensions/tree/main/opnsense
+WWW: https://checkmk.com/

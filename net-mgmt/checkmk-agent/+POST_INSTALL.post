@@ -1,3 +1,0 @@
-#!/bin/sh
-
-/usr/local/etc/rc.d/checkmkagent start >/dev/null 2>&1 || true
