@@ -1,5 +1,5 @@
 {#
- # Copyright (C) 2026 Christian Wirtz <doc@snowheaven.de>
+ # Copyright (C) 2026 Christian Wirtz <dev@snowheaven.de>
  # All rights reserved.
  #
  # Redistribution and use in source and binary forms, with or without
