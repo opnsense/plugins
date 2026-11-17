@@ -183,8 +183,9 @@ class QFeedsActions:
                 os.remove(bl_stat)
 
             # when qfeeds-blocklists.conf is ~empty, skip updates
-            subprocess.run(['/usr/local/sbin/configctl', 'unbound', 'dnsbl'])
-            yield 'update unbound blocklist'
+            # Run the rebuild as a configd job; large DNSBLs can exceed configctl's timeout.
+            subprocess.run(['/usr/local/sbin/configctl', '-d', 'unbound', 'dnsbl'])
+            yield 'scheduled unbound blocklist update'
 
     def dnscryptproxy_load(self):
         script_path = '/usr/local/opnsense/scripts/dnscryptproxy/blocklists/qfeeds_bl.py'
