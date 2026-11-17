@@ -20,6 +20,10 @@
                 </check001>
             </Constraints>
         </fallbackvlan_enabled>
+        <fallbackvlan_any_service type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </fallbackvlan_any_service>
         <fallbackvlan_id type="IntegerField">
             <MinimumValue>1</MinimumValue>
             <MaximumValue>4096</MaximumValue>

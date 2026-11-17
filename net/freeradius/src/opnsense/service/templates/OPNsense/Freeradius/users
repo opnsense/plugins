@@ -114,7 +114,30 @@ DEFAULT Ldap-Group == "{{ ldapgroup_list.ldapgroupname }}"
 {%  endif %}
 
 {%  if OPNsense.freeradius.general.fallbackvlan_enabled == '1' %}
-DEFAULT Service-Type == Call-Check, Auth-Type := Accept
+# Fallback VLAN: restricted to Service-Type Call-Check (RFC 2865 5.6) unless "Apply VLAN fallback to all requests" is set
+DEFAULT {% if OPNsense.freeradius.general.fallbackvlan_any_service != '1' %}Service-Type == Call-Check, {% endif %}Auth-Type := Accept
+       Tunnel-Type = VLAN,
+       Tunnel-Medium-Type = IEEE-802,
+{%  if helpers.exists('OPNsense.freeradius.general.fallbackvlan_id') and OPNsense.freeradius.general.fallbackvlan_id != '' %}
+       Tunnel-Private-Group-Id = {{ OPNsense.freeradius.general.fallbackvlan_id }},
+{%  endif %}
+{%  if helpers.exists('OPNsense.freeradius.general.fallback_tunnel_password') and OPNsense.freeradius.general.fallback_tunnel_password != '' %}
+       Tunnel-Password = {{ OPNsense.freeradius.general.fallback_tunnel_password }},
+{%  endif %}
+       Framed-Protocol = PPP
+
+DEFAULT NAS-Port-Type == Wireless-802.11, EAP-Message !* ANY, User-Name =~ "^([0-9a-fA-F]{2}([-:]?[0-9a-fA-F]{2}){5}|[0-9a-fA-F]{4}[.][0-9a-fA-F]{4}[.][0-9a-fA-F]{4})$", Auth-Type := Accept
+       Tunnel-Type = VLAN,
+       Tunnel-Medium-Type = IEEE-802,
+{%  if helpers.exists('OPNsense.freeradius.general.fallbackvlan_id') and OPNsense.freeradius.general.fallbackvlan_id != '' %}
+       Tunnel-Private-Group-Id = {{ OPNsense.freeradius.general.fallbackvlan_id }},
+{%  endif %}
+{%  if helpers.exists('OPNsense.freeradius.general.fallback_tunnel_password') and OPNsense.freeradius.general.fallback_tunnel_password != '' %}
+       Tunnel-Password = {{ OPNsense.freeradius.general.fallback_tunnel_password }},
+{%  endif %}
+       Framed-Protocol = PPP
+
+DEFAULT NAS-Port-Type == Ethernet, EAP-Message !* ANY, User-Name =~ "^([0-9a-fA-F]{2}([-:]?[0-9a-fA-F]{2}){5}|[0-9a-fA-F]{4}[.][0-9a-fA-F]{4}[.][0-9a-fA-F]{4})$", Auth-Type := Accept
        Tunnel-Type = VLAN,
        Tunnel-Medium-Type = IEEE-802,
 {%  if helpers.exists('OPNsense.freeradius.general.fallbackvlan_id') and OPNsense.freeradius.general.fallbackvlan_id != '' %}
