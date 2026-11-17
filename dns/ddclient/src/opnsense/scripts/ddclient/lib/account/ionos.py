@@ -57,9 +57,10 @@ class Ionos(BaseAccount):
                 syslog.syslog(syslog.LOG_ERR, "Account %s has no update URL configured in server field" % self.description)
                 return False
 
-            if not url.startswith('http://') and not url.startswith('https://'):
-                uri_proto = 'https' if self.settings.get('force_ssl', True) else 'http'
-                url = f"{uri_proto}://{url}"
+            if url.startswith('http://'):
+                url = 'https://' + url[7:]
+            elif not url.startswith('https://'):
+                url = f"https://{url}"
 
             url = url.replace('__MYIP__', self.current_address)
             url = url.replace('__HOSTNAME__', self.settings.get('hostnames', ''))
