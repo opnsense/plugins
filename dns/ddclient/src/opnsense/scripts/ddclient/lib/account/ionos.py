@@ -33,12 +33,9 @@ class Ionos(BaseAccount):
     _priority = 100
 
     _services = {
-        'ionos-v4': '://ionos.com',
-        'ionos-v6': '://ionos.com'
+        'ionos-v4': 'https://ipv4.api.hosting.ionos.com/dns/v1/dyndns',
+        'ionos-v6': 'https://ipv4.api.hosting.ionos.com/dns/v1/dyndns'
     }
-
-    def __init__(self, account: dict):
-        super().__init__(account)
 
     @staticmethod
     def known_services():
@@ -51,26 +48,15 @@ class Ionos(BaseAccount):
     def execute(self):
         if super().execute():
             service = self.settings.get('service')
-            url = (self.settings.get('server') or '').strip()
-
-            if not url:
-                syslog.syslog(syslog.LOG_ERR, "Account %s has no update URL configured in server field" % self.description)
-                return False
-
-            if url.startswith('http://'):
-                url = 'https://' + url[7:]
-            elif not url.startswith('https://'):
-                url = f"https://{url}"
-
-            url = url.replace('__MYIP__', self.current_address)
-            url = url.replace('__HOSTNAME__', self.settings.get('hostnames', ''))
-
-            if service == 'ionos-v6' and 'ipv6=' not in url:
-                separator = '&' if '?' in url else '?'
-                url = f"{url}{separator}ipv6={self.current_address}"
+            params = {
+                'q': self.settings.get('password')
+            }
+            if service == 'ionos-v6':
+                params['ipv6'] = self.current_address
 
             req = requests.get(
-                url=url,
+                url=self._services[service],
+                params=params,
                 headers={'User-Agent': 'OPNsense-dyndns'}
             )
 
@@ -84,9 +70,8 @@ class Ionos(BaseAccount):
                 return True
             else:
                 syslog.syslog(
-                    syslog.LOG_ERR,
-                    "Account %s failed to set new ip %s [%d - %s]" % (
-                        self.description, self.current_address, req.status_code, req.text.replace('\n', '')
+                    syslog.LOG_ERR,"Account %s failed to set new ip %s [%d - %s]" % (
+                    self.description, self.current_address, req.status_code, req.text.replace('\n', '')
                     )
                 )
         return False
