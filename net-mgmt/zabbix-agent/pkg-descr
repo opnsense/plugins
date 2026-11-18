@@ -12,6 +12,11 @@ WWW: https://www.zabbix.com/
 Plugin Changelog
 ----------------
 
+1.20
+
+Added:
+* Plugin variant for Zabbix Agent 8.0
+
 1.19
 
 Removed:
