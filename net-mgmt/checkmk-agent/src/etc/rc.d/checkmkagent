@@ -12,10 +12,31 @@ rcvar=checkmkagent_enable
 load_rc_config ${name}
 
 : ${checkmkagent_enable:="NO"}
+: ${checkmkagent_address:="127.0.0.1"}
+: ${checkmkagent_port:="6556"}
+: ${checkmkagent_encryption:="NO"}
 
 pidfile=/var/run/${name}.pid
 procname=/usr/local/bin/socat
 command=/usr/sbin/daemon
-command_args="-f -p ${pidfile} ${procname} -t 30 TCP6-LISTEN:6556,ipv6only=0,reuseaddr,fork,max-children=4 EXEC:/usr/local/opnsense/scripts/checkmkagent/agent"
+
+agent=/usr/local/opnsense/scripts/checkmkagent/agent
+if checkyesno checkmkagent_encryption; then
+	agent="${agent} encrypt"
+fi
+
+case "${checkmkagent_address}" in
+::)
+	listen="TCP6-LISTEN:${checkmkagent_port},ipv6only=0"
+	;;
+*:*)
+	listen="TCP6-LISTEN:${checkmkagent_port},bind=[${checkmkagent_address}]"
+	;;
+*)
+	listen="TCP4-LISTEN:${checkmkagent_port},bind=${checkmkagent_address}"
+	;;
+esac
+
+command_args="-f -p ${pidfile} ${procname} -t 30 ${listen},reuseaddr,fork,max-children=4 EXEC:\"${agent}\""
 
 run_rc_command "$1"

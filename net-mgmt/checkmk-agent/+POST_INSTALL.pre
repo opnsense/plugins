@@ -1,6 +1,0 @@
-#!/bin/sh
-
-# The template engine gives a generated file the permissions of its
-# directory. Pre-create the directory as root-only, so that the
-# encryption secret is never readable by other users, not even briefly.
-/usr/bin/install -d -m 0700 /usr/local/etc/checkmkagent

@@ -2,11 +2,7 @@ The Checkmk agent provides operating system data such as CPU,
 memory, file systems, ZFS, network interfaces and processes to a
 Checkmk server, which evaluates them with its built-in checks.
 
-This plugin runs the agent from the check_mk_agent package on TCP
-port 6556, with optional encryption. Use firewall rules to allow
-the port only from the Checkmk server.
-
-I did not develop this plugin officially as an employee of Checkmk
-GmbH, but rather as a private individual.
+This plugin runs the agent from the check_mk_agent package as a
+network service, with optional encryption.
 
 WWW: https://checkmk.com/

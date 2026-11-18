@@ -3,7 +3,19 @@
         <id>checkmkagent.enabled</id>
         <label>Enable</label>
         <type>checkbox</type>
-        <help>Run the Checkmk agent on TCP port 6556 for queries from a Checkmk server. Use firewall rules to make sure that only the Checkmk server can reach this port.</help>
+        <help>Run the Checkmk agent for queries from a Checkmk server.</help>
+    </field>
+    <field>
+        <id>checkmkagent.address</id>
+        <label>Listen address</label>
+        <type>text</type>
+        <help>IP address of this firewall on which the agent accepts queries. The default 127.0.0.1 allows only local queries, e.g. via SSH. Use 0.0.0.0 for all IPv4 addresses or :: for all IPv4 and IPv6 addresses.</help>
+    </field>
+    <field>
+        <id>checkmkagent.port</id>
+        <label>Listen port</label>
+        <type>text</type>
+        <help>TCP port of the agent. Checkmk queries port 6556 by default.</help>
     </field>
     <field>
         <id>checkmkagent.encryption</id>

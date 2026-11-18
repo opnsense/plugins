@@ -7,6 +7,16 @@
             <Default>0</Default>
             <Required>Y</Required>
         </enabled>
+        <address type="NetworkField">
+            <Default>127.0.0.1</Default>
+            <Required>Y</Required>
+            <NetMaskAllowed>N</NetMaskAllowed>
+            <ValidationMessage>Please provide a valid IP address, i.e. 192.168.1.1, 0.0.0.0 or ::.</ValidationMessage>
+        </address>
+        <port type="PortField">
+            <Default>6556</Default>
+            <Required>Y</Required>
+        </port>
         <encryption type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
