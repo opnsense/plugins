@@ -47,3 +47,15 @@ function checkmkagent_services()
 
     return $services;
 }
+
+function checkmkagent_xmlrpc_sync()
+{
+    return [
+        [
+            'description' => gettext('Checkmk Agent'),
+            'section' => 'OPNsense.CheckmkAgent',
+            'services' => ['checkmkagent'],
+            'id' => 'checkmkagent',
+        ]
+    ];
+}
