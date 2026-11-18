@@ -12,6 +12,7 @@ zabbix7_DEPENDS=	zabbix7-proxy
 
 zabbix74_NAME=		zabbix74-proxy
 zabbix74_DEPENDS=	zabbix74-proxy
+
 zabbix6_NAME=		zabbix6-proxy
 zabbix6_DEPENDS=	zabbix6-proxy
 
