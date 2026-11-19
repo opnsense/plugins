@@ -622,6 +622,13 @@ http://{{ domain }} {
 {% for reverse in helpers.toList('OPNsense.caddy.reverseproxy.reverse') %}
     {% if reverse.enabled|default("0") == "1" %}
         {% if reverse.DisableTls|default("0") == "1" %}http://{% endif %}{{ reverse.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
+            {# this is an assumption for NAT #}
+            {% if 'h3' in generalSettings.HttpVersions.split(',') and not reverse.FromPort and reverse.DisableTls|default("0") == "0" %}
+                header {
+                    Alt-Svc "h3=\":443\"; ma=2592000"
+                    defer
+                }
+            {% endif %}
             {% if reverse.AccessLog|default("0") == "1" %}
                 {% if generalSettings.LogAccessPlain|default("0") == "0" %}
                     log default
@@ -660,6 +667,12 @@ http://{{ domain }} {
         {% set reverse = helpers.getUUID(subdomain.reverse) %}
         {% if reverse and reverse.enabled|default("0") == "1" %}
             {% if reverse.DisableTls|default("0") == "1" %}http://{% endif %}{{ subdomain.FromDomain|default("") }}{% if reverse.FromPort %}:{{ reverse.FromPort }}{% endif %} {
+                {% if 'h3' in generalSettings.HttpVersions.split(',') and not reverse.FromPort and reverse.DisableTls|default("0") == "0" %}
+                    header {
+                        Alt-Svc "h3=\":443\"; ma=2592000"
+                        defer
+                    }
+                {% endif %}
                 {% if reverse.AccessLog|default("0") == "1" %}
                     {% if generalSettings.LogAccessPlain|default("0") == "0" %}
                         log default
