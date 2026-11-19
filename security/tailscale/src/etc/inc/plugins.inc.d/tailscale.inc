@@ -31,6 +31,36 @@ function tailscale_enabled()
     return !empty((string)(new \OPNsense\Tailscale\Settings())->enabled);
 }
 
+function tailscale_configure()
+{
+    return ['tailscale_monitor' => ['tailscale_monitor_configure']];
+}
+
+function tailscale_monitor_configure($verbose = false)
+{
+    global $config;
+
+    $interface = convert_real_interface_to_friendly_interface_name('tailscale0');
+    if (!tailscale_enabled() || empty($interface) || !isset($config['interfaces'][$interface]['enable'])) {
+        return;
+    }
+
+    $families = is_ipv6_allowed() ? ['inet', 'inet6'] : ['inet'];
+    $names = [];
+    foreach ((new \OPNsense\Routing\Gateways())->gatewaysIndexedByName(false, false, true) as $name => $gateway) {
+        if (
+            $gateway['interface'] == $interface && empty($gateway['monitor_disable']) &&
+            in_array($gateway['ipprotocol'], $families)
+        ) {
+            $names[] = $name;
+        }
+    }
+
+    if (!empty($names)) {
+        plugins_configure('monitor:dpinger', $verbose, [$names]);
+    }
+}
+
 function tailscale_services()
 {
     $services = [];
