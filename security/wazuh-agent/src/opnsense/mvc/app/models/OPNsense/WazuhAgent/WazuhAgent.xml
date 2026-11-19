@@ -59,7 +59,6 @@
             <syslog_programs type="JsonKeyValueStoreField">
                 <Multiple>Y</Multiple>
                 <ConfigdPopulateAct>syslog list applications</ConfigdPopulateAct>
-                <SourceFile>/tmp/syslog_applications.json</SourceFile>
                 <SortByValue>Y</SortByValue>
                 <ValidationMessage>Specify valid source applications.</ValidationMessage>
             </syslog_programs>
