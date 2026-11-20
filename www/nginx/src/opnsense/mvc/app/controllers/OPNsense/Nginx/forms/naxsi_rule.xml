@@ -29,7 +29,7 @@
         <id>naxsi_rule.ruletype</id>
         <label>Rule Type</label>
         <type>dropdown</type>
-        <help>Main rules increase the policiy's score if matched. Basic rules are added directly to the location and match immeditaly. Basic rules are specifically useful for whitelist rules. Also basic rules need to be added to a policy to allow association with a location.</help>
+        <help>Basic Rules apply to one or more assigned locations. Main Rules apply to ALL HTTP(S) servers with WAF enabled regardless of their assigned location. Both types of rules increase a policy's score if matched, however, Basic Rules will only match from within their assigned location.</help>
     </field>
     <field>
         <id>naxsi_rule.regex</id>
