@@ -1,0 +1,32 @@
+<form>
+    <field>
+        <id>checkmkagent.enabled</id>
+        <label>Enable</label>
+        <type>checkbox</type>
+        <help>Run the Checkmk agent for queries from a Checkmk server.</help>
+    </field>
+    <field>
+        <id>checkmkagent.address</id>
+        <label>Listen address</label>
+        <type>text</type>
+        <help>IP address of this firewall on which the agent accepts queries. The default 127.0.0.1 allows only local queries, e.g. via SSH. Use 0.0.0.0 for all IPv4 addresses or :: for all IPv4 and IPv6 addresses. With high availability, the settings are synchronized, so use ::, 0.0.0.0 or a CARP address here.</help>
+    </field>
+    <field>
+        <id>checkmkagent.port</id>
+        <label>Listen port</label>
+        <type>text</type>
+        <help>TCP port of the agent. Checkmk queries port 6556 by default.</help>
+    </field>
+    <field>
+        <id>checkmkagent.encryption</id>
+        <label>Encryption</label>
+        <type>checkbox</type>
+        <help>Encrypt the agent output with the secret below. On the Checkmk server, enter the same secret in the rule "Symmetric encryption (Linux, Windows)".</help>
+    </field>
+    <field>
+        <id>checkmkagent.secret</id>
+        <label>Encryption secret</label>
+        <type>password</type>
+        <help>The secret is stored in the configuration and is never shown again. Leave this field empty to keep the current secret.</help>
+    </field>
+</form>
