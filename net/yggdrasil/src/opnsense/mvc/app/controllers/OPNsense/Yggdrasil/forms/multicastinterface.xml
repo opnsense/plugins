@@ -1,0 +1,38 @@
+<form>
+    <field>
+        <id>multicastinterface.Regex</id>
+        <label>Interface Pattern</label>
+        <type>text</type>
+        <help>Regular expression matching the network interface names to use.</help>
+    </field>
+    <field>
+        <id>multicastinterface.Beacon</id>
+        <label>Beacon</label>
+        <type>checkbox</type>
+        <help>Advertise this node using multicast on matching interfaces.</help>
+    </field>
+    <field>
+        <id>multicastinterface.Listen</id>
+        <label>Listen</label>
+        <type>checkbox</type>
+        <help>Discover other nodes using multicast on matching interfaces.</help>
+    </field>
+    <field>
+        <id>multicastinterface.Port</id>
+        <label>Port</label>
+        <type>text</type>
+        <help>Port for incoming peer connections discovered through multicast. Use 0 to select a port automatically.</help>
+    </field>
+    <field>
+        <id>multicastinterface.Password</id>
+        <label>Password</label>
+        <type>password</type>
+        <help>Optional password for peer connections established through multicast discovery.</help>
+    </field>
+    <field>
+        <id>multicastinterface.Priority</id>
+        <label>Priority</label>
+        <type>text</type>
+        <help>Priority assigned to peer connections established through multicast discovery.</help>
+    </field>
+</form>
