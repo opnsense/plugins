@@ -59,9 +59,8 @@
             <syslog_programs type="JsonKeyValueStoreField">
                 <Multiple>Y</Multiple>
                 <ConfigdPopulateAct>syslog list applications</ConfigdPopulateAct>
-                <SourceFile>/tmp/syslog_applications.json</SourceFile>
                 <SortByValue>Y</SortByValue>
-                <ValidationMessage>Specify valid source applications.</ValidationMessage>
+                <ValidationMessage>Invalid source application.<</ValidationMessage>
             </syslog_programs>
             <suricata_eve_log type="BooleanField">
                 <Default>1</Default>
