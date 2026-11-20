@@ -42,7 +42,14 @@
         <label>Edge IP Version</label>
         <type>dropdown</type>
         <advanced>true</advanced>
-        <help>Force the IP version used to connect to Cloudflare's edge. Leave on Auto unless you need to restrict to IPv4 or IPv6.</help>
+        <help>IP version used to connect to Cloudflare's edge. cloudflared uses IPv4 by default; select Auto to use the IP version available on the system, or IPv6 to connect over IPv6 only.</help>
+    </field>
+    <field>
+        <id>cloudflared.general.metrics_address</id>
+        <label>Metrics Address</label>
+        <type>text</type>
+        <advanced>true</advanced>
+        <help>Listen address (host:port) of the local metrics server. cloudflared will not start if this address is already in use. Leave empty to let cloudflared pick a free port between 20241 and 20245.</help>
     </field>
     <field>
         <id>cloudflared.general.log_level</id>

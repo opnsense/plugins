@@ -29,6 +29,7 @@
 namespace OPNsense\Cloudflared\Api;
 
 use OPNsense\Base\ApiMutableServiceControllerBase;
+use OPNsense\Core\Backend;
 
 class ServiceController extends ApiMutableServiceControllerBase
 {
@@ -36,4 +37,14 @@ class ServiceController extends ApiMutableServiceControllerBase
     protected static $internalServiceTemplate = 'OPNsense/Cloudflared';
     protected static $internalServiceEnabled = 'general.enabled';
     protected static $internalServiceName = 'cloudflared';
+
+    /**
+     * tunnel connection status as reported by the cloudflared /ready endpoint
+     * @return array
+     */
+    public function tunnelStatusAction()
+    {
+        $result = json_decode((new Backend())->configdRun('cloudflared tunnel_status'), true);
+        return is_array($result) ? $result : ['status' => 'unknown', 'connections' => 0];
+    }
 }

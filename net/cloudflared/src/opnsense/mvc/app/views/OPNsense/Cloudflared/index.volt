@@ -30,7 +30,26 @@ $(document).ready(function() {
         $('.selectpicker').selectpicker('refresh');
     });
 
+    function updateTunnelStatus() {
+        ajaxGet('/api/cloudflared/service/tunnel_status', {}, function(data) {
+            let label = 'label-default';
+            let text = "{{ lang._('Stopped') }}";
+            if (data.status === 'connected') {
+                label = 'label-success';
+                text = "{{ lang._('Connected (%s edge connections)') }}".replace('%s', data.connections);
+            } else if (data.status === 'disconnected') {
+                label = 'label-warning';
+                text = "{{ lang._('Not connected') }}";
+            } else if (data.status !== 'stopped') {
+                text = "{{ lang._('Unknown') }}";
+            }
+            $('#tunnel_status').empty().append($('<span class="label"/>').addClass(label).text(text));
+        });
+    }
+
     updateServiceControlUI('cloudflared');
+    updateTunnelStatus();
+    setInterval(updateTunnelStatus, 10000);
 
     $("#reconfigureAct").SimpleActionButton({
         onPreAction: function() {
@@ -40,10 +59,22 @@ $(document).ready(function() {
         },
         onAction: function() {
             updateServiceControlUI('cloudflared');
+            updateTunnelStatus();
         },
     });
 });
 </script>
+
+<div class="content-box">
+    <table class="table table-condensed">
+        <tbody>
+            <tr>
+                <td style="width: 22%;"><b>{{ lang._('Tunnel Status') }}</b></td>
+                <td id="tunnel_status"><i class="fa fa-spinner fa-spin"></i></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <div class="content-box">
     {{ partial('layout_partials/base_form', ['fields': general, 'id': 'frm_GeneralSettings']) }}

@@ -37,6 +37,11 @@ _SEVERITY = {
     'PNC': 1,
 }
 
+# syslog-ng (RFC 5424): <29>1 2026-05-12T11:51:06+00:00 host cloudflared 1234 - [meta sequenceId="1"] message
+_RE_RFC5424 = re.compile(
+    r'^<(\d{1,3})>1 (\S+) \S+ (\S+) (\S+) \S+ (?:-|\[.*?\])\s?(.*)'
+)
+
 # zerolog: 2026-05-12T11:51:06Z INF message
 _RE_ZEROLOG = re.compile(
     r'^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:Z|[+-]\d{2}:\d{2}))\s+([A-Z]{3})\s+(.*)'
@@ -51,16 +56,35 @@ _RE_GOSTDLIB = re.compile(
 class CloudflaredLogFormat(NewBaseLogFormat):
     def __init__(self, filename):
         super().__init__(filename)
+        # run before the generic RFC 5424 parser to recover the zerolog level
+        self._priority = 0
         self._timestamp = None
         self._severity = None
         self._message = None
+        self._pid = None
 
     def match(self, line):
         if 'cloudflared' not in self._filename:
             return False
-        return bool(_RE_ZEROLOG.match(line) or _RE_GOSTDLIB.match(line))
+        return bool(_RE_RFC5424.match(line) or _RE_ZEROLOG.match(line) or _RE_GOSTDLIB.match(line))
 
     def set_line(self, line):
+        self._pid = None
+        m = _RE_RFC5424.match(line)
+        if m:
+            # daemon(8) logs every line with the same priority, use the zerolog level when present
+            self._timestamp = m.group(2)
+            self._pid = m.group(4) if m.group(4) != '-' else None
+            message = m.group(5)
+            z = _RE_ZEROLOG.match(message)
+            if z:
+                self._severity = _SEVERITY.get(z.group(2), 6)
+                self._message = z.group(3)
+            else:
+                self._severity = int(m.group(1)) % 8
+                self._message = message
+            return
+
         m = _RE_ZEROLOG.match(line)
         if m:
             ts_raw = m.group(1)
@@ -93,7 +117,7 @@ class CloudflaredLogFormat(NewBaseLogFormat):
 
     @property
     def pid(self):
-        return None
+        return self._pid
 
     @property
     def severity(self):
