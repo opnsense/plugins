@@ -7,6 +7,7 @@ namespace OPNsense\CrowdSec\Api;
 
 use OPNsense\Base\ApiControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\CrowdSec\Util;
 
 /**
  * @package OPNsense\CrowdSec
@@ -24,7 +25,7 @@ class BouncersController extends ApiControllerBase
     {
         $result = json_decode(trim((new Backend())->configdRun("crowdsec bouncers-list")), true);
         if ($result === null) {
-            return ["message" => "unable to retrieve data"];
+            return ["message" => Util::noDataMessage()];
         }
 
         $rows = [];
