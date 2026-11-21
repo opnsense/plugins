@@ -7,6 +7,7 @@
     "product_id": "%%PLUGIN_PKGNAME%%",
     "product_name": "%%PLUGIN_NAME%%",
     "product_tier": "%%PLUGIN_TIER%%",
+    "product_tree": "%%PLUGIN_TREE%%",
     "product_version": "%%PLUGIN_PKGVERSION%%",
     "product_website": "%%PLUGIN_WWW%%"
 }
