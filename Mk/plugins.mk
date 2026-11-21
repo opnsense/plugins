@@ -30,13 +30,14 @@ all: check
 
 .include "defaults.mk"
 
-.if exists(${GIT}) && exists(${GITVERSION})
-PLUGIN_COMMIT!=		${GITVERSION}
+.if exists(${GIT})
+PLUGIN_SOURCE!=		${GITVERSION}
 .else
-PLUGIN_COMMIT=		unknown 0 undefined
+PLUGIN_SOURCE=		unknown 0 undefined mismatch
 .endif
 
-PLUGIN_HASH?=		${PLUGIN_COMMIT:[3]}
+PLUGIN_HASH?=		${PLUGIN_SOURCE:[3]}
+PLUGIN_TREE?=		${PLUGIN_SOURCE:[4]}
 
 PLUGIN_DESC=		pkg-descr
 PLUGIN_SCRIPTS=		+PRE_INSTALL +POST_INSTALL \
