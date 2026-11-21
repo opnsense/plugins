@@ -2,9 +2,16 @@
 
 server default {
 
+{% if helpers.exists('OPNsense.freeradius.general.listen_addresses') and OPNsense.freeradius.general.listen_addresses != '' %}
+{%   set listen_addresses = OPNsense.freeradius.general.listen_addresses.split(',') %}
+{% else %}
+{%   set listen_addresses = ['*', '::'] %}
+{% endif %}
+{% for listen_address in listen_addresses %}
+{%   set listen_key = 'ipv6addr' if ':' in listen_address else 'ipaddr' %}
 listen {
         type = auth
-        ipaddr = *
+        {{ listen_key }} = {{ listen_address }}
         port = 0
 
         limit {
@@ -15,7 +22,7 @@ listen {
 }
 
 listen {
-        ipaddr = *
+        {{ listen_key }} = {{ listen_address }}
         port = 0
         type = acct
 
@@ -23,27 +30,7 @@ listen {
         }
 }
 
-listen {
-        type = auth
-        ipv6addr = ::
-        port = 0
-
-        limit {
-              max_connections = 16
-              lifetime = 0
-              idle_timeout = 30
-        }
-}
-
-listen {
-        ipv6addr = ::
-        port = 0
-        type = acct
-
-        limit {
-        }
-}
-
+{% endfor %}
 authorize {
         filter_username
         preprocess
