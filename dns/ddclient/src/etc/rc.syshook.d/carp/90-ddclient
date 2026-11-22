@@ -1,0 +1,107 @@
+#!/usr/local/bin/php
+<?php
+
+/*
+ * Copyright (C) 2026 Patrick Monfette
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright
+ *    notice, this list of conditions and the following disclaimer in the
+ *    documentation and/or other materials provided with the distribution.
+ *
+ * THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY
+ * AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ * AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY,
+ * OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+ * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+ * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+ * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+ * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
+ */
+
+/*
+ * With "Disconnect dialup interfaces" the PPP address moves to whichever
+ * node is MASTER.  Each node only updates when its address differs from
+ * its local cache, which doesn't know what the other node sent, so getting
+ * the same address back after a failback updates nothing.  Clear the cache
+ * for the accounts on this PPP link when it becomes MASTER.
+ */
+
+require_once('config.inc');
+require_once('util.inc');
+
+use OPNsense\Core\Backend;
+use OPNsense\DynDNS\DynDNS;
+
+if (empty(config_read_array('hasync', false)['disconnectppps'])) {
+    exit(0);
+}
+
+$subsystem = $argv[1] ?? '';
+$type = $argv[2] ?? '';
+
+if ($type != 'MASTER' || strpos($subsystem, '@') === false) {
+    exit(0);
+}
+
+list ($vhid, $iface) = explode('@', $subsystem);
+
+$ifkeys = [];
+
+foreach (config_read_array('ppps', 'ppp', false) as $ppp) {
+    /* XXX like 20-ppp this ignores MLPPP */
+    if ($ppp['ports'] != $iface) {
+        continue;
+    }
+
+    foreach (config_read_array('interfaces', false) as $ifkey => $interface) {
+        if ($ppp['if'] == $interface['if']) {
+            $ifkeys[] = $ifkey;
+        }
+    }
+}
+
+if (empty($ifkeys)) {
+    exit(0);
+}
+
+$mdl = new DynDNS();
+if (!$mdl->general->enabled->isEqual('1') || !$mdl->general->backend->isEqual('opnsense')) {
+    exit(0);
+}
+
+$uuids = [];
+
+foreach ($mdl->accounts->account->iterateItems() as $uuid => $account) {
+    if ($account->enabled->isEqual('1') && in_array((string)$account->interface, $ifkeys)) {
+        $uuids[] = $uuid;
+    }
+}
+
+if (empty($uuids)) {
+    exit(0);
+}
+
+log_msg(sprintf('%s is connected to ppp interface %s, clearing dynamic DNS cache', $iface, implode(',', $ifkeys)));
+
+$backend = new Backend();
+$running = isvalidpid('/var/run/ddclient_opn.pid');
+
+/* like the force refresh in the GUI: reset while stopped */
+if ($running) {
+    $backend->configdRun('ddclient stop');
+}
+
+$backend->configdpRun('ddclient force_refresh', [implode(',', $uuids)]);
+
+if ($running) {
+    $backend->configdRun('ddclient start');
+}
