@@ -42,7 +42,7 @@ class General extends BaseModel
         $https = (string)$this->addresseshttps;
 
         if ($http === '' && $https === '') {
-            $msg = gettext('Please input at least an HTTP or HTTPS port.');
+            $msg = gettext('Please input at least an HTTP or HTTPS address/port.');
 
             $messages->appendMessage(new Message(
                 $msg,

@@ -22,7 +22,7 @@
             <Default></Default>
             <Constraints>
                 <check001>
-                    <ValidationMessage>Please select an HTTPS port and a valid certificate</ValidationMessage>
+                    <ValidationMessage>Please select an HTTPS address/port and a valid certificate</ValidationMessage>
                     <type>AllOrNoneConstraint</type>
                     <addFields>
                         <field1>cert</field1>
