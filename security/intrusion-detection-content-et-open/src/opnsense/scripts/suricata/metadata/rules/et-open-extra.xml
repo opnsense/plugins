@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <ruleset documentation_url="https://doc.emergingthreats.net/bin/view/Main/EmergingFAQ">
-    <location url="https://rules.emergingthreats.net/open/suricata-7.0/emerging.rules.tar.gz" prefix="ET open"/>
-    <version url="https://rules.emergingthreats.net/open/suricata-7.0/version.txt"/>
+    <location url="https://rules.emergingthreats.net/open/suricata-8.0/emerging.rules.tar.gz" prefix="ET open"/>
+    <version url="https://rules.emergingthreats.net/open/suricata-8.0/version.txt"/>
     <files>
         <file description="3coresec" url="inline::rules/3coresec.rules">3coresec.rules</file>
         <file description="botcc.portgrouped" url="inline::rules/botcc.portgrouped.rules">botcc.portgrouped.rules</file>
@@ -19,8 +19,10 @@
         <file description="emerging-deleted" url="inline::rules/emerging-deleted.rules">et_open.emerging-deleted.rules</file>
         <file description="emerging-dns" url="inline::rules/emerging-dns.rules">et_open.emerging-dns.rules</file>
         <file description="emerging-dos" url="inline::rules/emerging-dos.rules">et_open.emerging-dos.rules</file>
+        <file description="emerging-dyn_dns" url="inline::rules/emerging-dyn_dns.rules">et_open.emerging-dyn_dns.rules</file>
         <file description="emerging-exploit" url="inline::rules/emerging-exploit.rules">et_open.emerging-exploit.rules</file>
         <file description="emerging-exploit_kit" url="inline::rules/emerging-exploit_kit.rules">et_open.emerging-exploit_kit.rules</file>
+        <file description="emerging-file_sharing" url="inline::rules/emerging-file_sharing.rules">et_open.emerging-file_sharing.rules</file>
         <file description="emerging-ftp" url="inline::rules/emerging-ftp.rules">et_open.emerging-ftp.rules</file>
         <file description="emerging-games" url="inline::rules/emerging-games.rules">et_open.emerging-games.rules</file>
         <file description="emerging-hunting" url="inline::rules/emerging-hunting.rules">et_open.emerging-hunting.rules</file>
@@ -38,6 +40,8 @@
         <file description="emerging-phishing" url="inline::rules/emerging-phishing.rules">et_open.emerging-phishing.rules</file>
         <file description="emerging-policy" url="inline::rules/emerging-policy.rules">et_open.emerging-policy.rules</file>
         <file description="emerging-pop3" url="inline::rules/emerging-pop3.rules">et_open.emerging-pop3.rules</file>
+        <file description="emerging-remote_access" url="inline::rules/emerging-remote_access.rules">et_open.emerging-remote_access.rules</file>
+        <file description="emerging-retired" url="inline::rules/emerging-retired.rules">et_open.emerging-retired.rules</file>
         <file description="emerging-rpc" url="inline::rules/emerging-rpc.rules">et_open.emerging-rpc.rules</file>
         <file description="emerging-scada" url="inline::rules/emerging-scada.rules">et_open.emerging-scada.rules</file>
         <file description="emerging-scan" url="inline::rules/emerging-scan.rules">et_open.emerging-scan.rules</file>
@@ -45,6 +49,7 @@
         <file description="emerging-smtp" url="inline::rules/emerging-smtp.rules">et_open.emerging-smtp.rules</file>
         <file description="emerging-snmp" url="inline::rules/emerging-snmp.rules">et_open.emerging-snmp.rules</file>
         <file description="emerging-sql" url="inline::rules/emerging-sql.rules">et_open.emerging-sql.rules</file>
+        <file description="emerging-ta_abused_services" url="inline::rules/emerging-ta_abused_services.rules">et_open.emerging-ta_abused_services.rules</file>
         <file description="emerging-telnet" url="inline::rules/emerging-telnet.rules">et_open.emerging-telnet.rules</file>
         <file description="emerging-tftp" url="inline::rules/emerging-tftp.rules">et_open.emerging-tftp.rules</file>
         <file description="emerging-user_agents" url="inline::rules/emerging-user_agents.rules">et_open.emerging-user_agents.rules</file>
