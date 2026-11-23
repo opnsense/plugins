@@ -60,7 +60,7 @@
                 <Multiple>Y</Multiple>
                 <ConfigdPopulateAct>syslog list applications</ConfigdPopulateAct>
                 <SortByValue>Y</SortByValue>
-                <ValidationMessage>Invalid source application.<</ValidationMessage>
+                <ValidationMessage>Invalid source application.</ValidationMessage>
             </syslog_programs>
             <suricata_eve_log type="BooleanField">
                 <Default>1</Default>
