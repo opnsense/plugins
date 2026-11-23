@@ -32,9 +32,21 @@
 namespace OPNsense\Netbird;
 
 use OPNsense\Base\BaseModel;
+use OPNsense\Core\Config;
 
 class Settings extends BaseModel
 {
+    /**
+     * NetBird's built-in interface blacklist (DefaultInterfaceBlacklist in
+     * client/internal/profilemanager/config.go). The client only applies these
+     * defaults when IFaceBlackList is empty, so they must be kept whenever
+     * additional entries are written.
+     */
+    const DEFAULT_IFACE_BLACKLIST = [
+        'wt0', 'wt', 'utun', 'tun0', 'zt', 'ZeroTier', 'wg', 'ts',
+        'Tailscale', 'tailscale', 'docker', 'veth', 'br-', 'lo',
+    ];
+
     public function syncConfig($target = '/var/db/netbird/config.json')
     {
         $config = json_decode(file_get_contents($target), true);
@@ -61,6 +73,14 @@ class Settings extends BaseModel
         $config["RosenpassEnabled"] = $this->postquantum->enableRosenpass->__toString() == 1;
         $config["RosenpassPermissive"] = $this->postquantum->rosenpassPermissive->__toString() == 1;
 
+        $ifaceBlacklist = self::DEFAULT_IFACE_BLACKLIST;
+        $interfaces = Config::getInstance()->object()->interfaces;
+        foreach (explode(',', $this->general->ifaceBlacklist->__toString()) as $intf) {
+            if (!empty($intf) && !empty($interfaces->$intf->if)) {
+                $ifaceBlacklist[] = (string)$interfaces->$intf->if;
+            }
+        }
+        $config["IFaceBlackList"] = array_values(array_unique($ifaceBlacklist));
 
         $result = file_put_contents($target, json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
         if ($result === false) {

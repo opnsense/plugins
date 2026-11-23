@@ -19,6 +19,10 @@ other peers.
 Plugin Changelog
 ================
 
+1.4
+
+* Added Interface Blacklist option to exclude interfaces from ICE candidate gathering
+
 1.3
 
 * Added netbird_devices() so that wt0 is a volatile interface (contributed by Myah Mitchell)

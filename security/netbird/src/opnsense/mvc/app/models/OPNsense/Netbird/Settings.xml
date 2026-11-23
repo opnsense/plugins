@@ -19,6 +19,12 @@
                 <MaskPerItem>Y</MaskPerItem>
                 <Mask>/^(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}(?:\/(?:(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)(?:\.(?:25[0-5]|2[0-4]\d|1\d\d|[1-9]?\d)){3}|[a-zA-Z][a-zA-Z0-9_.-]*))?$/u</Mask>
             </ipmapping>
+            <ifaceBlacklist type="InterfaceField">
+                <Multiple>Y</Multiple>
+                <Filters>
+                    <if>/^(?!lo|wt)/</if>
+                </Filters>
+            </ifaceBlacklist>
         </general>
         <firewall>
             <allowConfig type="BooleanField">
