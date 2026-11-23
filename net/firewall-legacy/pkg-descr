@@ -6,6 +6,10 @@ this plugin installed.
 Plugin Changelog
 ================
 
+1.2
+
+* Added firewall rule lookup page to the plugin
+
 1.1
 
 * Added outbound NAT page to the plugin
