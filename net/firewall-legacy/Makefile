@@ -1,5 +1,5 @@
 PLUGIN_NAME=		firewall-legacy
-PLUGIN_VERSION=		1.1
+PLUGIN_VERSION=		1.2
 PLUGIN_COMMENT=		Firewall rules legacy support
 PLUGIN_MAINTAINER=	franco@opnsense.org
 
