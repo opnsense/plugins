@@ -6,6 +6,10 @@ accounts on many dynamic DNS services.
 Plugin Changelog
 ================
 
+1.35
+
+* Add native backend support for hosting.de (contributed by Christian Schäfer)
+
 1.34
 
 * Add Ionos IPv4 and IPv6 support (contributed by Clemens Hardewig)
