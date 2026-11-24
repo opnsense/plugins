@@ -14,6 +14,7 @@ Plugin Changelog
 2.1
 
 * BGP: Add per-neighbor local-as no-prepend/replace-as options (contributed by clarkchentw)
+* Install all needed folders and logfiles in setup.sh
 
 2.0
 
