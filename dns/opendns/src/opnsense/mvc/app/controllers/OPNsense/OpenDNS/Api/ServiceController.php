@@ -40,20 +40,20 @@ class ServiceController extends ApiControllerBase
     public function reconfigureAction()
     {
         $result = ['status' => 'failed'];
-        if ($this->request->isPost()) {
-            $this->throwReadOnly();
-            $backend = new Backend();
-            $response = trim($backend->configdRun('opendns configure'));
-            $backend->configdRun('dns reload');
-            $backend->configdRun('plugins configure dhcp');
-            if ($response === 'OK') {
-                $result['status'] = 'ok';
-            } else {
-                $result['status_msg'] = htmlspecialchars(
-                    $response !== '' ? $response : gettext('Applying the OpenDNS configuration did not complete.'),
-                    ENT_QUOTES | ENT_HTML401
-                );
-            }
+        if (!$this->request->isPost()) {
+            return $result;
+        }
+        $backend = new Backend();
+        $response = trim($backend->configdRun('opendns configure'));
+        $backend->configdRun('dns reload');
+        $backend->configdRun('plugins configure dhcp');
+        if ($response === 'OK') {
+            $result['status'] = 'ok';
+        } else {
+            $result['status_msg'] = htmlspecialchars(
+                $response !== '' ? $response : gettext('Applying the OpenDNS configuration did not complete.'),
+                ENT_QUOTES | ENT_HTML401
+            );
         }
         return $result;
     }

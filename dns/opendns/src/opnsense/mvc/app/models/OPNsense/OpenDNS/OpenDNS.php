@@ -2,6 +2,8 @@
 
 /*
  * Copyright (C) 2026 Greelan
+ * Copyright (c) 2015-2021 Franco Fichtner <franco@opnsense.org>
+ * Copyright (c) 2008 Tellnet AG
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -30,6 +32,8 @@ namespace OPNsense\OpenDNS;
 
 use OPNsense\Base\BaseModel;
 use OPNsense\Base\Messages\Message;
+use OPNsense\Core\Config;
+use OPNsense\Interfaces\Settings;
 
 class OpenDNS extends BaseModel
 {
@@ -45,7 +49,7 @@ class OpenDNS extends BaseModel
         foreach (['username', 'password', 'host'] as $fieldname) {
             $node = $this->$fieldname;
             if ($validateFullModel || $this->enable->isFieldChanged() || $node->isFieldChanged()) {
-                if (trim($node->getValue()) === '') {
+                if ($node->isEmpty()) {
                     $messages->appendMessage(new Message(
                         gettext('A value is required when OpenDNS is enabled.'),
                         $fieldname
@@ -54,5 +58,54 @@ class OpenDNS extends BaseModel
             }
         }
         return $messages;
+    }
+
+    /**
+     * take over the system DNS servers while OpenDNS manages them, restore the settings kept at
+     * takeover once it no longer does. Core has no hook for plugin supplied nameservers, so the
+     * system section is written here, as the InitialSetup model does.
+     */
+    public function updateSystemDns()
+    {
+        $system = Config::getInstance()->object()->system;
+        $current = [];
+        foreach ($system->dnsserver as $server) {
+            if ((string)$server !== '') {
+                $current[] = (string)$server;
+            }
+        }
+
+        if (!$this->enable->isEmpty() && $this->standalone->isEmpty()) {
+            if ($this->backup->has_backup->isEmpty()) {
+                /* taking over the system DNS, keep the settings to restore later */
+                $this->backup->has_backup = '1';
+                $this->backup->dnsservers = implode(',', $current);
+                $this->backup->dnsallowoverride = empty((string)$system->dnsallowoverride) ? '0' : '1';
+            }
+            $v4_server = ['208.67.222.222', '208.67.220.220'];
+            $v6_server = (new Settings())->disableipv6->isEmpty() ? ['2620:119:35::35', '2620:119:53::53'] : [];
+            $servers = array_merge($v6_server, $v4_server);
+            if (isset($system->prefer_ipv4)) {
+                $servers = array_merge($v4_server, $v6_server);
+            }
+            $allowoverride = '0';
+        } elseif (!$this->backup->has_backup->isEmpty()) {
+            /* no longer managing the system DNS, restore the settings kept at takeover */
+            $servers = array_values(array_filter(explode(',', (string)$this->backup->dnsservers)));
+            $allowoverride = (string)$this->backup->dnsallowoverride;
+            $this->backup->has_backup = '0';
+            $this->backup->dnsservers = '';
+            $this->backup->dnsallowoverride = '1';
+        } else {
+            return;
+        }
+
+        if ($servers !== $current || (string)$system->dnsallowoverride !== $allowoverride) {
+            unset($system->dnsserver);
+            foreach (!empty($servers) ? $servers : [''] as $server) {
+                $system->addChild('dnsserver', $server);
+            }
+            $system->dnsallowoverride = $allowoverride;
+        }
     }
 }

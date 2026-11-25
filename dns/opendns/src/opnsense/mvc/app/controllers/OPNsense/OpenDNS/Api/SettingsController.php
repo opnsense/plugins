@@ -54,18 +54,28 @@ class SettingsController extends ApiMutableModelControllerBase
     public function setAction()
     {
         $result = ['result' => 'failed'];
-        if ($this->request->isPost()) {
-            Config::getInstance()->lock();
-            $values = $this->request->getPost(static::$internalModelName);
-            if (is_array($values)) {
-                unset($values['backup']);
-                $this->getModel()->setNodes($values);
-            }
-            $result = $this->validate();
-            if (empty($result['result'])) {
-                return $this->save(false, true);
-            }
+        if (!$this->request->isPost()) {
+            return $result;
+        }
+        Config::getInstance()->lock();
+        $values = $this->request->getPost(static::$internalModelName);
+        if (is_array($values)) {
+            unset($values['backup']);
+            $this->getModel()->setNodes($values);
+        }
+        $result = $this->validate();
+        if (empty($result['result'])) {
+            $this->setActionHook();
+            return $this->save(false, true);
         }
         return $result;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setActionHook()
+    {
+        $this->getModel()->updateSystemDns();
     }
 }

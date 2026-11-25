@@ -15,7 +15,7 @@
         <password type="UpdateOnlyTextField"/>
         <host type="StrictTextField">
             <AllowSpaces>Y</AllowSpaces>
-            <Mask>/^[a-zA-Z0-9 _\-\.]+$/</Mask>
+            <Mask>/^[a-zA-Z0-9_\-\.]+( +[a-zA-Z0-9_\-\.]+)*$/</Mask>
             <ValidationMessage>Please specify a valid OpenDNS network label.</ValidationMessage>
         </host>
         <backup>
