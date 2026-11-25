@@ -122,6 +122,16 @@ POSSIBILITY OF SUCH DAMAGE.
                     this_item.prop( "disabled", true );
                 }
             });
+            $("#frm_DialogAccount .optional_hiding").each(function(){
+                let this_item = $(this);
+                if (this_item.hasClass("service_"+service)) {
+                    this_item.closest("tr").hide();
+                    this_item.prop( "disabled", true );
+                } else {
+                    this_item.prop( "disabled", false );
+                    this_item.closest("tr").show();
+                }
+            });
         });
         $('#DialogAccount').on('shown.bs.modal', function (e) {
             $("#account\\.service").change();
