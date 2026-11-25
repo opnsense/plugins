@@ -18,20 +18,5 @@
             <Mask>/^[a-zA-Z0-9_\-\.]+( +[a-zA-Z0-9_\-\.]+)*$/</Mask>
             <ValidationMessage>Please specify a valid OpenDNS network label.</ValidationMessage>
         </host>
-        <backup>
-            <nosync type="BooleanField">
-                <Default>1</Default>
-                <Required>Y</Required>
-            </nosync>
-            <has_backup type="BooleanField">
-                <Default>0</Default>
-                <Required>Y</Required>
-            </has_backup>
-            <dnsservers type="TextField"/>
-            <dnsallowoverride type="BooleanField">
-                <Default>1</Default>
-                <Required>Y</Required>
-            </dnsallowoverride>
-        </backup>
     </items>
 </model>

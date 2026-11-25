@@ -61,27 +61,18 @@ class OpenDNS extends BaseModel
     }
 
     /**
-     * take over the system DNS servers while OpenDNS manages them, restore the settings kept at
-     * takeover once it no longer does. Core has no hook for plugin supplied nameservers, so the
-     * system section is written here, as the InitialSetup model does.
+     * point the system DNS servers to OpenDNS when enabled and clear them when disabled, standalone
+     * mode leaves them alone. Core has no hook for plugin supplied nameservers, so the system section
+     * is written here, as the InitialSetup model does.
      */
     public function updateSystemDns()
     {
-        $system = Config::getInstance()->object()->system;
-        $current = [];
-        foreach ($system->dnsserver as $server) {
-            if ((string)$server !== '') {
-                $current[] = (string)$server;
-            }
+        if (!$this->standalone->isEmpty()) {
+            return;
         }
 
-        if (!$this->enable->isEmpty() && $this->standalone->isEmpty()) {
-            if ($this->backup->has_backup->isEmpty()) {
-                /* taking over the system DNS, keep the settings to restore later */
-                $this->backup->has_backup = '1';
-                $this->backup->dnsservers = implode(',', $current);
-                $this->backup->dnsallowoverride = empty((string)$system->dnsallowoverride) ? '0' : '1';
-            }
+        $system = Config::getInstance()->object()->system;
+        if (!$this->enable->isEmpty()) {
             $v4_server = ['208.67.222.222', '208.67.220.220'];
             $v6_server = (new Settings())->disableipv6->isEmpty() ? ['2620:119:35::35', '2620:119:53::53'] : [];
             $servers = array_merge($v6_server, $v4_server);
@@ -89,23 +80,15 @@ class OpenDNS extends BaseModel
                 $servers = array_merge($v4_server, $v6_server);
             }
             $allowoverride = '0';
-        } elseif (!$this->backup->has_backup->isEmpty()) {
-            /* no longer managing the system DNS, restore the settings kept at takeover */
-            $servers = array_values(array_filter(explode(',', (string)$this->backup->dnsservers)));
-            $allowoverride = (string)$this->backup->dnsallowoverride;
-            $this->backup->has_backup = '0';
-            $this->backup->dnsservers = '';
-            $this->backup->dnsallowoverride = '1';
         } else {
-            return;
+            $servers = [''];
+            $allowoverride = '1';
         }
 
-        if ($servers !== $current || (string)$system->dnsallowoverride !== $allowoverride) {
-            unset($system->dnsserver);
-            foreach (!empty($servers) ? $servers : [''] as $server) {
-                $system->addChild('dnsserver', $server);
-            }
-            $system->dnsallowoverride = $allowoverride;
+        unset($system->dnsserver);
+        foreach ($servers as $server) {
+            $system->addChild('dnsserver', $server);
         }
+        $system->dnsallowoverride = $allowoverride;
     }
 }

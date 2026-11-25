@@ -29,7 +29,6 @@
 namespace OPNsense\OpenDNS\Api;
 
 use OPNsense\Base\ApiMutableModelControllerBase;
-use OPNsense\Core\Config;
 
 class SettingsController extends ApiMutableModelControllerBase
 {
@@ -37,37 +36,10 @@ class SettingsController extends ApiMutableModelControllerBase
     protected static $internalModelClass = '\OPNsense\OpenDNS\OpenDNS';
 
     /**
-     * the system DNS backup is maintained by the configure script only
-     * @return array
+     * update the system DNS servers in the same save as the settings
      */
-    protected function getModelNodes()
+    protected function setActionHook()
     {
-        $result = parent::getModelNodes();
-        unset($result['backup']);
-        return $result;
-    }
-
-    /**
-     * update settings, leaving the system DNS backup untouched
-     * @return array status / validation errors
-     */
-    public function setAction()
-    {
-        $result = ['result' => 'failed'];
-        if (!$this->request->isPost()) {
-            return $result;
-        }
-        Config::getInstance()->lock();
-        $values = $this->request->getPost(static::$internalModelName);
-        if (is_array($values)) {
-            unset($values['backup']);
-            $this->getModel()->setNodes($values);
-        }
-        $result = $this->validate();
-        if (empty($result['result'])) {
-            $this->getModel()->updateSystemDns();
-            return $this->save(false, true);
-        }
-        return $result;
+        $this->getModel()->updateSystemDns();
     }
 }
