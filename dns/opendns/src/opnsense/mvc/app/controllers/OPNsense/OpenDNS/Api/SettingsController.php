@@ -65,17 +65,9 @@ class SettingsController extends ApiMutableModelControllerBase
         }
         $result = $this->validate();
         if (empty($result['result'])) {
-            $this->setActionHook();
+            $this->getModel()->updateSystemDns();
             return $this->save(false, true);
         }
         return $result;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setActionHook()
-    {
-        $this->getModel()->updateSystemDns();
     }
 }
