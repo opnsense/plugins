@@ -120,6 +120,11 @@
                     <Mask>/^[^\n]*$/</Mask>
                     <ValidationMessage>resourceId contains invalid characters.</ValidationMessage>
                 </resourceId>
+                <token type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^[^\n]*$/</Mask>
+                    <ValidationMessage>Token contains invalid characters.</ValidationMessage>
+                </token>
                 <hostnames type="HostnameField">
                     <Required>Y</Required>
                     <IpAllowed>N</IpAllowed>
