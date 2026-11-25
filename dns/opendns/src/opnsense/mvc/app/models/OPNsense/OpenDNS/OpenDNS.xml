@@ -19,6 +19,10 @@
             <ValidationMessage>Please specify a valid OpenDNS network label.</ValidationMessage>
         </host>
         <backup>
+            <nosync type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </nosync>
             <has_backup type="BooleanField">
                 <Default>0</Default>
                 <Required>Y</Required>
