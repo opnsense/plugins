@@ -17,6 +17,7 @@
             "resourceId": {{ account.resourceId | default('') | tojson }},
             "username": {{ account.username | default('') | tojson }},
             "password": {{ account.password | default('') | tojson }},
+            "token": {{ account.token | default('') | tojson }},
             "hostnames": "{{ account.hostnames }}",
             "wildcard": {{ "true" if account.wildcard == '1' else "false"}},
             "zone": "{{ account.zone }}",
