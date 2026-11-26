@@ -55,7 +55,7 @@ class Drive
 
     /**
      * login to google drive
-     * @param $client_id
+     * @param $client_id service account email or numeric unique id
      * @param $privateKeyB64 P12 key placed in a base64 container
      */
     public function login($client_id, $privateKeyB64)
@@ -65,6 +65,16 @@ class Drive
             throw new \Exception("Invalid P12 key, openssl_pkcs12_read() failed");
         }
         $this->client = new \Google_Client();
+
+        // accept either the service account email or its numeric unique id
+        $client_id = trim($client_id);
+        if (strpos($client_id, '@') !== false) {
+            if (!filter_var($client_id, FILTER_VALIDATE_EMAIL)) {
+                throw new \Exception("Invalid service account email: " . $client_id);
+            }
+        } elseif (!ctype_digit($client_id)) {
+            throw new \Exception("Email Address must be a service account email or its numeric unique id");
+        }
 
         $service_account = [
             "type" => "service_account",
