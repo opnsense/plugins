@@ -91,11 +91,32 @@ class Drive
      */
     public function listFiles($directoryId, $filename = null)
     {
-        $query = "'" . $directoryId . "' in parents ";
+        $query = "'" . $directoryId . "' in parents and trashed = false";
         if ($filename != null) {
-            $query .= " and title in '" . $filename . "'";
+            $query .= " and name = '" . addslashes($filename) . "'";
         }
-        return $this->service->files->listFiles(['q' => $query, 'supportsAllDrives' => true]);
+        $files = [];
+        $pageToken = null;
+        do {
+            $params = [
+                'q' => $query,
+                'pageSize' => 1000,
+                'fields' => 'nextPageToken, files(id, name, description)',
+                // shared drive items are only returned when both flags are set
+                'supportsAllDrives' => true,
+                'includeItemsFromAllDrives' => true,
+                'corpora' => 'allDrives',
+            ];
+            if ($pageToken !== null) {
+                $params['pageToken'] = $pageToken;
+            }
+            $result = $this->service->files->listFiles($params);
+            foreach ($result->getFiles() as $file) {
+                $files[] = $file;
+            }
+            $pageToken = $result->getNextPageToken();
+        } while (!empty($pageToken));
+        return $files;
     }
 
 
