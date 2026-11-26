@@ -1,0 +1,11 @@
+OpenDNS filters DNS requests through its public resolvers, with filtering settings that are tied to a registered network on the OpenDNS.com dashboard.
+
+This plugin switches the system DNS servers to OpenDNS and keeps the IP address of the registered network up to date when the WAN address changes. Disabling it clears the system DNS servers. Standalone mode leaves the system DNS servers alone and only updates the network IP address.
+
+Plugin Changelog
+================
+
+1.0
+
+* Moved from core with an MVC/API settings page
+* Registration is checked on apply and its errors are reported
