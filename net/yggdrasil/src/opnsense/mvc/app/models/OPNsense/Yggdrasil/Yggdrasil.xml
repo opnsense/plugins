@@ -1,0 +1,110 @@
+<model>
+    <mount>//OPNsense/Yggdrasil</mount>
+    <version>1.0.0</version>
+    <description>Yggdrasil settings</description>
+    <items>
+        <general>
+            <enabled type="BooleanField">
+                <Default>0</Default>
+                <Required>Y</Required>
+            </enabled>
+            <PrivateKey type="TextField">
+                <Required>Y</Required>
+                <Mask>/^[a-fA-F0-9]{128}$/</Mask>
+                <ValidationMessage>Private keys must contain exactly 128 hexadecimal characters.</ValidationMessage>
+            </PrivateKey>
+            <Peers>
+                <Peer type="ArrayField">
+                    <uri type="TextField">
+                        <Required>Y</Required>
+                    </uri>
+                </Peer>
+            </Peers>
+            <InterfacePeers>
+                <Peer type="ArrayField">
+                    <Interface type="TextField">
+                        <Required>Y</Required>
+                    </Interface>
+                    <URI type="TextField">
+                        <Required>Y</Required>
+                    </URI>
+                </Peer>
+            </InterfacePeers>
+            <Listen>
+                <Listener type="ArrayField">
+                    <URI type="TextField">
+                        <Required>Y</Required>
+                    </URI>
+                </Listener>
+            </Listen>
+            <MulticastInterfaces>
+              <Interface type="ArrayField">
+                  <Regex type="TextField">
+                      <Required>Y</Required>
+                  </Regex>
+                  <Beacon type="BooleanField">
+                      <Default>0</Default>
+                      <Required>Y</Required>
+                  </Beacon>
+                  <Listen type="BooleanField">
+                      <Default>0</Default>
+                      <Required>Y</Required>
+                  </Listen>
+                  <Port type="IntegerField">
+                      <Default>0</Default>
+                      <MinimumValue>0</MinimumValue>
+                      <MaximumValue>65535</MaximumValue>
+                      <Required>Y</Required>
+                  </Port>
+                  <Password type="TextField">
+                      <Required>N</Required>
+                  </Password>
+                  <Priority type="IntegerField">
+                      <Default>0</Default>
+                      <MinimumValue>0</MinimumValue>
+                      <Required>Y</Required>
+                  </Priority>
+              </Interface>
+            </MulticastInterfaces>
+            <AllowedPublicKeys>
+                <AllowedPublicKey type="ArrayField">
+                    <PublicKey type="TextField">
+                        <Required>Y</Required>
+                        <Mask>/^[a-fA-F0-9]{64}$/</Mask>
+                        <ValidationMessage>Public keys must contain exactly 64 hexadecimal characters.</ValidationMessage>
+                    </PublicKey>
+                </AllowedPublicKey>
+            </AllowedPublicKeys>
+            <IfNameMode type="OptionField">
+                <Default>auto</Default>
+                <Required>Y</Required>
+                <OptionValues>
+                    <auto>Automatic</auto>
+                    <none>Disabled</none>
+                    <custom>Custom</custom>
+                </OptionValues>
+            </IfNameMode>
+            <IfNameCustom type="TextField">
+                <Required>N</Required>
+            </IfNameCustom>
+            <GroupPassword type="TextField">
+                <Required>N</Required>
+            </GroupPassword>
+            <IfMTU type="IntegerField">
+                <Default>32767</Default>
+                <MinimumValue>1280</MinimumValue>
+                <MaximumValue>32767</MaximumValue>
+                <Required>Y</Required>
+            </IfMTU>
+            <NodeInfoPrivacy type="BooleanField">
+                <Default>1</Default>
+                <Required>Y</Required>
+            </NodeInfoPrivacy>
+            <NodeInfo type="TextField">
+                <Required>N</Required>
+                <Default>{}</Default>
+                <AllowNewlines>Y</AllowNewlines>
+            </NodeInfo>
+        </general>
+    </items>
+</model>

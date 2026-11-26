@@ -1,0 +1,8 @@
+<form>
+    <field>
+        <id>allowedpublickey.PublicKey</id>
+        <label>Public Key</label>
+        <type>text</type>
+        <help>Public key consisting of exactly 64 hexadecimal characters.</help>
+    </field>
+</form>
