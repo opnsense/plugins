@@ -28,7 +28,6 @@
 
 namespace OPNsense\Backup;
 
-use OPNsense\Core\ACL;
 use OPNsense\Core\AppConfig;
 use OPNsense\Core\Config;
 use OPNsense\Core\Shell;
@@ -187,10 +186,6 @@ class S3 extends Base implements IBackupProvider
      */
     public function setConfiguration($conf)
     {
-        /* core's diag_backup.php checks this for a restore, not for a provider's setup */
-        if (!empty($_SESSION['Username']) && (new ACL())->hasPrivilege($_SESSION['Username'], 'user-config-readonly')) {
-            return [gettext('You do not have the permission to perform this action.')];
-        }
         $this->setModelProperties($this->model, $conf);
         $messages = $this->validateModel($this->model);
         /* rclone runs an unknown provider as Other, so only one it lists is taken; a disabled backup needs no
