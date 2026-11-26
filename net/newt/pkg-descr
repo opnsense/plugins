@@ -1,0 +1,5 @@
+Integrates the Pangolin Newt site connector with the OPNsense MVC/API,
+service controls and log viewer. Configure a Pangolin endpoint, site ID
+and secret, with optional MTU, UDP port and DNS settings.
+
+WWW: https://github.com/fosrl/newt

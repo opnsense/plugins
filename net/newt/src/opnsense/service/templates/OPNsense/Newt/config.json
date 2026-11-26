@@ -1,0 +1,14 @@
+{% if helpers.exists('OPNsense.Newt.general') %}
+{% set cfg = OPNsense.Newt.general %}
+{
+  "endpoint": {{ cfg.endpoint|default('')|tojson }},
+  "id": {{ cfg.siteId|default('')|tojson }},
+  "secret": {{ cfg.secret|default('')|tojson }},
+  "logLevel": {{ cfg.logLevel|default('INFO')|tojson }},
+  "mtu": {{ cfg.mtu|default('1280')|int }}{% if cfg.port|default('') %},
+  "port": {{ cfg.port|int }}{% endif %}{% if cfg.dns|default('') %},
+  "dns": {{ cfg.dns|tojson }}{% endif %}
+}
+{% else %}
+{}
+{% endif %}

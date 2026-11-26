@@ -1,0 +1,4 @@
+/usr/local/opnsense/scripts/OPNsense/Newt/service.sh stop
+if grep -q 'newt_enable="YES"' /etc/rc.conf.d/newt; then
+    /usr/local/opnsense/scripts/OPNsense/Newt/service.sh start
+fi
