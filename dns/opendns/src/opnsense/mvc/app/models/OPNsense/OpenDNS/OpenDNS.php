@@ -70,6 +70,10 @@ class OpenDNS extends BaseModel
         if (!$this->standalone->isEmpty()) {
             return;
         }
+        if ($this->enable->isEmpty() && $this->enable->getInitialValue() !== '1') {
+            /* not enabled before this save either, the system DNS servers are not ours to clear */
+            return;
+        }
 
         $system = Config::getInstance()->object()->system;
         if (!$this->enable->isEmpty()) {
