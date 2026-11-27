@@ -1,0 +1,396 @@
+<model>
+    <mount>//OPNsense/HCloudDNS</mount>
+    <description>Hetzner Cloud Dynamic DNS with Multi-Zone and Failover</description>
+    <version>2.1.0</version>
+    <items>
+        <!-- Global Settings -->
+        <general>
+            <enabled type="BooleanField">
+                <default>0</default>
+                <Required>Y</Required>
+            </enabled>
+            <checkInterval type="IntegerField">
+                <default>300</default>
+                <MinimumValue>60</MinimumValue>
+                <MaximumValue>86400</MaximumValue>
+                <Required>Y</Required>
+                <ValidationMessage>Check interval must be between 60 and 86400 seconds</ValidationMessage>
+            </checkInterval>
+            <forceInterval type="IntegerField">
+                <default>0</default>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>30</MaximumValue>
+                <ValidationMessage>Force interval must be between 0 and 30 days (0 = disabled)</ValidationMessage>
+            </forceInterval>
+            <verbose type="BooleanField">
+                <default>0</default>
+            </verbose>
+            <!-- Failover Settings -->
+            <failoverEnabled type="BooleanField">
+                <default>0</default>
+            </failoverEnabled>
+            <failbackEnabled type="BooleanField">
+                <default>1</default>
+            </failbackEnabled>
+            <failbackDelay type="IntegerField">
+                <default>60</default>
+                <MinimumValue>0</MinimumValue>
+                <MaximumValue>600</MaximumValue>
+                <ValidationMessage>Failback delay must be between 0 and 600 seconds</ValidationMessage>
+            </failbackDelay>
+            <!-- Scheduled Updates (Cron) Settings -->
+            <cronEnabled type="BooleanField">
+                <default>0</default>
+            </cronEnabled>
+            <cronInterval type="IntegerField">
+                <default>5</default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>60</MaximumValue>
+                <ValidationMessage>Cron interval must be between 1 and 60 minutes</ValidationMessage>
+            </cronInterval>
+            <!-- History Settings -->
+            <historyRetentionDays type="IntegerField">
+                <default>7</default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>365</MaximumValue>
+                <ValidationMessage>History retention must be between 1 and 365 days</ValidationMessage>
+            </historyRetentionDays>
+            <!-- Default TTL for DynDNS entries -->
+            <defaultTtl type="OptionField">
+                <Required>Y</Required>
+                <default>_60</default>
+                <OptionValues>
+                    <_60>60s (1 min - DynDNS)</_60>
+                    <_120>120s (2 min)</_120>
+                    <_300>300s (5 min)</_300>
+                    <_600>600s (10 min)</_600>
+                    <_1800>1800s (30 min)</_1800>
+                    <_3600>3600s (1 hour)</_3600>
+                    <_86400>86400s (1 day)</_86400>
+                </OptionValues>
+            </defaultTtl>
+            <!-- High Availability (CARP) -->
+            <carpAware type="BooleanField">
+                <default>0</default>
+            </carpAware>
+            <carpVhid type="TextField">
+                <Required>N</Required>
+                <Mask>/^(\d{1,3})?$/</Mask>
+                <ValidationMessage>VHID must be a number (1-255) or empty for all</ValidationMessage>
+            </carpVhid>
+            <!-- DNS Propagation Check -->
+            <propagationCheck type="BooleanField">
+                <default>1</default>
+            </propagationCheck>
+            <propagationRetries type="IntegerField">
+                <default>3</default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>10</MaximumValue>
+                <ValidationMessage>Propagation retries must be between 1 and 10</ValidationMessage>
+            </propagationRetries>
+            <propagationDelay type="IntegerField">
+                <default>2</default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>30</MaximumValue>
+                <ValidationMessage>Propagation delay must be between 1 and 30 seconds</ValidationMessage>
+            </propagationDelay>
+            <!-- Zone Groups for DNS Management -->
+            <zoneGroups type="TextField">
+                <Required>N</Required>
+                <default>{}</default>
+            </zoneGroups>
+        </general>
+
+        <!-- Gateways / Interfaces -->
+        <gateways>
+            <gateway type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^.{1,64}$/</Mask>
+                    <ValidationMessage>Gateway name is required (max 64 characters)</ValidationMessage>
+                </name>
+                <interface type="InterfaceField">
+                    <Required>Y</Required>
+                    <AllowDynamic>Y</AllowDynamic>
+                    <filters>
+                        <enable>/^(?!0).*$/</enable>
+                    </filters>
+                </interface>
+                <priority type="IntegerField">
+                    <default>10</default>
+                    <MinimumValue>1</MinimumValue>
+                    <MaximumValue>100</MaximumValue>
+                    <Required>Y</Required>
+                    <ValidationMessage>Priority must be between 1 and 100 (lower = higher priority)</ValidationMessage>
+                </priority>
+                <checkipMethod type="OptionField">
+                    <Required>Y</Required>
+                    <default>web_ipify</default>
+                    <OptionValues>
+                        <if>Interface IP</if>
+                        <web_ipify>ipify.org</web_ipify>
+                        <web_dyndns>DynDNS</web_dyndns>
+                        <web_freedns>FreeDNS</web_freedns>
+                        <web_ip4only>ip4only.me</web_ip4only>
+                        <web_ip6only>ip6only.me</web_ip6only>
+                    </OptionValues>
+                </checkipMethod>
+                <healthCheckTarget type="TextField">
+                    <default>8.8.8.8</default>
+                    <ValidationMessage>IP or hostname for health check</ValidationMessage>
+                </healthCheckTarget>
+                <maintenance type="BooleanField">
+                    <default>0</default>
+                </maintenance>
+                <maintenanceScheduled type="BooleanField">
+                    <default>0</default>
+                </maintenanceScheduled>
+                <maintenanceStart type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})?$/</Mask>
+                </maintenanceStart>
+                <maintenanceEnd type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^(\d{4}-\d{2}-\d{2}T\d{2}:\d{2})?$/</Mask>
+                </maintenanceEnd>
+            </gateway>
+        </gateways>
+
+        <!-- DNS Entries (managed records) -->
+        <entries>
+            <entry type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <account type="ModelRelationField">
+                    <Model>
+                        <accounts>
+                            <source>OPNsense.HCloudDNS.HCloudDNS</source>
+                            <items>accounts.account</items>
+                            <display>name</display>
+                        </accounts>
+                    </Model>
+                    <Required>Y</Required>
+                    <ValidationMessage>Account/Token is required</ValidationMessage>
+                </account>
+                <zoneId type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Zone ID is required</ValidationMessage>
+                </zoneId>
+                <zoneName type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Zone name is required</ValidationMessage>
+                </zoneName>
+                <recordId type="TextField">
+                    <Required>N</Required>
+                </recordId>
+                <recordName type="TextField">
+                    <Required>Y</Required>
+                    <ValidationMessage>Record name is required (e.g. @ or www)</ValidationMessage>
+                </recordName>
+                <recordType type="OptionField">
+                    <Required>Y</Required>
+                    <default>A</default>
+                    <OptionValues>
+                        <A>A (IPv4)</A>
+                        <AAAA>AAAA (IPv6)</AAAA>
+                    </OptionValues>
+                </recordType>
+                <primaryGateway type="ModelRelationField">
+                    <Model>
+                        <gateways>
+                            <source>OPNsense.HCloudDNS.HCloudDNS</source>
+                            <items>gateways.gateway</items>
+                            <display>name</display>
+                        </gateways>
+                    </Model>
+                    <Required>N</Required>
+                    <BlankDesc>Default Gateway (auto-detect)</BlankDesc>
+                </primaryGateway>
+                <failoverGateway type="ModelRelationField">
+                    <Model>
+                        <gateways>
+                            <source>OPNsense.HCloudDNS.HCloudDNS</source>
+                            <items>gateways.gateway</items>
+                            <display>name</display>
+                        </gateways>
+                    </Model>
+                    <Required>N</Required>
+                    <BlankDesc>None (no failover)</BlankDesc>
+                </failoverGateway>
+                <ttl type="OptionField">
+                    <Required>Y</Required>
+                    <default>300</default>
+                    <OptionValues>
+                        <_60>60s (1 min - DynDNS)</_60>
+                        <_120>120s (2 min)</_120>
+                        <_300>300s (5 min - default)</_300>
+                        <_600>600s (10 min)</_600>
+                        <_1800>1800s (30 min)</_1800>
+                        <_3600>3600s (1 hour)</_3600>
+                        <_86400>86400s (1 day)</_86400>
+                    </OptionValues>
+                </ttl>
+                <currentIp type="TextField">
+                    <Required>N</Required>
+                </currentIp>
+                <lastUpdate type="IntegerField">
+                    <Required>N</Required>
+                </lastUpdate>
+                <status type="OptionField">
+                    <default>pending</default>
+                    <OptionValues>
+                        <pending>Pending</pending>
+                        <active>Active</active>
+                        <failover>Failover</failover>
+                        <paused>Paused</paused>
+                        <error>Error</error>
+                        <orphaned>Orphaned</orphaned>
+                    </OptionValues>
+                </status>
+                <!-- Dual-Stack: Link to corresponding A/AAAA record -->
+                <linkedEntry type="TextField">
+                    <Required>N</Required>
+                </linkedEntry>
+            </entry>
+        </entries>
+
+        <!-- Notification Settings -->
+        <notifications>
+            <enabled type="BooleanField">
+                <default>0</default>
+            </enabled>
+            <notifyOnUpdate type="BooleanField">
+                <default>1</default>
+            </notifyOnUpdate>
+            <notifyOnFailover type="BooleanField">
+                <default>1</default>
+            </notifyOnFailover>
+            <notifyOnFailback type="BooleanField">
+                <default>1</default>
+            </notifyOnFailback>
+            <notifyOnError type="BooleanField">
+                <default>1</default>
+            </notifyOnError>
+            <notifyOnMaintenance type="BooleanField">
+                <default>0</default>
+            </notifyOnMaintenance>
+            <!-- Email Notifications -->
+            <emailEnabled type="BooleanField">
+                <default>0</default>
+            </emailEnabled>
+            <emailTo type="EmailField">
+                <Required>N</Required>
+                <ValidationMessage>Valid email address required</ValidationMessage>
+            </emailTo>
+            <emailFrom type="EmailField">
+                <Required>N</Required>
+                <ValidationMessage>Valid sender email address required</ValidationMessage>
+            </emailFrom>
+            <smtpServer type="TextField">
+                <Required>N</Required>
+                <Mask>/^.{0,255}$/</Mask>
+            </smtpServer>
+            <smtpPort type="IntegerField">
+                <default>587</default>
+                <MinimumValue>1</MinimumValue>
+                <MaximumValue>65535</MaximumValue>
+            </smtpPort>
+            <smtpTls type="OptionField">
+                <default>starttls</default>
+                <OptionValues>
+                    <none>None</none>
+                    <starttls>STARTTLS (Port 587)</starttls>
+                    <ssl>SSL/TLS (Port 465)</ssl>
+                </OptionValues>
+            </smtpTls>
+            <smtpUser type="TextField">
+                <Required>N</Required>
+                <Mask>/^.{0,128}$/</Mask>
+            </smtpUser>
+            <smtpPassword type="TextField">
+                <Required>N</Required>
+                <Mask>/^.{0,256}$/</Mask>
+            </smtpPassword>
+            <!-- Webhook Notifications -->
+            <webhookEnabled type="BooleanField">
+                <default>0</default>
+            </webhookEnabled>
+            <webhookUrl type="UrlField">
+                <Required>N</Required>
+                <ValidationMessage>Valid URL required</ValidationMessage>
+            </webhookUrl>
+            <webhookMethod type="OptionField">
+                <default>POST</default>
+                <OptionValues>
+                    <POST>POST</POST>
+                    <GET>GET</GET>
+                </OptionValues>
+            </webhookMethod>
+            <webhookSecret type="TextField">
+                <Required>N</Required>
+                <Mask>/^.{0,256}$/</Mask>
+            </webhookSecret>
+            <!-- Ntfy Notifications -->
+            <ntfyEnabled type="BooleanField">
+                <default>0</default>
+            </ntfyEnabled>
+            <ntfyServer type="UrlField">
+                <default>https://ntfy.sh</default>
+                <Required>N</Required>
+            </ntfyServer>
+            <ntfyTopic type="TextField">
+                <Required>N</Required>
+                <Mask>/^[a-zA-Z0-9_-]{1,64}$/</Mask>
+                <ValidationMessage>Topic must be alphanumeric (max 64 characters)</ValidationMessage>
+            </ntfyTopic>
+            <ntfyPriority type="OptionField">
+                <default>default</default>
+                <OptionValues>
+                    <min>Min (1)</min>
+                    <low>Low (2)</low>
+                    <default>Default (3)</default>
+                    <high>High (4)</high>
+                    <urgent>Urgent (5)</urgent>
+                </OptionValues>
+            </ntfyPriority>
+        </notifications>
+
+        <!-- API Accounts (Tokens) - v2: Multiple tokens supported -->
+        <accounts>
+            <account type="ArrayField">
+                <enabled type="BooleanField">
+                    <default>1</default>
+                    <Required>Y</Required>
+                </enabled>
+                <name type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^.{1,64}$/</Mask>
+                    <ValidationMessage>Name is required (max 64 characters)</ValidationMessage>
+                </name>
+                <description type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^.{0,255}$/</Mask>
+                </description>
+                <apiType type="OptionField">
+                    <Required>Y</Required>
+                    <default>cloud</default>
+                    <OptionValues>
+                        <cloud>Hetzner Cloud API</cloud>
+                        <dns>Hetzner DNS API (deprecated)</dns>
+                    </OptionValues>
+                </apiType>
+                <apiToken type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^.{10,}$/</Mask>
+                    <ValidationMessage>API token is required (minimum 10 characters)</ValidationMessage>
+                </apiToken>
+            </account>
+        </accounts>
+    </items>
+</model>
