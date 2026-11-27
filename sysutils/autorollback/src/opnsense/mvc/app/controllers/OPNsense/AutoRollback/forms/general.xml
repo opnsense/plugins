@@ -1,0 +1,34 @@
+<form>
+    <field>
+        <id>autorollback.general.Enabled</id>
+        <label>Enable Auto Rollback</label>
+        <type>checkbox</type>
+        <help>Enable the auto-rollback safe mode feature.</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Safe Mode Settings</label>
+    </field>
+    <field>
+        <id>autorollback.general.SafeModeTimeout</id>
+        <label>Default Timeout (seconds)</label>
+        <type>text</type>
+        <help>Seconds to wait for confirmation before the system rolls back. Default: 120. Range: 30-3600.</help>
+    </field>
+    <field>
+        <id>autorollback.general.RollbackMethod</id>
+        <label>Rollback Method</label>
+        <type>dropdown</type>
+        <help>How to apply the restored configuration. Full reboot is most reliable (recommended). Service reload is faster but may not apply kernel tunables or interface changes.</help>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Logging</label>
+    </field>
+    <field>
+        <id>autorollback.general.LogRollbacks</id>
+        <label>Log Events</label>
+        <type>checkbox</type>
+        <help>Log all safe mode and rollback events to syslog.</help>
+    </field>
+</form>
