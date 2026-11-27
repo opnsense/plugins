@@ -7,6 +7,7 @@ namespace OPNsense\CrowdSec\Api;
 
 use OPNsense\Base\ApiControllerBase;
 use OPNsense\Core\Backend;
+use OPNsense\CrowdSec\Util;
 
 function unrollDecisions(array $alerts): array
 {
@@ -72,7 +73,7 @@ class DecisionsController extends ApiControllerBase
     {
         $result = json_decode(trim((new Backend())->configdRun("crowdsec decisions-list")), true);
         if ($result === null) {
-            return ["message" => "unable to retrieve data"];
+            return ["message" => Util::noDataMessage()];
         }
 
         $decisions = unrollDecisions($result);
