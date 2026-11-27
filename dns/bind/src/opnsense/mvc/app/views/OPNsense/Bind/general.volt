@@ -200,6 +200,7 @@
                     <tr>
                         <th data-column-id="enabled" data-type="string" data-formatter="rowtoggle">{{ lang._('Enabled') }}</th>
                         <th data-column-id="domainname" data-type="string" data-visible="true">{{ lang._('Zone') }}</th>
+                        <th data-column-id="forwardonly" data-type="string" data-formatter="boolean" data-visible="true">{{ lang._('Forward Only') }}</th>
                         <th data-column-id="forwardserver" data-type="string" data-visible="true">{{ lang._('Forwarder IPs') }}</th>
                         <th data-column-id="uuid" data-type="string" data-identifier="true" data-visible="false">{{ lang._('ID') }}</th>
                         <th data-column-id="commands" data-formatter="commands" data-sortable="false">{{ lang._('Commands') }}</th>
