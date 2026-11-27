@@ -1,0 +1,14 @@
+<form>
+    <field>
+        <id>lightscope.general.enabled</id>
+        <label>Enable LightScope</label>
+        <type>checkbox</type>
+        <help>Enable or disable the LightScope security monitoring service.</help>
+    </field>
+    <field>
+        <id>lightscope.general.honeypot_ports</id>
+        <label>Honeypot Ports</label>
+        <type>text</type>
+        <help>Comma-separated list of TCP ports to forward to the USC honeypot for analysis. You can view your honeypot data on the Full Dashboard. Example input: 8080,2323,8443,3389,5900</help>
+    </field>
+</form>
