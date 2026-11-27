@@ -32,6 +32,7 @@
 namespace OPNsense\AcmeClient;
 
 use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
 use OPNsense\Core\Backend;
 
 /**
@@ -115,5 +116,88 @@ class AcmeClient extends BaseModel
             return 1;
         }
         return 0;
+    }
+
+    /**
+     * check if the specified string is a TSIG key statement in named.conf
+     * format as written by tsig-keygen, e.g.
+     *   key "name" { algorithm hmac-sha256; secret "base64=="; };
+     * @param $data string key file content
+     * @return bool is the key file valid
+     */
+    public static function isValidNsupdateKey($data)
+    {
+        // strip comments (#, // and /* */) which are allowed in named.conf
+        $data = preg_replace(['/\/\*.*?\*\//s', '/(#|\/\/)[^\n]*/'], '', $data);
+
+        if (
+            !preg_match(
+                '/^\s*key\s+("[^"\s]+"|[^"\s{};]+)\s*\{([^{}]*)\}\s*;\s*$/s',
+                $data,
+                $matches
+            )
+        ) {
+            return false;
+        }
+
+        // the key statement must contain exactly one algorithm and one secret
+        $options = [];
+        foreach (explode(';', $matches[2]) as $statement) {
+            $statement = trim($statement);
+            if ($statement === '') {
+                continue;
+            }
+            if (preg_match('/^algorithm\s+("?)[a-zA-Z0-9.-]+\1$/', $statement)) {
+                $options[] = 'algorithm';
+            } elseif (preg_match('/^secret\s+"[A-Za-z0-9+\/=\s]+"$/', $statement)) {
+                $options[] = 'secret';
+            } else {
+                return false;
+            }
+        }
+        sort($options);
+
+        return $options === ['algorithm', 'secret'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function performValidation($validateFullModel = false)
+    {
+        $messages = parent::performValidation($validateFullModel);
+
+        foreach ($this->validations->validation->iterateItems() as $validation) {
+            // only validate changed entries to not break existing configurations
+            if (
+                !$validateFullModel &&
+                !$validation->method->isFieldChanged() &&
+                !$validation->dns_service->isFieldChanged() &&
+                !$validation->dns_nsupdate_key->isFieldChanged()
+            ) {
+                continue;
+            }
+            if (
+                !$validation->method->isEqual('dns01') ||
+                !$validation->dns_service->isEqual('dns_nsupdate')
+            ) {
+                continue;
+            }
+            // an empty key is valid, nsupdate will then send unsigned updates
+            $key = trim((string)$validation->dns_nsupdate_key);
+            if ($key !== '' && !self::isValidNsupdateKey($key)) {
+                $messages->appendMessage(
+                    new Message(
+                        sprintf(
+                            gettext('Expected a full TSIG key statement (key name, algorithm, secret), e.g. %s'),
+                            'key "acme-update-key" { algorithm hmac-sha256; secret "..."; };'
+                        ),
+                        $validation->__reference . '.dns_nsupdate_key'
+                    )
+                );
+            }
+        }
+
+        return $messages;
     }
 }
