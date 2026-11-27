@@ -50,6 +50,37 @@ class Eap extends BaseModel
             }
         }
 
+        if ((string)$this->restrict_outer_eap_methods === '1') {
+            $allowed = explode(',', (string)$this->allowed_outer_eap_types);
+            if ((string)$this->allowed_outer_eap_types === '') {
+                $messages->appendMessage(new Message(
+                    gettext('Select at least one allowed outer EAP method.'),
+                    $this->allowed_outer_eap_types->getInternalXMLTagName()
+                ));
+            } elseif (
+                count($allowed) !== count(array_unique($allowed)) ||
+                array_diff($allowed, ['tls', 'ttls', 'peap', 'pwd', 'mschapv2', 'md5'])
+            ) {
+                $messages->appendMessage(new Message(
+                    gettext('Select at least one recognized EAP method without duplicates.'),
+                    $this->allowed_outer_eap_types->getInternalXMLTagName()
+                ));
+            }
+            // Handler availability is independent of outer permission; do not change enable_pwd here.
+            if (in_array('pwd', $allowed, true) && (string)$this->enable_pwd !== '1') {
+                $messages->appendMessage(new Message(
+                    gettext('Enable EAP-PWD before including it in Allowed Outer EAP Methods.'),
+                    $this->enable_pwd->getInternalXMLTagName()
+                ));
+            }
+            if (!in_array((string)$this->default_eap_type, $allowed, true)) {
+                $messages->appendMessage(new Message(
+                    gettext('The Default EAP Type must be included in Allowed Outer EAP Methods.'),
+                    $this->default_eap_type->getInternalXMLTagName()
+                ));
+            }
+        }
+
         return $messages;
     }
 }
