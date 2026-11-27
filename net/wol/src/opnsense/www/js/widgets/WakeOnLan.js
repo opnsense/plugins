@@ -47,7 +47,7 @@ export default class WakeOnLan extends BaseTableWidget {
     }
 
     async onWidgetTick() {
-        const data = await this.ajaxCall('/api/wol/wol/search_host');
+        const data = await this.ajaxCall('/api/wol/wol/get_host_status');
 
         let rows = [];
         if (data.total == 0) {
@@ -60,18 +60,14 @@ export default class WakeOnLan extends BaseTableWidget {
                           ''];
           rows.push(header);
 
-          //NOTE: this ARP list call is the most expensive one and can grow substantialy in big networks
-          //With previous widget it had been done on the backend side with direct exec of 'arp -an | grep ...'
-          const arp = await this.ajaxCall(`/api/diagnostics/interface/get_arp${''}`);
-
           for(let it = 0; it < data.rows.length; it++){
               const item = data.rows[it];
-              let is_active = this.checkActive(arp, item.mac, item["%interface"]);
+              const is_active = Boolean(item.online);
               let row = [
                   `${item.descr.length !== 0 ? item.descr + '<br/>': ''} ${item.mac}`,
                   `${item.interface}`,
-                  `<i class="fa fa-${is_active == 1 ? "play" : "remove"} fa-fw text-${is_active == 1 ? "success" : "danger"}" ></i>
-                   ${ is_active == 1 ? "Online" : "Offline"}`,
+                  `<i class="fa fa-${is_active ? "play" : "remove"} fa-fw text-${is_active ? "success" : "danger"}" ></i>
+                   ${ is_active ? "Online" : "Offline"}`,
                   `<button class="btn btn-primary btn-xs wakeupbtn" data-uuid="${item.uuid}">
                     <i class="fa fa-bolt fa-fw" title="Wake Up"></i>
                    </button>`
@@ -91,14 +87,5 @@ export default class WakeOnLan extends BaseTableWidget {
       });
       event.currentTarget.blur();
     });
-  }
-
-  checkActive(arp_list, mac, intf) {
-    const arp = arp_list.find((obj) => obj.mac === mac.toLowerCase());
-    if (arp === undefined) {
-      return 0;
-    } else {
-      return (arp.expired === false && arp.intf_description === intf);
-    }
   }
 }
