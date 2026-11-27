@@ -70,6 +70,12 @@
         <help>Set one or more hosts to send your DNS queries if the request is unknown.</help>
     </field>
     <field>
+        <id>general.forwardertls</id>
+        <label>DNS over TLS</label>
+        <type>checkbox</type>
+        <help>Use DNS-over-TLS (port 853) when forwarding queries. Requires BIND 9.18+.</help>
+    </field>
+    <field>
         <id>general.filteraaaav4</id>
         <label>Enable filter-aaaa on IPv4 Clients</label>
         <type>checkbox</type>
