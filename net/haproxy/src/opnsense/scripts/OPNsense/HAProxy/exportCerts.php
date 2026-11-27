@@ -86,7 +86,10 @@ foreach ($configNodes as $key => $value) {
                                             }
                                         } else {
                                             $pem_content = str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->crt)));
-                                            $pem_content .= "\n" . str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->prv)));
+                                            // only certificates need their private key, CA lists must not contain it
+                                            if ($type == 'cert') {
+                                                $pem_content .= "\n" . str_replace("\n\n", "\n", str_replace("\r", "", base64_decode((string)$cert->prv)));
+                                            }
                                             // Get OCSP status
                                             $ocsp_conf = hasOcspInfo($pem_content) ? ' [ocsp-update on]' : '';
                                             // check if a CA is linked
