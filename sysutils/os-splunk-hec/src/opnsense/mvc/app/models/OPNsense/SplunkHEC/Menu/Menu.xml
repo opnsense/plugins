@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<menu>
+    <Services>
+        <SplunkHEC VisibleName="Splunk HEC Export" url="/ui/splunkhec/general" order="850"/>
+    </Services>
+</menu>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<acl>
+    <page-splunkhec>
+        <name>Splunk HEC</name>
+        <patterns>
+            <pattern>/api/splunkhec/*</pattern>
+            <pattern>/ui/splunkhec/*</pattern>
+        </patterns>
+    </page-splunkhec>
+</acl>
