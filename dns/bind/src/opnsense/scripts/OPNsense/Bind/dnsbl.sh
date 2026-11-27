@@ -35,6 +35,11 @@ WORKDIR="${WORKDIRPREFIX}${$}"
 rm -rf ${WORKDIRPREFIX}*
 mkdir -p ${WORKDIR}
 
+localfile() {
+	# Local File /usr/local/etc/namedb/dnsbl-local.txt
+	sed "/\.$/d" ${DESTDIR}/dnsbl-local.txt | sed "/^#/d" | sed "/\_/d" | sed "/^[[:space:]]*$/d" | sed "/\.\./d" | sed "s/^\.//g" > ${WORKDIR}/dnsbl-local
+}
+
 easylist() {
 	# EasyList
 	${FETCH} https://justdomains.github.io/blocklists/lists/easylist-justdomains.txt -o ${WORKDIR}/easylist-raw
@@ -304,6 +309,9 @@ for CAT in $(echo ${DNSBL} | tr ',' ' '); do
 		;;
 	yy)
 		yoyo
+		;;
+	loc)
+		localfile
 		;;
 	esac
 done
