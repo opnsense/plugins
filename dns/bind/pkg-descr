@@ -14,6 +14,7 @@ Plugin Changelog
 * Fix primary zones grid and command column (contributed by benyamin-codez)
 * Add HTTPS and SVCB record types (contributed by Michael Bedworth)
 * Add NAPTR record type (contributed by Mike Shuey)
+* Allow including of custom options (contributed by bj-rls)
 
 1.33
 
