@@ -83,4 +83,10 @@
     <type>checkbox</type>
     <help>Enable the ZFS collector.</help>
   </field>
+  <field>
+    <id>general.textfile</id>
+    <label>Textfile Collector</label>
+    <type>checkbox</type>
+    <help>Enable the textfile collector. When enabled, .prom files placed in /var/db/node_exporter/textfile will be exposed as metrics.</help>
+  </field>
 </form>

@@ -29,5 +29,6 @@
         <interrupts type="BooleanField"/>
         <ntp type="BooleanField"/>
         <zfs type="BooleanField"/>
+        <textfile type="BooleanField"/>
     </items>
 </model>

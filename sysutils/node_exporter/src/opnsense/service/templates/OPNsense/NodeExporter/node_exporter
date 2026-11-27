@@ -46,13 +46,17 @@
     {%- set zfs = no_collector + "zfs " -%}
 {%- endif -%}
 
+{%- if OPNsense.NodeExporter.textfile == '1' -%}
+    {%- set textfile = "--collector.textfile.directory=/var/db/node_exporter/textfile " -%}
+{%- endif -%}
+
 {%- if ':' in OPNsense.NodeExporter.listenaddress -%}
   {%- set listenaddress = '[' + OPNsense.NodeExporter.listenaddress + ']' -%}
 {%- else -%}
   {%- set listenaddress = OPNsense.NodeExporter.listenaddress -%}
 {%- endif -%}
 
-node_exporter_args="{{ cpu }}{{ exec }}{{ filesystem }}{{ loadavg }}{{ meminfo }}{{ netdev }}{{ ntp }}{{ time }}{{ devstat }}{{ zfs }}"
+node_exporter_args="{{ cpu }}{{ exec }}{{ filesystem }}{{ loadavg }}{{ meminfo }}{{ netdev }}{{ ntp }}{{ time }}{{ devstat }}{{ zfs }}{{ textfile }}"
 node_exporter_listen_address="{{ listenaddress }}:{{ OPNsense.NodeExporter.listenport }}"
 node_exporter_enable="YES"
 
