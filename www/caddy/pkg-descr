@@ -6,6 +6,10 @@ DOC: https://docs.opnsense.org/manual/how-tos/caddy.html
 Plugin Changelog
 ================
 
+2.2.5
+
+* Add: packet_conn_wrappers to layer4 proxy
+
 2.2.4
 
 * Fix: Advertise HTTP/3 on external port 443 for TLS domains and subdomains without an explicit domain port when HTTP/3 is enabled

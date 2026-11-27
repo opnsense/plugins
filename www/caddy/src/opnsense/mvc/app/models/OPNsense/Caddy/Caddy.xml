@@ -583,6 +583,7 @@
                     <Default>listener_wrappers</Default>
                     <OptionValues>
                         <listener_wrappers>listener_wrappers</listener_wrappers>
+                        <packet_conn_wrappers>packet_conn_wrappers</packet_conn_wrappers>
                         <global>global</global>
                     </OptionValues>
                 </Type>

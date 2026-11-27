@@ -278,28 +278,48 @@ class Caddy extends BaseModel
                     ));
                 }
 
-                if (!$layer4->Type->isEqual('global') && !$layer4->Protocol->isEqual('tcp')) {
+                if (
+                    ($layer4->Type->isEqual('listener_wrappers') && !$layer4->Protocol->isEqual('tcp')) ||
+                    ($layer4->Type->isEqual('packet_conn_wrappers') && !$layer4->Protocol->isEqual('udp'))
+                ) {
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
-                                'When routing type is "%s", protocol must be TCP.'
+                                'When routing type is "%s", protocol must be %s.'
                             ),
-                            $layer4->Type->getValue()
+                            $layer4->Type->getValue(),
+                            $layer4->Type->isEqual('packet_conn_wrappers') ? 'UDP' : 'TCP'
                         ),
                         $key . ".Protocol"
                     ));
                 }
 
+                $udpMatchers = ['dns', 'openvpn', 'proxy_protocol', 'quicsni', 'wireguard'];
+                if (
+                    $layer4->Type->isEqual('packet_conn_wrappers') &&
+                    !in_array($layer4->Matchers->getValue(), $udpMatchers)
+                ) {
+                    $messages->appendMessage(new Message(
+                        sprintf(
+                            gettext('Packet connection wrappers require a UDP matcher: %s.'),
+                            implode(', ', $udpMatchers)
+                        ),
+                        $key . ".Matchers"
+                    ));
+                }
+
+                $wrapperExcludedMatchers = ['any', 'tls', 'http', 'quic'];
                 if (
                     !$layer4->Type->isEqual('global') &&
-                    in_array($layer4->Matchers->getValue(), ['tls', 'http', 'quic'])
+                    in_array($layer4->Matchers->getValue(), $wrapperExcludedMatchers)
                 ) {
                     $messages->appendMessage(new Message(
                         sprintf(
                             gettext(
-                                'When routing type is "%s", matchers "HTTP", "TLS" or "QUIC" cannot be chosen.'
+                                'When routing type is "%s", matchers %s cannot be chosen.'
                             ),
-                            $layer4->Type->getValue()
+                            $layer4->Type->getValue(),
+                            implode(', ', $wrapperExcludedMatchers)
                         ),
                         $key . ".Matchers"
                     ));

@@ -124,6 +124,13 @@
         }
         {% endif %}
         {% if generalSettings.EnableLayer4|default("0") == "1" %}
+            packet_conn_wrappers {
+                layer4 {
+                    import /usr/local/etc/caddy/caddy.d/*.layer4packet
+                    {% set context_var = "packet_conn_wrappers" %}
+                    {% include "OPNsense/Caddy/Config/includeLayer4" %}
+                }
+            }
             listener_wrappers {
                 layer4 {
                     import /usr/local/etc/caddy/caddy.d/*.layer4listener
