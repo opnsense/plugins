@@ -1,10 +1,13 @@
 {#
 #  This file sets up layer4 routing support.
-#  There are two contexts: "listener_wrappers" and "global"
+#  There are three contexts: "listener_wrappers", "packet_conn_wrappers" and "global"
 #
 #  "listener_wrappers" multiplexes on OSI Layer 7 on the default HTTP and HTTPS ports and requires a traffic matcher since
 #  otherwise the "reverse_proxy" would stop receiving any requests. The "any" Layer 7 matcher is not allowed here.
 #  This context allows for matching domains via SNI and route them without terminating TLS.
+#
+#  "packet_conn_wrappers" routes UDP flows before the HTTP/3 server. Unmatched flows continue to HTTP/3.
+#  Like listener wrappers, it requires a traffic matcher and does not open its own listening port.
 #
 #  "global" can set up custom ports and also route any OSI Layer 4 TCP/UDP traffic without a matcher.
 #  They will be grouped under the same protocol/port combination
@@ -168,9 +171,9 @@
     {% endif %}
 {% endmacro %}
 
-{% if context_var == 'listener_wrappers' %}
+{% if context_var in ['listener_wrappers', 'packet_conn_wrappers'] %}
     {% for layer4 in layer4_configs %}
-        {% if layer4.enabled == "1" and layer4.Type == 'listener_wrappers' %}
+        {% if layer4.enabled == "1" and layer4.Type == context_var %}
             {% if layer4.Matchers != 'any' %}
                 @{{ layer4['@uuid'] }} {{ handle_special_matchers(layer4) }}
                 route @{{ layer4['@uuid'] }} {

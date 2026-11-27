@@ -304,7 +304,7 @@
                 },
                 {
                     class: "style_domain",
-                    visible: layer4_matchers === "tlssni" || layer4_matchers === "httphost"
+                    visible: ["tlssni", "httphost", "quicsni"].includes(layer4_matchers)
                 },
                 {
                     class: "style_openvpn",

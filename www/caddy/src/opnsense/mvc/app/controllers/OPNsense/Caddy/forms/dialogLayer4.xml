@@ -27,7 +27,7 @@
         <id>layer4.Type</id>
         <label>Routing Type</label>
         <type>dropdown</type>
-        <help>Choose either "listener_wrappers" for multiplexing protocols on the default HTTP and HTTPS ports on OSI Layer 7, or "global" for raw TCP/UDP traffic routing on a custom "Local port" on OSI Layer 4 with optional OSI Layer 7 protocol matching.</help>
+        <help>Choose "listener_wrappers" for TCP routing on the HTTP and HTTPS listeners, "packet_conn_wrappers" for UDP routing on the HTTP/3 listener, or "global" for TCP/UDP routing on a custom local port.</help>
         <grid_view>
             <visible>false</visible>
         </grid_view>
@@ -36,8 +36,7 @@
         <id>layer4.Protocol</id>
         <label>Protocol</label>
         <type>dropdown</type>
-        <style>selectpicker style_type</style>
-        <help>Match the received traffic on OSI Layer 4, either TCP or UDP. When "Routing Type" is "listener_wrappers", currently only TCP will match.</help>
+        <help>Match the received traffic on OSI Layer 4, either TCP or UDP. Choose TCP for "listener_wrappers", UDP for "packet_conn_wrappers", or either protocol for "global".</help>
         <grid_view>
             <visible>false</visible>
         </grid_view>
@@ -60,7 +59,7 @@
         <id>layer4.Matchers</id>
         <label>Matchers</label>
         <type>dropdown</type>
-        <help>Match the received traffic on OSI Layer 7. When choosing a protocol like TLS, it will be matched and routed to the upstream destination. When "Routing Type" of the matcher is "listener_wrapper", any unmatched traffic will be received by the "HTTP App" (reverse_proxy). When "Routing Type" of the matcher is "global", unmatched traffic will be consumed and blocked. Choose "ANY" to not match on OSI Layer 7 and allow any traffic.</help>
+        <help>Match the received traffic on OSI Layer 7. When choosing a protocol like TLS, it will be matched and routed to the upstream destination. With "listener_wrappers", unmatched traffic continues to the HTTP app. With "packet_conn_wrappers", unmatched UDP flows continue to HTTP/3. Wrapper routes require a specific matcher; ANY and the broad HTTP, TLS and QUIC matchers are not allowed. When "Routing Type" of the matcher is "global", unmatched traffic will be consumed and blocked. Choose "ANY" to not match on OSI Layer 7 and allow any traffic.</help>
     </field>
     <field>
         <id>layer4.FromDomain</id>
