@@ -1,0 +1,179 @@
+<form>
+    <field>
+        <id>server.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+        <help>Enable or disable this server profile.</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>server.description</id>
+        <label>Description</label>
+        <type>text</type>
+        <help>Friendly name for this server.</help>
+    </field>
+    <field>
+        <id>server.protocol</id>
+        <label>Protocol</label>
+        <type>dropdown</type>
+        <help>Proxy protocol used by the remote server.</help>
+        <grid_view>
+            <width>8em</width>
+        </grid_view>
+    </field>
+    <field>
+        <id>server.address</id>
+        <label>Server Address</label>
+        <type>text</type>
+        <help>IP address or hostname of the remote proxy server.</help>
+    </field>
+    <field>
+        <id>server.port</id>
+        <label>Server Port</label>
+        <type>text</type>
+        <help>Port of the remote proxy server.</help>
+        <grid_view>
+            <width>6em</width>
+        </grid_view>
+    </field>
+    <field>
+        <id>server.user_id</id>
+        <label>UUID</label>
+        <type>text</type>
+        <help>User ID for VLESS/VMess protocols.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>server.password</id>
+        <label>Password</label>
+        <type>password</type>
+        <help>Password for Shadowsocks/Trojan protocols.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>server.encryption</id>
+        <label>Encryption</label>
+        <type>text</type>
+        <help>Encryption method. Use "none" for VLESS, "auto" for VMess, or the cipher name for Shadowsocks.</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>server.flow</id>
+        <label>Flow Control</label>
+        <type>dropdown</type>
+        <help>XTLS flow control (VLESS only).</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <type>header</type>
+        <label>Transport</label>
+    </field>
+    <field>
+        <id>server.transport</id>
+        <label>Transport</label>
+        <type>dropdown</type>
+        <help>Network transport protocol.</help>
+        <grid_view>
+            <visible>false</visible>
+        </grid_view>
+    </field>
+    <field>
+        <id>server.transport_host</id>
+        <label>Transport Host</label>
+        <type>text</type>
+        <help>Host header for WebSocket/HTTP/2 transport.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>server.transport_path</id>
+        <label>Transport Path</label>
+        <type>text</type>
+        <help>Path for WebSocket/HTTP/2/gRPC transport.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <type>header</type>
+        <label>TLS / Security</label>
+    </field>
+    <field>
+        <id>server.security</id>
+        <label>Security</label>
+        <type>dropdown</type>
+        <help>TLS security mode.</help>
+        <grid_view>
+            <width>7em</width>
+        </grid_view>
+    </field>
+    <field>
+        <id>server.sni</id>
+        <label>SNI</label>
+        <type>text</type>
+        <help>Server Name Indication for TLS handshake.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>server.fingerprint</id>
+        <label>Fingerprint</label>
+        <type>text</type>
+        <help>uTLS client fingerprint (e.g. chrome, firefox, safari).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>server.alpn</id>
+        <label>ALPN</label>
+        <type>text</type>
+        <help>Application-Layer Protocol Negotiation values (comma-separated).</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>server.reality_pubkey</id>
+        <label>Reality Public Key</label>
+        <type>text</type>
+        <help>Public key for REALITY protocol.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <id>server.reality_short_id</id>
+        <label>Reality Short ID</label>
+        <type>text</type>
+        <help>Short ID for REALITY protocol.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+    <field>
+        <type>header</type>
+        <label>URI</label>
+    </field>
+    <field>
+        <id>server.raw_uri</id>
+        <label>Share URL</label>
+        <type>text</type>
+        <help>The original proxy URI for this server. You can copy this to share or back up the configuration.</help>
+        <grid_view>
+            <ignore>true</ignore>
+        </grid_view>
+    </field>
+</form>
