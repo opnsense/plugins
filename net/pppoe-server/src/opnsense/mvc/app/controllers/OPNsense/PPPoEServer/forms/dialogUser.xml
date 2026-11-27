@@ -1,0 +1,54 @@
+<form>
+    <field>
+        <id>user.enabled</id>
+        <label>Enabled</label>
+        <type>checkbox</type>
+    </field>
+    <field>
+        <id>user.username</id>
+        <label>Username</label>
+        <type>text</type>
+        <help>Allowed characters: letters, digits and . _ @ -</help>
+    </field>
+    <field>
+        <id>user.password</id>
+        <label>Password</label>
+        <type>password</type>
+        <help>Stored passwords are never shown. Leave empty when editing to keep the current password.</help>
+    </field>
+    <field>
+        <id>user.description</id>
+        <label>Description</label>
+        <type>text</type>
+    </field>
+    <field>
+        <id>user.staticip</id>
+        <label>Static IPv4 address</label>
+        <type>text</type>
+        <help>Optional fixed address for this user; must not overlap any dynamic pool.</help>
+    </field>
+    <field>
+        <id>user.downlimit</id>
+        <label>Download limit (kbit/s)</label>
+        <type>text</type>
+        <help>Rate limit towards the subscriber; 0 = unlimited. Requires "Local user shaping" in General.</help>
+    </field>
+    <field>
+        <id>user.uplimit</id>
+        <label>Upload limit (kbit/s)</label>
+        <type>text</type>
+        <help>Rate limit from the subscriber; 0 = unlimited. Requires "Local user shaping" in General.</help>
+    </field>
+    <field>
+        <id>user.ip6route</id>
+        <label>Routed IPv6 prefix</label>
+        <type>text</type>
+        <help>Optional static IPv6 prefix (e.g. 2001:db8:1234::/56) routed towards this subscriber. Requires IPv6 and "Local user shaping" in General.</help>
+    </field>
+    <field>
+        <id>user.expires</id>
+        <label>Expiration date</label>
+        <type>text</type>
+        <help>Optional YYYY-MM-DD date. From this day the account no longer authenticates and its active sessions are disconnected by the scheduled expiry job (see documentation for enabling the cron job).</help>
+    </field>
+</form>
