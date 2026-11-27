@@ -52,7 +52,11 @@ class AclController extends ApiMutableModelControllerBase
 
     public function delAclAction($uuid)
     {
-        return $this->delBase('acls.acl', $uuid);
+        $del_tgt = $this->getBase('acl', 'acls.acl', $uuid);
+        # skip if builtins...
+        if (!($del_tgt['acl']['name'] == 'any' || $del_tgt['acl']['name'] == 'localnets' || $del_tgt['acl']['name'] == 'localhost' || $del_tgt['acl']['name'] == 'none')) {
+            return $this->delBase('acls.acl', $uuid);
+        }
     }
 
     public function setAclAction($uuid)

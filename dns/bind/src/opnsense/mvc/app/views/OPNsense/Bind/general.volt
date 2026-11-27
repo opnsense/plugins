@@ -397,7 +397,26 @@ $(document).ready(function() {
         'set': '/api/bind/acl/set_acl/',
         'add': '/api/bind/acl/add_acl/',
         'del': '/api/bind/acl/del_acl/',
-        'toggle': '/api/bind/acl/toggle_acl/'
+        'toggle': '/api/bind/acl/toggle_acl/',
+        options: {
+            formatters: {
+                "commands": function (column, row) {
+                    // Disable the command buttons for builtin ACLs
+                    if (row.networks === "system derived") {
+                        return "<button type=\"button\" class=\"btn btn-xs btn-default bootgrid-tooltip command-edit\" data-row-id=\"" + row.uuid + "\" title=\"\" aria-label=\"Edit\" data-original-title=\"Edit\" disabled=\"disabled\"><span class=\"fa fa-fw fa-pencil\"></span></button> " +
+                        "<button type=\"button\" class=\"btn btn-xs btn-default bootgrid-tooltip command-copy\" data-row-id=\"" + row.uuid + "\" title=\"\" aria-label=\"Clone\" data-original-title=\"Clone\" disabled=\"disabled\"><span class=\"fa fa-fw fa-clone\"></span></button> " +
+                        "<button type=\"button\" class=\"btn btn-xs btn-default bootgrid-tooltip command-delete\" data-row-id=\"" + row.uuid + "\" title=\"\" aria-label=\"Delete\" data-original-title=\"Delete\" disabled=\"disabled\"><span class=\"fa fa-fw fa-trash-o\"></span></button>";
+                    } else {
+                        return "<button type=\"button\" class=\"btn btn-xs btn-default bootgrid-tooltip command-edit\" data-row-id=\"" + row.uuid + "\" title=\"\" aria-label=\"Edit\" data-original-title=\"Edit\"><span class=\"fa fa-fw fa-pencil\"></span></button> " +
+                        "<button type=\"button\" class=\"btn btn-xs btn-default bootgrid-tooltip command-copy\" data-row-id=\"" + row.uuid + "\" title=\"\" aria-label=\"Clone\" data-original-title=\"Clone\"><span class=\"fa fa-fw fa-clone\"></span></button> " +
+                        "<button type=\"button\" class=\"btn btn-xs btn-default bootgrid-tooltip command-delete\" data-row-id=\"" + row.uuid + "\" title=\"\" aria-label=\"Delete\" data-original-title=\"Delete\"><span class=\"fa fa-fw fa-trash-o\"></span></button>";
+                    }
+                }
+            }
+        }
+    }).on("loaded.rs.jquery.bootgrid", function(e) {
+        // always save on load to ensure the builtin ACLs are in config.xml
+        saveFormToEndpoint(url = "/api/bind/acl/set", formid = 'frm_general_settings');
     });
 
     $("#grid-primary-domains").UIBootgrid({
