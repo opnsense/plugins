@@ -28,6 +28,7 @@
 
 namespace OPNsense\AcmeClient\LeValidation;
 
+use OPNsense\AcmeClient\LeUtils;
 use OPNsense\AcmeClient\LeValidationInterface;
 use OPNsense\Core\Config;
 
@@ -48,6 +49,12 @@ class DnsCf extends Base implements LeValidationInterface
         // Optional Zone ID
         if (!empty((string)$this->config->dns_cf_zone_id)) {
             $this->acme_env['CF_Zone_ID'] = (string)$this->config->dns_cf_zone_id;
+        }
+        // acme.sh falls back to a previously saved Account ID, so forget it once the field is cleared
+        $account_conf = self::ACME_BASE_ACCOUNT_DIR . "/{$this->account_id}_{$this->ca_compat}/account.conf";
+        if ($this->acme_env['CF_Account_ID'] === '' && is_file($account_conf)) {
+            $sedcmd = LeUtils::execSafe("/usr/bin/sed -i '' '/^SAVED_CF_Account_ID=/d' %s", $account_conf);
+            LeUtils::run_shell_command($sedcmd);
         }
     }
 }
