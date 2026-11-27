@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/general</mount>
     <description>BIND configuration</description>
-    <version>1.0.12</version>
+    <version>1.0.13</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -167,5 +167,17 @@
             <Required>Y</Required>
             <Default>VxtIzJevSQXqnr7h2qerrcwjnZlMWSGGFBndKeNIDfw=</Default>
         </rndcsecret>
+        <dotenable type="BooleanField">
+            <Default>0</Default>
+            <Required>Y</Required>
+        </dotenable>
+        <dotport type="PortField">
+            <Default>853</Default>
+            <Required>Y</Required>
+        </dotport>
+        <dotcertificate type="CertificateField">
+            <Required>N</Required>
+            <ValidationMessage>Please select a valid certificate for DNS over TLS.</ValidationMessage>
+        </dotcertificate>
     </items>
 </model>
