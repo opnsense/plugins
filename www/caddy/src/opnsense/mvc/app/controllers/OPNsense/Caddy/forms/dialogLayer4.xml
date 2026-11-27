@@ -59,7 +59,7 @@
         <id>layer4.Matchers</id>
         <label>Matchers</label>
         <type>dropdown</type>
-        <help>Match the received traffic on OSI Layer 7. When choosing a protocol like TLS, it will be matched and routed to the upstream destination. With "listener_wrappers", unmatched traffic continues to the HTTP app. With "packet_conn_wrappers", unmatched UDP flows continue to HTTP/3. Wrapper routes require a specific matcher; ANY and the broad HTTP, TLS and QUIC matchers are not allowed. When "Routing Type" of the matcher is "global", unmatched traffic will be consumed and blocked. Choose "ANY" to not match on OSI Layer 7 and allow any traffic.</help>
+        <help>Match the received traffic on OSI Layer 7. When choosing a protocol like TLS, it will be matched and routed to the upstream destination. With "listener_wrappers", unmatched traffic continues to the HTTP app. With "packet_conn_wrappers", unmatched UDP flows continue to HTTP/3. When "Routing Type" of the matcher is "global", unmatched traffic will be consumed and blocked. Choose "ANY" to not match on OSI Layer 7 and allow any traffic.</help>
     </field>
     <field>
         <id>layer4.FromDomain</id>
