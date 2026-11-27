@@ -1,0 +1,9 @@
+<acl>
+    <page-services-checkmkagent>
+        <name>Services: Checkmk Agent</name>
+        <patterns>
+            <pattern>ui/checkmkagent/*</pattern>
+            <pattern>api/checkmkagent/*</pattern>
+        </patterns>
+    </page-services-checkmkagent>
+</acl>

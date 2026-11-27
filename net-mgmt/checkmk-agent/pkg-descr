@@ -1,0 +1,8 @@
+The Checkmk agent provides operating system data such as CPU,
+memory, file systems, ZFS, network interfaces and processes to a
+Checkmk server, which evaluates them with its built-in checks.
+
+This plugin runs the agent from the check_mk_agent package as a
+network service, with optional encryption.
+
+WWW: https://checkmk.com/

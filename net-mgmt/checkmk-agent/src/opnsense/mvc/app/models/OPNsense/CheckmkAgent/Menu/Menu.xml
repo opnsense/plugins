@@ -1,0 +1,5 @@
+<menu>
+    <Services>
+        <CheckmkAgent VisibleName="Checkmk Agent" cssClass="fa fa-heartbeat fa-fw" url="/ui/checkmkagent/"/>
+    </Services>
+</menu>
