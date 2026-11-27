@@ -510,6 +510,7 @@
                         <dns_mythic_beasts>Mythic Beasts</dns_mythic_beasts>
                         <dns_namecom>Name.com</dns_namecom>
                         <dns_namecheap>Namecheap</dns_namecheap>
+                        <dns_nameocean>NameOcean</dns_nameocean>
                         <dns_namesilo>Namesilo.com</dns_namesilo>
                         <dns_nederhost>Nederhost</dns_nederhost>
                         <dns_netcup>netcup</dns_netcup>
@@ -1006,6 +1007,9 @@
                 <dns_namecom_token type="TextField">
                     <Required>N</Required>
                 </dns_namecom_token>
+                <dns_nameocean_api_key type="TextField">
+                    <Required>N</Required>
+                </dns_nameocean_api_key>
                 <dns_namesilo_key type="TextField">
                     <Required>N</Required>
                 </dns_namesilo_key>

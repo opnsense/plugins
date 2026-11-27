@@ -1119,6 +1119,17 @@
         <type>text</type>
     </field>
     <field>
+        <label>NameOcean</label>
+        <type>header</type>
+        <style>table_dns table_dns_nameocean</style>
+    </field>
+    <field>
+        <id>validation.dns_nameocean_api_key</id>
+        <label>API Key</label>
+        <type>password</type>
+        <help>Create an API key with the dns:read and dns:write scopes in the NameOcean dashboard under API. The domain's zone must be on NameOcean DNS in the same account.</help>
+    </field>
+    <field>
         <label>Namesilo</label>
         <type>header</type>
         <style>table_dns table_dns_namesilo</style>
