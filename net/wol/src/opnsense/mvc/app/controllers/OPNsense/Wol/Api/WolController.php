@@ -37,6 +37,7 @@ class WolController extends ApiMutableModelControllerBase
 {
     protected static $internalModelName = 'wol';
     protected static $internalModelClass = '\OPNsense\Wol\Wol';
+    private const HOSTWATCH_ONLINE_THRESHOLD = 300;
 
     public function setAction()
     {
@@ -70,6 +71,53 @@ class WolController extends ApiMutableModelControllerBase
     public function searchHostAction()
     {
         return $this->searchBase('wolentry', ['interface', 'mac', 'descr']);
+    }
+
+    public function getHostStatusAction()
+    {
+        $result = $this->searchBase('wolentry', ['interface', 'mac', 'descr']);
+        if (empty($result['rows'])) {
+            return $result;
+        }
+
+        $ifmap = [];
+        $cfg = Config::getInstance()->object();
+        if (!empty($cfg->interfaces)) {
+            foreach ($cfg->interfaces->children() as $key => $node) {
+                if (!empty((string)$node->if)) {
+                    $ifmap[$key] = (string)$node->if;
+                }
+            }
+        }
+
+        $active = [];
+        $hosts = json_decode((new Backend())->configdRun('hostwatch dump_full'), true) ?? [];
+        $source = $hosts['source'] ?? null;
+        $cutoff = time() - self::HOSTWATCH_ONLINE_THRESHOLD;
+
+        if ($source === 'discovery' || $source === 'arp-ndp') {
+            foreach ($hosts['rows'] ?? [] as $rec) {
+                if (!is_array($rec) || count($rec) < 2) {
+                    continue;
+                }
+                if ($source === 'discovery') {
+                    $ts = !empty($rec[5]) ? strtotime($rec[5]) : false;
+                    if ($ts === false || $ts < $cutoff) {
+                        continue;
+                    }
+                }
+                $active[$rec[0]][strtolower($rec[1])] = true;
+            }
+        }
+
+        foreach ($result['rows'] as &$row) {
+            $ifname = $ifmap[$row['interface']] ?? null;
+            $mac = strtolower($row['mac'] ?? '');
+            $row['online'] = ($ifname !== null && isset($active[$ifname][$mac]));
+        }
+        unset($row);
+
+        return $result;
     }
 
     public function getHostAction($uuid = null)
