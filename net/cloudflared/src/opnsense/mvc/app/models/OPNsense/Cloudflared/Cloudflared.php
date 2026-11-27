@@ -29,7 +29,37 @@
 namespace OPNsense\Cloudflared;
 
 use OPNsense\Base\BaseModel;
+use OPNsense\Base\Messages\Message;
 
 class Cloudflared extends BaseModel
 {
+    /**
+     * {@inheritdoc}
+     */
+    public function performValidation($validateFullModel = false)
+    {
+        $messages = parent::performValidation($validateFullModel);
+
+        if (
+            ($validateFullModel || $this->general->enabled->isFieldChanged() || $this->general->token->isFieldChanged()) &&
+            !$this->general->enabled->isEmpty() && $this->general->token->isEmpty()
+        ) {
+            $messages->appendMessage(new Message(
+                gettext('A tunnel token is required when the service is enabled.'),
+                $this->general->token->__reference
+            ));
+        }
+
+        if (
+            ($validateFullModel || $this->general->post_quantum->isFieldChanged() || $this->general->protocol->isFieldChanged()) &&
+            !$this->general->post_quantum->isEmpty() && (string)$this->general->protocol == 'http2'
+        ) {
+            $messages->appendMessage(new Message(
+                gettext('Post-quantum encryption requires the QUIC protocol.'),
+                $this->general->protocol->__reference
+            ));
+        }
+
+        return $messages;
+    }
 }
