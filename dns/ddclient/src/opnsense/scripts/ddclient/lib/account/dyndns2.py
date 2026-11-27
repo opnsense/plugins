@@ -34,6 +34,7 @@ class DynDNS2(BaseAccount):
 
     _services = {
         'dyndns2': 'members.dyndns.org',
+        'alviy': 'dynupdate.alviy.com',
         'desec-v4': 'update.dedyn.io',
         'desec-v6': 'update6.dedyn.io',
         'dns-o-matic': 'updates.dnsomatic.com',
