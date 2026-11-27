@@ -6,6 +6,10 @@ to adjacent network devices.
 Plugin Changelog
 ================
 
+1.3
+
+* Ability to disable LLDP-MED
+
 1.2
 
 * Add AgentX integration support (contributed by TotalGriffLock)
