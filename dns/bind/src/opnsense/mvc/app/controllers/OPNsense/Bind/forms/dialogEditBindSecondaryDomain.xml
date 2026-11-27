@@ -51,10 +51,10 @@
     </field>
     <field>
         <id>domain.allownotifysecondary</id>
-        <label>Allow Notfiy</label>
+        <label>Allow Notify</label>
         <style>tokenize</style>
         <type>select_multiple</type>
         <allownew>true</allownew>
-        <help>A list of allowed IP addresses to receive notifies from (in addition to the primary server.)</help>
+        <help>A list of allowed IP addresses to receive notifies from (in addition to the primary server).</help>
     </field>
 </form>
