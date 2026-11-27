@@ -1,0 +1,11 @@
+#!/bin/sh
+
+#
+# It's OK to delete these files on bootup because we clean them out
+# during a clean shutdown. Therefore if these files still exist on
+# bootup, it means that the system wasn't shut down cleanly and as
+# a result these files are suspect and likely broken, so they need
+# to be removed to avoid any BIND9 bootup issues.
+#
+echo "Clearing out vestigial BIND9 journal files ..."
+find /usr/local/etc/namedb/primary -type f -name '*.jnl' -delete -print
