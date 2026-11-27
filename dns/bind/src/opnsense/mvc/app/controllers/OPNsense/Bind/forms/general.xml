@@ -133,6 +133,14 @@
         <help>Default is "No". Set to "Auto" to use the static trust anchor configuration by the system.</help>
     </field>
     <field>
+        <id>general.validate_except</id>
+        <label>DNSSEC Validate Except</label>
+        <type>select_multiple</type>
+        <style>tokenize</style>
+        <allownew>true</allownew>
+        <help>Specify a list of domain names at and beneath which DNSSEC validation should not be performed (essential for internal split DNS zones in forward zones).</help>
+    </field>
+    <field>
         <id>general.hidehostname</id>
         <label>Hide Hostname</label>
         <type>checkbox</type>

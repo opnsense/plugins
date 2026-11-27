@@ -125,6 +125,13 @@
             <Default>no</Default>
             <Required>Y</Required>
         </dnssecvalidation>
+        <validate_except type="HostnameField">
+            <Required>N</Required>
+            <AsList>Y</AsList>
+            <IsDNSName>Y</IsDNSName>
+            <IpAllowed>N</IpAllowed>
+            <ValidationMessage>[%s] is not a valid domain name.</ValidationMessage>
+        </validate_except>
         <hidehostname type="BooleanField">
             <Default>0</Default>
             <Required>Y</Required>
