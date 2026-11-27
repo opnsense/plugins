@@ -1,5 +1,5 @@
 <model>
-    <mount>//wol</mount>
+    <mount>/wol</mount>
     <description>Wake On Lan configuration</description>
     <version>1.0.0</version>
     <items>
