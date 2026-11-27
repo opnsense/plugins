@@ -49,7 +49,7 @@ class Ionos(BaseAccount):
         if super().execute():
             service = self.settings.get('service')
             params = {
-                'q': self.settings.get('password')
+                'q': self.settings.get('token') or self.settings.get('password')
             }
             if service == 'ionos-v6':
                 params['ipv6'] = self.current_address

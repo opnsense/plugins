@@ -1,6 +1,6 @@
 <model>
     <mount>//OPNsense/DynDNS</mount>
-    <version>1.5.1</version>
+    <version>1.5.2</version>
     <description>Dynamic DNS client</description>
     <items>
         <general>
@@ -120,6 +120,11 @@
                     <Mask>/^[^\n]*$/</Mask>
                     <ValidationMessage>resourceId contains invalid characters.</ValidationMessage>
                 </resourceId>
+                <token type="TextField">
+                    <Required>N</Required>
+                    <Mask>/^[^\n]*$/</Mask>
+                    <ValidationMessage>Token contains invalid characters.</ValidationMessage>
+                </token>
                 <hostnames type="HostnameField">
                     <Required>Y</Required>
                     <IpAllowed>N</IpAllowed>
