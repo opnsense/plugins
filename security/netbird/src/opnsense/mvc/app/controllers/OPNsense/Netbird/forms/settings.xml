@@ -24,6 +24,13 @@
         <advanced>true</advanced>
     </field>
     <field>
+        <id>settings.general.ifaceBlacklist</id>
+        <label>Interface Blacklist</label>
+        <type>select_multiple</type>
+        <help>Interfaces to exclude from ICE candidate gathering. Their addresses are not announced to other peers. Use this on routing peers to keep internal addresses (LAN, VLAN, GRE) from being announced, as other peers install host routes for announced addresses that can bypass the tunnel. NetBird's built-in defaults (loopback, wt0, other VPN and container interfaces) are always excluded.</help>
+        <advanced>true</advanced>
+    </field>
+    <field>
         <type>header</type>
         <label>Client Firewall</label>
     </field>
