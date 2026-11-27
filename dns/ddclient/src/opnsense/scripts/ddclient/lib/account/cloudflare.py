@@ -72,7 +72,8 @@ class Cloudflare(BaseAccount):
                 'params': {
                     'name': self.settings.get('zone')
                 },
-                'headers': headers
+                'headers': headers,
+                'timeout': 15
             }
             response = requests.get(**req_opts)
             try:
@@ -116,7 +117,8 @@ class Cloudflare(BaseAccount):
                         'name': hostname,
                         'type': recordType
                     },
-                    'headers': headers
+                    'headers': headers,
+                    'timeout': 15
                 }
                 response = requests.get(**req_opts)
                 try:
@@ -159,7 +161,8 @@ class Cloudflare(BaseAccount):
                         'name': hostname,
                         'content': str(self.current_address),
                     },
-                    'headers': headers
+                    'headers': headers,
+                    'timeout': 15
                 }
                 response = requests.patch(**req_opts)
                 try:
