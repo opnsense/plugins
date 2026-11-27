@@ -1,0 +1,62 @@
+<model>
+    <mount>//OPNsense/bind/rpzentry</mount>
+    <description>RPZ zone entries (for local-type zones only)</description>
+    <version>1.1.0</version>
+    <items>
+        <entries>
+            <entry type="ArrayField">
+                <enabled type="BooleanField">
+                    <Default>1</Default>
+                    <Required>Y</Required>
+                </enabled>
+                <zone type="ModelRelationField">
+                    <Required>Y</Required>
+                    <Model>
+                        <template>
+                            <source>OPNsense.Bind.Rpz</source>
+                            <items>zones.zone</items>
+                            <display>name</display>
+                        </template>
+                    </Model>
+                </zone>
+                <qname type="TextField">
+                    <Required>Y</Required>
+                    <Mask>/^(\*\.)?([a-zA-Z0-9_\-]{1,63}\.)*[a-zA-Z0-9_\-]{1,63}$/</Mask>
+                    <ValidationMessage>Enter a domain name (wildcards like *.example.com are allowed).</ValidationMessage>
+                </qname>
+                <!-- Standard BIND RPZ well-known action encodings for the
+                     CNAME-based ones — not invented syntax. local-a is the
+                     one exception: it doesn't trigger a CNAME action at
+                     all, it makes this zone authoritative for a real A/AAAA
+                     answer (split-horizon DNS), using ipv4/ipv6 below
+                     instead of redirect_target. See rpzLocalGenerate.php
+                     for the action -> zone-file-line mapping. -->
+                <action type="OptionField">
+                    <Default>nxdomain</Default>
+                    <Required>Y</Required>
+                    <OptionValues>
+                        <nxdomain>NXDOMAIN (block — CNAME .)</nxdomain>
+                        <nodata>NODATA (block — CNAME *.)</nodata>
+                        <passthru>Passthru (allow — CNAME rpz-passthru.)</passthru>
+                        <drop>Drop (no answer — CNAME rpz-drop.)</drop>
+                        <tcp-only>TCP only (CNAME rpz-tcp-only.)</tcp-only>
+                        <cname>Redirect (CNAME to a specific hostname)</cname>
+                        <local-a>Local A/AAAA record (split-DNS — answer with a specific IP, not a CNAME action)</local-a>
+                    </OptionValues>
+                </action>
+                <redirect_target type="TextField">
+                    <Required>N</Required>
+                    <ValidationMessage>Required when action is Redirect — the hostname to CNAME to.</ValidationMessage>
+                </redirect_target>
+                <ipv4 type="TextField">
+                    <Required>N</Required>
+                    <ValidationMessage>Used when action is Local A/AAAA record. At least one of IPv4/IPv6 is required.</ValidationMessage>
+                </ipv4>
+                <ipv6 type="TextField">
+                    <Required>N</Required>
+                    <ValidationMessage>Used when action is Local A/AAAA record. At least one of IPv4/IPv6 is required.</ValidationMessage>
+                </ipv6>
+            </entry>
+        </entries>
+    </items>
+</model>
