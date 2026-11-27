@@ -1,0 +1,7 @@
+<menu>
+    <Services>
+        <RTSPHelper VisibleName="RTSP Helper" cssClass="fa fa-plug fa-fw">
+            <Settings url="/ui/rtsphelper/settings"/>
+        </RTSPHelper>
+    </Services>
+</menu>
