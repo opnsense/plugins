@@ -34,6 +34,27 @@ import ujson
 import ipaddress
 from .account import BaseAccount
 
+import requests
+
+
+def set_default_request_timeout(connect_timeout=5, read_timeout=30):
+    """ Wrap requests.sessions.Session.request and apply a default timeout to all calls
+        which don't set an explicit one. Since the poller processes accounts sequentially,
+        a single stalled connection could otherwise block updates for all other accounts.
+        Calls that provide their own timeout are left untouched.
+    """
+    _orig_request = requests.sessions.Session.request
+
+    def request_with_timeout(self, *args, **kwargs):
+        if kwargs.get('timeout') is None:
+            kwargs['timeout'] = (connect_timeout, read_timeout)
+        return _orig_request(self, *args, **kwargs)
+
+    requests.sessions.Session.request = request_with_timeout
+
+
+set_default_request_timeout()
+
 
 class AccountFactory:
     def __init__(self):
