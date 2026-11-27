@@ -1,7 +1,7 @@
 <model>
     <mount>//OPNsense/bind/general</mount>
     <description>BIND configuration</description>
-    <version>1.0.12</version>
+    <version>1.0.13</version>
     <items>
         <enabled type="BooleanField">
             <Default>0</Default>
@@ -146,11 +146,75 @@
             <MaximumValue>1000</MaximumValue>
             <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
         </ratelimitcount>
+        <ratelimitwindow type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>3600</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 3600.</ValidationMessage>
+        </ratelimitwindow>
         <ratelimitexcept type="NetworkField">
             <Default>0.0.0.0,::</Default>
             <Required>Y</Required>
             <AsList>Y</AsList>
         </ratelimitexcept>
+        <ratelimitipv4prefixlength type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>32</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 32.</ValidationMessage>
+        </ratelimitipv4prefixlength>
+        <ratelimitipv6prefixlength type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>128</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 128.</ValidationMessage>
+        </ratelimitipv6prefixlength>
+        <ratelimitnodataps type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
+        </ratelimitnodataps>
+        <ratelimitnxdomsps type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
+        </ratelimitnxdomsps>
+        <ratelimitrefsps type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
+        </ratelimitrefsps>
+        <ratelimiterrsps type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
+        </ratelimiterrsps>
+        <ratelimitallps type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
+        </ratelimitallps>
+        <ratelimitslip type="IntegerField">
+            <MinimumValue>0</MinimumValue>
+            <MaximumValue>10</MaximumValue>
+            <ValidationMessage>Choose a value between 0 and 10.</ValidationMessage>
+        </ratelimitslip>
+        <ratelimitscale type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>1000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 1000.</ValidationMessage>
+        </ratelimitscale>
+        <ratelimitmaxtbl type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>100000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 100,000.</ValidationMessage>
+        </ratelimitmaxtbl>
+        <ratelimitmintbl type="IntegerField">
+            <MinimumValue>1</MinimumValue>
+            <MaximumValue>100000</MaximumValue>
+            <ValidationMessage>Choose a value between 1 and 100,000.</ValidationMessage>
+        </ratelimitmintbl>
+        <ratelimittry type="BooleanField">
+            <Default>0</Default>
+            <Required>N</Required>
+        </ratelimittry>
         <rndcalgo type="OptionField">
             <Required>Y</Required>
             <Default>hmac-sha256</Default>
