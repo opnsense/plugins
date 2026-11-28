@@ -196,7 +196,7 @@ class GDrive extends Base implements IBackupProvider
                         (string)$config->system->remotebackup->GDriveP12key
                     );
                 } catch (\Error | \Exception $e) {
-                    syslog(LOG_ERR, "error connecting to Google Drive");
+                    syslog(LOG_ERR, "error connecting to Google Drive (" . $e->getMessage() . ")");
                     return array();
                 }
 
@@ -208,7 +208,7 @@ class GDrive extends Base implements IBackupProvider
                 try {
                     $files = $client->listFiles((string)$config->system->remotebackup->GDriveFolderID);
                 } catch (\Error | \Exception $e) {
-                    syslog(LOG_ERR, "error while fetching filelist from Google Drive");
+                    syslog(LOG_ERR, "error while fetching filelist from Google Drive (" . $e->getMessage() . ")");
                     return array();
                 }
 
@@ -272,8 +272,11 @@ class GDrive extends Base implements IBackupProvider
                             syslog(LOG_NOTICE, "remove " . $filename . " from Google Drive");
                             try {
                                 $client->delete($file);
-                            } catch (Google_Service_Exception $e) {
-                                syslog(LOG_ERR, "unable to remove " . $filename . " from Google Drive");
+                            } catch (\Error | \Exception $e) {
+                                syslog(
+                                    LOG_ERR,
+                                    "unable to remove " . $filename . " from Google Drive (" . $e->getMessage() . ")"
+                                );
                             }
                         }
                         $fcount++;

@@ -55,7 +55,7 @@ class Drive
 
     /**
      * login to google drive
-     * @param $client_id
+     * @param $client_id service account email or numeric unique id
      * @param $privateKeyB64 P12 key placed in a base64 container
      */
     public function login($client_id, $privateKeyB64)
@@ -65,6 +65,16 @@ class Drive
             throw new \Exception("Invalid P12 key, openssl_pkcs12_read() failed");
         }
         $this->client = new \Google_Client();
+
+        // accept either the service account email or its numeric unique id
+        $client_id = trim($client_id);
+        if (strpos($client_id, '@') !== false) {
+            if (!filter_var($client_id, FILTER_VALIDATE_EMAIL)) {
+                throw new \Exception("Invalid service account email: " . $client_id);
+            }
+        } elseif (!ctype_digit($client_id)) {
+            throw new \Exception("Email Address must be a service account email or its numeric unique id");
+        }
 
         $service_account = [
             "type" => "service_account",
@@ -91,11 +101,32 @@ class Drive
      */
     public function listFiles($directoryId, $filename = null)
     {
-        $query = "'" . $directoryId . "' in parents ";
+        $query = "'" . $directoryId . "' in parents and trashed = false";
         if ($filename != null) {
-            $query .= " and title in '" . $filename . "'";
+            $query .= " and name = '" . addslashes($filename) . "'";
         }
-        return $this->service->files->listFiles(['q' => $query, 'supportsAllDrives' => true]);
+        $files = [];
+        $pageToken = null;
+        do {
+            $params = [
+                'q' => $query,
+                'pageSize' => 1000,
+                'fields' => 'nextPageToken, files(id, name, description)',
+                // shared drive items are only returned when both flags are set
+                'supportsAllDrives' => true,
+                'includeItemsFromAllDrives' => true,
+                'corpora' => 'allDrives',
+            ];
+            if ($pageToken !== null) {
+                $params['pageToken'] = $pageToken;
+            }
+            $result = $this->service->files->listFiles($params);
+            foreach ($result->getFiles() as $file) {
+                $files[] = $file;
+            }
+            $pageToken = $result->getNextPageToken();
+        } while (!empty($pageToken));
+        return $files;
     }
 
 
@@ -138,11 +169,19 @@ class Drive
     }
 
     /**
-     * delete file
+     * delete file, or move it to the trash when permanent deletion is not permitted
      * @param $fileHandle (object from listFiles)
      */
     public function delete($fileHandle)
     {
-        $this->service->files->delete($fileHandle['id'], ['supportsAllDrives' => true]);
+        try {
+            $this->service->files->delete($fileHandle['id'], ['supportsAllDrives' => true]);
+        } catch (\Exception $e) {
+            // On shared drives only the "Manager" role may delete permanently, a "Content manager"
+            // can only move files to the trash. Fall back to trashing, which Google purges after 30 days.
+            $trashed = new \Google_Service_Drive_DriveFile();
+            $trashed->setTrashed(true);
+            $this->service->files->update($fileHandle['id'], $trashed, ['supportsAllDrives' => true]);
+        }
     }
 }
